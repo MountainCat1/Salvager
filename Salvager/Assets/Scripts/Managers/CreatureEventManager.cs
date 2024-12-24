@@ -42,7 +42,6 @@ namespace Managers
             var killer = ctx.Killer;
 
             killer.AwardXp(creature.XpAmount);
-            _popupManager.SpawnFloatingText($"+{creature.XpAmount}", creature.transform.position, color: Color.yellow);
             
             Debug.Log($"{creature.name} was killed by {killer.name}");
         }

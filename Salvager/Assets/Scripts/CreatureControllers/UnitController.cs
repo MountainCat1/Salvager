@@ -29,6 +29,9 @@ namespace CreatureControllers
                 PerformMovementTowardsPosition(_moveCommandTarget.Value);
                 return;
             }
+            
+            if(!_target)
+                _target = GetNewTarget();
 
             if (_target)
             {
