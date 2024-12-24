@@ -39,7 +39,7 @@ namespace Managers
             _audioSources[SoundType.UI] = new List<AudioSource>();
 
             // TODO: Volumes shoudl be loaded from settings
-            _volumes[SoundType.Music] = 1f;
+            _volumes[SoundType.Music] = 0.15f;
             _volumes[SoundType.Sfx] = 1f;
             _volumes[SoundType.UI] = 0.7f;
             // _volumes[SoundType.Music] = _settingsAccessor.Settings.muiscVolume;

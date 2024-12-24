@@ -17,27 +17,6 @@ public class InputMapper : MonoBehaviour, IInputMapper
     [Inject]
     private void Construct()
     {
-        _inputManager.Pointer1Hold += OnCharacterAttack;
         _camera = Camera.main;
     }
-
-    private void OnCharacterAttack(Vector2 pointerPosition)
-    {
-        var pointerRealPosition = _camera.ScreenToWorldPoint(pointerPosition);
-        var playerCharacter = GetPlayerCharacter();
-        var direction = (pointerRealPosition - playerCharacter.transform.position).normalized;
-        var attackContext = new AttackContext
-        {
-            Attacker = playerCharacter,
-            Direction = direction,
-        };
-        
-        OnPlayerCharacterAttack?.Invoke(attackContext);
-    }
-
-    private PlayerCharacter GetPlayerCharacter()
-    {
-        return FindObjectOfType<PlayerCharacter>();
-    }
-
 }

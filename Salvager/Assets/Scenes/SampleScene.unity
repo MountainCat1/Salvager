@@ -549,8 +549,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70da82b830cb4f53940eaced4296c7eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startingItems: []
-  alreadyWonDialog: {fileID: 0}
 --- !u!1 &728100030
 GameObject:
   m_ObjectHideFlags: 0
@@ -811,7 +809,6 @@ Transform:
   - {fileID: 1617124769}
   - {fileID: 2143018521}
   - {fileID: 1979478846}
-  - {fileID: 2088688071}
   - {fileID: 1151040405}
   - {fileID: 1555746549}
   - {fileID: 1719529163}
@@ -1048,7 +1045,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d3c7c3bb59944a5890e518b3b44828b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  soundtracks: []
+  soundtracks:
+  - {fileID: 0}
 --- !u!95 &1792608390
 Animator:
   serializedVersion: 5
@@ -1210,6 +1208,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85e83404b8444764b1c86b8825465201, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _dialogUI: {fileID: 0}
+  _currentDialogData: {fileID: 0}
+  _currentSentenceIndex: 0
 --- !u!1 &2083191678
 GameObject:
   m_ObjectHideFlags: 0
@@ -1252,50 +1253,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: cbe4db76f6484b1286fb864566cd5ce0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!1 &2088688070
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2088688071}
-  - component: {fileID: 2088688072}
-  m_Layer: 0
-  m_Name: Player Provider
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &2088688071
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2088688070}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1268461046}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2088688072
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2088688070}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 05cc3f9fa1b443a1bc56489b785674bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &2143018520
