@@ -1,9 +1,12 @@
 ﻿using UnityEngine;
+using Zenject;
 
 [RequireComponent(typeof(Creature))]
 public class CreatureController : MonoBehaviour
 {
     protected Creature Creature;
+    
+    [Inject] private IPathfinding _pathfinding;
 
     protected virtual void Awake()
     {

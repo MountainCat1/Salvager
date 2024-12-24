@@ -46,9 +46,7 @@ public class InputManager : MonoBehaviour, IInputManager
         _inputActions.CharacterControl.Pointer2.performed += Pointer2OnPerformed;
 
         _inputActions.UI.Confirm.performed += _ => OnConfirm?.Invoke();
-
         _inputActions.UI.SkipDialog.performed += _ => OnSkip?.Invoke();
-        
         _inputActions.UI.SpeedUpDialog.performed += _ => OnSpeedUpDialog?.Invoke();
     }
 

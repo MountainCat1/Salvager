@@ -51,6 +51,7 @@ public class Creature : MonoBehaviour
     [field: SerializeField] public int XpAmount { get; private set; }
     [field: SerializeField] private Teams team;
     public float Speed => GetSpeed();
+    public CreatureController Controller => GetComponent<CreatureController>(); // TODO: PERFORMANCE ISSUE
 
     // Private Variables
     private readonly LevelSystem _levelSystem = new();

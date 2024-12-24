@@ -81,11 +81,18 @@ namespace CreatureControllers
         private void MoveStraightToTarget(Vector2 targetPosition)
         {
             var direction = (targetPosition - (Vector2)Creature.transform.position).normalized;
+            
+            if(Vector2.Distance(Creature.transform.position, targetPosition) < 0.1f)
+            {
+                Creature.SetMovement(Vector2.zero);
+                return;
+            }
+            
             Creature.SetMovement(direction);
             Debug.DrawLine(Creature.transform.position, targetPosition, Color.green);
         }
         
-        private List<Vector3> GetCornerPoints(Vector3 center, float radius)
+        protected List<Vector3> GetCornerPoints(Vector3 center, float radius)
         {
             List<Vector3> cornerPoints = new List<Vector3>
             {
