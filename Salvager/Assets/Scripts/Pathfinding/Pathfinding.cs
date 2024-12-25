@@ -6,6 +6,9 @@ public interface IPathfinding
     List<Node> FindPath(Vector3 startPos, Vector3 targetPos);
     
     bool IsClearPath(Vector2 a, Vector2 b);
+    bool IsWalkable(Vector2 targetPosition);
+    
+    ICollection<Vector2> GetSpreadPosition(Vector2 position, int amount);
 }
 
 [RequireComponent(typeof(GridGenerator))]
@@ -85,6 +88,46 @@ public class Pathfinding : MonoBehaviour, IPathfinding
         // If no collider is hit on the specified layer, return true
         return true;
     }
+
+    public bool IsWalkable(Vector2 targetPosition)
+    {
+        Node node = _grid.NodeFromWorldPoint(targetPosition);
+        return node.walkable;
+    }
+
+    public ICollection<Vector2> GetSpreadPosition(Vector2 position, int amount)
+    {
+        List<Vector2> spreadPositions = new List<Vector2>();
+        float spacing = 1.5f; // Distance between points
+        int maxAttempts = 100; // Maximum attempts to find positions
+        int attempts = 0;
+
+        while (spreadPositions.Count < amount && attempts < maxAttempts)
+        {
+            // Generate random offset in a circular area
+            float angle = Random.Range(0, Mathf.PI * 2);
+            float radius = Random.Range(0.5f, spacing * amount / Mathf.PI);
+
+            Vector2 candidate = position + new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * radius;
+
+            // Check if the candidate position is walkable
+            if (IsWalkable(candidate) && !spreadPositions.Contains(candidate))
+            {
+                spreadPositions.Add(candidate);
+            }
+
+            attempts++;
+        }
+
+        // If we couldn't find enough walkable positions, log a warning
+        if (spreadPositions.Count < amount)
+        {
+            Debug.LogWarning($"Only found {spreadPositions.Count}/{amount} spread positions around {position}");
+        }
+
+        return spreadPositions;
+    }
+
 
 
     List<Node> RetracePath(Node startNode, Node endNode)

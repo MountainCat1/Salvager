@@ -52,6 +52,7 @@ public class Creature : MonoBehaviour
     [field: SerializeField] private Teams team;
     public float Speed => GetSpeed();
     public CreatureController Controller => GetComponent<CreatureController>(); // TODO: PERFORMANCE ISSUE
+    public Collider2D Collider => _collider;
 
     // Private Variables
     private readonly LevelSystem _levelSystem = new();
@@ -61,6 +62,7 @@ public class Creature : MonoBehaviour
     private Vector2 _moveDirection;
     private Vector2 _momentum;
     private Creature _lastAttackedBy = null;
+    private Collider2D _collider;
 
     private const float MomentumLoss = 2f;
 
@@ -71,6 +73,7 @@ public class Creature : MonoBehaviour
     {
         _rootTransform = transform;
         _rigidbody2D = GetComponent<Rigidbody2D>();
+        _collider = GetComponent<Collider2D>();
 
         health.ValueChanged += OnHealthChanged;
         health.CurrentValue = health.MaxValue;
@@ -79,7 +82,7 @@ public class Creature : MonoBehaviour
         _diContainer.Inject(Inventory);
     }
 
-    private void FixedUpdate()
+    private void Update()
     {
         UpdateVelocity();
     }
