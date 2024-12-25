@@ -47,7 +47,10 @@ namespace CreatureControllers
                 };
 
                 if (Creature.Weapon.GetOnCooldown(attackContext) && !MoveOnAttackCooldown)
+                {
+                    Creature.SetMovement(Vector2.zero);
                     return;
+                }
 
                 if (Vector2.Distance(Creature.transform.position, _target.transform.position) < Creature.Weapon.Range)
                 {

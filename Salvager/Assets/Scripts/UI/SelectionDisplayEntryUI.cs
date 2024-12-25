@@ -14,16 +14,18 @@ public class SelectionDisplayEntryUI : MonoBehaviour
     
     public void SetCreature(Creature creature)
     {
+        _creature = creature;
+        
         creatureNameText.text = creature.name;
         healthSlider.maxValue = creature.Health.MaxValue;
         healthSlider.value = creature.Health.CurrentValue;
-        creature.Health.ValueChanged += OnHealthChanged;
+        _creature.Health.ValueChanged += OnHealthChanged;
         creatureImage.sprite = creature.GetComponentInChildren<SpriteRenderer>().sprite;
     }
 
     private void OnHealthChanged()
     {
-        if(_creature == null)
+        if(!_creature)
         {
             return;
         }

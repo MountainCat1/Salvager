@@ -12,7 +12,6 @@ public abstract class Weapon : ItemBehaviour
     [field: SerializeField] public float Range { get; set; }
 
     [field: SerializeField]
-    [field: FormerlySerializedAs("AttackSpeed")]
     public float BaseAttackSpeed { get; set; }
 
     [field: SerializeField] public float BaseDamage { get; set; }
