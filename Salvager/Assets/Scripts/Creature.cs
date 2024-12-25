@@ -49,7 +49,7 @@ public class Creature : MonoBehaviour
 
     [field: SerializeField] public float SightRange { get; private set; } = 13f;
     [field: SerializeField] public int XpAmount { get; private set; }
-    [field: SerializeField] private Teams team;
+    [field: SerializeField] public Teams Team { get; private set; }
     public float Speed => GetSpeed();
     public CreatureController Controller => GetComponent<CreatureController>(); // TODO: PERFORMANCE ISSUE
     public Collider2D Collider => _collider;
@@ -101,7 +101,7 @@ public class Creature : MonoBehaviour
         if (other == this)
             return Attitude.Friendly;
 
-        return _teamManager.GetAttitude(team, other.team);
+        return _teamManager.GetAttitude(Team, other.Team);
     }
 
     public void Damage(HitContext ctx)
