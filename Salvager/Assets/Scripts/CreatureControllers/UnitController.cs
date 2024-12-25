@@ -1,4 +1,3 @@
-
 using System;
 using UnityEngine;
 
@@ -9,13 +8,13 @@ namespace CreatureControllers
         private Vector2? _moveCommandTarget;
         private Creature _target;
         private const bool MoveOnAttackCooldown = false; // TODO: This should be a property of the weapon
-        
+
         public void SetMoveTarget(Vector2 target)
         {
             _moveCommandTarget = target;
             _target = null;
         }
-        
+
         public void SetAttackTarget(Creature target)
         {
             _target = target;
@@ -24,13 +23,18 @@ namespace CreatureControllers
 
         private void Update()
         {
-            if(_moveCommandTarget != null)
+            if (_moveCommandTarget != null)
             {
-                PerformMovementTowardsPosition(_moveCommandTarget.Value);
-                return;
+                if (Vector2.Distance(Creature.transform.position, _moveCommandTarget.Value) > 0.1f)
+                {
+                    PerformMovementTowardsPosition(_moveCommandTarget.Value);
+                    return;
+                }
+
+                _moveCommandTarget = null;
             }
-            
-            if(!_target)
+
+            if (!_target)
                 _target = GetNewTarget();
 
             if (_target)
@@ -41,8 +45,8 @@ namespace CreatureControllers
                     Target = _target,
                     Attacker = Creature
                 };
-                
-                if(Creature.Weapon.GetOnCooldown(attackContext) && !MoveOnAttackCooldown)
+
+                if (Creature.Weapon.GetOnCooldown(attackContext) && !MoveOnAttackCooldown)
                     return;
 
                 if (Vector2.Distance(Creature.transform.position, _target.transform.position) < Creature.Weapon.Range)
@@ -52,9 +56,14 @@ namespace CreatureControllers
                 }
 
                 PerformMovementTowardsTarget(_target);
+                
+                return;
             }
+            
+            // If no target, stop moving
+            Creature.SetMovement(Vector2.zero);
         }
-        
+
         private void PerformAttack(AttackContext ctx)
         {
             Creature.Weapon.ContiniousAttack(ctx);
