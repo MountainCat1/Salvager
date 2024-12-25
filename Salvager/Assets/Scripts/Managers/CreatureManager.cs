@@ -44,7 +44,7 @@ namespace Managers
 
         public ICollection<Creature> GetCreatures()
         {
-            var creatures = FindObjectsOfType<Creature>();
+            var creatures = FindObjectsOfType<Creature>(); // TODO: PERFORMANCE ISSUE
             return creatures;
         }
     }

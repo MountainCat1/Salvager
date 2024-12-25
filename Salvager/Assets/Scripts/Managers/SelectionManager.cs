@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -8,6 +9,7 @@ namespace Managers
     public interface ISelectionManager
     {
         IEnumerable<Creature> SelectedCreatures { get; }
+        event Action OnSelectionChanged;
         void ClearSelection();
         void AddToSelection(Creature creature);
         void RemoveFromSelection(Creature creature);
@@ -15,10 +17,12 @@ namespace Managers
 
     public class SelectionManager : MonoBehaviour, ISelectionManager
     {
+        public event Action OnSelectionChanged;
+        
         [Inject] ITeamManager _teamManager;
         
         public IEnumerable<Creature> SelectedCreatures => _selectedCreatures;
-        
+
         [SerializeField] private List<Creature> _selectedCreatures = new();
         [SerializeField] private RectTransform selectionBox;
         [SerializeField] private Canvas canvas;
@@ -183,6 +187,8 @@ namespace Managers
             }
 
             _selectedCreatures.Clear();
+            
+            OnSelectionChanged?.Invoke();
         }
 
         public void AddToSelection(Creature creature)
@@ -196,6 +202,8 @@ namespace Managers
                 // Optional: Update creature's appearance to show selection
                 creature.GetComponentInChildren<Renderer>().material.color = Color.green;
             }
+            
+            OnSelectionChanged?.Invoke();
         }
 
         public void RemoveFromSelection(Creature creature)
@@ -206,6 +214,8 @@ namespace Managers
                 // Optional: Update creature's appearance to show deselection
                 creature.GetComponentInChildren<Renderer>().material.color = Color.white;
             }
+            
+            OnSelectionChanged?.Invoke();
         }
         
         private IEnumerable<Creature> GetSelectedCreatures()
