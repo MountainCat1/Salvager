@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
@@ -15,6 +16,7 @@ public interface IInputManager
     event Action OnConfirm;
     event Action OnSpeedUpDialog;
     event Action OnSkip;
+    event Action OnCancel;
 }
 
 public class InputManager : MonoBehaviour, IInputManager
@@ -28,6 +30,7 @@ public class InputManager : MonoBehaviour, IInputManager
     public event Action OnConfirm;
     public event Action OnSpeedUpDialog;
     public event Action OnSkip;
+    public event Action OnCancel;
 
     [SerializeField] private int uiLayer = 5;
 
@@ -48,6 +51,8 @@ public class InputManager : MonoBehaviour, IInputManager
         _inputActions.UI.Confirm.performed += _ => OnConfirm?.Invoke();
         _inputActions.UI.SkipDialog.performed += _ => OnSkip?.Invoke();
         _inputActions.UI.SpeedUpDialog.performed += _ => OnSpeedUpDialog?.Invoke();
+        
+        _inputActions.UI.Cancel.performed += _ => OnCancel?.Invoke();
     }
 
     private void Update()

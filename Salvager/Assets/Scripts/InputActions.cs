@@ -143,7 +143,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""name"": ""Confirm"",
                     ""type"": ""Button"",
                     ""id"": ""e0a47f08-56da-44af-ad91-73133bbe6865"",
-                    ""expectedControlType"": ""Button"",
+                    ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
@@ -152,7 +152,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""name"": ""SkipDialog"",
                     ""type"": ""Button"",
                     ""id"": ""a562aabf-274e-4b86-bf7a-f0b376a34c96"",
-                    ""expectedControlType"": ""Button"",
+                    ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
@@ -162,6 +162,15 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""type"": ""Button"",
                     ""id"": ""254225e7-f56f-48ac-ac69-4b37b95381fe"",
                     ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Cancel"",
+                    ""type"": ""Button"",
+                    ""id"": ""cb1dcf2a-8665-4b2e-8601-848ec2d6e64d"",
+                    ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
@@ -233,6 +242,17 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""action"": ""SpeedUpDialog"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a89f5814-55e4-4a85-af61-fa1f6653378e"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Cancel"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -261,6 +281,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         m_UI_Confirm = m_UI.FindAction("Confirm", throwIfNotFound: true);
         m_UI_SkipDialog = m_UI.FindAction("SkipDialog", throwIfNotFound: true);
         m_UI_SpeedUpDialog = m_UI.FindAction("SpeedUpDialog", throwIfNotFound: true);
+        m_UI_Cancel = m_UI.FindAction("Cancel", throwIfNotFound: true);
     }
 
     ~@InputActions()
@@ -393,6 +414,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_UI_Confirm;
     private readonly InputAction m_UI_SkipDialog;
     private readonly InputAction m_UI_SpeedUpDialog;
+    private readonly InputAction m_UI_Cancel;
     public struct UIActions
     {
         private @InputActions m_Wrapper;
@@ -400,6 +422,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         public InputAction @Confirm => m_Wrapper.m_UI_Confirm;
         public InputAction @SkipDialog => m_Wrapper.m_UI_SkipDialog;
         public InputAction @SpeedUpDialog => m_Wrapper.m_UI_SpeedUpDialog;
+        public InputAction @Cancel => m_Wrapper.m_UI_Cancel;
         public InputActionMap Get() { return m_Wrapper.m_UI; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -418,6 +441,9 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @SpeedUpDialog.started += instance.OnSpeedUpDialog;
             @SpeedUpDialog.performed += instance.OnSpeedUpDialog;
             @SpeedUpDialog.canceled += instance.OnSpeedUpDialog;
+            @Cancel.started += instance.OnCancel;
+            @Cancel.performed += instance.OnCancel;
+            @Cancel.canceled += instance.OnCancel;
         }
 
         private void UnregisterCallbacks(IUIActions instance)
@@ -431,6 +457,9 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @SpeedUpDialog.started -= instance.OnSpeedUpDialog;
             @SpeedUpDialog.performed -= instance.OnSpeedUpDialog;
             @SpeedUpDialog.canceled -= instance.OnSpeedUpDialog;
+            @Cancel.started -= instance.OnCancel;
+            @Cancel.performed -= instance.OnCancel;
+            @Cancel.canceled -= instance.OnCancel;
         }
 
         public void RemoveCallbacks(IUIActions instance)
@@ -468,5 +497,6 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         void OnConfirm(InputAction.CallbackContext context);
         void OnSkipDialog(InputAction.CallbackContext context);
         void OnSpeedUpDialog(InputAction.CallbackContext context);
+        void OnCancel(InputAction.CallbackContext context);
     }
 }

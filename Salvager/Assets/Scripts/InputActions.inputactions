@@ -121,7 +121,7 @@
                     "name": "Confirm",
                     "type": "Button",
                     "id": "e0a47f08-56da-44af-ad91-73133bbe6865",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -130,7 +130,7 @@
                     "name": "SkipDialog",
                     "type": "Button",
                     "id": "a562aabf-274e-4b86-bf7a-f0b376a34c96",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -140,6 +140,15 @@
                     "type": "Button",
                     "id": "254225e7-f56f-48ac-ac69-4b37b95381fe",
                     "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Cancel",
+                    "type": "Button",
+                    "id": "cb1dcf2a-8665-4b2e-8601-848ec2d6e64d",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -209,6 +218,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "SpeedUpDialog",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a89f5814-55e4-4a85-af61-fa1f6653378e",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Cancel",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

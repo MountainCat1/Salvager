@@ -1,11 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using UI;
 using UnityEngine;
 using UnityEngine.UI;
+using Zenject;
 
 public class SelectionDisplayEntryUI : MonoBehaviour
 {
+    [Inject] private IPopupManagerUI _popupManagerUI;
+    
     [SerializeField] private TextMeshProUGUI creatureNameText;
     [SerializeField] private Slider healthSlider;
     [SerializeField] private Image creatureImage;
@@ -31,5 +35,10 @@ public class SelectionDisplayEntryUI : MonoBehaviour
         }
         
         healthSlider.value = _creature.Health.CurrentValue;
+    }
+    
+    public void ShowInventory()
+    {
+        _popupManagerUI.ShowInventory(_creature);
     }
 }

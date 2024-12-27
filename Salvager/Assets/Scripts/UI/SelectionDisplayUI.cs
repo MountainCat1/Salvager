@@ -11,6 +11,7 @@ public class SelectionDisplayUI : MonoBehaviour
     [SerializeField] private Transform parent;
     
     [Inject] private ISelectionManager _selectionManager;
+    [Inject] private DiContainer _container;
 
     private void Start()
     {
@@ -22,7 +23,7 @@ public class SelectionDisplayUI : MonoBehaviour
         ClearEntries();
         foreach (var creature in _selectionManager.SelectedCreatures)
         {
-            var entry = Instantiate(entryPrefab, parent);
+            var entry = _container.InstantiatePrefabForComponent<SelectionDisplayEntryUI>(entryPrefab, parent);
             entry.SetCreature(creature);
         }
     }
