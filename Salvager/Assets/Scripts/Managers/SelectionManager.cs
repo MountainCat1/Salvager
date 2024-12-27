@@ -49,10 +49,12 @@ namespace Managers
             // Start drag selection
             if (Input.GetMouseButtonDown(0))
             {
+                _startMousePosition = Input.mousePosition;
+                
                 if (EventSystem.current.IsPointerOverGameObject())
                     return;
 
-                _startMousePosition = Input.mousePosition;
+                
                 if (selectionBox != null)
                 {
                     selectionBox.gameObject.SetActive(true);
@@ -79,6 +81,9 @@ namespace Managers
 
                 if (Vector2.Distance(_startMousePosition, Input.mousePosition) <= DragThreshold)
                 {
+                    if (EventSystem.current.IsPointerOverGameObject())
+                        return;
+
                     HandleSingleClick();
                 }
                 else
@@ -127,7 +132,7 @@ namespace Managers
             List<Creature> selectedCreatures = FindObjectsOfType<Creature>()
                 .Where(creature => IsWithinSelectionBounds(creature, bottomLeft, topRight))
                 .ToList();
-
+            
             if (!Input.GetKey(KeyCode.LeftShift)) // Replace current selection unless Shift is held
             {
                 ClearSelection();
