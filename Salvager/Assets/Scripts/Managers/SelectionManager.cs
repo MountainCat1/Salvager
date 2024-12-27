@@ -21,7 +21,7 @@ namespace Managers
         
         [Inject] ITeamManager _teamManager;
         
-        public IEnumerable<Creature> SelectedCreatures => _selectedCreatures;
+        public IEnumerable<Creature> SelectedCreatures => GetSelectedCreatures();
 
         [SerializeField] private List<Creature> _selectedCreatures = new();
         [SerializeField] private RectTransform selectionBox;

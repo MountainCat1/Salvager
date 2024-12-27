@@ -64,20 +64,25 @@ namespace CreatureControllers
         {
             var attackContext = CreateAttackContext();
 
-            if (Creature.Weapon.GetOnCooldown(attackContext) && !MoveOnAttackCooldown)
+            if (Creature.Weapon.GetOnCooldown(attackContext) && !Creature.Weapon.AllowToMoveOnCooldown)
             {
                 Creature.SetMovement(Vector2.zero); // Stay still during cooldown if configured
+                return;
+            }
+
+            if (Creature.Weapon.NeedsLineOfSight && !CanSee(_target))
+            {
+                PerformMovementTowardsTarget(_target);
                 return;
             }
 
             if (Vector2.Distance(Creature.transform.position, _target.transform.position) < Creature.Weapon.Range)
             {
                 PerformAttack(attackContext);
+                return;
             }
-            else
-            {
-                PerformMovementTowardsTarget(_target);
-            }
+
+            PerformMovementTowardsTarget(_target);
         }
 
         private AttackContext CreateAttackContext()

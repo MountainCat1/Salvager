@@ -11,12 +11,14 @@ public abstract class Weapon : ItemBehaviour
 
     [field: SerializeField] public float Range { get; set; }
 
-    [field: SerializeField]
-    public float BaseAttackSpeed { get; set; }
+    [field: SerializeField] public float BaseAttackSpeed { get; set; }
 
     [field: SerializeField] public float BaseDamage { get; set; }
     [field: SerializeField] public float PushFactor { get; set; }
     [field: SerializeField] public AudioClip HitSound { get; set; }
+
+    public virtual bool AllowToMoveOnCooldown => false;
+    public virtual bool NeedsLineOfSight => false;
 
     private DateTime _lastAttackTime;
 
