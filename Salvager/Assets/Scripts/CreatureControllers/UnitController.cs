@@ -7,7 +7,7 @@ namespace CreatureControllers
     {
         private Vector2? _moveCommandTarget;
         private Creature _target;
-        private const bool MoveOnAttackCooldown = false; // TODO: This should be a property of the weapon
+        private const bool MoveOnAttackCooldown = false; // TODO: This should be a configurable property of the weapon
 
         public void SetMoveTarget(Vector2 target)
         {
@@ -23,53 +23,76 @@ namespace CreatureControllers
 
         private void Update()
         {
-            if (_moveCommandTarget != null)
-            {
-                if (Vector2.Distance(Creature.transform.position, _moveCommandTarget.Value) > 0.1f)
-                {
-                    PerformMovementTowardsPosition(_moveCommandTarget.Value);
-                    return;
-                }
-
-                _moveCommandTarget = null;
-            }
-
-            if (!_target)
-                _target = GetNewTarget();
-
-            if (_target)
-            {
-                var attackContext = new AttackContext()
-                {
-                    Direction = (_target.transform.position - Creature.transform.position).normalized,
-                    Target = _target,
-                    Attacker = Creature
-                };
-
-                if (Creature.Weapon.GetOnCooldown(attackContext) && !MoveOnAttackCooldown)
-                {
-                    Creature.SetMovement(Vector2.zero);
-                    return;
-                }
-
-                if (Vector2.Distance(Creature.transform.position, _target.transform.position) < Creature.Weapon.Range)
-                {
-                    PerformAttack(attackContext);
-                    return;
-                }
-
-                PerformMovementTowardsTarget(_target);
-                
-                return;
-            }
-            
-            // If no target, stop moving
-            Creature.SetMovement(Vector2.zero);
+            HandleMovementOrAttack();
         }
 
-        private void PerformAttack(AttackContext ctx)
+        private void HandleMovementOrAttack()
         {
-            Creature.Weapon.ContiniousAttack(ctx);
+            if (_moveCommandTarget.HasValue)
+            {
+                HandleMovementToTarget();
+                return;
+            }
+
+            if (_target == null)
+            {
+                _target = GetNewTarget();
+            }
+
+            if (_target != null)
+            {
+                HandleAttackOrMovementToTarget();
+                return;
+            }
+
+            Creature.SetMovement(Vector2.zero); // Stop moving if no target
+        }
+
+        private void HandleMovementToTarget()
+        {
+            if (Vector2.Distance(Creature.transform.position, _moveCommandTarget.Value) > 0.1f)
+            {
+                PerformMovementTowardsPosition(_moveCommandTarget.Value);
+            }
+            else
+            {
+                _moveCommandTarget = null; // Reached the destination
+            }
+        }
+
+        private void HandleAttackOrMovementToTarget()
+        {
+            var attackContext = CreateAttackContext();
+
+            if (Creature.Weapon.GetOnCooldown(attackContext) && !MoveOnAttackCooldown)
+            {
+                Creature.SetMovement(Vector2.zero); // Stay still during cooldown if configured
+                return;
+            }
+
+            if (Vector2.Distance(Creature.transform.position, _target.transform.position) < Creature.Weapon.Range)
+            {
+                PerformAttack(attackContext);
+            }
+            else
+            {
+                PerformMovementTowardsTarget(_target);
+            }
+        }
+
+        private AttackContext CreateAttackContext()
+        {
+            return new AttackContext
+            {
+                Direction = (_target.transform.position - Creature.transform.position).normalized,
+                Target = _target,
+                Attacker = Creature
+            };
+        }
+
+        private void PerformAttack(AttackContext context)
+        {
+            Creature.Weapon.ContiniousAttack(context);
         }
     }
 }
