@@ -50,6 +50,6 @@ MonoBehaviour:
   <BaseAttackSpeed>k__BackingField: 1
   <BaseDamage>k__BackingField: 1
   <PushFactor>k__BackingField: 50
-  <HitSound>k__BackingField: {fileID: 8300000, guid: 0adde7b342fa2b64da389424cac6a4fc, type: 3}
+  <AttackSound>k__BackingField: {fileID: 8300000, guid: 0adde7b342fa2b64da389424cac6a4fc, type: 3}
   projectilePrefab: {fileID: 547013878219590802, guid: 7c8c1b8711a36f4408ea8423bae7b269, type: 3}
   projectileSpeed: 50

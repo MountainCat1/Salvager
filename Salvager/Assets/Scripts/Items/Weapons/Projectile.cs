@@ -1,6 +1,8 @@
 ﻿using System;
+using Managers;
 using UnityEngine;
 using Utilities;
+using Zenject;
 
 namespace Items.Weapons
 {
@@ -8,27 +10,30 @@ namespace Items.Weapons
     {
         public event Action<Creature, AttackContext> Hit;
 
+        [Inject] private ISoundPlayer _soundPlayer;
+
         [SerializeField] private ColliderEventProducer colliderEventProducer;
-        
+        [SerializeField] private AudioClip hitSound;
+
         public float Speed { get; private set; }
         public float Damage { get; private set; }
-        
+
         private bool _isLaunched = false;
         private bool _initialized = false;
         private AttackContext _attackContext;
-        
+
         public void Initialize(float speed, float damage)
         {
             Speed = speed;
             Damage = damage;
-            
+
             _initialized = true;
         }
-        
+
 
         public void Launch(AttackContext ctx)
         {
-            if(!_initialized)
+            if (!_initialized)
                 throw new Exception("Projectile not initialized");
 
             _attackContext = ctx;
@@ -46,7 +51,7 @@ namespace Items.Weapons
                 Destroy(gameObject);
                 return;
             }
-            
+
             if (Creature.IsCreature(other.gameObject) == false)
                 return;
 
@@ -63,13 +68,16 @@ namespace Items.Weapons
 
             try
             {
+                if (hitSound)
+                    _soundPlayer.PlaySound(hitSound, transform.position, SoundType.Sfx);
+                
                 Hit?.Invoke(hitCreature, _attackContext);
             }
             catch (Exception e)
             {
                 Debug.LogError(e);
             }
-            
+
             Destroy(gameObject);
         }
 

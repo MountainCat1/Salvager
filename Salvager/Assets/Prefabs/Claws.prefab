@@ -50,4 +50,4 @@ MonoBehaviour:
   <BaseAttackSpeed>k__BackingField: 1
   <BaseDamage>k__BackingField: 1
   <PushFactor>k__BackingField: 120
-  <HitSound>k__BackingField: {fileID: 8300000, guid: 038a66a344c308446b06ec0324bc02d2, type: 3}
+  <AttackSound>k__BackingField: {fileID: 8300000, guid: 038a66a344c308446b06ec0324bc02d2, type: 3}

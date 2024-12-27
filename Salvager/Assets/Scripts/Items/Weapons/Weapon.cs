@@ -15,7 +15,7 @@ public abstract class Weapon : ItemBehaviour
 
     [field: SerializeField] public float BaseDamage { get; set; }
     [field: SerializeField] public float PushFactor { get; set; }
-    [field: SerializeField] public AudioClip HitSound { get; set; }
+    [field: SerializeField] public AudioClip AttackSound { get; set; }
 
     public virtual bool AllowToMoveOnCooldown => false;
     public virtual bool NeedsLineOfSight => false;
@@ -51,8 +51,8 @@ public abstract class Weapon : ItemBehaviour
             target.Damage(hitContext);
         }
 
-        if (HitSound != null)
-            _soundPlayer.PlaySound(HitSound, transform.position);
+        if (AttackSound != null)
+            _soundPlayer.PlaySound(AttackSound, transform.position);
     }
 
     protected Vector2 CalculatePushForce(Creature target)

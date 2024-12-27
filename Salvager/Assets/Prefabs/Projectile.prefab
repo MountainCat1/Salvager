@@ -215,6 +215,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   colliderEventProducer: {fileID: 8145664198407318657}
+  hitSound: {fileID: 8300000, guid: 038a66a344c308446b06ec0324bc02d2, type: 3}
 --- !u!58 &7286092426147599195
 CircleCollider2D:
   m_ObjectHideFlags: 0
