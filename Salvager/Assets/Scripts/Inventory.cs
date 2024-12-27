@@ -8,7 +8,6 @@ public class Inventory
 {
     public event Action OnChange;
     public event Action<ItemBehaviour> ItemUsed;
-    
 
     [Inject] private DiContainer _diContainer;
     
@@ -21,6 +20,16 @@ public class Inventory
     public Inventory(Transform rootTransform)
     {
         _transform = rootTransform;
+
+        foreach (Transform child in _transform)
+        {
+            var item = child.GetComponent<ItemBehaviour>();
+            if (item != null)
+            {
+                _items.Add(item);
+                RegisterItem(item);
+            }
+        }
     }    
     
     public void AddItem(ItemBehaviour itemPrefab)

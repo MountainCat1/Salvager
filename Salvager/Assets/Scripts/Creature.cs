@@ -30,9 +30,11 @@ public class Creature : MonoBehaviour
     [field: Header("Movement")]
     [field: SerializeField]
     public float Drag { get; private set; }
-
     [field: SerializeField] public float BaseSpeed { get; set; }
 
+    [field: Header("References")]
+    [field: SerializeField] private Transform inventoryRoot;
+    [field: SerializeField] private Weapon weapon;
     public Weapon Weapon
     {
         get => weapon;
@@ -42,13 +44,14 @@ public class Creature : MonoBehaviour
             WeaponChanged?.Invoke();
         }
     }
-    [field: SerializeField] private Weapon weapon;
 
     [field: Header("Stats")] [field: SerializeField]
     private RangedValue health;
 
     [field: SerializeField] public float SightRange { get; private set; } = 13f;
     [field: SerializeField] public int XpAmount { get; private set; }
+    
+    [field: Header("Other")]
     [field: SerializeField] public Teams Team { get; private set; }
     public float Speed => GetSpeed();
     public CreatureController Controller => GetComponent<CreatureController>(); // TODO: PERFORMANCE ISSUE
@@ -78,7 +81,15 @@ public class Creature : MonoBehaviour
         health.ValueChanged += OnHealthChanged;
         health.CurrentValue = health.MaxValue;
 
-        Inventory = new Inventory(_rootTransform);
+        if (inventoryRoot == null)
+        {
+            inventoryRoot = new GameObject("Inventory").transform;
+            inventoryRoot.SetParent(_rootTransform);
+            inventoryRoot.localPosition = Vector3.zero;
+            Debug.LogWarning("Inventory root is not set, creating a new one", this);
+        }
+        
+        Inventory = new Inventory(inventoryRoot);
         _diContainer.Inject(Inventory);
     }
 

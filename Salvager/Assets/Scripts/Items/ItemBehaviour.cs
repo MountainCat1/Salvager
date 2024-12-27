@@ -9,6 +9,7 @@ namespace Items
         
         [field: SerializeField] public Sprite Icon { get; set; }
         [field: SerializeField] public string Name { get; set; }
+        [field: SerializeField] public float Weight { get; set; } = 1f;
 
         public string GetIdentifier()
         {

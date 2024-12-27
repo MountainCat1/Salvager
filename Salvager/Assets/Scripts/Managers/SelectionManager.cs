@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using Zenject;
 
 namespace Managers
@@ -18,9 +19,9 @@ namespace Managers
     public class SelectionManager : MonoBehaviour, ISelectionManager
     {
         public event Action OnSelectionChanged;
-        
+
         [Inject] ITeamManager _teamManager;
-        
+
         public IEnumerable<Creature> SelectedCreatures => GetSelectedCreatures();
 
         [SerializeField] private List<Creature> _selectedCreatures = new();
@@ -48,6 +49,9 @@ namespace Managers
             // Start drag selection
             if (Input.GetMouseButtonDown(0))
             {
+                if (EventSystem.current.IsPointerOverGameObject())
+                    return;
+
                 _startMousePosition = Input.mousePosition;
                 if (selectionBox != null)
                 {
@@ -101,9 +105,9 @@ namespace Managers
         private void UpdateSelectionBox(Vector2 currentMousePosition)
         {
             var rect = canvas.GetComponent<RectTransform>().rect;
-            
+
             Vector2 boxStart = _startMousePosition - rect.size / 2;
-            Vector2 boxEnd = currentMousePosition  - rect.size / 2;
+            Vector2 boxEnd = currentMousePosition - rect.size / 2;
 
 
             Vector2 boxSize = boxEnd - boxStart;
@@ -187,22 +191,22 @@ namespace Managers
             }
 
             _selectedCreatures.Clear();
-            
+
             OnSelectionChanged?.Invoke();
         }
 
         public void AddToSelection(Creature creature)
         {
-            if(creature.Team != playerTeam)
+            if (creature.Team != playerTeam)
                 return;
-            
+
             if (!_selectedCreatures.Contains(creature))
             {
                 _selectedCreatures.Add(creature);
                 // Optional: Update creature's appearance to show selection
                 creature.GetComponentInChildren<Renderer>().material.color = Color.green;
             }
-            
+
             OnSelectionChanged?.Invoke();
         }
 
@@ -214,14 +218,14 @@ namespace Managers
                 // Optional: Update creature's appearance to show deselection
                 creature.GetComponentInChildren<Renderer>().material.color = Color.white;
             }
-            
+
             OnSelectionChanged?.Invoke();
         }
-        
+
         private IEnumerable<Creature> GetSelectedCreatures()
         {
             _selectedCreatures.RemoveAll(creature => creature == null);
-            
+
             return _selectedCreatures;
         }
     }
