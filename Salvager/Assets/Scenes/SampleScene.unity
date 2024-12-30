@@ -621,7 +621,7 @@ MonoBehaviour:
   <BaseAttackSpeed>k__BackingField: 1
   <BaseDamage>k__BackingField: 1
   <PushFactor>k__BackingField: 1
-  <AttackSound>k__BackingField: {fileID: 0}
+  <AttackSound>k__BackingField: {fileID: 8300000, guid: 8c96ac97b9e3c9a4ca94d1c7a7823530, type: 3}
 --- !u!1 &190873098
 GameObject:
   m_ObjectHideFlags: 0
@@ -694,7 +694,7 @@ MonoBehaviour:
   <BaseAttackSpeed>k__BackingField: 1
   <BaseDamage>k__BackingField: 1
   <PushFactor>k__BackingField: 1
-  <AttackSound>k__BackingField: {fileID: 0}
+  <AttackSound>k__BackingField: {fileID: 8300000, guid: 8c96ac97b9e3c9a4ca94d1c7a7823530, type: 3}
 --- !u!4 &207797310
 Transform:
   m_ObjectHideFlags: 0
@@ -3187,7 +3187,7 @@ MonoBehaviour:
   <BaseAttackSpeed>k__BackingField: 1
   <BaseDamage>k__BackingField: 1
   <PushFactor>k__BackingField: 1
-  <AttackSound>k__BackingField: {fileID: 0}
+  <AttackSound>k__BackingField: {fileID: 8300000, guid: 8c96ac97b9e3c9a4ca94d1c7a7823530, type: 3}
 --- !u!4 &1200888541
 Transform:
   m_ObjectHideFlags: 0
