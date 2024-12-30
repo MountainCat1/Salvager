@@ -21,7 +21,7 @@ namespace UI
 
         public InventoryUI ShowInventory(Creature creature)
         {
-            if (_instantiatedInventoryUI)
+            if (!_instantiatedInventoryUI)
                 _instantiatedInventoryUI = InstantiatePopup<InventoryUI>(inventoryUIPrefab);
 
             _instantiatedInventoryUI.SetCreature(creature);

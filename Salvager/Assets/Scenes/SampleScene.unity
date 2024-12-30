@@ -3362,6 +3362,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8402638437246704036, guid: cf47858963ef3c04eb95686c0b10702b, type: 3}
+      propertyPath: attack
+      value: 
+      objectReference: {fileID: -6864418598007316027, guid: d9dc2069fa52e194c8b709e470343df1, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -4851,7 +4855,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   soundtracks:
-  - {fileID: 8300000, guid: d8ceb628d332d7e488cf109525575b92, type: 3}
+  - {fileID: 8300000, guid: d61d51d5860253543871418dd9129c45, type: 3}
 --- !u!95 &1792608390
 Animator:
   serializedVersion: 5

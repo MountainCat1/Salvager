@@ -1,11 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using Items;
 using Managers;
 using UnityEngine;
-using UnityEngine.Serialization;
 using Zenject;
+
+public enum CreatureState
+{
+    Idle,
+    Moving,
+    Attacking,
+}
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class Creature : MonoBehaviour
@@ -14,6 +18,8 @@ public class Creature : MonoBehaviour
     public event Action<DeathContext> Death;
     public event Action<HitContext> Hit;
     public event Action WeaponChanged;
+    public event Action<Vector2> Moved;
+    public event Action<CreatureState> StateChanged;
 
     // Injected Dependencies (using Zenject)
     [Inject] private ITeamManager _teamManager;
@@ -26,15 +32,33 @@ public class Creature : MonoBehaviour
     public IReadonlyRangedValue Health => health;
     public ILevelSystem LevelSystem => _levelSystem;
 
+    public CreatureState State
+    {
+        get => _state;
+        private set
+        {
+            if (_state == value)
+                return;
+
+            _state = value;
+            StateChanged?.Invoke(_state);
+        }
+        
+    }
+    private CreatureState _state = CreatureState.Idle;
+
     // Serialized Private Variables
     [field: Header("Movement")]
     [field: SerializeField]
     public float Drag { get; private set; }
+
     [field: SerializeField] public float BaseSpeed { get; set; }
 
-    [field: Header("References")]
-    [field: SerializeField] private Transform inventoryRoot;
+    [field: Header("References")] [field: SerializeField]
+    private Transform inventoryRoot;
+
     [field: SerializeField] private Weapon weapon;
+
     public Weapon Weapon
     {
         get => weapon;
@@ -50,9 +74,11 @@ public class Creature : MonoBehaviour
 
     [field: SerializeField] public float SightRange { get; private set; } = 13f;
     [field: SerializeField] public int XpAmount { get; private set; }
-    
+
     [field: Header("Other")]
-    [field: SerializeField] public Teams Team { get; private set; }
+    [field: SerializeField]
+    public Teams Team { get; private set; }
+
     public float Speed => GetSpeed();
     public CreatureController Controller => GetComponent<CreatureController>(); // TODO: PERFORMANCE ISSUE
     public Collider2D Collider => _collider;
@@ -88,7 +114,7 @@ public class Creature : MonoBehaviour
             inventoryRoot.localPosition = Vector3.zero;
             Debug.LogWarning("Inventory root is not set, creating a new one", this);
         }
-        
+
         Inventory = new Inventory(inventoryRoot);
         _diContainer.Inject(Inventory);
     }
@@ -96,6 +122,13 @@ public class Creature : MonoBehaviour
     private void Update()
     {
         UpdateVelocity();
+
+        if (weapon.IsOnCooldown)
+            State = CreatureState.Attacking;
+        else if (_moveDirection.magnitude > 0)
+            State = CreatureState.Moving;
+        else
+            State = CreatureState.Idle;
     }
 
     // Public Methods
@@ -177,6 +210,8 @@ public class Creature : MonoBehaviour
         var change = Vector2.MoveTowards(_rigidbody2D.velocity, _moveDirection * Speed + _momentum,
             Drag * Time.fixedDeltaTime);
         _rigidbody2D.velocity = change;
+
+        Moved?.Invoke(change);
     }
 
     public void Push(Vector2 push)

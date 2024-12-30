@@ -19,6 +19,7 @@ public abstract class Weapon : ItemBehaviour
 
     public virtual bool AllowToMoveOnCooldown => false;
     public virtual bool NeedsLineOfSight => false;
+    public bool IsOnCooldown => GetOnCooldown(new AttackContext());
 
     private DateTime _lastAttackTime;
 
@@ -73,12 +74,20 @@ public abstract class Weapon : ItemBehaviour
 
     private float CalculateAttackSpeed(AttackContext ctx)
     {
-        return BaseAttackSpeed * (1 + ctx.Attacker.LevelSystem.CharacteristicsLevels[Characteristics.Dexterity] * CharacteristicsConsts.AttackSpeedAdditiveMultiplierPerDexterity);
+        if (ctx.Attacker == null)
+            return BaseAttackSpeed;
+
+
+        var dexterityModifier = ctx.Attacker.LevelSystem.CharacteristicsLevels[Characteristics.Dexterity] *
+                                CharacteristicsConsts.AttackSpeedAdditiveMultiplierPerDexterity;
+
+        return BaseAttackSpeed * (1 + dexterityModifier);
     }
-    
+
     public float CalculateDamage(AttackContext ctx)
     {
-        return BaseDamage + ctx.Attacker.LevelSystem.CharacteristicsLevels[Characteristics.Strength] * CharacteristicsConsts.DamageAdditiveMultiplierPerStrength;
+        return BaseDamage + ctx.Attacker.LevelSystem.CharacteristicsLevels[Characteristics.Strength] *
+            CharacteristicsConsts.DamageAdditiveMultiplierPerStrength;
     }
 }
 
@@ -99,7 +108,7 @@ public struct HitContext
         Damage = damage;
         PushFactor = pushFactor;
     }
-    
+
     public Creature Attacker { get; set; }
     public Creature Target { get; set; }
     public float Damage { get; set; }
