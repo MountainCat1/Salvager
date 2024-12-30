@@ -9,10 +9,11 @@ public enum CreatureState
     Idle,
     Moving,
     Attacking,
+    Utility
 }
 
 [RequireComponent(typeof(Rigidbody2D))]
-public class Creature : MonoBehaviour
+public class Creature : Entity
 {
     // Events
     public event Action<DeathContext> Death;
@@ -78,6 +79,8 @@ public class Creature : MonoBehaviour
     [field: Header("Other")]
     [field: SerializeField]
     public Teams Team { get; private set; }
+
+    [field: SerializeField] public float InteractionRange { get; private set; } = 1.5f;
 
     public float Speed => GetSpeed();
     public CreatureController Controller => GetComponent<CreatureController>(); // TODO: PERFORMANCE ISSUE
@@ -188,7 +191,11 @@ public class Creature : MonoBehaviour
     {
         _levelSystem.AddXp(amount);
     }
-
+    
+    public Interaction Interact(IInteractable interactionTarget)
+    {
+        return interactionTarget.Interact(this, Time.deltaTime);
+    }
 
     // Virtual Methods
 

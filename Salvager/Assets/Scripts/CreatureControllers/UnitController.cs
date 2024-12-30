@@ -7,6 +7,8 @@ namespace CreatureControllers
     {
         private Vector2? _moveCommandTarget;
         private Creature _target;
+        private IInteractable _interactionTarget;
+
         private const bool MoveOnAttackCooldown = false; // TODO: This should be a configurable property of the weapon
 
         public void SetMoveTarget(Vector2 target)
@@ -15,25 +17,82 @@ namespace CreatureControllers
             _target = null;
         }
 
-        public void SetAttackTarget(Creature target)
+        public void SetTarget(Entity target)
         {
-            _target = target;
-            _moveCommandTarget = null;
+            switch (target)
+            {
+                case Creature creature:
+                    _target = creature;
+                    break;
+                case IInteractable interactable:
+                    _interactionTarget = interactable;
+                    break;
+            }
         }
+        
 
         private void Update()
         {
-            HandleMovementOrAttack();
-        }
-
-        private void HandleMovementOrAttack()
-        {
+            Creature.SetMovement(Vector2.zero);
+            
+            if(_interactionTarget != null)
+            {
+                HandleInteraction();
+                return;
+            }
+            
             if (_moveCommandTarget.HasValue)
             {
                 HandleMovementToTarget();
                 return;
             }
 
+            if (_target == null)
+            {
+                _target = GetNewTarget();
+            }
+
+            if (_target != null)
+            {
+                HandleAttack();
+            }
+        }
+
+        private void HandleInteraction()
+        {
+            if (!_interactionTarget.CanInteract(Creature))
+            {
+                _interactionTarget = null;
+                return;
+            }
+
+            if(Vector2.Distance(Creature.transform.position, _interactionTarget.Position) < Creature.InteractionRange)
+            {
+                var interaction = Creature.Interact(_interactionTarget);
+                
+                if(interaction.Status == InteractionStatus.Created)
+                {
+                    interaction.Completed += () =>
+                    {
+                        _interactionTarget = null;
+                    };
+                    
+                    interaction.Canceled += () =>
+                    {
+                        _interactionTarget = null;
+                    };
+                }
+                
+                return;
+            }
+            else
+            {
+                PerformMovementTowardsPosition(_interactionTarget.Position);
+            }
+        }
+
+        private void HandleAttack()
+        {
             if (_target == null)
             {
                 _target = GetNewTarget();

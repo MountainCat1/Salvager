@@ -22,6 +22,25 @@ public class PlayerController : MonoBehaviour
 
     private void OnMoveCommand(Vector2 position)
     {
+        var entityUnderMouse = _inputMapper.GetEntityUnderMouse();
+        if (entityUnderMouse == null)
+        {
+            MoveCommand(position);
+        }
+
+        var creature = GetSelectedCreatures().FirstOrDefault();
+        if (creature == null)
+            return;
+        
+        var unitController = creature.Controller as UnitController;
+        if (unitController == null)
+            return;
+        
+        unitController.SetTarget(entityUnderMouse);
+    }
+
+    private void MoveCommand(Vector2 position)
+    {
         var selectedCreatures = GetSelectedCreatures().ToList();
         if (!selectedCreatures.Any())
             return;
@@ -47,7 +66,7 @@ public class PlayerController : MonoBehaviour
                 controller.SetMoveTarget(targetPosition);
             }
         }
-        
+
         // Disable collision detection for between selected creatures
         foreach (var creature in selectedCreatures)
         {
@@ -56,7 +75,6 @@ public class PlayerController : MonoBehaviour
                 Physics2D.IgnoreCollision(creature.Collider, otherCreature.Collider, true);
             }
         }
-        
     }
 
     /// <summary>
@@ -88,7 +106,6 @@ public class PlayerController : MonoBehaviour
 
         return assignments;
     }
-
 
 
     private IEnumerable<Creature> GetSelectedCreatures()
