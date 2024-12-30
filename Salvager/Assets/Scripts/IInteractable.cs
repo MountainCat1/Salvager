@@ -28,10 +28,12 @@ public class Interaction
 
     public decimal CurrentProgress { get; private set; }
     public Creature Creature { get; }
+    public decimal InteractionTime { get; }
 
     public Interaction(Creature creature, float interactionTime)
     {
         Creature = creature;
+        InteractionTime = (decimal)interactionTime;
     }
     
     public void Progress(decimal delta)
@@ -46,13 +48,10 @@ public class Interaction
         
         CurrentProgress += delta;
         
-        if (CurrentProgress >= 1)
+        if (CurrentProgress >= InteractionTime)
         {
             OnComplete();
         }
-        
-        // Clamp to 0-1
-        CurrentProgress = Math.Min(1, Math.Max(0, CurrentProgress));
     }
     
     public void Cancel()

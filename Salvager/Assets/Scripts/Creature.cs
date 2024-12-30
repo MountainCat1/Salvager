@@ -21,6 +21,7 @@ public class Creature : Entity
     public event Action WeaponChanged;
     public event Action<Vector2> Moved;
     public event Action<CreatureState> StateChanged;
+    public event Action<Interaction> Interacted;
 
     // Injected Dependencies (using Zenject)
     [Inject] private ITeamManager _teamManager;
@@ -85,6 +86,7 @@ public class Creature : Entity
     public float Speed => GetSpeed();
     public CreatureController Controller => GetComponent<CreatureController>(); // TODO: PERFORMANCE ISSUE
     public Collider2D Collider => _collider;
+    
 
     // Private Variables
     private readonly LevelSystem _levelSystem = new();
@@ -194,7 +196,9 @@ public class Creature : Entity
     
     public Interaction Interact(IInteractable interactionTarget)
     {
-        return interactionTarget.Interact(this, Time.deltaTime);
+        var interaction = interactionTarget.Interact(this, Time.deltaTime);
+        Interacted?.Invoke(interaction);
+        return interaction;
     }
 
     // Virtual Methods
