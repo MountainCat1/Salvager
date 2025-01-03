@@ -1,0 +1,34 @@
+[gd_scene load_steps=6 format=4 uid="uid://1lirgwl83usm"]
+
+[ext_resource type="PackedScene" uid="uid://drg401nrueeyc" path="res://GameSceneContext.tscn" id="1_phhnf"]
+[ext_resource type="Script" path="res://Scripts/Services/PathfindingManager.cs" id="2_5nauo"]
+[ext_resource type="Script" path="res://Scripts/DungeonGenerator.cs" id="3_56238"]
+[ext_resource type="TileSet" uid="uid://3uyfj2xai522" path="res://Tiles/new_tile_set.tres" id="4_71rxc"]
+[ext_resource type="Script" path="res://Scripts/CameraController.cs" id="5_bxhnm"]
+
+[node name="GameScene" type="Node2D"]
+
+[node name="GameSceneContext" parent="." instance=ExtResource("1_phhnf")]
+
+[node name="Node2D" type="Node2D" parent="GameSceneContext"]
+script = ExtResource("2_5nauo")
+
+[node name="NavigationRegion2D" type="NavigationRegion2D" parent="GameSceneContext/Node2D"]
+
+[node name="Node2D" type="Node2D" parent="." node_paths=PackedStringArray("_wallTileMap", "_floorTileMap")]
+script = ExtResource("3_56238")
+_wallTileMap = NodePath("Wall Tile Map Layer")
+_floorTileMap = NodePath("Floor Tile Map Layer")
+_run = true
+
+[node name="Wall Tile Map Layer" type="TileMapLayer" parent="Node2D"]
+tile_map_data = PackedByteArray("AAAAAAEAAAAAAAAAAAABAAEAAAAAAAAAAAACAAEAAAAAAAAAAAADAAEAAAAAAAAAAAADAAIAAAAAAAAAAAACAAIAAAAAAAAAAAABAAIAAAAAAAAAAAAAAAIAAAAAAAAAAAD8/wIAAAAAAAAAAAD8/wMAAAAAAAAAAAABAP7/AAAAAAEAAAACAP7/AAAAAAEAAAADAP7/AAAAAAEAAAAEAP7/AAAAAAEAAAAFAP7/AAAAAAEAAAAGAP7/AAAAAAEAAAD9//7/AAAAAAEAAAD8//7/AAAAAAEAAAD8//3/AAAAAAEAAAD8//z/AAAAAAEAAAA=")
+tile_set = ExtResource("4_71rxc")
+
+[node name="Floor Tile Map Layer" type="TileMapLayer" parent="Node2D"]
+tile_map_data = PackedByteArray("AAAAAAEAAAAAAAAAAAABAAEAAAAAAAAAAAACAAEAAAAAAAAAAAADAAEAAAAAAAAAAAADAAIAAAAAAAAAAAACAAIAAAAAAAAAAAABAAIAAAAAAAAAAAAAAAIAAAAAAAAAAAD8/wIAAAAAAAAAAAD8/wMAAAAAAAAAAAABAP7/AAAAAAEAAAACAP7/AAAAAAEAAAADAP7/AAAAAAEAAAAEAP7/AAAAAAEAAAAFAP7/AAAAAAEAAAAGAP7/AAAAAAEAAAD9//7/AAAAAAEAAAD8//7/AAAAAAEAAAD8//3/AAAAAAEAAAD8//z/AAAAAAEAAAA=")
+tile_set = ExtResource("4_71rxc")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+script = ExtResource("5_bxhnm")
+_moveSpeed = 1000.0
