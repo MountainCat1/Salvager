@@ -1,0 +1,25 @@
+[remap]
+
+importer="Aseprite AnimatedSprite2D Import"
+type="PackedScene"
+uid="uid://ba44gwov8c5fj"
+path="res://.godot/imported/Engineer_Walk.aseprite-90b907fe0ebed17aada24d1576aba347.scn"
+
+[deps]
+
+source_file="res://Aseprite/Props/Engineer_Walk.aseprite"
+dest_files=["res://.godot/imported/Engineer_Walk.aseprite-90b907fe0ebed17aada24d1576aba347.scn"]
+
+[params]
+
+spritesheet/layout=0
+spritesheet/fixed_rows_count=1
+spritesheet/fixed_columns_count=1
+spritesheet/border_type=0
+spritesheet/trim=false
+spritesheet/ignore_empty=false
+spritesheet/merge_duplicates=false
+animation/default/name="default"
+animation/default/direction=0
+animation/default/repeat_count=0
+animation/autoplay=""

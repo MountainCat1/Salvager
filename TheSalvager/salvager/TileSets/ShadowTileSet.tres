@@ -1,0 +1,14 @@
+[gd_resource type="TileSet" load_steps=3 format=3 uid="uid://6v5rhdtxlb0v"]
+
+[ext_resource type="Texture2D" uid="uid://b721jxumvog83" path="res://Sprites/Tiles/ShadowTileSet.png" id="1_tw1df"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_gcece"]
+texture = ExtResource("1_tw1df")
+margins = Vector2i(4, 4)
+texture_region_size = Vector2i(32, 32)
+use_texture_padding = false
+0:0/0 = 0
+
+[resource]
+tile_size = Vector2i(32, 32)
+sources/0 = SubResource("TileSetAtlasSource_gcece")

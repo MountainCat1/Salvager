@@ -8,3 +8,10 @@ res://SpaceStationTileSety.tres
 res://SpaceStation_TileSet.tres
 res://Template_Sides_TileSet.tres
 res://Template_Sides_TileSet s.tres
+res://Scripts/DungeonGenerator.cs
+res://Scripts/GameSceneContext.cs
+res://Scripts/Creature.cs
+res://Scripts/CameraController.cs
+res://Scripts/Services/PathfindingManager.cs
+res://TileSets/SpaceStationSides.tres
+res://TileSets/ShadowTileSet.tres

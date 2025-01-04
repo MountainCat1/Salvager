@@ -1,10 +1,13 @@
+NavigationRegion2D
+NavigationAgent2D
+AnimatedSprite2D
+CharacterBody2D
 CanvasModulate
 PointLight2D
 LightOccluder2D
 DirectionalLight2D
 DirectionalLight3D
 Camera2D
-NavigationRegion2D
 Node2D
 TileMapLayer
 TileMap
