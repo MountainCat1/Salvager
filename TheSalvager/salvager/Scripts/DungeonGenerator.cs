@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using Godot.Collections;
 
 public partial class DungeonGenerator : Node2D
 {
@@ -29,7 +30,7 @@ public partial class DungeonGenerator : Node2D
 
         if (_run)
             GenerateDungeon();
-        
+
         var tileSet2 = _floorTileMap.TileSet;
         var tileCount2 = tileSet2.GetSource(0).GetTilesCount();
         for (int i = 0; i < tileCount2; i++)
@@ -43,7 +44,6 @@ public partial class DungeonGenerator : Node2D
         var grid = new int[_gridSize.X, _gridSize.Y];
 
 
-        
         // Create rooms
         for (int i = 0; i < _roomCount; i++)
         {
@@ -129,6 +129,8 @@ public partial class DungeonGenerator : Node2D
     {
         // _tileMap.Clear();
 
+        var wallTiles = new Array<Vector2I>();
+
         for (int x = 0; x < _gridSize.X; x++)
         {
             for (int y = 0; y < _gridSize.Y; y++)
@@ -138,21 +140,27 @@ public partial class DungeonGenerator : Node2D
                 {
                     SetFloor(x, y);
                 }
-                else if(tileId == _wallTileId)
+                else if (tileId == _wallTileId)
                 {
-                    SetWall(x, y);
+                    // SetWall(x, y);
+                    wallTiles.Add(new Vector2I(x, y));
                 }
             }
         }
-        
+
+        _wallTileMap.SetCellsTerrainConnect(wallTiles, 0, 0);
+
         GD.Print("Dungeon drawn on TileMap");
     }
-    
+
     private void SetWall(int x, int y)
     {
-        _wallTileMap.SetCell(new Vector2I(x, y), 0, new Vector2I(0, 0));
+        _wallTileMap.SetCellsTerrainConnect(new Array<Vector2I>()
+        {
+            new Vector2I(x, y)
+        }, 0, 0);
     }
-    
+
     private void SetFloor(int x, int y)
     {
         _floorTileMap.SetCell(new Vector2I(x, y), 0, new Vector2I(0, 1));
