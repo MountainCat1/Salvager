@@ -1,3 +1,5 @@
+using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
 using Godot;
@@ -6,31 +8,37 @@ using Utilities;
 
 namespace Services;
 
+[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field, AllowMultiple = false)]
+public class InjectAttribute : Attribute
+{
+}
+
 public partial class DIContext : Node
 {
     // This DI Container is specific to THIS scene.
     public ServiceProvider? Container { get; private set; }
-    
-    protected virtual void  InstallBindings(ServiceCollection services)
+
+    protected virtual void InstallBindings(ServiceCollection services)
     {
     }
-    
+
     public override void _Ready()
     {
         var services = new ServiceCollection();
-		
+
         InstallBindings(services);
-        
+
         Container = services.BuildServiceProvider();
         GD.Print("SceneContext DI container is initialized!");
-		
+
         InstanceMethod();
     }
-    
-    
-    protected IServiceCollection AddSingletonFromTree<TInterface, TImplementation>(IServiceCollection services) 
-        where TImplementation : class, 
-        TInterface where TInterface : class
+
+
+    protected IServiceCollection AddSingletonFromTree<TInterface, TImplementation>(IServiceCollection services)
+        where TImplementation : class,
+        TInterface
+        where TInterface : class
     {
         var nodes = this.GetAllChildren();
 
@@ -44,7 +52,7 @@ public partial class DIContext : Node
 
         return services;
     }
-    
+
     private void InstanceMethod()
     {
         // Get ALL nodes in the scene
@@ -68,7 +76,8 @@ public partial class DIContext : Node
             }
 
             // Invoke the "Start" method if it exists
-            var startMethod = node.GetType().GetMethod("Start", BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance);
+            var startMethod = node.GetType().GetMethod("Start",
+                BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance);
             startMethod?.Invoke(node, null);
         }
     }

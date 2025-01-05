@@ -15,7 +15,7 @@ namespace Services
     {
         public event Action OnSelectionChanged;
         
-        [Inject] private ICreatureManager _creatureManager = null!;
+        [Inject] private readonly ICreatureManager _creatureManager = null!;
         
         public List<Creature> SelectedCreatures { get; private set; } = new List<Creature>();
 
