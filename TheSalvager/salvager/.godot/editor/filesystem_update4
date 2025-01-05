@@ -1,17 +1,9 @@
 res://GameScene.tscn
-res://new_tile_set.tres
-res://templateTileSet.tres
-res://spacestation.tres
+res://TileSets/FloorTileSet.tres
+res://TileSets/SpaceStationSides.tres
+res://TileSets/ShadowTileSet.tres
 res://GameSceneContext.tscn
-res://SpaceStationTiles.tres
-res://SpaceStationTileSety.tres
-res://SpaceStation_TileSet.tres
-res://Template_Sides_TileSet.tres
-res://Template_Sides_TileSet s.tres
 res://Scripts/DungeonGenerator.cs
 res://Scripts/GameSceneContext.cs
 res://Scripts/Creature.cs
 res://Scripts/CameraController.cs
-res://Scripts/Services/PathfindingManager.cs
-res://TileSets/SpaceStationSides.tres
-res://TileSets/ShadowTileSet.tres

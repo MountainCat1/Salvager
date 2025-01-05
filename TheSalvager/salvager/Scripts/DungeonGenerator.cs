@@ -1,6 +1,8 @@
 using Godot;
 using System;
 using Godot.Collections;
+using Salvager.Scripts;
+using Salvager.Scripts.Services;
 
 public partial class DungeonGenerator : Node2D
 {
@@ -19,6 +21,13 @@ public partial class DungeonGenerator : Node2D
 
     [Export] private bool _run = false;
 
+    [Inject] private HelloWorldService HelloWorldService = null!; 
+    
+    public void Start()
+    {
+        HelloWorldService.HelloWorld();
+    }
+    
     public override void _Ready()
     {
         // log tileset
@@ -150,23 +159,20 @@ public partial class DungeonGenerator : Node2D
                 var tileId = grid[x, y] == 1 ? _floorTileId : _wallTileId;
                 if (tileId == _floorTileId)
                 {
-                    SetFloor(x, y);
+                    _floorTileMap.SetCell(new Vector2I(x, y), 0, new Vector2I(Random.Shared.Next(0, 4), Random.Shared.Next(0, 4)));
                 }
                 else if (tileId == _wallTileId)
                 {
                     wallTiles.Add(new Vector2I(x, y));
                     _shadowTileMap.SetCell(new Vector2I(x, y + 1), 0, new Vector2I(0, 0));
+                    _shadowTileMap.SetCell(new Vector2I(x, y), 0, new Vector2I(1, 0));
                 }
             }
         }
 
+        
         _wallTileMap.SetCellsTerrainConnect(wallTiles, 0, 0);
 
         GD.Print("Dungeon drawn on TileMap");
-    }
-
-    private void SetFloor(int x, int y)
-    {
-        _floorTileMap.SetCell(new Vector2I(x, y), 0, new Vector2I(0, 1));
     }
 }

@@ -18,6 +18,10 @@ public partial class Creature : CharacterBody2D
         // Set the target position to the current mouse position
         _nav.TargetPosition = GetGlobalMousePosition();
 
+        // If the character is close to the target position, don't move
+        if(Position.DistanceTo(_nav.TargetPosition) < 10)
+            return;
+
         // Calculate the next direction based on the NavigationAgent2D's pathfinding
         Vector2 direction = (_nav.GetNextPathPosition() - GlobalPosition).Normalized();
 
