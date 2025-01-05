@@ -1,8 +1,7 @@
 using Godot;
 using System;
 using Godot.Collections;
-using Salvager.Scripts;
-using Salvager.Scripts.Services;
+using Services;
 
 public partial class DungeonGenerator : Node2D
 {
@@ -21,11 +20,11 @@ public partial class DungeonGenerator : Node2D
 
     [Export] private bool _run = false;
 
-    [Inject] private HelloWorldService HelloWorldService = null!; 
+    [Inject] private IHelloWorldService _helloWorldService = null!; 
     
     public void Start()
     {
-        HelloWorldService.HelloWorld();
+        _helloWorldService.HelloWorld();
     }
     
     public override void _Ready()

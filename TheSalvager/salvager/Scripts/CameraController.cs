@@ -1,5 +1,3 @@
-namespace Salvager.Scripts;
-
 using Godot;
 
 public partial class CameraController : Camera2D

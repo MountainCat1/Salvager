@@ -1,8 +1,13 @@
 using Godot;
 
-namespace Salvager.Scripts.Services;
+namespace Services;
 
-public class HelloWorldService
+public interface IHelloWorldService
+{
+    void HelloWorld();
+}
+
+public class HelloWorldService : IHelloWorldService
 {
     public void HelloWorld()
     {

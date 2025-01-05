@@ -1,6 +1,8 @@
-[gd_scene load_steps=11 format=4 uid="uid://1lirgwl83usm"]
+[gd_scene load_steps=14 format=4 uid="uid://1lirgwl83usm"]
 
 [ext_resource type="PackedScene" uid="uid://drg401nrueeyc" path="res://GameSceneContext.tscn" id="1_phhnf"]
+[ext_resource type="Script" path="res://Scripts/Services/SelectionManager.cs" id="2_g7pp1"]
+[ext_resource type="Script" path="res://Scripts/Services/CreatureManager.cs" id="3_5r40d"]
 [ext_resource type="Script" path="res://Scripts/DungeonGenerator.cs" id="3_56238"]
 [ext_resource type="TileSet" uid="uid://ui7cvii4tb1" path="res://TileSets/FloorTileSet.tres" id="4_ucqn7"]
 [ext_resource type="TileSet" uid="uid://cktw1glu5e4pq" path="res://TileSets/SpaceStationSides.tres" id="5_4h2r8"]
@@ -11,9 +13,19 @@
 [ext_resource type="PackedScene" uid="uid://ba44gwov8c5fj" path="res://Aseprite/Props/Engineer_Walk.aseprite" id="9_jq0ws"]
 [ext_resource type="Texture2D" uid="uid://xu71l0wi0jvv" path="res://Aseprite/Props/CreatureShadow.png" id="11_n36fv"]
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_12uqa"]
+radius = 7.07107
+
 [node name="GameScene" type="Node2D"]
 
 [node name="GameSceneContext" parent="." instance=ExtResource("1_phhnf")]
+
+[node name="SelectionManager" type="Node2D" parent="GameSceneContext"]
+z_index = 10
+script = ExtResource("2_g7pp1")
+
+[node name="Node2D" type="Node2D" parent="GameSceneContext"]
+script = ExtResource("3_5r40d")
 
 [node name="Node2D" type="Node2D" parent="." node_paths=PackedStringArray("_wallTileMap", "_floorTileMap", "_shadowTileMap")]
 script = ExtResource("3_56238")
@@ -90,3 +102,7 @@ texture = ExtResource("11_n36fv")
 debug_enabled = true
 debug_use_custom = true
 debug_path_custom_color = Color(1, 1, 1, 0.113725)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterBody2D"]
+position = Vector2(0, -4)
+shape = SubResource("CircleShape2D_12uqa")
