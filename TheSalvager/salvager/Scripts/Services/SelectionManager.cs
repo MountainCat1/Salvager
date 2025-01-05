@@ -75,7 +75,11 @@ namespace Services
 
         private void UpdateSelection()
         {
-            var selectionBox = CreateRect(_selectionStart, _selectionEnd);
+            // Normalize the selection box to work in all directions
+            var selectionBox = CreateRect(
+                new Vector2(Mathf.Min(_selectionStart.X, _selectionEnd.X), Mathf.Min(_selectionStart.Y, _selectionEnd.Y)),
+                new Vector2(Mathf.Max(_selectionStart.X, _selectionEnd.X), Mathf.Max(_selectionStart.Y, _selectionEnd.Y))
+            );
 
             // Clear previous selection
             SelectedCreatures.Clear();
@@ -93,7 +97,7 @@ namespace Services
             OnSelectionChanged?.Invoke();
             
             GD.Print("Selected creatures: " + SelectedCreatures.Count);
-            GD.Print($"Selected creatures: {string.Join(", ", SelectedCreatures.Select(x => x.Name))}");
+            GD.Print($"Selected creatures: {string.Join(", ", SelectedCreatures.Select(X => X.Name))}");
         }
     }
 }
