@@ -20,13 +20,6 @@ public partial class DungeonGenerator : Node2D
 
     [Export] private bool _run = false;
 
-    [Inject] private IHelloWorldService _helloWorldService = null!; 
-    
-    public void Start()
-    {
-        _helloWorldService.HelloWorld();
-    }
-    
     public override void _Ready()
     {
         // log tileset

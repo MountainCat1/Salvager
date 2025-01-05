@@ -18,8 +18,6 @@ public partial class GameSceneContext : DIContext
     protected override void InstallBindings(ServiceCollection services)
     {
         // Some di registrations
-        services.AddSingleton<IHelloWorldService, HelloWorldService>();
-
         AddSingletonFromTree<ICreatureManager, CreatureManager>(services);
         AddSingletonFromTree<ISelectionManager, SelectionManager>(services);
     }
