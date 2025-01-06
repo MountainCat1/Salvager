@@ -1,9 +1,17 @@
+using System;
 using Godot;
 
-public partial class Creature : CharacterBody2D
+public partial class Creature : Entity
 {
+    public event Action<HitContext> Hit;
+    
+    
     [Export] private float Speed = 300f;
     [Export] private float Accel = 7f;
+    
+    public float SightRange { get; set; }
+    public NavigationAgent2D NavigationAgent => _nav;
+
 
     private NavigationAgent2D _nav;
     private Vector2 _velocity = Vector2.Zero;

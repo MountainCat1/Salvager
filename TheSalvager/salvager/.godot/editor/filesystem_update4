@@ -2,11 +2,12 @@ res://GameScene.tscn
 res://TileSets/FloorTileSet.tres
 res://TileSets/SpaceStationSides.tres
 res://TileSets/ShadowTileSet.tres
-res://Scripts/DungeonGenerator.cs
-res://Scripts/GameSceneContext.cs
-res://Scripts/Creature.cs
-res://Scripts/CameraController.cs
 res://GameSceneContext.tscn
-res://Scripts/Services/SelectionManager.cs
 res://Scripts/Services/CreatureManager.cs
 res://Scripts/Services/DIContext.cs
+res://Scripts/DungeonGenerator.cs
+res://Scripts/Creature.cs
+res://Scripts/GameSceneContext.cs
+res://Scripts/CameraController.cs
+res://Scripts/CreatureController.cs
+res://Scripts/Services/SelectionManager.cs
