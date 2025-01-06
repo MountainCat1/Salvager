@@ -11,3 +11,9 @@ res://Scripts/GameSceneContext.cs
 res://Scripts/CameraController.cs
 res://Scripts/CreatureController.cs
 res://Scripts/Services/SelectionManager.cs
+res://Scripts/Entity.cs
+res://Scripts/Abstractions/AiController.cs
+res://Scripts/Abstractions/CreatureController.cs
+res://Scripts/Services/PlayerUnitController.cs
+res://Scripts/UnitController.cs
+res://Scripts/Services/GameSceneContext.cs

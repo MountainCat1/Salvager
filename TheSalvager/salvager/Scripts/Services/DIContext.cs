@@ -56,7 +56,7 @@ public partial class DIContext : Node
     private void InstanceMethod()
     {
         // Get ALL nodes in the scene
-        var nodes = this.GetAllChildren();
+        var nodes = this.GetTree().Root.GetAllChildren();
 
         foreach (Node node in nodes)
         {

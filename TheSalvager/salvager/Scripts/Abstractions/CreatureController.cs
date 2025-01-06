@@ -2,7 +2,14 @@ using Godot;
 
 public partial class CreatureController : Node2D
 {
-    [Export] public Creature Creature { get; private set; }
+    [Export] public Creature Creature { get; private set; } = null!;
+
+    public override void _Ready()
+    {
+        base._Ready();
+        
+        Creature.Controller = this;
+    }
 
     protected bool CanSee(Creature target)
     {

@@ -11,6 +11,7 @@ public partial class Creature : Entity
     
     public float SightRange { get; set; }
     public NavigationAgent2D NavigationAgent => _nav;
+    public CreatureController Controller { get; set; }
 
 
     private NavigationAgent2D _nav;
@@ -23,9 +24,6 @@ public partial class Creature : Entity
 
     public override void _PhysicsProcess(double delta)
     {
-        // Set the target position to the current mouse position
-        _nav.TargetPosition = GetGlobalMousePosition();
-
         // If the character is close to the target position, don't move
         if(Position.DistanceTo(_nav.TargetPosition) < 10)
             return;

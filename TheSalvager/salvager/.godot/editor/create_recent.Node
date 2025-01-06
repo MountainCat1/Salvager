@@ -1,4 +1,5 @@
 Node2D
+Node
 CollisionShape2D
 Sprite2D
 NavigationRegion2D
@@ -11,4 +12,3 @@ LightOccluder2D
 DirectionalLight2D
 DirectionalLight3D
 Camera2D
-TileMapLayer

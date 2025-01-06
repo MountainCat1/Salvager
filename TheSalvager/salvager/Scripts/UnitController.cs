@@ -30,7 +30,7 @@ public partial class UnitController : AiController
     }
 
 
-    private void Update()
+    public override void _Process(double delta)
     {
         Creature.NavigationAgent.SetTargetPosition(Position);
         

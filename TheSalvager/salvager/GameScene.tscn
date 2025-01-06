@@ -1,9 +1,11 @@
-[gd_scene load_steps=14 format=4 uid="uid://1lirgwl83usm"]
+[gd_scene load_steps=17 format=4 uid="uid://1lirgwl83usm"]
 
 [ext_resource type="PackedScene" uid="uid://drg401nrueeyc" path="res://GameSceneContext.tscn" id="1_phhnf"]
+[ext_resource type="Script" path="res://Scripts/Services/GameSceneContext.cs" id="2_0ms5f"]
 [ext_resource type="Script" path="res://Scripts/Services/SelectionManager.cs" id="2_g7pp1"]
 [ext_resource type="Script" path="res://Scripts/Services/CreatureManager.cs" id="3_5r40d"]
 [ext_resource type="Script" path="res://Scripts/DungeonGenerator.cs" id="3_56238"]
+[ext_resource type="Script" path="res://Scripts/Services/PlayerUnitController.cs" id="4_1v6dv"]
 [ext_resource type="TileSet" uid="uid://ui7cvii4tb1" path="res://TileSets/FloorTileSet.tres" id="4_ucqn7"]
 [ext_resource type="TileSet" uid="uid://cktw1glu5e4pq" path="res://TileSets/SpaceStationSides.tres" id="5_4h2r8"]
 [ext_resource type="Script" path="res://Scripts/CameraController.cs" id="5_bxhnm"]
@@ -12,6 +14,7 @@
 [ext_resource type="Script" path="res://Scripts/Creature.cs" id="8_ym3f1"]
 [ext_resource type="PackedScene" uid="uid://ba44gwov8c5fj" path="res://Aseprite/Props/Engineer_Walk.aseprite" id="9_jq0ws"]
 [ext_resource type="Texture2D" uid="uid://xu71l0wi0jvv" path="res://Aseprite/Props/CreatureShadow.png" id="11_n36fv"]
+[ext_resource type="Script" path="res://Scripts/UnitController.cs" id="14_47772"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_12uqa"]
 radius = 7.07107
@@ -19,6 +22,7 @@ radius = 7.07107
 [node name="GameScene" type="Node2D"]
 
 [node name="GameSceneContext" parent="." instance=ExtResource("1_phhnf")]
+script = ExtResource("2_0ms5f")
 
 [node name="SelectionManager" type="Node2D" parent="GameSceneContext"]
 z_index = 10
@@ -26,6 +30,9 @@ script = ExtResource("2_g7pp1")
 
 [node name="Node2D" type="Node2D" parent="GameSceneContext"]
 script = ExtResource("3_5r40d")
+
+[node name="Player Unit Manager" type="Node2D" parent="GameSceneContext"]
+script = ExtResource("4_1v6dv")
 
 [node name="Node2D" type="Node2D" parent="." node_paths=PackedStringArray("_wallTileMap", "_floorTileMap", "_shadowTileMap")]
 script = ExtResource("3_56238")
@@ -74,7 +81,7 @@ position = Vector2(-23, -14)
 color = Color(0, 0, 0, 1)
 
 [node name="CharacterBody2D" type="CharacterBody2D" parent="."]
-position = Vector2(675, 419)
+position = Vector2(479, 386)
 script = ExtResource("8_ym3f1")
 Speed = 150.0
 Accel = 15.0
@@ -106,3 +113,9 @@ debug_path_custom_color = Color(1, 1, 1, 0.113725)
 [node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterBody2D"]
 position = Vector2(0, -4)
 shape = SubResource("CircleShape2D_12uqa")
+
+[node name="Node2D" type="Node2D" parent="CharacterBody2D"]
+
+[node name="Node2D2" type="Node2D" parent="CharacterBody2D" node_paths=PackedStringArray("Creature")]
+script = ExtResource("14_47772")
+Creature = NodePath("..")
