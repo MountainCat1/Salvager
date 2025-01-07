@@ -1,6 +1,8 @@
 using System.Diagnostics;
+using System.Linq;
 using Abstractions;
 using Godot;
+using Items;
 using Services;
 using Services.Abstractions;
 
@@ -56,10 +58,10 @@ public partial class UnitController : AiController
         //     _target = GetNewTarget();
         // }
         //
-        // if (_target != null)
-        // {
-        //     HandleAttack();
-        // }
+        if (_target != null)
+        {
+            HandleAttack();
+        }
     }
 
     // private void HandleInteraction()
@@ -89,21 +91,20 @@ public partial class UnitController : AiController
     //     }
     // }
 
-    // private void HandleAttack()
-    // {
-    //     if (_target == null)
-    //     {
-    //         _target = GetNewTarget();
-    //     }
-    //
-    //     if (_target != null)
-    //     {
-    //         HandleAttackOrMovementToTarget();
-    //         return;
-    //     }
-    //
-    //     Creature.SetMovement(Vector2.zero); // Stop moving if no target
-    // }
+    private void HandleAttack()
+    {
+        if (_target == null)
+        {
+            _target = GetNewTarget();
+        }
+    
+        if (_target != null)
+        {
+            HandleAttackOrMovementToTarget();
+            return;
+        }
+    }
+    
 
     private void HandleMovementToTarget()
     {
@@ -120,30 +121,32 @@ public partial class UnitController : AiController
         }
     }
 
-    // private void HandleAttackOrMovementToTarget()
-    // {
-    //     var attackContext = CreateAttackContext();
-    //
-    //     if (Creature.Weapon.GetOnCooldown(attackContext) && !Creature.Weapon.AllowToMoveOnCooldown)
-    //     {
-    //         Creature.SetMovement(Vector2.zero); // Stay still during cooldown if configured
-    //         return;
-    //     }
-    //
-    //     if (Creature.Weapon.NeedsLineOfSight && !CanSee(_target))
-    //     {
-    //         PerformMovementTowardsTarget(_target);
-    //         return;
-    //     }
-    //
-    //     if (Vector2.Distance(Creature.transform.position, _target.transform.position) < Creature.Weapon.Range)
-    //     {
-    //         PerformAttack(attackContext);
-    //         return;
-    //     }
-    //
-    //     PerformMovementTowardsTarget(_target);
-    // }
+    private void HandleAttackOrMovementToTarget()
+    {
+        var attackContext = CreateAttackContext();
+    
+        if (Creature.Weapon.GetOnCooldown(attackContext) && !Creature.Weapon.AllowToMoveOnCooldown)
+        {
+            return;
+        }
+    
+        if (Creature.Weapon.NeedsLineOfSight && !CanSee(_target))
+        {
+            Creature.NavigationAgent.SetTargetPosition(Creature.Position);
+            Creature.MoveAndSlide();
+            
+            return;
+        }
+    
+        if ((Creature.Position.DistanceTo(_target.Position) < Creature.Weapon.Range))
+        {
+            PerformAttack(attackContext);
+            return;
+        }
+    
+        Creature.NavigationAgent.SetTargetPosition(Creature.Position);
+        Creature.MoveAndSlide();
+    }
 
     private AttackContext CreateAttackContext()
     {

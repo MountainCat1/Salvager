@@ -1,5 +1,6 @@
 using System;
 using Godot;
+using Items;
 
 public partial class Creature : Entity
 {
@@ -13,6 +14,7 @@ public partial class Creature : Entity
     public NavigationAgent2D NavigationAgent => _nav;
     public CreatureController Controller { get; set; }
     public IReadonlyRangedValue Health { get; }
+    [Export] public Weapon Weapon { get; private set; }
 
     private NavigationAgent2D _nav;
     private Vector2 _velocity = Vector2.Zero;
@@ -43,8 +45,14 @@ public partial class Creature : Entity
         GD.PushWarning("Creature.Damage() is not implemented");
     }
 
-    public void StartUsingWeapon(Weapon weapon)
+    public void StartUsingWeapon(Items.Weapon weapon)
     {
         GD.PushWarning("Creature.StartUsingWeapon(Weapon weapon) is not implemented");
+    }
+
+    public Attitude GetAttitudeTowards(Creature creature)
+    {
+        GD.PushWarning("Creature.GetAttitudeTowards(Creature creature) is not implemented");
+        return Attitude.Hostile; 
     }
 }

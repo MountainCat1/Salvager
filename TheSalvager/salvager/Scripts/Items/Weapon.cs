@@ -1,8 +1,7 @@
 using System;
-using System.Diagnostics;
-using System.Reflection.PortableExecutable;
-using Abstractions;
 using Godot;
+
+namespace Items;
 
 public partial class Weapon : Item
 {

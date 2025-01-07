@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using Godot;
+using Items;
 using Services;
 
 public partial class AiController : CreatureController
@@ -66,20 +67,20 @@ public partial class AiController : CreatureController
 
     // Helper Methods
 
-    // protected Creature GetNewTarget()
-    // {
-    //     var targets = GetMemorizedCreatures()
-    //         .Where(x => Creature.GetAttitudeTowards(x) == Attitude.Hostile)
-    //         // .Where(x => CanSee(x))
-    //         .ToList();
-    //
-    //     // Get closest target
-    //     var target = targets
-    //         .OrderBy(x => Vector2.Distance(Creature.transform.position, x.transform.position))
-    //         .FirstOrDefault();
-    //
-    //     return target;
-    // }
+    protected Creature GetNewTarget()
+    {
+        var targets = GetMemorizedCreatures()
+            .Where(x => Creature.GetAttitudeTowards(x) == Attitude.Hostile)
+            .Where(x => CanSee(x))
+            .ToList();
+    
+        // Get closest target
+        var target = targets
+            .OrderBy(x => Creature.Position.DistanceTo(x.Position))
+            .FirstOrDefault();
+    
+        return target;
+    }
 
     protected bool IsInRange(Creature creature, float range)
     {

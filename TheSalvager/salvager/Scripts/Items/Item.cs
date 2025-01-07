@@ -1,8 +1,7 @@
 using System;
-using System.Diagnostics;
 using Godot;
 
-namespace Abstractions;
+namespace Items;
 
 public class ItemUseContext
 {

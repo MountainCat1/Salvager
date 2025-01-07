@@ -14,3 +14,5 @@ res://Scripts/Abstractions/CreatureController.cs
 res://Scripts/Entity.cs
 res://Scripts/Services/GameSceneContext.cs
 res://Scripts/Services/PlayerUnitController.cs
+res://Scripts/Abstractions/Weapon.cs
+res://Scripts/Abstractions/Item.cs
