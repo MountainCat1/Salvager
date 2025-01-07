@@ -12,7 +12,8 @@ public partial class Creature : Entity
     public float SightRange { get; set; }
     public NavigationAgent2D NavigationAgent => _nav;
     public CreatureController Controller { get; set; }
-    
+    public IReadonlyRangedValue Health { get; }
+
     private NavigationAgent2D _nav;
     private Vector2 _velocity = Vector2.Zero;
 
@@ -34,5 +35,16 @@ public partial class Creature : Entity
         _velocity = _velocity.Lerp(direction * Speed, Accel * (float)delta);
 
         Velocity = _velocity;
+    }
+
+    public void Damage(HitContext hitContext)
+    {
+        // warining
+        GD.PushWarning("Creature.Damage() is not implemented");
+    }
+
+    public void StartUsingWeapon(Weapon weapon)
+    {
+        GD.PushWarning("Creature.StartUsingWeapon(Weapon weapon) is not implemented");
     }
 }
