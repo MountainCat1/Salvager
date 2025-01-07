@@ -12,8 +12,7 @@ public partial class Creature : Entity
     public float SightRange { get; set; }
     public NavigationAgent2D NavigationAgent => _nav;
     public CreatureController Controller { get; set; }
-
-
+    
     private NavigationAgent2D _nav;
     private Vector2 _velocity = Vector2.Zero;
 
@@ -35,8 +34,5 @@ public partial class Creature : Entity
         _velocity = _velocity.Lerp(direction * Speed, Accel * (float)delta);
 
         Velocity = _velocity;
-        
-        // Move the character
-        MoveAndSlide();
     }
 }

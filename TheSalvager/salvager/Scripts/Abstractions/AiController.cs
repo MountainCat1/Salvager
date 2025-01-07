@@ -8,8 +8,10 @@ using Services;
 public partial class AiController : CreatureController
 {
     // Events
-    protected virtual void Start()
+    public override void _Ready()
     {
+        base._Ready();
+        
         Creature.Hit += OnHit;
     }
     
@@ -63,13 +65,6 @@ public partial class AiController : CreatureController
     }
 
     // Helper Methods
-    
-    protected void SetMovementTarget(Vector2 position)
-    {
-        Creature.NavigationAgent.SetTargetPosition(position);
-        var nextPathPosition = Creature.NavigationAgent.GetNextPathPosition();
-    }
-    
 
     // protected Creature GetNewTarget()
     // {

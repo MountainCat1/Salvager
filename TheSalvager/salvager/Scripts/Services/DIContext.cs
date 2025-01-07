@@ -17,6 +17,8 @@ public partial class DIContext : Node
 {
     // This DI Container is specific to THIS scene.
     public ServiceProvider? Container { get; private set; }
+    
+    private bool _isInitialized = false;
 
     protected virtual void InstallBindings(ServiceCollection services)
     {
@@ -24,14 +26,29 @@ public partial class DIContext : Node
 
     public override void _Ready()
     {
+        GD.Print("Initializing SceneContext DI container...");
+        
         var services = new ServiceCollection();
 
         InstallBindings(services);
 
         Container = services.BuildServiceProvider();
-        GD.Print("SceneContext DI container is initialized!");
+        
+        InjectDependencies();
+        
+        GD.Print("SceneContext DI container setup!");
+    }
 
-        InstanceMethod();
+    public override void _Process(double delta)
+    {
+        if(_isInitialized)
+            return;
+        
+        _isInitialized = true;
+        
+        RunStartMethods();
+        
+        GD.Print("SceneContext run Start() methods!");
     }
 
 
@@ -41,19 +58,37 @@ public partial class DIContext : Node
         where TInterface : class
     {
         var nodes = this.GetAllChildren();
-
-        foreach (Node node in nodes)
+        TImplementation? implementation = null;
+        
+        foreach (var node in nodes)
         {
             if (node is TImplementation service)
             {
-                services.AddSingleton<TInterface, TImplementation>(x => service);
+                implementation = service;
+                break;
             }
         }
+        
+        if(implementation == null)
+            throw new NullReferenceException($"{typeof(TImplementation).Name} not found in the scene");
+        
+        services.AddSingleton<TInterface, TImplementation>(x => implementation);
 
         return services;
     }
 
-    private void InstanceMethod()
+    protected IServiceCollection AddSingletonFromInstance<TInterface, TImplementation>(IServiceCollection services,
+        TImplementation instance)
+        where TImplementation : class,
+        TInterface
+        where TInterface : class
+    {
+        services.AddSingleton<TInterface, TImplementation>(x => instance);
+
+        return services;
+    }
+
+    private void InjectDependencies()
     {
         // Get ALL nodes in the scene
         var nodes = this.GetTree().Root.GetAllChildren();
@@ -74,7 +109,15 @@ public partial class DIContext : Node
                     field.SetValue(node, service);
                 }
             }
+        }
+    }    
+    private void RunStartMethods()
+    {
+        // Get ALL nodes in the scene
+        var nodes = this.GetTree().Root.GetAllChildren();
 
+        foreach (Node node in nodes)
+        {
             // Invoke the "Start" method if it exists
             var startMethod = node.GetType().GetMethod("Start",
                 BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance);

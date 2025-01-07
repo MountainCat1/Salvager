@@ -1,15 +1,20 @@
 using System.Diagnostics;
 using Abstractions;
 using Godot;
+using Services;
+using Services.Abstractions;
 
 public partial class UnitController : AiController
 {
+    [Inject] private IMapGenerator _mapGenerator = null!;
+    
     private Vector2? _moveCommandTarget;
     private Creature? _target;
     private IInteractable _interactionTarget;
 
     private const bool MoveOnAttackCooldown = false; // TODO: This should be a configurable property of the weapon
-
+    
+    
     public void SetMoveTarget(Vector2 target)
     {
         _moveCommandTarget = target;
@@ -30,7 +35,7 @@ public partial class UnitController : AiController
     }
 
 
-    public override void _Process(double delta)
+    public override void _PhysicsProcess(double delta)
     {
         Creature.NavigationAgent.SetTargetPosition(Position);
         
@@ -104,9 +109,10 @@ public partial class UnitController : AiController
     {
         Debug.Assert(_moveCommandTarget != null, nameof(_moveCommandTarget) + " != null");
         
-        if (Position.DistanceTo(_moveCommandTarget.Value) > 0.1f)
+        if (Creature.Position.DistanceTo(_moveCommandTarget.Value) > 5f)
         {
-            SetMovementTarget(_moveCommandTarget.Value);
+            Creature.NavigationAgent.SetTargetPosition(_moveCommandTarget.Value);
+            Creature.MoveAndSlide();
         }
         else
         {
