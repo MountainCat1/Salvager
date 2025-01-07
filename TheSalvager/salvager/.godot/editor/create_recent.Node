@@ -1,3 +1,6 @@
+CenterContainer
+Control
+ProgressBar
 Node2D
 Node
 CollisionShape2D
@@ -10,5 +13,3 @@ CanvasModulate
 PointLight2D
 LightOccluder2D
 DirectionalLight2D
-DirectionalLight3D
-Camera2D

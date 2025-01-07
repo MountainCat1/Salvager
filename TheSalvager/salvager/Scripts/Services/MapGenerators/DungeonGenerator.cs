@@ -8,6 +8,8 @@ public partial class DungeonGenerator : Node2D, IMapGenerator
 {
     public event Action MapGenerated;
     
+    [Export] private int _seed = 696969;
+    // Size of the dungeon grid
     [Export] private Vector2I _gridSize = new Vector2I(50, 50); // Size of the dungeon grid
     [Export] private int _roomCount = 10; // Number of rooms
     [Export] private Vector2I _roomMinSize = new Vector2I(5, 5); // Minimum room size
@@ -25,6 +27,8 @@ public partial class DungeonGenerator : Node2D, IMapGenerator
 
     public override void _Ready()
     {
+        _random = new Random(_seed);
+        
         // log tileset
         var tileSet = _wallTileMap.TileSet;
         var tileCount = tileSet.GetSource(0).GetTilesCount();

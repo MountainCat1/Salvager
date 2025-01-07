@@ -10,20 +10,24 @@ public partial class Creature : Entity
     [Export] private float Speed = 300f;
     [Export] private float Accel = 7f;
     
-    public float SightRange { get; set; }
+    public float SightRange { get; set; } = 1500f;
     public NavigationAgent2D NavigationAgent => _nav;
     public CreatureController Controller { get; set; }
-    public IReadonlyRangedValue Health { get; }
+    public IReadonlyRangedValue Health => _health;
     [Export] public Weapon Weapon { get; private set; }
-
-    private NavigationAgent2D _nav;
+    [Export] private float MaxHealth { get; set; }
+    
+    private RangedValue _health = null!;
+    private NavigationAgent2D _nav = null!;
     private Vector2 _velocity = Vector2.Zero;
 
     public override void _Ready()
     {
+        _health = new RangedValue(MaxHealth, 0, MaxHealth);
+        
         _nav = GetNode<NavigationAgent2D>("NavigationAgent2D");
     }
-
+    
     public override void _PhysicsProcess(double delta)
     {
         // If the character is close to the target position, don't move
@@ -41,8 +45,11 @@ public partial class Creature : Entity
 
     public void Damage(HitContext hitContext)
     {
-        // warining
-        GD.PushWarning("Creature.Damage() is not implemented");
+        GD.Print($"Creature got hit for {hitContext.Damage} damage by {hitContext.Attacker.Name}");
+        
+        _health.CurrentValue -= hitContext.Damage;
+        
+        Hit?.Invoke(hitContext);
     }
 
     public void StartUsingWeapon(Items.Weapon weapon)
@@ -53,6 +60,10 @@ public partial class Creature : Entity
     public Attitude GetAttitudeTowards(Creature creature)
     {
         GD.PushWarning("Creature.GetAttitudeTowards(Creature creature) is not implemented");
+        
+        if(creature == this)
+            return Attitude.Friendly;
+        
         return Attitude.Hostile; 
     }
 }

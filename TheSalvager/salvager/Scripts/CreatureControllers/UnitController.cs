@@ -39,6 +39,8 @@ public partial class UnitController : AiController
 
     public override void _PhysicsProcess(double delta)
     {
+        base._PhysicsProcess(delta);
+        
         Creature.NavigationAgent.SetTargetPosition(Position);
         
         if (_interactionTarget != null)
@@ -53,14 +55,15 @@ public partial class UnitController : AiController
             return;
         }
 
-        // if (_target == null)
-        // {
-        //     _target = GetNewTarget();
-        // }
-        //
+        if (_target == null)
+        {
+            _target = GetNewTarget();
+        }
+        
         if (_target != null)
         {
-            HandleAttack();
+            HandleAttackOrMovementToTarget();
+            return;
         }
     }
 
@@ -91,20 +94,6 @@ public partial class UnitController : AiController
     //     }
     // }
 
-    private void HandleAttack()
-    {
-        if (_target == null)
-        {
-            _target = GetNewTarget();
-        }
-    
-        if (_target != null)
-        {
-            HandleAttackOrMovementToTarget();
-            return;
-        }
-    }
-    
 
     private void HandleMovementToTarget()
     {
@@ -132,7 +121,7 @@ public partial class UnitController : AiController
     
         if (Creature.Weapon.NeedsLineOfSight && !CanSee(_target))
         {
-            Creature.NavigationAgent.SetTargetPosition(Creature.Position);
+            Creature.NavigationAgent.SetTargetPosition(_target.Position);
             Creature.MoveAndSlide();
             
             return;
@@ -144,7 +133,7 @@ public partial class UnitController : AiController
             return;
         }
     
-        Creature.NavigationAgent.SetTargetPosition(Creature.Position);
+        Creature.NavigationAgent.SetTargetPosition(_target.Position);
         Creature.MoveAndSlide();
     }
 
@@ -164,6 +153,6 @@ public partial class UnitController : AiController
     private void PerformAttack(AttackContext context)
     {
         // TODO: Implement attack
-        // Creature.Weapon.ContiniousAttack(context);
+        Creature.Weapon.ContinuousAttack(context);
     }
 }

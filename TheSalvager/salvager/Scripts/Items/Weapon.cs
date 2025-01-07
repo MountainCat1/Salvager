@@ -30,7 +30,7 @@ public partial class Weapon : Item
         Attack(ctx);
     }
 
-    public void ContiniousAttack(AttackContext ctx)
+    public void ContinuousAttack(AttackContext ctx)
     {
         if (GetOnCooldown(ctx))
             return;

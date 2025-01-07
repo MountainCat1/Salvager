@@ -76,6 +76,7 @@ public class RangedValue : IReadonlyRangedValue
         this._baseValue = baseValue;
         this._minValue = minValue;
         this._maxValue = maxValue;
+        this._currentValue = baseValue;
         UpdateCurrentValue();
     }
 
