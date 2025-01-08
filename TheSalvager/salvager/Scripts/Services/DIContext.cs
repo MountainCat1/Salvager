@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
@@ -13,11 +14,18 @@ public class InjectAttribute : Attribute
 {
 }
 
-public partial class DIContext : Node
+public interface IDIContext
+{
+    ServiceProvider? Container { get; }
+    public void Inject<T>(T injectionTarget);
+    public void FullInject<T> (T injectionTarget) where T : Node;
+}
+
+public partial class DIContext : Node, IDIContext
 {
     // This DI Container is specific to THIS scene.
     public ServiceProvider? Container { get; private set; }
-    
+
     private bool _isInitialized = false;
 
     protected virtual void InstallBindings(ServiceCollection services)
@@ -27,28 +35,71 @@ public partial class DIContext : Node
     public override void _Ready()
     {
         GD.Print("Initializing SceneContext DI container...");
-        
+
         var services = new ServiceCollection();
 
         InstallBindings(services);
 
         Container = services.BuildServiceProvider();
-        
+
         InjectDependencies();
-        
+
         GD.Print("SceneContext DI container setup!");
     }
 
     public override void _Process(double delta)
     {
-        if(_isInitialized)
+        if (_isInitialized)
             return;
-        
+
         _isInitialized = true;
-        
+
         RunStartMethods();
-        
+
         GD.Print("SceneContext run Start() methods!");
+    }
+
+    public void Inject<T>(T injectionTarget)
+    {
+        Debug.Assert(injectionTarget != null, nameof(injectionTarget) + " != null");
+        
+        var fields = injectionTarget.GetType()
+            .GetFields(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance)
+            .Where(f => f.GetCustomAttributes(typeof(InjectAttribute), false).Any());
+
+        foreach (var field in fields)
+        {
+            // Inject dependencies using the service container
+            var service = Container?.GetService(field.FieldType);
+            if (service != null)
+            {
+                field.SetValue(injectionTarget, service);
+            }
+            else if (field.FieldType == typeof(IDIContext))
+            {
+                field.SetValue(injectionTarget, this);
+            }
+            else
+            {
+                throw new NullReferenceException(
+                    $"Service not found for {field.FieldType.Name} in {injectionTarget.GetType().Name}");
+            }
+        }
+    }
+
+    public void FullInject<T>(T injectionTarget) where T : Node
+    {
+        var nodes = injectionTarget.GetWithAllChildren();
+        
+        foreach (var node in nodes)
+        {
+            Inject(node);
+        }
+
+        foreach (var node in nodes)
+        {
+            InvokeStartMethod(node);
+        }
     }
 
 
@@ -59,7 +110,7 @@ public partial class DIContext : Node
     {
         var nodes = this.GetAllChildren();
         TImplementation? implementation = null;
-        
+
         foreach (var node in nodes)
         {
             if (node is TImplementation service)
@@ -68,10 +119,10 @@ public partial class DIContext : Node
                 break;
             }
         }
-        
-        if(implementation == null)
+
+        if (implementation == null)
             throw new NullReferenceException($"{typeof(TImplementation).Name} not found in the scene");
-        
+
         services.AddSingleton<TInterface, TImplementation>(x => implementation);
 
         return services;
@@ -87,12 +138,15 @@ public partial class DIContext : Node
 
         return services;
     }
-    
-    protected IServiceCollection AddSingletonFromInstanceInScene<TInterface, TImplementation>(IServiceCollection services)
+
+    protected IServiceCollection AddSingletonFromInstanceInScene<TInterface, TImplementation>(
+        IServiceCollection services)
         where TImplementation : Node, TInterface
         where TInterface : class
     {
-        return services.AddSingleton(NodeUtilities.FindRequiredNodeOfType<TImplementation>(this));
+        TImplementation instance = NodeUtilities.FindRequiredNodeOfType<TImplementation>(this);
+        
+        return services.AddSingleton<TInterface>(instance);
     }
 
     private void InjectDependencies()
@@ -103,21 +157,11 @@ public partial class DIContext : Node
         foreach (Node node in nodes)
         {
             // Get all fields with InjectAttribute
-            var fields = node.GetType()
-                .GetFields(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance)
-                .Where(f => f.GetCustomAttributes(typeof(InjectAttribute), false).Any());
-
-            foreach (var field in fields)
-            {
-                // Inject dependencies using the service container
-                var service = Container?.GetService(field.FieldType);
-                if (service != null)
-                {
-                    field.SetValue(node, service);
-                }
-            }
+            Inject(node);
         }
-    }    
+    }
+
+
     private void RunStartMethods()
     {
         // Get ALL nodes in the scene
@@ -126,9 +170,16 @@ public partial class DIContext : Node
         foreach (Node node in nodes)
         {
             // Invoke the "Start" method if it exists
-            var startMethod = node.GetType().GetMethod("Start",
-                BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance);
-            startMethod?.Invoke(node, null);
+            InvokeStartMethod(node);
         }
+    }
+    
+    private void InvokeStartMethod<T>(T target)
+    {
+        Debug.Assert(target != null, nameof(target) + " != null");
+        
+        var startMethod = target.GetType().GetMethod("Start",
+            BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance);
+        startMethod?.Invoke(target, null);
     }
 }

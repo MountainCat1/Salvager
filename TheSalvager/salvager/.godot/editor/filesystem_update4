@@ -21,3 +21,8 @@ res://Scripts/Services/PlayerUnitController.cs
 res://Scripts/Services/MapGenerators/DungeonGenerator.cs
 res://Scripts/UI/HealthBar.cs
 res://Scripts/Items/Weapon.cs
+res://Prefabs/soldier.tscn
+res://Prefabs/hell_dog.tscn
+res://Prefabs/creature.tscn
+res://Scripts/Services/GameManager.cs
+res://Scripts/Services/SpawnerManager.cs

@@ -1,0 +1,21 @@
+[gd_scene load_steps=5 format=3 uid="uid://cx702ejxllmp"]
+
+[ext_resource type="PackedScene" uid="uid://1afhimeraega" path="res://Prefabs/creature.tscn" id="1_tt244"]
+[ext_resource type="PackedScene" uid="uid://c6t0thljq56dm" path="res://Prefabs/Weapons/claws.tscn" id="2_8o5ie"]
+[ext_resource type="PackedScene" uid="uid://ba44gwov8c5fj" path="res://Aseprite/Props/Engineer_Walk.aseprite" id="2_nhpve"]
+[ext_resource type="Texture2D" uid="uid://2epe15yqyod7" path="res://light.png" id="4_w5n18"]
+
+[node name="Creature" node_paths=PackedStringArray("Weapon") instance=ExtResource("1_tt244")]
+Weapon = NodePath("Claws")
+Team = 1
+
+[node name="Claws" parent="." index="0" instance=ExtResource("2_8o5ie")]
+
+[node name="Engineer_Walk" parent="." index="2" instance=ExtResource("2_nhpve")]
+z_index = 5
+position = Vector2(0, -16)
+
+[node name="PointLight2D" type="PointLight2D" parent="." index="7"]
+energy = 0.63
+shadow_enabled = true
+texture = ExtResource("4_w5n18")

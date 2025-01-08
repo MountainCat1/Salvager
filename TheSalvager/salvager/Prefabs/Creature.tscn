@@ -15,8 +15,8 @@ bg_color = Color(0.44359, 0.0203329, 2.40654e-08, 1)
 ProgressBar/styles/fill = SubResource("StyleBoxFlat_bccop")
 
 [node name="Creature" type="CharacterBody2D"]
-position = Vector2(423, 703)
 script = ExtResource("1_8yle5")
+_speed = 150.0
 MaxHealth = 10.0
 
 [node name="Sprite2D" type="Sprite2D" parent="."]

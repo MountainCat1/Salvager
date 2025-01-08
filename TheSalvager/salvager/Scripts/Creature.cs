@@ -25,6 +25,7 @@ public partial class Creature : Entity
     public override void _Ready()
     {
         _health = new RangedValue(MaxHealth, 0, MaxHealth);
+        _health.ValueChanged += OnHealthChanged;
         
         _nav = GetNode<NavigationAgent2D>("NavigationAgent2D");
     }
@@ -57,4 +58,13 @@ public partial class Creature : Entity
     {
         GD.PushWarning("Creature.StartUsingWeapon(Weapon weapon) is not implemented");
     }
+    
+    private void OnHealthChanged()
+    {
+        if (_health.CurrentValue <= 0)
+        {
+            QueueFree();
+        }
+    }
+
 }
