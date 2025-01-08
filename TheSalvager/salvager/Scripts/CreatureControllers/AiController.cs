@@ -1,11 +1,10 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using Godot;
 using Items;
-using Managers;
 using Services;
+
+namespace CreatureControllers;
 
 public partial class AiController : CreatureController
 {

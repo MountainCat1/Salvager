@@ -13,7 +13,7 @@ public partial class Creature : Entity
     
     public float SightRange { get; set; } = 1500f;
     public NavigationAgent2D NavigationAgent => _nav;
-    public CreatureController Controller { get; set; }
+    public CreatureControllers.CreatureController Controller { get; set; }
     public IReadonlyRangedValue Health => _health;
     [Export] public Weapon Weapon { get; private set; }
     [Export] private float MaxHealth { get; set; }

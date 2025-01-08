@@ -21,7 +21,7 @@ public partial class PlayerUnitController : Node2D, IPlayerUnitController
 
             foreach (var creature in selectedCreatures)
             {
-                if (creature.Controller is not UnitController unitController)
+                if (creature.Controller is not CreatureControllers.UnitController unitController)
                     continue;
 
                 unitController.SetMoveTarget(GetGlobalMousePosition());

@@ -1,8 +1,9 @@
-using Godot;
 using System;
+using Godot;
 using Godot.Collections;
 using Services.Abstractions;
 
+namespace Services.MapGenerators;
 
 public partial class DungeonGenerator : Node2D, IMapGenerator
 {

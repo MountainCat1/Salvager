@@ -1,6 +1,6 @@
-using System;
-using System.Linq;
 using Godot;
+
+namespace CreatureControllers;
 
 public partial class CreatureController : Node2D
 {

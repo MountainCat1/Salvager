@@ -1,4 +1,4 @@
-namespace Abstractions;
+namespace CreatureControllers;
 
 public interface IInteractable
 {

@@ -1,10 +1,10 @@
 using System.Diagnostics;
-using System.Linq;
-using Abstractions;
 using Godot;
 using Items;
 using Services;
 using Services.Abstractions;
+
+namespace CreatureControllers;
 
 public partial class UnitController : AiController
 {
