@@ -8,19 +8,25 @@ namespace Services.MapGenerators;
 public partial class DungeonGenerator : Node2D, IMapGenerator
 {
     public event Action? MapGenerated;
+    public MapData? MapData { get; private set; }
     
     [Export] private int _seed = 696969;
-    // Size of the dungeon grid
-    [Export] private Vector2I _gridSize = new Vector2I(50, 50); // Size of the dungeon grid
-    [Export] private int _roomCount = 10; // Number of rooms
-    [Export] private Vector2I _roomMinSize = new Vector2I(5, 5); // Minimum room size
-    [Export] private Vector2I _roomMaxSize = new Vector2I(10, 10); // Maximum room size
 
-    [Export] private TileMapLayer _wallTileMap = null!; // TileMap to draw the dungeon
-    [Export] private TileMapLayer _floorTileMap = null!; // TileMap to draw the dungeon
-    [Export] private TileMapLayer _shadowTileMap = null!; // TileMap to draw the dungeon
-    [Export] private int _floorTileId = 0; // Tile ID for floor
-    [Export] private int _wallTileId = 1; // Tile ID for wall
+    // Size of the dungeon grid
+    [Export] private Vector2I _gridSize = new Vector2I(50, 50);
+
+    // Room generation parameters
+    [Export] private int _roomCount = 10;
+    [Export] private Vector2I _roomMinSize = new Vector2I(5, 5);
+    [Export] private Vector2I _roomMaxSize = new Vector2I(10, 10);
+
+    // TileMap layers
+    [Export] private TileMapLayer _wallTileMap = null!;
+    [Export] private TileMapLayer _floorTileMap = null!;
+    [Export] private TileMapLayer _shadowTileMap = null!;
+
+    [Export] private int _floorTileId = (int)TileType.Floor;
+    [Export] private int _wallTileId = (int)TileType.Wall;
 
     private Random _random = new Random();
 
@@ -30,40 +36,28 @@ public partial class DungeonGenerator : Node2D, IMapGenerator
     {
         _random = new Random(_seed);
         
-        // log tileset
-        var tileSet = _wallTileMap.TileSet;
-        var tileCount = tileSet.GetSource(0).GetTilesCount();
-        GD.Print("WALL - Tile count: " + tileCount);
-        for (int i = 0; i < tileCount; i++)
-        {
-            GD.Print("Tile " + i);
-        }
-        
-        var tileSet2 = _floorTileMap.TileSet;
-        var tileCount2 = tileSet2.GetSource(0).GetTilesCount();
-        GD.Print("FLOOR - Tile count: " + tileCount2);
-        for (int i = 0; i < tileCount2; i++)
-        {
-            GD.Print("Tile " + i);
-        }
-        
-        var tileSet3 = _shadowTileMap.TileSet;
-        var tileCount3 = tileSet3.GetSource(0).GetTilesCount();
-        GD.Print("SHADOW - Tile count: " + tileCount3);
-        for (int i = 0; i < tileCount3; i++)
-        {
-            GD.Print("Tile " + i);
-        }
+        LogTileSetInfo(_wallTileMap, "WALL");
+        LogTileSetInfo(_floorTileMap, "FLOOR");
+        LogTileSetInfo(_shadowTileMap, "SHADOW");
 
         if (_run)
             GenerateDungeon();
+    }
 
+    private void LogTileSetInfo(TileMapLayer tileMap, string label)
+    {
+        var tileSet = tileMap.TileSet;
+        var tileCount = tileSet.GetSource(0).GetTilesCount();
+        GD.Print($"{label} - Tile count: {tileCount}");
+        for (int i = 0; i < tileCount; i++)
+        {
+            GD.Print($"Tile {i}");
+        }
     }
 
     private void GenerateDungeon()
     {
         var grid = new int[_gridSize.X, _gridSize.Y];
-
 
         // Create rooms
         for (int i = 0; i < _roomCount; i++)
@@ -78,6 +72,8 @@ public partial class DungeonGenerator : Node2D, IMapGenerator
         DrawDungeon(grid);
         
         GD.Print("===== Map generated =====");
+        
+        MapData = new MapData(_gridSize, grid, tileSize: _wallTileMap.TileSet.TileSize);
         
         MapGenerated?.Invoke();
     }
@@ -94,29 +90,29 @@ public partial class DungeonGenerator : Node2D, IMapGenerator
         {
             for (int j = y; j < y + roomHeight; j++)
             {
-                grid[i, j] = 1; // Mark floor
+                grid[i, j] = (int)TileType.Floor; // Mark floor
             }
         }
 
-        GD.Print("Room created at: " + x + ", " + y);
+        GD.Print($"Room created at: {x}, {y}");
     }
 
     private void ConnectRooms(int[,] grid)
     {
-        // Simple way to connect rooms: create corridors between random floor tiles
         var floorTiles = new System.Collections.Generic.List<Vector2I>();
+
         for (int x = 0; x < _gridSize.X; x++)
         {
             for (int y = 0; y < _gridSize.Y; y++)
             {
-                if (grid[x, y] == 1)
+                if (grid[x, y] == (int)TileType.Floor)
                 {
                     floorTiles.Add(new Vector2I(x, y));
                 }
             }
-
-            GD.Print("Floor tiles: " + floorTiles.Count);
         }
+
+        GD.Print($"Floor tiles: {floorTiles.Count}");
 
         for (int i = 0; i < _roomCount - 1; i++)
         {
@@ -125,7 +121,7 @@ public partial class DungeonGenerator : Node2D, IMapGenerator
 
             CreateCorridor(grid, start, end);
 
-            GD.Print("Corridor created between: " + start + " and " + end);
+            GD.Print($"Corridor created between: {start} and {end}");
         }
     }
 
@@ -144,28 +140,25 @@ public partial class DungeonGenerator : Node2D, IMapGenerator
                 current.Y += Math.Sign(end.Y - current.Y);
             }
 
-            grid[current.X, current.Y] = 1; // Mark floor
+            grid[current.X, current.Y] = (int)TileType.Floor; // Mark floor
         }
 
-        GD.Print("Corridor created from: " + start + " to " + end);
+        GD.Print($"Corridor created from: {start} to {end}");
     }
 
     private void DrawDungeon(int[,] grid)
     {
-        // _tileMap.Clear();
-
         var wallTiles = new Array<Vector2I>();
 
         for (int x = 0; x < _gridSize.X; x++)
         {
             for (int y = 0; y < _gridSize.Y; y++)
             {
-                var tileId = grid[x, y] == 1 ? _floorTileId : _wallTileId;
-                if (tileId == _floorTileId)
+                if (grid[x, y] == (int)TileType.Floor)
                 {
-                    _floorTileMap.SetCell(new Vector2I(x, y), 0, new Vector2I(Random.Shared.Next(0, 4), Random.Shared.Next(0, 4)));
+                    _floorTileMap.SetCell(new Vector2I(x, y), 0, new Vector2I(_random.Next(0, 4), _random.Next(0, 4)));
                 }
-                else if (tileId == _wallTileId)
+                else
                 {
                     wallTiles.Add(new Vector2I(x, y));
                     _shadowTileMap.SetCell(new Vector2I(x, y + 1), 0, new Vector2I(0, 0));
@@ -174,7 +167,6 @@ public partial class DungeonGenerator : Node2D, IMapGenerator
             }
         }
 
-        
         _wallTileMap.SetCellsTerrainConnect(wallTiles, 0, 0);
 
         GD.Print("Dungeon drawn on TileMap");
