@@ -1,7 +1,6 @@
 using System;
 using Godot;
 using Items;
-using Managers;
 using Services;
 
 public partial class Creature : Entity
