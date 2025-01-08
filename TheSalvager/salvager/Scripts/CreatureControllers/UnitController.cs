@@ -112,6 +112,13 @@ public partial class UnitController : AiController
     {
         var attackContext = CreateAttackContext();
     
+        if(Creature.Weapon == null)
+        {
+            GD.PushWarning("Creature has no weapon equipped");
+            
+            return;
+        }
+        
         if (Creature.Weapon.GetOnCooldown(attackContext) && !Creature.Weapon.AllowToMoveOnCooldown)
         {
             return;
@@ -150,6 +157,6 @@ public partial class UnitController : AiController
 
     private void PerformAttack(AttackContext context)
     {
-        Creature.Weapon.ContinuousAttack(context);
+        Creature.Weapon?.ContinuousAttack(context);
     }
 }

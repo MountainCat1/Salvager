@@ -65,7 +65,7 @@ public partial class AiController : CreatureController
 
     // Helper Methods
 
-    protected Creature GetNewTarget()
+    protected Creature? GetNewTarget()
     {
         var targets = GetMemorizedCreatures()
             .Where(x => TeamManager.GetAttitude(Creature, x) == Attitude.Hostile)

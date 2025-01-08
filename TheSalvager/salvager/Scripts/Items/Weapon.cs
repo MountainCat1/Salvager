@@ -7,7 +7,7 @@ namespace Items;
 public partial class Weapon : Item
 {
     [Inject] protected ISoundPlayer _soundPlayer = null!;
-    
+
     [Export] public float Range { get; set; }
 
     [Export] public float BaseAttackSpeed { get; set; }
@@ -42,15 +42,16 @@ public partial class Weapon : Item
         PerformAttack(ctx);
     }
 
-    protected virtual void Attack(AttackContext ctx) {}
+    protected virtual void Attack(AttackContext ctx)
+    {
+    }
 
     protected virtual void OnHit(Creature target, HitContext hitContext)
     {
-        if (target != null)
-        {
-            target.Damage(hitContext);
-            _soundPlayer.PlaySound(HitSound, Position);
-        }
+        target.Damage(hitContext);
+        
+        if(HitSound != null)
+            _soundPlayer.PlaySound(HitSound, target.Position);
     }
 
     protected Vector2 CalculatePushForce(Creature target)
@@ -79,7 +80,6 @@ public partial class Weapon : Item
         return BaseDamage;
     }
 }
-
 
 public struct AttackContext
 {
