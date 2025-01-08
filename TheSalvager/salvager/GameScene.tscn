@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=4 uid="uid://1lirgwl83usm"]
+[gd_scene load_steps=18 format=4 uid="uid://1lirgwl83usm"]
 
 [ext_resource type="PackedScene" uid="uid://drg401nrueeyc" path="res://GameSceneContext.tscn" id="1_phhnf"]
 [ext_resource type="Script" path="res://Scripts/Services/SelectionManager.cs" id="2_g7pp1"]
@@ -9,25 +9,34 @@
 [ext_resource type="Script" path="res://Scripts/Services/MapGenerators/DungeonGenerator.cs" id="5_67jm4"]
 [ext_resource type="Script" path="res://Scripts/CameraController.cs" id="5_bxhnm"]
 [ext_resource type="Script" path="res://Scripts/Services/SoundPlayer.cs" id="5_vyq1x"]
+[ext_resource type="Script" path="res://Scripts/Services/TeamManager.cs" id="6_e8em3"]
 [ext_resource type="TileSet" uid="uid://6v5rhdtxlb0v" path="res://TileSets/ShadowTileSet.tres" id="6_oi0ai"]
 [ext_resource type="PackedScene" uid="uid://1afhimeraega" path="res://Prefabs/Creature.tscn" id="10_i7j2g"]
+[ext_resource type="PackedScene" uid="uid://dicqxto655by4" path="res://Aseprite/Creatures/HellDog.aseprite" id="12_6r11k"]
+[ext_resource type="PackedScene" uid="uid://ba44gwov8c5fj" path="res://Aseprite/Props/Engineer_Walk.aseprite" id="12_tt687"]
+[ext_resource type="Texture2D" uid="uid://2epe15yqyod7" path="res://light.png" id="13_jm4xt"]
+[ext_resource type="Script" path="res://Scripts/Items/TouchWeapon.cs" id="15_lyn1y"]
+[ext_resource type="AudioStream" uid="uid://bnmh01q7tld2o" path="res://Audio/SFX/bounce.wav" id="16_eeiia"]
 
 [node name="GameScene" type="Node2D"]
 
 [node name="GameSceneContext" parent="." instance=ExtResource("1_phhnf")]
 
-[node name="SelectionManager" type="Node2D" parent="GameSceneContext"]
+[node name="Selection Manager" type="Node2D" parent="GameSceneContext"]
 z_index = 10
 script = ExtResource("2_g7pp1")
 
-[node name="Node2D" type="Node2D" parent="GameSceneContext"]
+[node name="Creature Manager" type="Node2D" parent="GameSceneContext"]
 script = ExtResource("3_5r40d")
 
 [node name="Player Unit Manager" type="Node2D" parent="GameSceneContext"]
 script = ExtResource("4_1v6dv")
 
-[node name="SoundPlayer" type="Node2D" parent="GameSceneContext"]
+[node name="Sound Player" type="Node2D" parent="GameSceneContext"]
 script = ExtResource("5_vyq1x")
+
+[node name="Team Manager" type="Node2D" parent="GameSceneContext"]
+script = ExtResource("6_e8em3")
 
 [node name="MapGenerator" type="Node2D" parent="." node_paths=PackedStringArray("_wallTileMap", "_floorTileMap", "_shadowTileMap")]
 position = Vector2(0, -1)
@@ -75,8 +84,38 @@ shadow_filter_smooth = 1.5
 position = Vector2(-23, -14)
 color = Color(0, 0, 0, 1)
 
-[node name="CharacterBody2D" parent="." instance=ExtResource("10_i7j2g")]
-position = Vector2(423, 703)
+[node name="Soldier" parent="." node_paths=PackedStringArray("Weapon") instance=ExtResource("10_i7j2g")]
+position = Vector2(661, 534)
+Weapon = NodePath("Claws")
+Team = 1
 
-[node name="CharacterBody2D2" parent="." instance=ExtResource("10_i7j2g")]
-position = Vector2(650, 656)
+[node name="EngineerAnimation" parent="Soldier" instance=ExtResource("12_tt687")]
+position = Vector2(0, -16)
+
+[node name="PointLight2D" type="PointLight2D" parent="Soldier"]
+shadow_enabled = true
+texture = ExtResource("13_jm4xt")
+
+[node name="Claws" type="Node2D" parent="Soldier"]
+script = ExtResource("15_lyn1y")
+Range = 15.0
+BaseAttackSpeed = 1.0
+BaseDamage = 1.0
+HitSound = ExtResource("16_eeiia")
+Name = "Claws"
+
+[node name="Creature" parent="." node_paths=PackedStringArray("Weapon") instance=ExtResource("10_i7j2g")]
+position = Vector2(551, 521)
+Weapon = NodePath("Claws")
+Team = 4
+
+[node name="HellDogAnimation" parent="Creature" instance=ExtResource("12_6r11k")]
+position = Vector2(0, -15)
+
+[node name="Claws" type="Node2D" parent="Creature"]
+script = ExtResource("15_lyn1y")
+Range = 15.0
+BaseAttackSpeed = 1.0
+BaseDamage = 1.0
+HitSound = ExtResource("16_eeiia")
+Name = "Claws"

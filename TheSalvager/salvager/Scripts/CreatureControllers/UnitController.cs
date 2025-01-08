@@ -152,7 +152,6 @@ public partial class UnitController : AiController
 
     private void PerformAttack(AttackContext context)
     {
-        // TODO: Implement attack
         Creature.Weapon.ContinuousAttack(context);
     }
 }

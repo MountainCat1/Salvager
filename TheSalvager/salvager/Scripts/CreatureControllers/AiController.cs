@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using Godot;
 using Items;
+using Managers;
 using Services;
 
 public partial class AiController : CreatureController
@@ -16,7 +17,8 @@ public partial class AiController : CreatureController
         Creature.Hit += OnHit;
     }
     
-    [Inject] protected ICreatureManager CreatureManager;
+    [Inject] protected ICreatureManager CreatureManager = null!;
+    [Inject] protected ITeamManager TeamManager = null!;
     
     private const double MemoryTime = 20;
 
@@ -43,8 +45,8 @@ public partial class AiController : CreatureController
         {
             if ((DateTime.Now - _memorizedCreatures[key]).TotalSeconds > MemoryTime)
                 _memorizedCreatures.Remove(key);
-
-            if (key != null)
+            
+            if (key == null)
                 _memorizedCreatures.Remove(key);
         }
 
@@ -70,7 +72,7 @@ public partial class AiController : CreatureController
     protected Creature GetNewTarget()
     {
         var targets = GetMemorizedCreatures()
-            .Where(x => Creature.GetAttitudeTowards(x) == Attitude.Hostile)
+            .Where(x => TeamManager.GetAttitude(Creature, x) == Attitude.Hostile)
             .Where(x => CanSee(x))
             .ToList();
     

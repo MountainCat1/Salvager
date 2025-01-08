@@ -1,11 +1,12 @@
 using System;
 using Godot;
 using Items;
+using Managers;
+using Services;
 
 public partial class Creature : Entity
 {
     public event Action<HitContext> Hit;
-    
     
     [Export] private float Speed = 300f;
     [Export] private float Accel = 7f;
@@ -16,6 +17,7 @@ public partial class Creature : Entity
     public IReadonlyRangedValue Health => _health;
     [Export] public Weapon Weapon { get; private set; }
     [Export] private float MaxHealth { get; set; }
+    [Export] public Teams Team { get; private set; }
     
     private RangedValue _health = null!;
     private NavigationAgent2D _nav = null!;
@@ -55,15 +57,5 @@ public partial class Creature : Entity
     public void StartUsingWeapon(Items.Weapon weapon)
     {
         GD.PushWarning("Creature.StartUsingWeapon(Weapon weapon) is not implemented");
-    }
-
-    public Attitude GetAttitudeTowards(Creature creature)
-    {
-        GD.PushWarning("Creature.GetAttitudeTowards(Creature creature) is not implemented");
-        
-        if(creature == this)
-            return Attitude.Friendly;
-        
-        return Attitude.Hostile; 
     }
 }

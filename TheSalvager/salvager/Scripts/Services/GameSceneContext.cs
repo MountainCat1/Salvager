@@ -1,3 +1,4 @@
+using Managers;
 using Microsoft.Extensions.DependencyInjection;
 using Services.Abstractions;
 
@@ -9,6 +10,7 @@ public partial class GameSceneContext : DIContext
     {
         // Some di registrations
         AddSingletonFromTree<ICreatureManager, CreatureManager>(services);
+        AddSingletonFromTree<ITeamManager, TeamManager>(services);
         AddSingletonFromTree<ISelectionManager, SelectionManager>(services);
         AddSingletonFromTree<ISoundPlayer, SoundPlayer>(services);
         

@@ -1,4 +1,5 @@
 Node2D
+PointLight2D
 Node
 CenterContainer
 Control
@@ -10,5 +11,4 @@ NavigationAgent2D
 AnimatedSprite2D
 CharacterBody2D
 CanvasModulate
-PointLight2D
 LightOccluder2D
