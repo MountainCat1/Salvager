@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://cm3yskpfd8c1r"
+path="res://.godot/imported/laserShoot 1.wav-e848ca265c9d8924eac968e4a80d732e.sample"
+
+[deps]
+
+source_file="res://Audio/SFX/laserShoot 1.wav"
+dest_files=["res://.godot/imported/laserShoot 1.wav-e848ca265c9d8924eac968e4a80d732e.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0

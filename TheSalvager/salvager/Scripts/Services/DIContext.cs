@@ -87,6 +87,13 @@ public partial class DIContext : Node
 
         return services;
     }
+    
+    protected IServiceCollection AddSingletonFromInstanceInScene<TInterface, TImplementation>(IServiceCollection services)
+        where TImplementation : Node, TInterface
+        where TInterface : class
+    {
+        return services.AddSingleton(NodeUtilities.FindRequiredNodeOfType<TImplementation>(this));
+    }
 
     private void InjectDependencies()
     {

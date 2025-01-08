@@ -1,16 +1,20 @@
 using System;
 using Godot;
+using Services;
 
 namespace Items;
 
 public partial class Weapon : Item
 {
+    [Inject] protected ISoundPlayer _soundPlayer = null!;
+    
     [Export] public float Range { get; set; }
 
     [Export] public float BaseAttackSpeed { get; set; }
 
     [Export] public float BaseDamage { get; set; }
     [Export] public float PushFactor { get; set; }
+    [Export] public AudioStream HitSound { get; set; }
 
     public virtual bool AllowToMoveOnCooldown => false;
     public virtual bool NeedsLineOfSight => false;
@@ -45,6 +49,7 @@ public partial class Weapon : Item
         if (target != null)
         {
             target.Damage(hitContext);
+            _soundPlayer.PlaySound(HitSound, Position);
         }
     }
 

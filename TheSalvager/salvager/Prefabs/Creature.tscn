@@ -1,0 +1,80 @@
+[gd_scene load_steps=12 format=3 uid="uid://1afhimeraega"]
+
+[ext_resource type="Script" path="res://Scripts/Creature.cs" id="1_8yle5"]
+[ext_resource type="PackedScene" uid="uid://ba44gwov8c5fj" path="res://Aseprite/Props/Engineer_Walk.aseprite" id="2_gpufh"]
+[ext_resource type="Texture2D" uid="uid://2epe15yqyod7" path="res://light.png" id="3_fr6xd"]
+[ext_resource type="Texture2D" uid="uid://xu71l0wi0jvv" path="res://Aseprite/Props/CreatureShadow.png" id="4_l0587"]
+[ext_resource type="Script" path="res://Scripts/Items/TouchWeapon.cs" id="5_76oyg"]
+[ext_resource type="Script" path="res://Scripts/CreatureControllers/UnitController.cs" id="6_2ns5n"]
+[ext_resource type="AudioStream" uid="uid://bnmh01q7tld2o" path="res://Audio/SFX/bounce.wav" id="6_83hqa"]
+[ext_resource type="Script" path="res://Scripts/UI/HealthBar.cs" id="7_k7cnm"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_12uqa"]
+radius = 7.07107
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bccop"]
+bg_color = Color(0.44359, 0.0203329, 2.40654e-08, 1)
+
+[sub_resource type="Theme" id="Theme_7sygd"]
+ProgressBar/styles/fill = SubResource("StyleBoxFlat_bccop")
+
+[node name="CharacterBody2D" type="CharacterBody2D" node_paths=PackedStringArray("Weapon")]
+position = Vector2(601, 647)
+script = ExtResource("1_8yle5")
+Speed = 150.0
+Accel = 15.0
+Weapon = NodePath("Touch Weapon aka claws")
+MaxHealth = 10.0
+
+[node name="Engineer_Walk" parent="." instance=ExtResource("2_gpufh")]
+position = Vector2(1, -15)
+scale = Vector2(1, 0.937)
+autoplay = "default"
+
+[node name="PointLight2D" type="PointLight2D" parent="Engineer_Walk"]
+position = Vector2(0, 14.9413)
+scale = Vector2(0.883, 1)
+shadow_enabled = true
+shadow_color = Color(0, 0, 0, 1)
+shadow_filter = 1
+shadow_filter_smooth = 0.8
+texture = ExtResource("3_fr6xd")
+texture_scale = 1.9
+
+[node name="Sprite2D" type="Sprite2D" parent="Engineer_Walk"]
+position = Vector2(0, 16.0085)
+texture = ExtResource("4_l0587")
+
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
+debug_enabled = true
+debug_use_custom = true
+debug_path_custom_color = Color(1, 1, 1, 0.113725)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -4)
+shape = SubResource("CircleShape2D_12uqa")
+
+[node name="Touch Weapon aka claws" type="Node2D" parent="."]
+script = ExtResource("5_76oyg")
+Range = 20.0
+BaseAttackSpeed = 1.0
+BaseDamage = 1.0
+PushFactor = 1.0
+HitSound = ExtResource("6_83hqa")
+Name = "Claws"
+
+[node name="Creature Controller" type="Node2D" parent="." node_paths=PackedStringArray("Creature")]
+script = ExtResource("6_2ns5n")
+Creature = NodePath("..")
+
+[node name="ProgressBar" type="ProgressBar" parent="." node_paths=PackedStringArray("_creature")]
+offset_left = -6.0
+offset_top = 1.0
+offset_right = 114.0
+offset_bottom = 28.0
+scale = Vector2(0.1, 0.1)
+theme = SubResource("Theme_7sygd")
+value = 52.51
+show_percentage = false
+script = ExtResource("7_k7cnm")
+_creature = NodePath("..")
