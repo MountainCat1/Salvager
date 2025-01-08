@@ -17,8 +17,6 @@ ProgressBar/styles/fill = SubResource("StyleBoxFlat_bccop")
 [node name="Creature" type="CharacterBody2D"]
 position = Vector2(423, 703)
 script = ExtResource("1_8yle5")
-Speed = 150.0
-Accel = 15.0
 MaxHealth = 10.0
 
 [node name="Sprite2D" type="Sprite2D" parent="."]

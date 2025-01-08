@@ -86,6 +86,7 @@ color = Color(0, 0, 0, 1)
 
 [node name="Soldier" parent="." node_paths=PackedStringArray("Weapon") instance=ExtResource("10_i7j2g")]
 position = Vector2(661, 534)
+_speed = 150.0
 Weapon = NodePath("Claws")
 Team = 1
 
@@ -102,15 +103,16 @@ Range = 15.0
 BaseAttackSpeed = 1.0
 BaseDamage = 1.0
 HitSound = ExtResource("16_eeiia")
-Name = "Claws"
 
 [node name="Creature" parent="." node_paths=PackedStringArray("Weapon") instance=ExtResource("10_i7j2g")]
 position = Vector2(551, 521)
+_speed = 150.0
 Weapon = NodePath("Claws")
 Team = 4
 
 [node name="HellDogAnimation" parent="Creature" instance=ExtResource("12_6r11k")]
 position = Vector2(0, -15)
+autoplay = "default"
 
 [node name="Claws" type="Node2D" parent="Creature"]
 script = ExtResource("15_lyn1y")
@@ -118,4 +120,3 @@ Range = 15.0
 BaseAttackSpeed = 1.0
 BaseDamage = 1.0
 HitSound = ExtResource("16_eeiia")
-Name = "Claws"
