@@ -5,7 +5,7 @@ namespace Utilities;
 
 public static class NodeExtensions
 {
-    public static List<Node> GetAllChildren(this Node inNode, List<Node> array = null)
+    public static List<Node> GetAllChildren(this Node inNode, List<Node>? array = null)
     {
         if (array == null)
             array = new List<Node>();
@@ -20,7 +20,7 @@ public static class NodeExtensions
         return array;
     }
     
-    public static List<Node> GetWithAllChildren(this Node inNode, List<Node> array = null)
+    public static List<Node> GetWithAllChildren(this Node inNode, List<Node>? array = null)
     {
         if (array == null)
             array = new List<Node>();

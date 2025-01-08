@@ -21,7 +21,7 @@ public partial class AiController : CreatureController
     
     private const double MemoryTime = 20;
 
-    private Dictionary<Creature?, DateTime> _memorizedCreatures = new();
+    private Dictionary<Creature, DateTime> _memorizedCreatures = new();
 
     public override void _PhysicsProcess(double delta)
     {
@@ -43,9 +43,6 @@ public partial class AiController : CreatureController
         foreach (var key in keys)
         {
             if ((DateTime.Now - _memorizedCreatures[key]).TotalSeconds > MemoryTime)
-                _memorizedCreatures.Remove(key);
-            
-            if (key == null)
                 _memorizedCreatures.Remove(key);
         }
 

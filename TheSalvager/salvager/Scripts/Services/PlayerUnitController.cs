@@ -8,7 +8,6 @@ public interface IPlayerUnitController
 
 public partial class PlayerUnitController : Node2D, IPlayerUnitController
 {
-    [Inject] private ICreatureManager _creatureManager = null!;
     [Inject] private ISelectionManager _selectionManager = null!;
 
     public override void _Process(double delta)

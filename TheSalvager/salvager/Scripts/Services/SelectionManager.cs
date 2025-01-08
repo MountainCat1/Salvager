@@ -13,7 +13,7 @@ namespace Services
 
     public partial class SelectionManager : Node2D, ISelectionManager
     {
-        public event Action OnSelectionChanged;
+        public event Action? OnSelectionChanged;
         
         [Inject] private readonly ICreatureManager _creatureManager = null!;
         

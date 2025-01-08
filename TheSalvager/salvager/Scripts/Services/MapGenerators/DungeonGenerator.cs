@@ -7,7 +7,7 @@ namespace Services.MapGenerators;
 
 public partial class DungeonGenerator : Node2D, IMapGenerator
 {
-    public event Action MapGenerated;
+    public event Action? MapGenerated;
     
     [Export] private int _seed = 696969;
     // Size of the dungeon grid

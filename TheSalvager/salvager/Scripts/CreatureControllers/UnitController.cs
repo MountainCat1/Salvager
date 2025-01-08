@@ -8,11 +8,9 @@ namespace CreatureControllers;
 
 public partial class UnitController : AiController
 {
-    [Inject] private IMapGenerator _mapGenerator = null!;
-    
     private Vector2? _moveCommandTarget;
     private Creature? _target;
-    private IInteractable _interactionTarget;
+    private IInteractable? _interactionTarget;
 
     private const bool MoveOnAttackCooldown = false; // TODO: This should be a configurable property of the weapon
     
@@ -62,7 +60,7 @@ public partial class UnitController : AiController
         
         if (_target != null)
         {
-            HandleAttackOrMovementToTarget();
+            HandleAttackOrMovementToTarget(_target);
             return;
         }
     }
@@ -110,7 +108,7 @@ public partial class UnitController : AiController
         }
     }
 
-    private void HandleAttackOrMovementToTarget()
+    private void HandleAttackOrMovementToTarget(Creature target)
     {
         var attackContext = CreateAttackContext();
     
@@ -119,21 +117,21 @@ public partial class UnitController : AiController
             return;
         }
     
-        if (Creature.Weapon.NeedsLineOfSight && !CanSee(_target))
+        if (Creature.Weapon.NeedsLineOfSight && !CanSee(target))
         {
-            Creature.NavigationAgent.SetTargetPosition(_target.Position);
+            Creature.NavigationAgent.SetTargetPosition(target.Position);
             Creature.MoveAndSlide();
             
             return;
         }
     
-        if ((Creature.Position.DistanceTo(_target.Position) < Creature.Weapon.Range))
+        if ((Creature.Position.DistanceTo(target.Position) < Creature.Weapon.Range))
         {
             PerformAttack(attackContext);
             return;
         }
     
-        Creature.NavigationAgent.SetTargetPosition(_target.Position);
+        Creature.NavigationAgent.SetTargetPosition(target.Position);
         Creature.MoveAndSlide();
     }
 

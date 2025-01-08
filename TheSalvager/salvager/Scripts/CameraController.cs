@@ -1,8 +1,9 @@
+using System.Diagnostics;
 using Godot;
 
 public partial class CameraController : Camera2D
 {
-    [Export] private Node2D _target; // The target the camera follows
+    [Export] private Node2D? _target; // The target the camera follows
     [Export] private float _followSpeed = 5f; // Speed at which the camera follows the target
     [Export] private float _moveSpeed = 200f; // Speed for manual movement
     [Export] private bool _allowManualControl = true; // Allow manual camera movement with keyboard
@@ -22,6 +23,8 @@ public partial class CameraController : Camera2D
 
     private void FollowTarget(double delta)
     {
+        Debug.Assert(_target != null, "Target is null!");
+        
         // Smoothly move the camera towards the target position
         GlobalPosition = GlobalPosition.Lerp(_target.GlobalPosition, (float)delta * _followSpeed);
     }

@@ -5,16 +5,16 @@ using Services;
 
 public partial class Creature : Entity
 {
-    public event Action<HitContext> Hit;
+    public event Action<HitContext>? Hit;
     
-    [Export] private float Speed = 300f;
-    [Export] private float Accel = 7f;
+    [Export] private float _speed = 300f;
+    [Export] private float _accel = 7f;
     
     public float SightRange { get; set; } = 1500f;
     public NavigationAgent2D NavigationAgent => _nav;
-    public CreatureControllers.CreatureController Controller { get; set; }
+    public CreatureControllers.CreatureController Controller { get; set; } = null!;
     public IReadonlyRangedValue Health => _health;
-    [Export] public Weapon Weapon { get; private set; }
+    [Export] public Weapon? Weapon { get; private set; } 
     [Export] private float MaxHealth { get; set; }
     [Export] public Teams Team { get; private set; }
     
@@ -39,7 +39,7 @@ public partial class Creature : Entity
         Vector2 direction = (_nav.GetNextPathPosition() - GlobalPosition).Normalized();
 
         // Smoothly adjust the velocity towards the target
-        _velocity = _velocity.Lerp(direction * Speed, Accel * (float)delta);
+        _velocity = _velocity.Lerp(direction * _speed, _accel * (float)delta);
 
         Velocity = _velocity;
     }

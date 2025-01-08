@@ -14,7 +14,7 @@ public partial class Weapon : Item
 
     [Export] public float BaseDamage { get; set; }
     [Export] public float PushFactor { get; set; }
-    [Export] public AudioStream HitSound { get; set; }
+    [Export] public AudioStream? HitSound { get; set; }
 
     public virtual bool AllowToMoveOnCooldown => false;
     public virtual bool NeedsLineOfSight => false;
