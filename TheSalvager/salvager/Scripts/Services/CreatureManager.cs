@@ -20,7 +20,7 @@ public partial class CreatureManager : Node2D, ICreatureManager
 
         foreach (Node node in nodes)
         {
-            if (node is Creature creature)
+            if (node is Creature creature && GodotObject.IsInstanceValid(node))
             {
                 creatures.Add(creature);
             }

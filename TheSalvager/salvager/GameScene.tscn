@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=4 uid="uid://1lirgwl83usm"]
+[gd_scene load_steps=17 format=4 uid="uid://1lirgwl83usm"]
 
 [ext_resource type="Script" path="res://Scripts/Services/GameSceneContext.cs" id="1_5hykv"]
 [ext_resource type="Script" path="res://Scripts/Services/GameManager.cs" id="1_kk3iq"]
@@ -15,6 +15,7 @@
 [ext_resource type="Script" path="res://Scripts/Services/TeamManager.cs" id="6_e8em3"]
 [ext_resource type="TileSet" uid="uid://6v5rhdtxlb0v" path="res://TileSets/ShadowTileSet.tres" id="6_oi0ai"]
 [ext_resource type="Script" path="res://Scripts/Services/SpawnerManager.cs" id="8_gpr2f"]
+[ext_resource type="Script" path="res://Scripts/FpsDisplay.cs" id="16_huxca"]
 
 [node name="GameScene" type="Node2D"]
 
@@ -93,3 +94,6 @@ shadow_filter_smooth = 1.5
 [node name="CanvasModulate" type="CanvasModulate" parent="."]
 position = Vector2(-23, -14)
 color = Color(0, 0, 0, 1)
+
+[node name="FPS display" type="Node2D" parent="."]
+script = ExtResource("16_huxca")

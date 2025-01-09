@@ -11,9 +11,14 @@ public partial class UnitController : AiController
     private Vector2? _moveCommandTarget;
     private Creature? _target;
     private IInteractable? _interactionTarget;
+    private NavigationCache _navigationCache = null!;
 
     private const bool MoveOnAttackCooldown = false; // TODO: This should be a configurable property of the weapon
     
+    public void Start()
+    {
+        _navigationCache = new NavigationCache(Creature.NavigationAgent);
+    }
     
     public void SetMoveTarget(Vector2 target)
     {
@@ -39,7 +44,12 @@ public partial class UnitController : AiController
     {
         base._PhysicsProcess(delta);
         
-        Creature.NavigationAgent.SetTargetPosition(Position);
+        if(GodotObject.IsInstanceValid(_target) == false)
+        {
+            _target = null;
+        }
+        
+        _navigationCache.SetTargetPosition(Position);
         
         if (_interactionTarget != null)
         {
@@ -99,7 +109,7 @@ public partial class UnitController : AiController
         
         if (Creature.Position.DistanceTo(_moveCommandTarget.Value) > 5f)
         {
-            Creature.NavigationAgent.SetTargetPosition(_moveCommandTarget.Value);
+            _navigationCache.SetTargetPosition(_moveCommandTarget.Value);
             Creature.MoveAndSlide();
         }
         else
@@ -126,7 +136,7 @@ public partial class UnitController : AiController
     
         if (Creature.Weapon.NeedsLineOfSight && !CanSee(target))
         {
-            Creature.NavigationAgent.SetTargetPosition(target.Position);
+            _navigationCache.SetTargetPosition(target.Position);
             Creature.MoveAndSlide();
             
             return;
@@ -138,7 +148,7 @@ public partial class UnitController : AiController
             return;
         }
     
-        Creature.NavigationAgent.SetTargetPosition(target.Position);
+        _navigationCache.SetTargetPosition(target.Position);
         Creature.MoveAndSlide();
     }
 

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Godot;
 using Items;
 using Services;
 
@@ -32,7 +33,7 @@ public partial class AiController : CreatureController
     {
         return _memorizedCreatures
             .Select(x => x.Key)
-            .Where(x => x != null)
+            .Where(IsInstanceValid)
             .Cast<Creature>()
             .ToList();
     }

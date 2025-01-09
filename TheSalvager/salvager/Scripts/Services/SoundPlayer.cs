@@ -2,6 +2,14 @@ using Godot;
 
 namespace Services;
 
+public enum SoundType
+{
+    Sfx = 1,
+    Music = 2,
+    Ambient = 3,
+    Ui = 4,
+}
+
 public interface ISoundPlayer
 {
     /// <summary>
@@ -11,7 +19,7 @@ public interface ISoundPlayer
     /// <summary>
     /// Play a sound with positional data
     /// </summary>
-    void PlaySound(AudioStream audioStream, Vector2 position);
+    void PlaySound(AudioStream audioStream, Vector2 position, SoundType sfx = SoundType.Sfx);
 }
 
 public partial class SoundPlayer : Node2D, ISoundPlayer
@@ -35,7 +43,7 @@ public partial class SoundPlayer : Node2D, ISoundPlayer
         audioPlayer.Play();
     }
     
-    public void PlaySound(AudioStream audioStream, Vector2 position)
+    public void PlaySound(AudioStream audioStream, Vector2 position, SoundType sfx)
     {
         // Create an AudioStreamPlayer2D for positional audio
         var audioPlayer = new AudioStreamPlayer2D
