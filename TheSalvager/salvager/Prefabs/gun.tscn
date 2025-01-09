@@ -1,0 +1,14 @@
+[gd_scene load_steps=4 format=3 uid="uid://duveqaan83fxm"]
+
+[ext_resource type="Script" path="res://Scripts/Items/ProjectileWeapon.cs" id="1_gk7tl"]
+[ext_resource type="PackedScene" uid="uid://babdwy2qcd7ig" path="res://Prefabs/projectile.tscn" id="2_dhhb0"]
+[ext_resource type="AudioStream" uid="uid://cr2qq6g5bql8n" path="res://Audio/SFX/laserShoot.wav" id="3_hqktq"]
+
+[node name="Gun" type="Node2D"]
+script = ExtResource("1_gk7tl")
+_projectilePrefab = ExtResource("2_dhhb0")
+Range = 700.0
+BaseAttackSpeed = 4.0
+BaseDamage = 1.0
+PushFactor = 100.0
+HitSound = ExtResource("3_hqktq")

@@ -28,6 +28,7 @@ window/size/window_height_override=1080
 window/stretch/mode="viewport"
 window/stretch/aspect="keep_width"
 window/stretch/scale_mode="integer"
+window/vsync/vsync_mode=0
 
 [dotnet]
 

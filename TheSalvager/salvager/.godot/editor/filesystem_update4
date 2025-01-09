@@ -29,3 +29,4 @@ res://Scripts/Items/ProjectileWeapon.cs
 res://Scripts/Items/Projectile.cs
 res://Scripts/FpsDisplay.cs
 res://Prefabs/projectile.tscn
+res://FogNode.cs

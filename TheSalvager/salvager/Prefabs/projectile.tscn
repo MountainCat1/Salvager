@@ -1,0 +1,29 @@
+[gd_scene load_steps=6 format=3 uid="uid://babdwy2qcd7ig"]
+
+[ext_resource type="Script" path="res://Scripts/Items/Projectile.cs" id="1_1l01b"]
+[ext_resource type="AudioStream" uid="uid://c5scyr7ypl03w" path="res://Audio/SFX/shout.wav" id="2_fx6a4"]
+[ext_resource type="Texture2D" uid="uid://2epe15yqyod7" path="res://light.png" id="3_g7yda"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_qacal"]
+radius = 2.0
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_70elo"]
+
+[node name="Projectile" type="Area2D"]
+script = ExtResource("1_1l01b")
+HitSound = ExtResource("2_fx6a4")
+
+[node name="PointLight2D" type="PointLight2D" parent="."]
+color = Color(1, 1, 0.282353, 1)
+energy = 0.56
+range_z_max = 16
+shadow_enabled = true
+texture = ExtResource("3_g7yda")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_qacal")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+modulate = Color(0.788235, 0.670588, 0.184314, 1)
+scale = Vector2(0.005, 0.004)
+texture = SubResource("NoiseTexture2D_70elo")
