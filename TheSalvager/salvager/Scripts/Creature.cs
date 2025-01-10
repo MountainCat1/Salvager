@@ -28,6 +28,12 @@ public partial class Creature : Entity
         _health.ValueChanged += OnHealthChanged;
         
         _nav = GetNode<NavigationAgent2D>("NavigationAgent2D");
+        
+        _nav.VelocityComputed += (velocity) =>
+        {
+            GD.Print("Velocity computed: " + velocity);
+            _velocity = velocity;
+        };
     }
     
     public override void _PhysicsProcess(double delta)
@@ -40,8 +46,19 @@ public partial class Creature : Entity
         Vector2 direction = (_nav.GetNextPathPosition() - GlobalPosition).Normalized();
 
         // Smoothly adjust the velocity towards the target
-        _velocity = _velocity.Lerp(direction * _speed, _accel * (float)delta);
-
+        var newVelocity = _velocity.Lerp(direction * _speed, _accel * (float)delta);
+        
+        if(_nav.AvoidanceEnabled)
+        {
+            _nav.SetVelocity(newVelocity);
+        }
+        else
+        {
+            _velocity = newVelocity;
+        }
+        
+        GD.Print("Velocity: " + _velocity);
+        
         Velocity = _velocity;
     }
 

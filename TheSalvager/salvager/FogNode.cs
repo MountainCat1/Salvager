@@ -47,7 +47,7 @@ public partial class FogNode : Sprite2D
 
 	private void UpdateFogImageTexture()
 	{
-		GD.Print($"{FogImage.GetWidth()} {FogImage.GetHeight()}");
+		// GD.Print($"{FogImage.GetWidth()} {FogImage.GetHeight()}");
 		FogTexture = ImageTexture.CreateFromImage(FogImage);
 		Fog.Texture = FogTexture;
 	}
