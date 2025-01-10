@@ -25,6 +25,8 @@ scale = Vector2(1, 0.937)
 texture = ExtResource("4_l0587")
 
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
+avoidance_enabled = true
+radius = 16.0
 debug_enabled = true
 debug_use_custom = true
 debug_path_custom_color = Color(1, 1, 1, 0.113725)
