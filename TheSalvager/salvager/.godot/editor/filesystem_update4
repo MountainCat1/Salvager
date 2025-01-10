@@ -31,4 +31,3 @@ res://Scripts/Services/SoundPlayer.cs
 res://Scripts/Services/TeamManager.cs
 res://FogNode.cs
 res://Scripts/Items/Item.cs
-res://Scripts/TilemapNavigationBaker.cs

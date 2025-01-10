@@ -76,8 +76,6 @@ z_index = -51
 tile_set = ExtResource("4_ucqn7")
 y_sort_origin = -12
 
-[node name="NavigationRegion2D" type="NavigationRegion2D" parent="MapGenerator/Floor Tile Map Layer"]
-
 [node name="Shadow Map Layer" type="TileMapLayer" parent="MapGenerator"]
 visible = false
 z_index = -49
