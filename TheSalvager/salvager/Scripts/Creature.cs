@@ -31,7 +31,6 @@ public partial class Creature : Entity
         
         _nav.VelocityComputed += (velocity) =>
         {
-            GD.Print("Velocity computed: " + velocity);
             _velocity = velocity;
         };
     }
@@ -56,8 +55,6 @@ public partial class Creature : Entity
         {
             _velocity = newVelocity;
         }
-        
-        GD.Print("Velocity: " + _velocity);
         
         Velocity = _velocity;
     }

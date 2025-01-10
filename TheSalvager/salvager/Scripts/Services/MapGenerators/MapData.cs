@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Godot;
 using Services.Abstractions;
 
@@ -7,7 +8,8 @@ namespace Services.MapGenerators;
 
 public class MapData
 {
-    private readonly Dictionary<Vector2, TileType> _mapData = new();
+    private readonly Dictionary<Vector2I, TileType> _mapData = new();
+    private readonly Dictionary<TileType, ICollection<Vector2>> _tilePositions = new();
     private Vector2 _tileSize;
 
     public MapData(Vector2I gridSize, int[,] grid, Vector2 tileSize)
@@ -18,13 +20,19 @@ public class MapData
             {
                 var tileType = (TileType)grid[x, y];
                 
-                _mapData[new Vector2(x, y)] = tileType;
+                _mapData[new Vector2I(x, y)] = tileType;
+                
+                if (!_tilePositions.ContainsKey(tileType))
+                {
+                    _tilePositions[tileType] = new List<Vector2>();
+                }
+                _tilePositions[tileType].Add(new Vector2(x, y) * tileSize);
             }
         }
         _tileSize = tileSize;
     }
     
-    public TileType GetTileType(Vector2 position)
+    public TileType GetTileType(Vector2I position)
     {
         return _mapData[position];
     }
@@ -42,5 +50,19 @@ public class MapData
         }
 
         return tiles[new Random().Next(0, tiles.Count)] * _tileSize;
+    }
+    
+    public List<Vector2> GetSpreadPositions(Vector2 startPosition, int count, TileType tileType)
+    {
+        // Collect all tiles of the specified type
+        var tiles = _tilePositions[tileType].ToList();
+
+        // Sort the tiles by distance to the start position
+        tiles.Sort((a, b) => 
+            a.DistanceSquaredTo(startPosition).CompareTo(b.DistanceSquaredTo(startPosition)));
+
+        // Return up to the requested count of tiles
+        count = Math.Min(count, tiles.Count);
+        return tiles.GetRange(0, count);
     }
 }
