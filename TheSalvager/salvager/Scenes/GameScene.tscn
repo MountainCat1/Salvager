@@ -1,0 +1,90 @@
+[gd_scene load_steps=18 format=4 uid="uid://1lirgwl83usm"]
+
+[ext_resource type="Script" path="res://Scripts/Services/GameManager.cs" id="2_uly5w"]
+[ext_resource type="PackedScene" uid="uid://cx702ejxllmp" path="res://Prefabs/soldier.tscn" id="3_ka576"]
+[ext_resource type="PackedScene" uid="uid://yu1qbyrjwj60" path="res://Prefabs/hell_dog.tscn" id="4_d234o"]
+[ext_resource type="Script" path="res://Scripts/Services/GameSceneContext.cs" id="5_bwlme"]
+[ext_resource type="Script" path="res://Scripts/Services/SelectionManager.cs" id="6_565gq"]
+[ext_resource type="Script" path="res://Scripts/Services/CreatureManager.cs" id="7_w7mkg"]
+[ext_resource type="Script" path="res://Scripts/Services/PlayerUnitController.cs" id="8_rvcpa"]
+[ext_resource type="Script" path="res://Scripts/Services/SoundPlayer.cs" id="9_hxnls"]
+[ext_resource type="Script" path="res://Scripts/Services/TeamManager.cs" id="10_sh7f4"]
+[ext_resource type="Script" path="res://Scripts/Services/SpawnerManager.cs" id="11_pcqkl"]
+[ext_resource type="Script" path="res://Scripts/Services/InputManager.cs" id="12_3pvtv"]
+[ext_resource type="Script" path="res://Scripts/Services/MapGenerators/DungeonGenerator.cs" id="12_wu46l"]
+[ext_resource type="TileSet" uid="uid://ui7cvii4tb1" path="res://TileSets/FloorTileSet.tres" id="13_5blfm"]
+[ext_resource type="TileSet" uid="uid://6v5rhdtxlb0v" path="res://TileSets/ShadowTileSet.tres" id="14_trnjf"]
+[ext_resource type="TileSet" uid="uid://cktw1glu5e4pq" path="res://TileSets/SpaceStationSides.tres" id="15_s2k6c"]
+[ext_resource type="Script" path="res://Scripts/CameraController.cs" id="16_c6duj"]
+[ext_resource type="Script" path="res://Scripts/FpsDisplay.cs" id="17_41rqw"]
+
+[node name="GameScene" type="Node2D"]
+
+[node name="GameManager" type="Node2D" parent="."]
+script = ExtResource("2_uly5w")
+_playerUnitPrefab = ExtResource("3_ka576")
+_enemyUnitPrefab = ExtResource("4_d234o")
+
+[node name="GameSceneContext" type="Node2D" parent="."]
+script = ExtResource("5_bwlme")
+
+[node name="Selection Manager" type="Node2D" parent="GameSceneContext"]
+z_index = 10
+script = ExtResource("6_565gq")
+
+[node name="Creature Manager" type="Node2D" parent="GameSceneContext"]
+script = ExtResource("7_w7mkg")
+
+[node name="Player Unit Manager" type="Node2D" parent="GameSceneContext"]
+script = ExtResource("8_rvcpa")
+
+[node name="Sound Player" type="Node2D" parent="GameSceneContext"]
+script = ExtResource("9_hxnls")
+
+[node name="Team Manager" type="Node2D" parent="GameSceneContext"]
+script = ExtResource("10_sh7f4")
+
+[node name="SpawnerManager" type="Node2D" parent="GameSceneContext"]
+script = ExtResource("11_pcqkl")
+
+[node name="Node2D" type="Node2D" parent="GameSceneContext"]
+script = ExtResource("12_3pvtv")
+
+[node name="MapGenerator" type="Node2D" parent="." node_paths=PackedStringArray("_wallTileMap", "_floorTileMap", "_shadowTileMap")]
+position = Vector2(0, -1)
+script = ExtResource("12_wu46l")
+_wallTileMap = NodePath("Wall Tile Map Layer")
+_floorTileMap = NodePath("Floor Tile Map Layer")
+_shadowTileMap = NodePath("Shadow Map Layer")
+_run = true
+
+[node name="Floor Tile Map Layer" type="TileMapLayer" parent="MapGenerator"]
+z_index = -51
+tile_set = ExtResource("13_5blfm")
+y_sort_origin = -12
+
+[node name="Shadow Map Layer" type="TileMapLayer" parent="MapGenerator"]
+visible = false
+z_index = -49
+tile_map_data = PackedByteArray("AAD2//j/AAAHAAAAAAD2//n/AAAHAAIAAAD0//j/AAAGAAAAAAD1//j/AAAGAAAAAADy//j/AAAGAAAAAADz//j/AAAGAAAAAADy//n/AAAGAAIAAADv//n/AAAGAAIAAADv//j/AAAGAAAAAADw//n/AAAGAAIAAADu//n/AAAFAAEAAADy//v/AAAGAAQAAADz//v/AAAGAAYAAAD2//v/AAADAAUAAAD1//v/AAAGAAYAAAD0//v/AAAGAAYAAADx//v/AAAGAAYAAADw//v/AAAGAAYAAAD1//n/AAAGAAIAAAD0//n/AAAGAAIAAADz//n/AAAGAAIAAADx//n/AAAGAAIAAADx//j/AAAGAAAAAADw//j/AAAGAAAAAADv//v/AAAGAAQAAADu//v/AAAFAAYAAADu//r/AAAHAAUAAADu//j/AAAFAAAAAAD6//n/AAAHAAIAAAD5//n/AAAGAAIAAAD4//n/AAAFAAIAAAD6//j/AAAHAAAAAAD5//j/AAAGAAAAAAD4//j/AAAFAAAAAAAIAAIAAQAAAAAAAAAJAAIAAQAAAAAAAADy/wMAAQAAAAAAAADz/wMAAQAAAAAAAAD0/wMAAQAAAAAAAAD1/wMAAQAAAAAAAAD2/wMAAQAAAAAAAAD4/wMAAQAAAAAAAAD5/wQAAQAAAAAAAAD6/wUAAQAAAAAAAAD7/wUAAQAAAAAAAAD8/wUAAQAAAAAAAAD9/wUAAQAAAAAAAAD9/wQAAQAAAAAAAAD+/wQAAQAAAAAAAAD+/wUAAQAAAAAAAAA=")
+tile_set = ExtResource("14_trnjf")
+y_sort_origin = -11
+
+[node name="Wall Tile Map Layer" type="TileMapLayer" parent="MapGenerator"]
+z_index = -50
+tile_set = ExtResource("15_s2k6c")
+y_sort_origin = -10
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(684, 428)
+position_smoothing_enabled = true
+rotation_smoothing_enabled = true
+script = ExtResource("16_c6duj")
+_moveSpeed = 1000.0
+
+[node name="CanvasModulate" type="CanvasModulate" parent="."]
+position = Vector2(-23, -14)
+color = Color(0, 0, 0, 1)
+
+[node name="FPS display" type="Node2D" parent="."]
+script = ExtResource("17_41rqw")

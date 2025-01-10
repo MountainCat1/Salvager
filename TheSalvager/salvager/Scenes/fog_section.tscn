@@ -1,0 +1,19 @@
+[gd_scene load_steps=4 format=3 uid="uid://uga26cwrodxd"]
+
+[ext_resource type="Script" path="res://FogNode.cs" id="1_vla7w"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_8c62t"]
+blend_mode = 3
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_f6u7y"]
+blend_mode = 3
+
+[node name="Fog Section" type="Sprite2D"]
+material = SubResource("CanvasItemMaterial_8c62t")
+centered = false
+script = ExtResource("1_vla7w")
+
+[node name="Fog" type="Sprite2D" parent="."]
+material = SubResource("CanvasItemMaterial_f6u7y")
+position = Vector2(0, 1)
+centered = false

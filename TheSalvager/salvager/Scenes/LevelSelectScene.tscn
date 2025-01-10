@@ -1,0 +1,28 @@
+[gd_scene load_steps=3 format=3 uid="uid://dbc7krg1updj3"]
+
+[ext_resource type="PackedScene" uid="uid://cobb6q1chuhua" path="res://Scenes/MenuUIScene.tscn" id="2_kg8ay"]
+
+[sub_resource type="CSharpScript" id="CSharpScript_4s3ot"]
+script/source = "using Godot;
+using System;
+
+public partial class LevelSelectScene : Node2D
+{
+	// Called when the node enters the scene tree for the first time.
+	public override void _Ready()
+	{
+	}
+
+	// Called every frame. 'delta' is the elapsed time since the previous frame.
+	public override void _Process(double delta)
+	{
+	}
+}
+"
+
+[node name="LevelSelectScene" type="Node2D"]
+script = SubResource("CSharpScript_4s3ot")
+
+[node name="Node" type="Node" parent="."]
+
+[node name="Control" parent="." instance=ExtResource("2_kg8ay")]
