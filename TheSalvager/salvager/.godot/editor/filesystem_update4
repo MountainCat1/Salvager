@@ -31,3 +31,10 @@ res://Scripts/Services/SoundPlayer.cs
 res://Scripts/Services/TeamManager.cs
 res://FogNode.cs
 res://Scripts/Items/Item.cs
+res://Scenes/LevelSelectScene.tscn
+res://Scenes/GameScene.tscn
+res://Scenes/LevelSelectScene.cs
+res://Scenes/MenuUIScenel.tscn
+res://Scenes/LevelSelectUI.cs
+res://Scenes/MenuUIScene.tscn
+res://Scripts/Services/InputManager.cs
