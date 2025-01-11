@@ -18,7 +18,7 @@ public partial class PlayerUnitController : Node2D, IPlayerUnitController
     public override void _Process(double delta)
     {
         base._Process(delta);
-
+        
         if (Input.IsActionJustPressed("move"))
         {
             var selectedCreatures = _selectionManager.SelectedCreatures;
@@ -35,6 +35,7 @@ public partial class PlayerUnitController : Node2D, IPlayerUnitController
             GD.Print($"Moving selected creatures: {string.Join(", ", selectedCreatures)}");
         }
     }
+
 
     private List<Vector2> GetSpreadPositions(Vector2 startPosition, int selectedCreaturesCount)
     {

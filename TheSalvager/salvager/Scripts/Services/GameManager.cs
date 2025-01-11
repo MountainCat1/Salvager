@@ -22,12 +22,12 @@ public partial class GameManager : Node2D
         
         _spawnerManager.SpawnCreature(_playerUnitPrefab, map.GetRandomPositionTileOfType(TileType.Floor));
         _spawnerManager.SpawnCreature(_playerUnitPrefab, map.GetRandomPositionTileOfType(TileType.Floor));
-        _spawnerManager.SpawnCreature(_enemyUnitPrefab, map.GetRandomPositionTileOfType(TileType.Floor));
-        _spawnerManager.SpawnCreature(_enemyUnitPrefab, map.GetRandomPositionTileOfType(TileType.Floor));
-        _spawnerManager.SpawnCreature(_enemyUnitPrefab, map.GetRandomPositionTileOfType(TileType.Floor));
-        _spawnerManager.SpawnCreature(_enemyUnitPrefab, map.GetRandomPositionTileOfType(TileType.Floor));
-        _spawnerManager.SpawnCreature(_enemyUnitPrefab, map.GetRandomPositionTileOfType(TileType.Floor));
-        _spawnerManager.SpawnCreature(_enemyUnitPrefab, map.GetRandomPositionTileOfType(TileType.Floor));
+        // _spawnerManager.SpawnCreature(_enemyUnitPrefab, map.GetRandomPositionTileOfType(TileType.Floor));
+        // _spawnerManager.SpawnCreature(_enemyUnitPrefab, map.GetRandomPositionTileOfType(TileType.Floor));
+        // _spawnerManager.SpawnCreature(_enemyUnitPrefab, map.GetRandomPositionTileOfType(TileType.Floor));
+        // _spawnerManager.SpawnCreature(_enemyUnitPrefab, map.GetRandomPositionTileOfType(TileType.Floor));
+        // _spawnerManager.SpawnCreature(_enemyUnitPrefab, map.GetRandomPositionTileOfType(TileType.Floor));
+        // _spawnerManager.SpawnCreature(_enemyUnitPrefab, map.GetRandomPositionTileOfType(TileType.Floor));
     }
 
     public override void _Process(double delta)

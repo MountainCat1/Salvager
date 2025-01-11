@@ -1,3 +1,4 @@
+using Constants;
 using Godot;
 
 namespace CreatureControllers;
@@ -27,7 +28,7 @@ public partial class CreatureController : Node2D
         {
             From = startPoint,
             To = endPoint,
-            CollisionMask = CollisionMasks.Walls
+            CollisionMask = (uint)CollisionMasks.Walls,
         };
         var result = spaceState.IntersectRay(query);
 
