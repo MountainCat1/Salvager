@@ -7,9 +7,14 @@ using Services.Abstractions;
 
 namespace Services;
 
-public partial class InputManager : Node2D
+public interface IInputManager
 {
-    public Action ClickedOnCharacter;
+    event Action<Entity> ClickedEntity;
+}
+
+public partial class InputManager : Node2D, IInputManager
+{
+    public event Action<Entity> ClickedEntity;
 
     public override void _Ready()
     {
@@ -36,8 +41,7 @@ public partial class InputManager : Node2D
     public override void _Input(InputEvent @event)
     {
         // Check if the input is a left mouse button click
-        if (@event is InputEventMouseButton mouseEvent && mouseEvent.Pressed &&
-            mouseEvent.ButtonIndex == MouseButton.Left)
+        if (@event is InputEventMouseButton mouseEvent && mouseEvent.Pressed)
         {
             // Get the clicked node under the mouse
             Node clickedNode = GetNodeUnderMouse();
@@ -47,7 +51,7 @@ public partial class InputManager : Node2D
             }
         }
     }
-    
+
     private Node GetNodeUnderMouse()
     {
         // Get the viewport and mouse position
@@ -69,9 +73,29 @@ public partial class InputManager : Node2D
         foreach (var dic in result)
         {
             i++;
-            foreach (var dicE in dic)
+
+            var go = dic["collider"].AsGodotObject();
+
+
+            var node = go as Node2D;
+            if (node == null)
             {
-                GD.Print($"{i} - {dicE.Key}: {dicE.Value}");
+                GD.Print($"Godot object: {go}");
+                continue;
+            }
+
+
+            var entity = node as Entity;
+            if (entity == null)
+            {
+                GD.Print($"Node2D: {node}");
+                continue;
+            }
+
+            if (entity != null)
+            {
+                GD.Print($"Entity: {entity}");
+                ClickedEntity?.Invoke(entity);
             }
         }
 

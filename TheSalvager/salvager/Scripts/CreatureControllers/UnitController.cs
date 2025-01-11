@@ -1,8 +1,6 @@
 using System.Diagnostics;
 using Godot;
 using Items;
-using Services;
-using Services.Abstractions;
 
 namespace CreatureControllers;
 
@@ -38,8 +36,7 @@ public partial class UnitController : AiController
                 break;
         }
     }
-
-
+    
     public override void _PhysicsProcess(double delta)
     {
         base._PhysicsProcess(delta);
@@ -53,7 +50,7 @@ public partial class UnitController : AiController
         
         if (_interactionTarget != null)
         {
-            // HandleInteraction();
+            HandleInteraction(delta);
             return;
         }
 
@@ -73,34 +70,38 @@ public partial class UnitController : AiController
             HandleAttackOrMovementToTarget(_target);
             return;
         }
+        
     }
 
-    // private void HandleInteraction()
-    // {
-    //     if (!_interactionTarget.CanInteract(Creature))
-    //     {
-    //         _interactionTarget = null;
-    //         return;
-    //     }
-    //
-    //     if (Vector2.Distance(Creature.transform.position, _interactionTarget.Position) < Creature.InteractionRange)
-    //     {
-    //         var interaction = Creature.Interact(_interactionTarget);
-    //
-    //         if (interaction.Status == InteractionStatus.Created)
-    //         {
-    //             interaction.Completed += () => { _interactionTarget = null; };
-    //
-    //             interaction.Canceled += () => { _interactionTarget = null; };
-    //         }
-    //
-    //         return;
-    //     }
-    //     else
-    //     {
-    //         SetMovementTarget(_interactionTarget.Position);
-    //     }
-    // }
+    private void HandleInteraction(double delta)
+    {
+        Debug.Assert(_interactionTarget != null, nameof(_interactionTarget) + " != null");
+        
+        if (!_interactionTarget.CanInteract(Creature))
+        {
+            _interactionTarget = null;
+            return;
+        }
+    
+        if (Creature.Position.DistanceTo(_interactionTarget.Position) < Creature.InteractionRange)
+        {
+            var interaction = Creature.Interact(_interactionTarget, delta);
+    
+            if (interaction.Status == InteractionStatus.Created)
+            {
+                interaction.Completed += () => { _interactionTarget = null; };
+    
+                interaction.Canceled += () => { _interactionTarget = null; };
+            }
+    
+            return;
+        }
+        else
+        {
+            SetMoveTarget(_interactionTarget.Position);
+            HandleMovementToTarget();
+        }
+    }
 
 
     private void HandleMovementToTarget()

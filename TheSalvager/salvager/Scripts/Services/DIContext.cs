@@ -18,7 +18,7 @@ public interface IDIContext
 {
     ServiceProvider? Container { get; }
     public void Inject<T>(T injectionTarget);
-    public void FullInject<T> (T injectionTarget) where T : Node;
+    public void FullInject<T>(T injectionTarget) where T : Node;
 }
 
 public partial class DIContext : Node, IDIContext
@@ -42,7 +42,17 @@ public partial class DIContext : Node, IDIContext
 
         Container = services.BuildServiceProvider();
 
-        InjectDependencies();
+
+        try
+        {
+            InjectDependencies();
+        }
+        catch (Exception e)
+        {
+            GD.PrintErr($"ERROR ACCRUED WHILE INJECTING DEPENDENCIES: {e.Message}");
+            GD.PrintErr($"{e.StackTrace}");
+            throw;
+        }
 
         GD.Print("SceneContext DI container setup!");
     }
@@ -62,7 +72,7 @@ public partial class DIContext : Node, IDIContext
     public void Inject<T>(T injectionTarget)
     {
         Debug.Assert(injectionTarget != null, nameof(injectionTarget) + " != null");
-        
+
         var fields = injectionTarget.GetType()
             .GetFields(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance)
             .Where(f => f.GetCustomAttributes(typeof(InjectAttribute), false).Any());
@@ -90,7 +100,7 @@ public partial class DIContext : Node, IDIContext
     public void FullInject<T>(T injectionTarget) where T : Node
     {
         var nodes = injectionTarget.GetWithAllChildren();
-        
+
         foreach (var node in nodes)
         {
             Inject(node);
@@ -145,7 +155,7 @@ public partial class DIContext : Node, IDIContext
         where TInterface : class
     {
         TImplementation instance = NodeUtilities.FindRequiredNodeOfType<TImplementation>(this);
-        
+
         return services.AddSingleton<TInterface>(instance);
     }
 
@@ -173,11 +183,11 @@ public partial class DIContext : Node, IDIContext
             InvokeStartMethod(node);
         }
     }
-    
+
     private void InvokeStartMethod<T>(T target)
     {
         Debug.Assert(target != null, nameof(target) + " != null");
-        
+
         var startMethod = target.GetType().GetMethod("Start",
             BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance);
         startMethod?.Invoke(target, null);

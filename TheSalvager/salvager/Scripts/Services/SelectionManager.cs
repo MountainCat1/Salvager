@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using CreatureControllers;
 using Godot;
 
 namespace Services
@@ -9,6 +10,7 @@ namespace Services
     {
         public event Action OnSelectionChanged;
         public List<Creature> SelectedCreatures { get; }
+        public List<UnitController> SelectedCreaturesControllers { get; }
     }
 
     public partial class SelectionManager : Node2D, ISelectionManager
@@ -18,6 +20,8 @@ namespace Services
         [Inject] private readonly ICreatureManager _creatureManager = null!;
         
         public List<Creature> SelectedCreatures { get; private set; } = new List<Creature>();
+        public List<UnitController> SelectedCreaturesControllers => SelectedCreatures
+            .Select(x => x.Controller as UnitController ?? throw new InvalidCastException()).ToList();
 
         private Vector2 _selectionStart;
         private Vector2 _selectionEnd;

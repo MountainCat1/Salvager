@@ -1,11 +1,13 @@
 using System;
 using Godot;
 using Items;
+using Microsoft.VisualBasic;
 using Services;
 
 public partial class Creature : Entity
 {
     public event Action<HitContext>? Hit;
+    public event Action<CreatureInteraction>? Interacted;
     
     [Export] private float _speed = 300f;
     [Export] private float _accel = 7f;
@@ -17,7 +19,8 @@ public partial class Creature : Entity
     [Export] public Weapon? Weapon { get; private set; } 
     [Export] private float MaxHealth { get; set; }
     [Export] public Teams Team { get; private set; }
-    
+    [Export] public float InteractionRange { get; set; } = 30f;
+
     private RangedValue _health = null!;
     private NavigationAgent2D _nav = null!;
     private Vector2 _velocity = Vector2.Zero;
@@ -81,4 +84,10 @@ public partial class Creature : Entity
         }
     }
 
+    public CreatureInteraction Interact(IInteractable interactionTarget, double timeDelta)
+    {
+        var interaction = interactionTarget.Interact(this, timeDelta);
+        Interacted?.Invoke(interaction);
+        return interaction;
+    }
 }

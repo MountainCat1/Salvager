@@ -1,14 +1,14 @@
+CollisionShape2D
+CharacterBody2D
+Sprite2D
 Node2D
 VBoxContainer
 Button
 ColorRect
 Node
 Control
-Sprite2D
 AnimatedSprite2D
-CollisionShape2D
 Area2D
 PointLight2D
 CenterContainer
 ProgressBar
-NavigationRegion2D
