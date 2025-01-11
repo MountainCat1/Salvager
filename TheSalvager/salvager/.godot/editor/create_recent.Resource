@@ -1,2 +1,4 @@
+JSON
+Resource
 SpriteFrames
 TileSet

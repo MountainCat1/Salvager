@@ -16,7 +16,8 @@ public partial class GameSceneContext : DIContext
         AddSingletonFromTree<ISpawnerManager, SpawnerManager>(services);
         AddSingletonFromTree<ICameraShakeService, CameraShakeService>(services);
         AddSingletonFromTree<IInputManager, InputManager>(services);
-        
+
+        AddSingletonFromInstanceInScene<IRoomDecorator, RoomDecorator>(services);
         AddSingletonFromInstanceInScene<IMapGenerator, DungeonGenerator>(services);
     }
 }

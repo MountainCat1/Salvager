@@ -11,4 +11,10 @@
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Scripts\Services\MapGenerators\Rooms\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Data\RoomData\TerminalRoom.json" />
+  </ItemGroup>
 </Project>

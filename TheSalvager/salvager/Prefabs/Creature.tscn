@@ -1,7 +1,8 @@
-[gd_scene load_steps=10 format=3 uid="uid://1afhimeraega"]
+[gd_scene load_steps=11 format=3 uid="uid://1afhimeraega"]
 
 [ext_resource type="Script" path="res://Scripts/Creature.cs" id="1_8yle5"]
 [ext_resource type="Texture2D" uid="uid://xu71l0wi0jvv" path="res://Aseprite/Props/CreatureShadow.png" id="4_l0587"]
+[ext_resource type="Script" path="res://Scripts/UI/InteractionProgressBar.cs" id="5_hr3py"]
 [ext_resource type="Script" path="res://Scripts/CreatureControllers/UnitController.cs" id="6_2ns5n"]
 [ext_resource type="Script" path="res://Scripts/UI/HealthBar.cs" id="7_k7cnm"]
 
@@ -49,6 +50,7 @@ script = ExtResource("6_2ns5n")
 Creature = NodePath("..")
 
 [node name="HealthBar" type="ProgressBar" parent="." node_paths=PackedStringArray("_creature")]
+z_index = 10
 offset_left = -6.0
 offset_top = 1.0
 offset_right = 114.0
@@ -61,6 +63,7 @@ script = ExtResource("7_k7cnm")
 _creature = NodePath("..")
 
 [node name="Progress Bar" type="ProgressBar" parent="." node_paths=PackedStringArray("_creature")]
+z_index = 10
 offset_left = -6.0
 offset_top = -11.0
 offset_right = 114.0
@@ -69,5 +72,5 @@ scale = Vector2(0.1, 0.1)
 theme = SubResource("Theme_53mp8")
 value = 52.51
 show_percentage = false
-script = ExtResource("7_k7cnm")
+script = ExtResource("5_hr3py")
 _creature = NodePath("..")

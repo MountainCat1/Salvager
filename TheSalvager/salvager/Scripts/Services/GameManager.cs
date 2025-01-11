@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using Godot;
 using Services.Abstractions;
+using Utilities;
 
 namespace Services;
 
@@ -37,6 +38,11 @@ public partial class GameManager : Node2D
         if (Input.IsActionJustPressed("change_fps"))
         {
             Engine.MaxFps = Engine.MaxFps == 0 ? 120 : 0;    
+        }
+        
+        if (Input.IsActionJustPressed("cheat_vision"))
+        {
+            NodeUtilities.FindRequiredNodeOfType<CanvasModulate>(this).Color = new Color(1, 1, 1, 1f);
         }
         
     }

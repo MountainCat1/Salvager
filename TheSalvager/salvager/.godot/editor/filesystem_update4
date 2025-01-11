@@ -39,3 +39,8 @@ res://Prefabs/creature.tscn
 res://Prefabs/soldier.tscn
 res://Prefabs/gun.tscn
 res://Prefabs/projectile.tscn
+res://Scripts/Services/MapGenerators/RoomDecorator.cs
+res://Scripts/Services/MapGenerators/RoomBlueprint.cs
+res://Prefabs/new_resource.tres
+res://Prefabs/ControlRoom.tres
+res://Prefabs/terminal.tscn

@@ -1,0 +1,32 @@
+[gd_scene load_steps=5 format=3 uid="uid://c2ey506fi8uyi"]
+
+[ext_resource type="Script" path="res://Scripts/Interactable.cs" id="1_m25hq"]
+[ext_resource type="PackedScene" uid="uid://b1l63a2gt8ba1" path="res://Aseprite/Props/Computer.aseprite" id="2_4l3yp"]
+[ext_resource type="Texture2D" uid="uid://xu71l0wi0jvv" path="res://Aseprite/Props/CreatureShadow.png" id="3_18xx1"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_a3tix"]
+size = Vector2(13, 11)
+
+[node name="Terminal" type="CharacterBody2D"]
+position = Vector2(108, 114)
+collision_layer = 4
+collision_mask = 7
+script = ExtResource("1_m25hq")
+
+[node name="Computer" parent="." instance=ExtResource("2_4l3yp")]
+z_index = 1
+position = Vector2(0, -16)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(1.5, -5.5)
+shape = SubResource("RectangleShape2D_a3tix")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(-2, -4.72937e-11)
+scale = Vector2(1, 0.937)
+texture = ExtResource("3_18xx1")
+
+[node name="Sprite2D" type="Sprite2D" parent="Sprite2D"]
+position = Vector2(7, -4.72937e-11)
+scale = Vector2(1, 0.937)
+texture = ExtResource("3_18xx1")
