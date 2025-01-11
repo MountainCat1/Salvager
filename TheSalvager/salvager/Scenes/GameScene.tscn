@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=4 uid="uid://1lirgwl83usm"]
+[gd_scene load_steps=20 format=4 uid="uid://1lirgwl83usm"]
 
 [ext_resource type="Script" path="res://Scripts/Services/GameManager.cs" id="2_uly5w"]
 [ext_resource type="PackedScene" uid="uid://cx702ejxllmp" path="res://Prefabs/soldier.tscn" id="3_ka576"]
@@ -11,12 +11,14 @@
 [ext_resource type="Script" path="res://Scripts/Services/TeamManager.cs" id="10_sh7f4"]
 [ext_resource type="Script" path="res://Scripts/Services/SpawnerManager.cs" id="11_pcqkl"]
 [ext_resource type="Script" path="res://Scripts/Services/InputManager.cs" id="12_3pvtv"]
+[ext_resource type="Script" path="res://Scripts/Services/CameraShakeService.cs" id="12_8gox6"]
 [ext_resource type="Script" path="res://Scripts/Services/MapGenerators/DungeonGenerator.cs" id="12_wu46l"]
 [ext_resource type="TileSet" uid="uid://ui7cvii4tb1" path="res://TileSets/FloorTileSet.tres" id="13_5blfm"]
 [ext_resource type="TileSet" uid="uid://6v5rhdtxlb0v" path="res://TileSets/ShadowTileSet.tres" id="14_trnjf"]
 [ext_resource type="TileSet" uid="uid://cktw1glu5e4pq" path="res://TileSets/SpaceStationSides.tres" id="15_s2k6c"]
 [ext_resource type="Script" path="res://Scripts/CameraController.cs" id="16_c6duj"]
 [ext_resource type="Script" path="res://Scripts/FpsDisplay.cs" id="17_41rqw"]
+[ext_resource type="Script" path="res://Scripts/CameraShake.cs" id="19_rrul5"]
 
 [node name="GameScene" type="Node2D"]
 
@@ -50,9 +52,13 @@ script = ExtResource("11_pcqkl")
 [node name="Node2D" type="Node2D" parent="GameSceneContext"]
 script = ExtResource("12_3pvtv")
 
+[node name="CameraShakeService" type="Node2D" parent="GameSceneContext"]
+script = ExtResource("12_8gox6")
+
 [node name="MapGenerator" type="Node2D" parent="." node_paths=PackedStringArray("_wallTileMap", "_floorTileMap", "_shadowTileMap")]
 position = Vector2(0, -1)
 script = ExtResource("12_wu46l")
+_seed = 0
 _wallTileMap = NodePath("Wall Tile Map Layer")
 _floorTileMap = NodePath("Floor Tile Map Layer")
 _shadowTileMap = NodePath("Shadow Map Layer")
@@ -75,16 +81,23 @@ z_index = -50
 tile_set = ExtResource("15_s2k6c")
 y_sort_origin = -10
 
-[node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2(684, 428)
-position_smoothing_enabled = true
-rotation_smoothing_enabled = true
-script = ExtResource("16_c6duj")
-_moveSpeed = 1000.0
-
 [node name="CanvasModulate" type="CanvasModulate" parent="."]
 position = Vector2(-23, -14)
 color = Color(0, 0, 0, 1)
 
 [node name="FPS display" type="Node2D" parent="."]
 script = ExtResource("17_41rqw")
+
+[node name="CameraControl" type="Node2D" parent="."]
+script = ExtResource("16_c6duj")
+_moveSpeed = 600.0
+
+[node name="CameraShake" type="Node2D" parent="CameraControl"]
+script = ExtResource("19_rrul5")
+ShakeMultiplier = 20.0
+ShakeDecreaseMultiplier = 1.0
+
+[node name="Camera2D" type="Camera2D" parent="CameraControl/CameraShake"]
+position = Vector2(684, 428)
+position_smoothing_enabled = true
+rotation_smoothing_enabled = true

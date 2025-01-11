@@ -11,6 +11,8 @@ public partial class ProjectileWeapon : Weapon
     [Export] private PackedScene _projectilePrefab = null!;
     [Export] private float _projectileSpeed = 400f;
 
+    [Export] public AudioStream? AttackSound { get; set; }
+    
     protected override void Attack(AttackContext ctx)
     {
         var direction = ctx.Direction;
@@ -40,6 +42,9 @@ public partial class ProjectileWeapon : Weapon
         projectile.Hit += OnProjectileHit;
 
         projectile.Launch(ctx);
+        
+        if(AttackSound != null)
+            SoundPlayer.PlaySound(AttackSound, ctx.Attacker.Position);
     }
 
     private void OnProjectileHit(Creature? hitCreature, AttackContext attackCtx)

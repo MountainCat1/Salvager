@@ -34,7 +34,7 @@ public partial class DungeonGenerator : Node2D, IMapGenerator
 
     public override void _Ready()
     {
-        _random = new Random(_seed);
+        _random = _seed == 0 ? new Random() : new Random(_seed);
         
         LogTileSetInfo(_wallTileMap, "WALL");
         LogTileSetInfo(_floorTileMap, "FLOOR");

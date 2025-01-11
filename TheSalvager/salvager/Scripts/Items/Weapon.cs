@@ -6,7 +6,8 @@ namespace Items;
 
 public partial class Weapon : Item
 {
-    [Inject] protected ISoundPlayer _soundPlayer = null!;
+    [Inject] protected ISoundPlayer SoundPlayer = null!;
+    [Inject] protected ICameraShakeService CameraShakeService = null!;
 
     [Export] public float Range { get; set; }
 
@@ -32,6 +33,12 @@ public partial class Weapon : Item
         _lastAttackTime = DateTime.Now;
 
         Attack(ctx);
+        OnAttackPerformed(ctx);
+    }
+
+    private void OnAttackPerformed(AttackContext ctx)
+    {
+        CameraShakeService.Shake(0.5f);
     }
 
     public void ContinuousAttack(AttackContext ctx)
@@ -51,7 +58,7 @@ public partial class Weapon : Item
         target.Damage(hitContext);
         
         if(HitSound != null)
-            _soundPlayer.PlaySound(HitSound, target.Position);
+            SoundPlayer.PlaySound(HitSound, target.Position);
     }
 
     protected Vector2 CalculatePushForce(Creature target)

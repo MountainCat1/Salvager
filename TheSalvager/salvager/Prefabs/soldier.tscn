@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://cx702ejxllmp"]
+[gd_scene load_steps=9 format=3 uid="uid://cx702ejxllmp"]
 
 [ext_resource type="PackedScene" uid="uid://1afhimeraega" path="res://Prefabs/creature.tscn" id="1_tt244"]
 [ext_resource type="PackedScene" uid="uid://c6t0thljq56dm" path="res://Prefabs/Weapons/claws.tscn" id="2_8o5ie"]
@@ -6,7 +6,8 @@
 [ext_resource type="PackedScene" uid="uid://ba44gwov8c5fj" path="res://Aseprite/Props/Engineer_Walk.aseprite" id="2_nhpve"]
 [ext_resource type="PackedScene" uid="uid://babdwy2qcd7ig" path="res://Prefabs/projectile.tscn" id="3_5nxaj"]
 [ext_resource type="AudioStream" uid="uid://cr2qq6g5bql8n" path="res://Audio/SFX/laserShoot.wav" id="4_a5a8y"]
-[ext_resource type="Texture2D" uid="uid://2epe15yqyod7" path="res://light.png" id="4_w5n18"]
+[ext_resource type="Texture2D" uid="uid://bc6pc15b5b535" path="res://light32.png" id="7_4up1l"]
+[ext_resource type="Script" path="res://Scripts/FlashlightAnimation.cs" id="8_kkohi"]
 
 [node name="Creature" node_paths=PackedStringArray("Weapon") instance=ExtResource("1_tt244")]
 Weapon = NodePath("Gun")
@@ -15,6 +16,7 @@ Team = 1
 [node name="Gun" type="Node2D" parent="." index="0"]
 script = ExtResource("2_kjikc")
 _projectilePrefab = ExtResource("3_5nxaj")
+AttackSound = ExtResource("4_a5a8y")
 Range = 700.0
 BaseAttackSpeed = 4.0
 BaseDamage = 1.0
@@ -28,7 +30,13 @@ z_index = 5
 position = Vector2(0, -16)
 
 [node name="PointLight2D" type="PointLight2D" parent="." index="8"]
-energy = 0.63
+range_z_min = -64
 range_z_max = 128
 shadow_enabled = true
-texture = ExtResource("4_w5n18")
+texture = ExtResource("7_4up1l")
+texture_scale = 2.0
+script = ExtResource("8_kkohi")
+_flickeringSpeed = 10.0
+_flickerMax = 0.2
+_offsetSpeed = 5.0
+_offsetMax = 0.5
