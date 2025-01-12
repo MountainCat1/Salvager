@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=4 uid="uid://1lirgwl83usm"]
+[gd_scene load_steps=22 format=4 uid="uid://1lirgwl83usm"]
 
 [ext_resource type="Script" path="res://Scripts/Services/GameManager.cs" id="2_uly5w"]
 [ext_resource type="PackedScene" uid="uid://cx702ejxllmp" path="res://Prefabs/soldier.tscn" id="3_ka576"]
@@ -19,6 +19,7 @@
 [ext_resource type="Script" path="res://Scripts/CameraController.cs" id="16_c6duj"]
 [ext_resource type="Script" path="res://Scripts/FpsDisplay.cs" id="17_41rqw"]
 [ext_resource type="Script" path="res://Scripts/Services/MapGenerators/RoomDecorator.cs" id="17_xque1"]
+[ext_resource type="Script" path="res://ShadowModule/TilemapShadowGenerator.cs" id="18_m4ebr"]
 [ext_resource type="Script" path="res://Scripts/CameraShake.cs" id="19_rrul5"]
 
 [node name="GameScene" type="Node2D"]
@@ -84,6 +85,11 @@ y_sort_origin = -10
 
 [node name="Room Generator" type="Node2D" parent="MapGenerator"]
 script = ExtResource("17_xque1")
+
+[node name="Node2D" type="Node2D" parent="MapGenerator" node_paths=PackedStringArray("_dungeonGenerator", "_tileMapLayer")]
+script = ExtResource("18_m4ebr")
+_dungeonGenerator = NodePath("..")
+_tileMapLayer = NodePath("../Wall Tile Map Layer")
 
 [node name="CanvasModulate" type="CanvasModulate" parent="."]
 position = Vector2(-23, -14)

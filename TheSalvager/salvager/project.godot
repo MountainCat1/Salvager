@@ -103,8 +103,6 @@ cheat_vision={
 [rendering]
 
 textures/canvas_textures/default_texture_filter=0
-renderer/rendering_method="gl_compatibility"
-renderer/rendering_method.mobile="gl_compatibility"
 textures/lossless_compression/force_png=true
 lights_and_shadows/directional_shadow/size=256
 lights_and_shadows/directional_shadow/size.mobile=256
@@ -113,4 +111,6 @@ lights_and_shadows/positional_shadow/soft_shadow_filter_quality=0
 global_illumination/gi/use_half_resolution=true
 textures/decals/filter=0
 textures/light_projectors/filter=0
+environment/defaults/default_clear_color=Color(0, 0, 0, 1)
 2d/snap/snap_2d_vertices_to_pixel=true
+lights_and_shadows/positional_shadow/atlas_size=256

@@ -8,6 +8,9 @@ namespace Services.MapGenerators
 {
     public class MapData
     {
+        public float TileSize => _tileSize.X;
+
+        
         private readonly Dictionary<Vector2I, TileType> _mapData = new();
         private readonly Dictionary<TileType, ICollection<Vector2>> _tilePositions = new();
         private readonly Dictionary<int, RoomData> _rooms = new(); // Stores room data
@@ -40,7 +43,7 @@ namespace Services.MapGenerators
 
             _tileSize = tileSize;
         }
-
+        
         public TileType GetTileType(Vector2I position)
         {
             return _mapData[position];
@@ -80,6 +83,21 @@ namespace Services.MapGenerators
         public List<RoomData> GetAllRooms()
         {
             return _rooms.Values.ToList();
+        }
+
+        public List<Vector2I> GetAllTilePositionsOfType(TileType searchedType)
+        {
+            var positions = new List<Vector2I>();
+
+            foreach (var (position, type) in _mapData)
+            {
+                if (type == searchedType)
+                {
+                    positions.Add(position);
+                }
+            }
+
+            return positions;
         }
     }
 

@@ -8,7 +8,7 @@ namespace Services.MapGenerators
     public partial class DungeonGenerator : Node2D, IMapGenerator
     {
         [Inject] private IRoomDecorator _roomDecorator = null!;
-        
+
         public event Action? MapGenerated;
         public MapData? MapData { get; private set; }
 
@@ -52,7 +52,7 @@ namespace Services.MapGenerators
 
             GD.Print("Decorating rooms...");
             _roomDecorator.DecorateRooms(rooms, tileSize: _wallTileMap.TileSet.TileSize.X);
-            
+
             MapData = new MapData(_gridSize, grid, _wallTileMap.TileSet.TileSize, rooms);
 
             MapGenerated?.Invoke();
@@ -130,7 +130,35 @@ namespace Services.MapGenerators
 
         private void DrawDungeon(int[,] grid)
         {
+            // 1) Draw floor tiles
+            for (int x = 0; x < _gridSize.X; x++)
+            {
+                for (int y = 0; y < _gridSize.Y; y++)
+                {
+                    if (grid[x, y] == (int)TileType.Floor)
+                    {
+                        _floorTileMap.SetCell(
+                            new Vector2I(x, y),
+                            0,
+                            new Vector2I(_random.Next(0, 4), _random.Next(0, 4))
+                        );
+                    }
+                }
+            }
+
+            // 2) Collect wall positions around floors
             var wallTiles = new Godot.Collections.Array<Vector2I>();
+
+            // 4-way (or 8-way) directions. This example is 4-way.
+            var directions = new Vector2I[]
+            {
+                new Vector2I(0, -1), // Up
+                new Vector2I(0, 1), // Down
+                new Vector2I(-1, 0), // Left
+                new Vector2I(1, 0) // Right
+            };
+
+            // For diagonal checks, add e.g. new Vector2I(-1, -1), etc.
 
             for (int x = 0; x < _gridSize.X; x++)
             {
@@ -138,18 +166,61 @@ namespace Services.MapGenerators
                 {
                     if (grid[x, y] == (int)TileType.Floor)
                     {
-                        _floorTileMap.SetCell(new Vector2I(x, y), 0, new Vector2I(_random.Next(0, 4), _random.Next(0, 4)));
-                    }
-                    else
-                    {
-                        wallTiles.Add(new Vector2I(x, y));
+                        // Check neighbors
+                        foreach (var dir in directions)
+                        {
+                            int nx = x + dir.X;
+                            int ny = y + dir.Y;
+
+                            // If neighbor out-of-bounds or not a floor, queue it as a wall
+                            if (!IsInBounds(nx, ny) || grid[nx, ny] != (int)TileType.Floor)
+                            {
+                                // If within bounds, add it to the wall list
+                                if (IsInBounds(nx, ny))
+                                {
+                                    var wallPos = new Vector2I(nx, ny);
+                                    wallTiles.Add(wallPos);
+                                }
+                            }
+                        }
                     }
                 }
             }
 
+            // 3) Also add walls around the edges of the entire map
+            // Top and bottom rows
+            for (int x = 0; x < _gridSize.X; x++)
+            {
+                // If not floor, make it a wall
+                if (grid[x, 0] != (int)TileType.Floor)
+                    wallTiles.Add(new Vector2I(x, 0));
+
+                if (grid[x, _gridSize.Y - 1] != (int)TileType.Floor)
+                    wallTiles.Add(new Vector2I(x, _gridSize.Y - 1));
+            }
+
+            // Left and right columns
+            for (int y = 0; y < _gridSize.Y; y++)
+            {
+                if (grid[0, y] != (int)TileType.Floor)
+                    wallTiles.Add(new Vector2I(0, y));
+
+                if (grid[_gridSize.X - 1, y] != (int)TileType.Floor)
+                    wallTiles.Add(new Vector2I(_gridSize.X - 1, y));
+            }
+
+            // 4) Use Godot’s terrain connection or standard SetCell to place walls
             _wallTileMap.SetCellsTerrainConnect(wallTiles, 0, 0);
 
             GD.Print("Dungeon drawn on TileMap");
+        }
+
+        /// <summary>
+        /// Checks if the given (x, y) is within the grid bounds.
+        /// </summary>
+        private bool IsInBounds(int x, int y)
+        {
+            return x >= 0 && x < _gridSize.X && y >= 0 && y < _gridSize.Y;
         }
     }
 }
