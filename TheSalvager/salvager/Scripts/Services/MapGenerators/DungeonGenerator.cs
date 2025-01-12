@@ -211,6 +211,10 @@ namespace Services.MapGenerators
 
             // 4) Use Godot’s terrain connection or standard SetCell to place walls
             _wallTileMap.SetCellsTerrainConnect(wallTiles, 0, 0);
+            foreach (var wallTile in wallTiles)
+            {
+                grid[wallTile.X, wallTile.Y] = (int)TileType.Wall;
+            }
 
             GD.Print("Dungeon drawn on TileMap");
         }

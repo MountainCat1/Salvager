@@ -18,6 +18,8 @@ public partial class TilemapShadowGenerator : Node2D
 
 	private void OnMapGenerated()
 	{
+		return; // TODO: remove this line
+		
 		var mapData = _dungeonGenerator.MapData!;
 		var walls = mapData
 			.GetAllTilePositionsOfType(TileType.Wall)
@@ -32,8 +34,11 @@ public partial class TilemapShadowGenerator : Node2D
 			var shadowCaster = new LightOccluder2D();
 			AddChild(shadowCaster);
 
-			var polygon = new Polygon2D();
+			var polygon = new OccluderPolygon2D();
 			polygon.SetPolygon(wrapPolygon.ToArray());
+			polygon.CullMode = OccluderPolygon2D.CullModeEnum.Clockwise;
+			
+			shadowCaster.SetOccluderPolygon(polygon);
 		}
 	}
 }
