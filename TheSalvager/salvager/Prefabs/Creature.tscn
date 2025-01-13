@@ -1,7 +1,7 @@
 [gd_scene load_steps=11 format=3 uid="uid://1afhimeraega"]
 
 [ext_resource type="Script" path="res://Scripts/Creature.cs" id="1_8yle5"]
-[ext_resource type="Texture2D" uid="uid://xu71l0wi0jvv" path="res://Aseprite/Props/CreatureShadow.png" id="4_l0587"]
+[ext_resource type="Texture2D" uid="uid://xu71l0wi0jvv" path="res://Aseprite/Misc/CreatureShadow.png" id="4_l0587"]
 [ext_resource type="Script" path="res://Scripts/UI/InteractionProgressBar.cs" id="5_hr3py"]
 [ext_resource type="Script" path="res://Scripts/CreatureControllers/UnitController.cs" id="6_2ns5n"]
 [ext_resource type="Script" path="res://Scripts/UI/HealthBar.cs" id="7_k7cnm"]

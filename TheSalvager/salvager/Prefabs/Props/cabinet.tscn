@@ -1,0 +1,20 @@
+[gd_scene load_steps=3 format=3 uid="uid://c3jvxg7bcoyur"]
+
+[ext_resource type="Texture2D" uid="uid://cqi16gmskh2de" path="res://Aseprite/Props/Cabinet.aseprite" id="1_shgab"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_wmaja"]
+radius = 7.0
+
+[node name="Cabinet" type="StaticBody2D"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(8, 8)
+shape = SubResource("CircleShape2D_wmaja")
+
+[node name="Cabinet" type="Sprite2D" parent="."]
+position = Vector2(8, 8)
+texture = ExtResource("1_shgab")
+
+[node name="NavigationObstacle2D" type="NavigationObstacle2D" parent="."]
+position = Vector2(8, 8)
+radius = 10.25
