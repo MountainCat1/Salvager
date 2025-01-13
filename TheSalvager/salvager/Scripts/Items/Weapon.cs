@@ -38,7 +38,7 @@ public partial class Weapon : Item
 
     private void OnAttackPerformed(AttackContext ctx)
     {
-        CameraShakeService.Shake(0.5f);
+        CameraShakeService.Shake(0.5f, ctx.Attacker.GlobalPosition);
     }
 
     public void ContinuousAttack(AttackContext ctx)

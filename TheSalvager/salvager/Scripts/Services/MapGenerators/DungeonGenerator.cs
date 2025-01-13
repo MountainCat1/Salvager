@@ -155,7 +155,11 @@ namespace Services.MapGenerators
                 new Vector2I(0, -1), // Up
                 new Vector2I(0, 1), // Down
                 new Vector2I(-1, 0), // Left
-                new Vector2I(1, 0) // Right
+                new Vector2I(1, 0), // Right
+                new Vector2I(-1, -1), // Top-left
+                new Vector2I(1, -1), // Top-right
+                new Vector2I(-1, 1), // Bottom-left
+                new Vector2I(1, 1) // Bottom-right
             };
 
             // For diagonal checks, add e.g. new Vector2I(-1, -1), etc.

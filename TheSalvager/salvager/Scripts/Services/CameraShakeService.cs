@@ -5,7 +5,7 @@ namespace Services;
 
 public interface ICameraShakeService
 {
-    public void Shake(float amount);
+    public void Shake(float amount, Vector2 position);
 }
 
 public partial class CameraShakeService : Node2D, ICameraShakeService
@@ -19,8 +19,8 @@ public partial class CameraShakeService : Node2D, ICameraShakeService
         _cameraShake = NodeUtilities.FindRequiredNodeOfType<CameraShake>(this);
     }
 
-    public void Shake(float amount)
+    public void Shake(float amount, Vector2 globalPosition)
     {
-        _cameraShake.Shake(amount);        
+        _cameraShake.Shake(amount, globalPosition);
     }
 }

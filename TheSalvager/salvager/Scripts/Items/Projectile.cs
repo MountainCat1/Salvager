@@ -5,11 +5,12 @@ using Utilities;
 
 namespace Items;
 
-public partial class Projectile : Area2D
+public partial class Projectile : Area2D, IFreeable
 {
     public event Action<Creature?, AttackContext>? Hit;
 
     [Inject] private ISoundPlayer _soundPlayer = null!;
+    [Inject] private IPoolingManager _poolingManager = null!;
 
     [Export] public float Speed { get; private set; }
     [Export] public float Damage { get; private set; }
@@ -50,7 +51,7 @@ public partial class Projectile : Area2D
         {
             GD.Print($"Projectile hit obstacle {body.Name}");
             Hit?.Invoke(null, _attackContext);
-            QueueFree();
+            _poolingManager.DespawnObject(this);
             return;
         }
 
@@ -76,8 +77,8 @@ public partial class Projectile : Area2D
         {
             GD.PrintErr(e);
         }
-
-        QueueFree();
+        
+        _poolingManager.DespawnObject(this);
     }
     
     public override void _PhysicsProcess(double delta)
@@ -86,5 +87,14 @@ public partial class Projectile : Area2D
             return;
         
         Position += Transform.X * (float)(delta * Speed); 
+    }
+
+    public void Deinitialize()
+    {
+        _isLaunched = false;
+        _initialized = false;
+        _attackContext = default;
+        Hit = null;
+        BodyEntered -= OnBodyEntered;
     }
 }

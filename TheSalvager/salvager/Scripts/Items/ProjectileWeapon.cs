@@ -6,7 +6,7 @@ namespace Items;
 
 public partial class ProjectileWeapon : Weapon
 {
-    [Inject] private ISpawnerManager _spawnerManager = null!;
+    [Inject] private IPoolingManager _poolingManager = null!;
 
     [Export] private PackedScene _projectilePrefab = null!;
     [Export] private float _projectileSpeed = 400f;
@@ -17,7 +17,7 @@ public partial class ProjectileWeapon : Weapon
     {
         var direction = ctx.Direction;
 
-        var projectile = _spawnerManager.SpawnCreature<Projectile>(
+        var projectile = _poolingManager.SpawnObject<Projectile>(
             _projectilePrefab,
             ctx.Attacker.Position,
             0,

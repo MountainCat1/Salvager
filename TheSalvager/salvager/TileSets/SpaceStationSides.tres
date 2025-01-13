@@ -153,7 +153,7 @@ margins = Vector2i(4, 4)
 5:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-4, -4, 4, -4, 4, 4, -4, 4)
 
 [resource]
-occlusion_layer_0/light_mask = 524288
+occlusion_layer_0/light_mask = 524289
 physics_layer_0/collision_layer = 3
 physics_layer_0/collision_mask = 0
 terrain_set_0/mode = 2

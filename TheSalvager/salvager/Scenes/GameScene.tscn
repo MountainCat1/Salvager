@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=4 uid="uid://1lirgwl83usm"]
+[gd_scene load_steps=23 format=4 uid="uid://1lirgwl83usm"]
 
 [ext_resource type="Script" path="res://Scripts/Services/GameManager.cs" id="2_uly5w"]
 [ext_resource type="PackedScene" uid="uid://cx702ejxllmp" path="res://Prefabs/soldier.tscn" id="3_ka576"]
@@ -14,6 +14,7 @@
 [ext_resource type="Script" path="res://Scripts/Services/CameraShakeService.cs" id="12_8gox6"]
 [ext_resource type="Script" path="res://Scripts/Services/MapGenerators/DungeonGenerator.cs" id="12_wu46l"]
 [ext_resource type="TileSet" uid="uid://ui7cvii4tb1" path="res://TileSets/FloorTileSet.tres" id="13_5blfm"]
+[ext_resource type="Script" path="res://Scripts/Services/PoolingManager.cs" id="13_pe1ov"]
 [ext_resource type="TileSet" uid="uid://6v5rhdtxlb0v" path="res://TileSets/ShadowTileSet.tres" id="14_trnjf"]
 [ext_resource type="TileSet" uid="uid://cktw1glu5e4pq" path="res://TileSets/SpaceStationSides.tres" id="15_s2k6c"]
 [ext_resource type="Script" path="res://Scripts/CameraController.cs" id="16_c6duj"]
@@ -57,6 +58,9 @@ script = ExtResource("12_3pvtv")
 [node name="CameraShakeService" type="Node2D" parent="GameSceneContext"]
 script = ExtResource("12_8gox6")
 
+[node name="Pooling Manager" type="Node2D" parent="GameSceneContext"]
+script = ExtResource("13_pe1ov")
+
 [node name="MapGenerator" type="Node2D" parent="." node_paths=PackedStringArray("_wallTileMap", "_floorTileMap", "_shadowTileMap")]
 position = Vector2(0, -1)
 script = ExtResource("12_wu46l")
@@ -86,7 +90,7 @@ y_sort_origin = -10
 [node name="Room Generator" type="Node2D" parent="MapGenerator"]
 script = ExtResource("17_xque1")
 
-[node name="Node2D" type="Node2D" parent="MapGenerator" node_paths=PackedStringArray("_dungeonGenerator", "_tileMapLayer")]
+[node name="Shadow Generator XD" type="Node2D" parent="MapGenerator" node_paths=PackedStringArray("_dungeonGenerator", "_tileMapLayer")]
 script = ExtResource("18_m4ebr")
 _dungeonGenerator = NodePath("..")
 _tileMapLayer = NodePath("../Wall Tile Map Layer")
@@ -104,10 +108,10 @@ _moveSpeed = 600.0
 
 [node name="CameraShake" type="Node2D" parent="CameraControl"]
 script = ExtResource("19_rrul5")
-ShakeMultiplier = 20.0
-ShakeDecreaseMultiplier = 1.0
+ShakeMultiplier = 50.0
+ShakeDecreaseMultiplier = 2.0
 
 [node name="Camera2D" type="Camera2D" parent="CameraControl/CameraShake"]
-position = Vector2(684, 428)
 position_smoothing_enabled = true
+position_smoothing_speed = 30.0
 rotation_smoothing_enabled = true
