@@ -15,6 +15,7 @@
     <Folder Include="Scripts\Services\MapGenerators\Rooms\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Data\RoomData\StartingRoom.json" />
     <Content Include="Data\RoomData\TerminalRoom.json" />
   </ItemGroup>
 </Project>

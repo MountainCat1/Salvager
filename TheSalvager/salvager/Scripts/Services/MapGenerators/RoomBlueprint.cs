@@ -19,6 +19,7 @@ public class RoomBlueprint
 {
     public string Name { get; set; } = null!;
     public List<RoomBlueprintProp> Props { get; set; } = new();
+    public bool StartingRoom { get; set; } = false;
 
     public static RoomBlueprint FromJson(string json)
     {

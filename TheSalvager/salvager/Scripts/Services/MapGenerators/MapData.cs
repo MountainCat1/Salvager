@@ -106,5 +106,6 @@ namespace Services.MapGenerators
         public int RoomID { get; set; }
         public List<Vector2I> Positions { get; set; } = new List<Vector2I>();
         public List<int> ConnectedRoomIDs { get; set; } = new List<int>();
+        public bool IsEntrance { get; set; }
     }
 }

@@ -3,7 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://1afhimeraega" path="res://Prefabs/creature.tscn" id="1_tt244"]
 [ext_resource type="PackedScene" uid="uid://c6t0thljq56dm" path="res://Prefabs/Weapons/claws.tscn" id="2_8o5ie"]
 [ext_resource type="Script" path="res://Scripts/Items/ProjectileWeapon.cs" id="2_kjikc"]
-[ext_resource type="PackedScene" uid="uid://ba44gwov8c5fj" path="res://Aseprite/Props/Engineer_Walk.aseprite" id="2_nhpve"]
+[ext_resource type="PackedScene" uid="uid://ba44gwov8c5fj" path="res://Aseprite/Misc/Engineer_Walk.aseprite" id="2_nhpve"]
 [ext_resource type="PackedScene" uid="uid://babdwy2qcd7ig" path="res://Prefabs/projectile.tscn" id="3_5nxaj"]
 [ext_resource type="AudioStream" uid="uid://cr2qq6g5bql8n" path="res://Audio/SFX/laserShoot.wav" id="4_a5a8y"]
 [ext_resource type="Texture2D" uid="uid://bc6pc15b5b535" path="res://light32.png" id="7_4up1l"]

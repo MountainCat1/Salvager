@@ -1,0 +1,12 @@
+{
+  "Name": "Starting Room",
+  "StartingRoom": true,
+  "Props": [
+	{
+	  "ScenePath": "res://Prefabs/Props/cabinet.tscn",
+	  "Position": "Center",
+	  "Offset": { "x": 0, "y": 0 },
+	  "Count": 2
+	}
+  ]
+}

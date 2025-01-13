@@ -1,6 +1,8 @@
+NavigationObstacle2D
 Sprite2D
-Node2D
 CollisionShape2D
+StaticBody2D
+Node2D
 CharacterBody2D
 VBoxContainer
 Button
@@ -11,4 +13,3 @@ AnimatedSprite2D
 Area2D
 PointLight2D
 CenterContainer
-ProgressBar
