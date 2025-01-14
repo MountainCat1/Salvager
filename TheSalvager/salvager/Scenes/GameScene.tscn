@@ -107,15 +107,10 @@ _moveSpeed = 600.0
 
 [node name="CameraShake" type="Node2D" parent="CameraControl"]
 script = ExtResource("19_rrul5")
-ShakeMultiplier = 50.0
+ShakeMultiplier = 25.0
 ShakeDecreaseMultiplier = 2.0
 
 [node name="Camera2D" type="Camera2D" parent="CameraControl/CameraShake"]
-position_smoothing_enabled = true
-position_smoothing_speed = 30.0
-rotation_smoothing_enabled = true
-
-[node name="Camera2D" type="Camera2D" parent="CameraControl/CameraShake/Camera2D"]
 position_smoothing_enabled = true
 position_smoothing_speed = 30.0
 rotation_smoothing_enabled = true
