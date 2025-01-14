@@ -5,12 +5,15 @@
 [ext_resource type="PackedScene" uid="uid://c6t0thljq56dm" path="res://Prefabs/Weapons/claws.tscn" id="3_lgab0"]
 
 [node name="Creature" node_paths=PackedStringArray("Weapon") instance=ExtResource("1_pm1nc")]
-_speed = 200.0
+_speed = 120.0
 Weapon = NodePath("Claws")
 Team = 4
 
 [node name="HellDog" parent="." index="1" instance=ExtResource("2_adrxm")]
 position = Vector2(0, -16)
+
+[node name="NavigationAgent2D" parent="." index="2"]
+path_postprocessing = 1
 
 [node name="Creature Controller" parent="." index="4"]
 z_index = 5

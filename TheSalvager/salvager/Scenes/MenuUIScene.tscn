@@ -1,7 +1,9 @@
-[gd_scene load_steps=3 format=3 uid="uid://cobb6q1chuhua"]
+[gd_scene load_steps=5 format=3 uid="uid://cobb6q1chuhua"]
 
 [ext_resource type="Script" path="res://Scenes/LevelSelectUI.cs" id="1_34a3r"]
 [ext_resource type="PackedScene" uid="uid://1lirgwl83usm" path="res://Scenes/GameScene.tscn" id="2_xf2lu"]
+[ext_resource type="Script" path="res://Scenes/VolumeSliderUI.cs" id="3_751mm"]
+[ext_resource type="AudioStream" uid="uid://clseuri2ns67b" path="res://Audio/SFX/507020__mrthenoronha__gun-shot-6-8-bit.wav" id="4_87mhp"]
 
 [node name="LevelSelectUI" type="Control" node_paths=PackedStringArray("_startButton")]
 layout_mode = 3
@@ -40,3 +42,11 @@ grow_vertical = 2
 [node name="Button" type="Button" parent="VBoxContainer"]
 layout_mode = 2
 text = "Load Level"
+
+[node name="HSlider" type="HSlider" parent="VBoxContainer"]
+layout_mode = 2
+value = 45.0
+script = ExtResource("3_751mm")
+
+[node name="TestAudioStream" type="AudioStreamPlayer2D" parent="VBoxContainer/HSlider"]
+stream = ExtResource("4_87mhp")

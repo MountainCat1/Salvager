@@ -8,18 +8,18 @@ public partial class Creature : Entity
 {
     public event Action<HitContext>? Hit;
     public event Action<CreatureInteraction>? Interacted;
-    
+
     [Export] private float _speed = 300f;
     [Export] private float _accel = 7f;
-    
+
     public float SightRange { get; set; } = 1500f;
     public NavigationAgent2D NavigationAgent => _nav;
     public CreatureControllers.CreatureController Controller { get; set; } = null!;
     public IReadonlyRangedValue Health => _health;
-    [Export] public Weapon? Weapon { get; private set; } 
+    [Export] public Weapon? Weapon { get; private set; }
     [Export] private float MaxHealth { get; set; }
     [Export] public Teams Team { get; private set; }
-    [Export] public float InteractionRange { get; set; } = 30f;
+    public float InteractionRange { get; set; } = 15f;
 
     private RangedValue _health = null!;
     private NavigationAgent2D _nav = null!;
@@ -29,28 +29,27 @@ public partial class Creature : Entity
     {
         _health = new RangedValue(MaxHealth, 0, MaxHealth);
         _health.ValueChanged += OnHealthChanged;
-        
+
         _nav = GetNode<NavigationAgent2D>("NavigationAgent2D");
-        
-        _nav.VelocityComputed += (velocity) =>
-        {
-            _velocity = velocity;
-        };
+        _nav.TargetPosition = GlobalPosition;
+
+        _nav.VelocityComputed += (velocity) => { _velocity = velocity; };
     }
-    
+
     public override void _PhysicsProcess(double delta)
     {
-        // If the character is close to the target position, don't move
-        if(Position.DistanceTo(_nav.TargetPosition) < 10)
+        if (GlobalPosition.DistanceTo(_nav.TargetPosition) < 10)
+        {
+            _velocity = Vector2.Zero;
+            _nav.SetVelocity(Vector2.Zero);
             return;
+        }
 
-        // Calculate the next direction based on the NavigationAgent2D's pathfinding
         Vector2 direction = (_nav.GetNextPathPosition() - GlobalPosition).Normalized();
 
-        // Smoothly adjust the velocity towards the target
         var newVelocity = _velocity.Lerp(direction * _speed, _accel * (float)delta);
-        
-        if(_nav.AvoidanceEnabled)
+
+        if (_nav.AvoidanceEnabled)
         {
             _nav.SetVelocity(newVelocity);
         }
@@ -58,16 +57,16 @@ public partial class Creature : Entity
         {
             _velocity = newVelocity;
         }
-        
+
         Velocity = _velocity;
     }
 
     public void Damage(HitContext hitContext)
     {
         GD.Print($"Creature got hit for {hitContext.Damage} damage by {hitContext.Attacker.Name}");
-        
+
         _health.CurrentValue -= hitContext.Damage;
-        
+
         Hit?.Invoke(hitContext);
     }
 
@@ -75,7 +74,7 @@ public partial class Creature : Entity
     {
         GD.PushWarning("Creature.StartUsingWeapon(Weapon weapon) is not implemented");
     }
-    
+
     private void OnHealthChanged()
     {
         if (_health.CurrentValue <= 0)

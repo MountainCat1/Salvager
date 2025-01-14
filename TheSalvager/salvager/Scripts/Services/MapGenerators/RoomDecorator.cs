@@ -44,7 +44,10 @@ public partial class RoomDecorator : Node2D, IRoomDecorator
         var roomQueue = new Queue<RoomData>(roomData);
         foreach (var blueprint in roomBlueprints)
         {
-            DecorateRoom(roomQueue.Dequeue(), blueprint, tileSize);
+            for (int i = 0; i < blueprint.Count; i++)
+            {
+                DecorateRoom(roomQueue.Dequeue(), blueprint, tileSize);
+            }
         }
     }
 
@@ -59,7 +62,7 @@ public partial class RoomDecorator : Node2D, IRoomDecorator
 
             InstantiatePrefab(loadProp, (Vector2)randomPosition * tileSize);
         }
-        
+
         roomData.IsEntrance = blueprint.StartingRoom;
     }
 

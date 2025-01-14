@@ -94,6 +94,7 @@ public partial class UnitController : AiController
                 interaction.Canceled += () => { _interactionTarget = null; };
             }
     
+            SetMoveTarget(Creature.GlobalPosition);
             return;
         }
         else

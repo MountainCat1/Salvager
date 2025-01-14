@@ -1,16 +1,23 @@
 {
   "Name": "Terminal Room",
+  "Count": 3,
   "Props": [
 	{
 	  "ScenePath": "res://Prefabs/Props/terminal.tscn",
 	  "Position": "Center",
-	  "Offset": { "x": 0, "y": 0 },
+	  "Offset": {
+		"x": 0,
+		"y": 0
+	  },
 	  "Count": 1
 	},
-		{
+	{
 	  "ScenePath": "res://Prefabs/Props/cabinet.tscn",
 	  "Position": "Center",
-	  "Offset": { "x": 0, "y": 0 },
+	  "Offset": {
+		"x": 0,
+		"y": 0
+	  },
 	  "Count": 2
 	}
   ]
