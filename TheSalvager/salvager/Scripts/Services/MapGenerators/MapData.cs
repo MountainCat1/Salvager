@@ -64,15 +64,17 @@ namespace Services.MapGenerators
             return tiles[new Random().Next(0, tiles.Count)] * _tileSize;
         }
         
-        public List<Vector2> GetSpreadPositions(Vector2 startPosition, int count, TileType tileType)
+        public List<Vector2> GetSpreadGlobalPositions(Vector2 startPosition, int count, TileType tileType)
         {
+            // startPosition += _tileSize / 2;
+            
             var tiles = _tilePositions[tileType].ToList();
 
             tiles.Sort((a, b) => 
                 a.DistanceSquaredTo(startPosition).CompareTo(b.DistanceSquaredTo(startPosition)));
 
             count = Math.Min(count, tiles.Count);
-            return tiles.GetRange(0, count);
+            return tiles.GetRange(0, count).Select(x => x).ToList();
         }
 
         public RoomData? GetRoomData(int roomID)

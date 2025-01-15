@@ -1,5 +1,3 @@
-using System.Net;
-
 namespace Items;
 
 public partial class TouchWeapon : Weapon

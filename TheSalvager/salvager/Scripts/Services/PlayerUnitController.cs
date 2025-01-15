@@ -1,11 +1,8 @@
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using CreatureControllers;
 using Godot;
 using Services.Abstractions;
-using Utilities;
 
 namespace Services;
 
@@ -50,8 +47,19 @@ public partial class PlayerUnitController : Node2D, IPlayerUnitController
         if (Input.IsActionJustPressed("move"))
         {
             var selectedCreatures = _selectionManager.SelectedCreatures;
-            var spreadPositions = GetSpreadPositions(GetGlobalMousePosition(), selectedCreatures.Count);
 
+            if (selectedCreatures.Count == 1)
+            {
+                var creature = selectedCreatures.First();
+                if (creature.Controller is not CreatureControllers.UnitController unitController)
+                    return;
+
+                unitController.SetMoveTarget(GetGlobalMousePosition());
+                return;
+            }
+
+            var spreadPositions = GetSpreadPositions(GetGlobalMousePosition(), selectedCreatures.Count);
+            
             foreach (var creature in selectedCreatures)
             {
                 if (creature.Controller is not CreatureControllers.UnitController unitController)
@@ -69,6 +77,6 @@ public partial class PlayerUnitController : Node2D, IPlayerUnitController
     {
         Debug.Assert(_mapGenerator.MapData != null, "Map data is null!");
 
-        return _mapGenerator.MapData.GetSpreadPositions(startPosition, selectedCreaturesCount, TileType.Floor);
+        return _mapGenerator.MapData.GetSpreadGlobalPositions(startPosition, selectedCreaturesCount, TileType.Floor);
     }
 }

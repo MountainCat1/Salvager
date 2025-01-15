@@ -2,7 +2,6 @@ using Godot;
 
 namespace ShadowModule;
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 

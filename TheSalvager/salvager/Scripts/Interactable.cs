@@ -1,5 +1,4 @@
 using Godot;
-using Vector2 = System.Numerics.Vector2;
 
 public partial class Interactable : Entity, IInteractable
 {

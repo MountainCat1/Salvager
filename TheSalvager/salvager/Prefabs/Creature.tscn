@@ -36,7 +36,11 @@ scale = Vector2(1, 0.937)
 texture = ExtResource("4_l0587")
 
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
-radius = 6.0
+path_desired_distance = 3.0
+path_max_distance = 200.0
+path_postprocessing = 1
+avoidance_enabled = true
+radius = 3.0
 debug_path_custom_color = Color(1, 1, 1, 0.113725)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -72,3 +76,11 @@ value = 52.51
 show_percentage = false
 script = ExtResource("5_hr3py")
 _creature = NodePath("..")
+
+[node name="NavPathLine" type="Line2D" parent="."]
+z_index = 99
+width = 1.0
+default_color = Color(0.215902, 0.215902, 0.215902, 1)
+joint_mode = 1
+begin_cap_mode = 2
+end_cap_mode = 2

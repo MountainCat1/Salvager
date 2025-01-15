@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Godot;
 using Items;
 using Services;
 
@@ -73,7 +72,7 @@ public partial class AiController : CreatureController
             .Where(x => CanSee(x))
             .ToList();
     
-        // Get closest target
+        // Get the closest target
         var target = targets
             .OrderBy(x => Creature.Position.DistanceTo(x.Position))
             .FirstOrDefault();

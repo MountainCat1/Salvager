@@ -12,12 +12,15 @@ public partial class UnitController : AiController
     private NavigationCache _navigationCache = null!;
 
     private const bool MoveOnAttackCooldown = false; // TODO: This should be a configurable property of the weapon
-    
+
     public void Start()
     {
-        _navigationCache = new NavigationCache(Creature.NavigationAgent);
+        _navigationCache = new NavigationCache(
+            (v) => Creature.NavigationAgent.TargetPosition = v,
+            () => Creature.NavigationAgent.TargetPosition
+        );
     }
-    
+
     public void SetMoveTarget(Vector2 target)
     {
         _moveCommandTarget = target;
@@ -36,18 +39,18 @@ public partial class UnitController : AiController
                 break;
         }
     }
-    
+
     public override void _PhysicsProcess(double delta)
     {
         base._PhysicsProcess(delta);
-        
-        if(GodotObject.IsInstanceValid(_target) == false)
+
+        if (GodotObject.IsInstanceValid(_target) == false)
         {
             _target = null;
         }
-        
-        _navigationCache.SetTargetPosition(Position);
-        
+
+        _navigationCache.SetTargetPosition(Creature.GlobalPosition);
+
         if (_interactionTarget != null)
         {
             HandleInteraction(delta);
@@ -64,36 +67,35 @@ public partial class UnitController : AiController
         {
             _target = GetNewTarget();
         }
-        
+
         if (_target != null)
         {
             HandleAttackOrMovementToTarget(_target);
             return;
         }
-        
     }
 
     private void HandleInteraction(double delta)
     {
         Debug.Assert(_interactionTarget != null, nameof(_interactionTarget) + " != null");
-        
+
         if (!_interactionTarget.CanInteract(Creature))
         {
             _interactionTarget = null;
             return;
         }
-    
+
         if (Creature.Position.DistanceTo(_interactionTarget.Position) < Creature.InteractionRange)
         {
             var interaction = Creature.Interact(_interactionTarget, delta);
-    
+
             if (interaction.Status == InteractionStatus.Created)
             {
                 interaction.Completed += () => { _interactionTarget = null; };
-    
+
                 interaction.Canceled += () => { _interactionTarget = null; };
             }
-    
+
             SetMoveTarget(Creature.GlobalPosition);
             return;
         }
@@ -108,7 +110,7 @@ public partial class UnitController : AiController
     private void HandleMovementToTarget()
     {
         Debug.Assert(_moveCommandTarget != null, nameof(_moveCommandTarget) + " != null");
-        
+
         if (Creature.Position.DistanceTo(_moveCommandTarget.Value) > 5f)
         {
             _navigationCache.SetTargetPosition(_moveCommandTarget.Value);
@@ -123,33 +125,33 @@ public partial class UnitController : AiController
     private void HandleAttackOrMovementToTarget(Creature target)
     {
         var attackContext = CreateAttackContext();
-    
-        if(Creature.Weapon == null)
+
+        if (Creature.Weapon == null)
         {
             GD.PushWarning("Creature has no weapon equipped");
-            
+
             return;
         }
-        
+
         if (Creature.Weapon.GetOnCooldown(attackContext) && !Creature.Weapon.AllowToMoveOnCooldown)
         {
             return;
         }
-    
+
         if (Creature.Weapon.NeedsLineOfSight && !CanSee(target))
         {
             _navigationCache.SetTargetPosition(target.Position);
             Creature.MoveAndSlide();
-            
+
             return;
         }
-    
+
         if ((Creature.Position.DistanceTo(target.Position) < Creature.Weapon.Range))
         {
             PerformAttack(attackContext);
             return;
         }
-    
+
         _navigationCache.SetTargetPosition(target.Position);
         Creature.MoveAndSlide();
     }
@@ -157,7 +159,7 @@ public partial class UnitController : AiController
     private AttackContext CreateAttackContext()
     {
         Debug.Assert(_target != null, nameof(_target) + " != null");
-        
+
         return new AttackContext
         {
             Direction = (_target.Position - Creature.Position).Normalized(),

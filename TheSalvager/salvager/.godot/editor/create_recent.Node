@@ -1,3 +1,4 @@
+Line2D
 AudioStreamPlayer2D
 VBoxContainer
 Control
@@ -12,4 +13,3 @@ Button
 ColorRect
 Node
 AnimatedSprite2D
-Area2D

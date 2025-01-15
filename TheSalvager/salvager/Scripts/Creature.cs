@@ -1,7 +1,7 @@
 using System;
+using CreatureControllers;
 using Godot;
 using Items;
-using Microsoft.VisualBasic;
 using Services;
 
 public partial class Creature : Entity
@@ -14,7 +14,7 @@ public partial class Creature : Entity
 
     public float SightRange { get; set; } = 1500f;
     public NavigationAgent2D NavigationAgent => _nav;
-    public CreatureControllers.CreatureController Controller { get; set; } = null!;
+    public CreatureController Controller { get; set; } = null!;
     public IReadonlyRangedValue Health => _health;
     [Export] public Weapon? Weapon { get; private set; }
     [Export] private float MaxHealth { get; set; }
@@ -24,7 +24,8 @@ public partial class Creature : Entity
     private RangedValue _health = null!;
     private NavigationAgent2D _nav = null!;
     private Vector2 _velocity = Vector2.Zero;
-
+    private Line2D _navPathLine = null!;
+    
     public override void _Ready()
     {
         _health = new RangedValue(MaxHealth, 0, MaxHealth);
@@ -34,21 +35,37 @@ public partial class Creature : Entity
         _nav.TargetPosition = GlobalPosition;
 
         _nav.VelocityComputed += (velocity) => { _velocity = velocity; };
+        
+        _navPathLine = GetNode<Line2D>("NavPathLine");
     }
 
     public override void _PhysicsProcess(double delta)
     {
-        if (GlobalPosition.DistanceTo(_nav.TargetPosition) < 10)
+        // 1. Stop if close to target
+        if (GlobalPosition.DistanceTo(NavigationAgent.TargetPosition) < 10)
         {
             _velocity = Vector2.Zero;
             _nav.SetVelocity(Vector2.Zero);
             return;
         }
 
-        Vector2 direction = (_nav.GetNextPathPosition() - GlobalPosition).Normalized();
+        // 2. Get path from the server
+        var path = NavigationAgent.GetCurrentNavigationPath();
 
-        var newVelocity = _velocity.Lerp(direction * _speed, _accel * (float)delta);
+        _navPathLine.ClearPoints();
+        
+        // 4. Draw the path, if desired
+        foreach (var point in path)
+        {
+            _navPathLine.AddPoint(point - GlobalPosition);
+        }
 
+        // 5. Compute velocity toward the second point
+        var nextPathPosition = NavigationAgent.GetNextPathPosition();
+        Vector2 direction = (nextPathPosition - GlobalPosition).Normalized();
+        Vector2 newVelocity = _velocity.Lerp(direction * _speed, _accel * (float)delta);
+
+        // 6. If using built-in avoidance, set velocity on your NavigationAgent2D
         if (_nav.AvoidanceEnabled)
         {
             _nav.SetVelocity(newVelocity);
@@ -60,6 +77,7 @@ public partial class Creature : Entity
 
         Velocity = _velocity;
     }
+
 
     public void Damage(HitContext hitContext)
     {

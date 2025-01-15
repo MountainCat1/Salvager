@@ -1,5 +1,4 @@
 using Godot;
-using System;
 using System.Diagnostics;
 
 // ReSharper disable PossibleLossOfFraction
