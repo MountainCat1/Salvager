@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections;
 using System.Linq;
+using System.Threading.Tasks;
 using UnityEngine;
 using Utilities;
 using Zenject;
@@ -30,6 +32,17 @@ namespace Managers
             _spawnerManager.SpawnCreature(playerPrefab, (Vector2)startingRoom.Positions.RandomElement() * map.TileSize);
             
             _cameraController.MoveTo(firstUnit.transform.position);
+            
+            StartCoroutine(WaitToCreateGrid());
+        }
+        
+        private IEnumerator WaitToCreateGrid()
+        {
+            // TODO: HACK
+            yield return new WaitForSeconds(1);
+            GridGenerator.FindObjectOfType<GridGenerator>().CreateGrid();
         }
     }
+    
+    
 }

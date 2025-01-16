@@ -11,17 +11,13 @@ public class GridGenerator : MonoBehaviour
     Node[,] grid;
     float _nodeDiameter;
     int _gridSizeX, _gridSizeY;
-    
-    void Awake()
+
+    public void CreateGrid()
     {
         _nodeDiameter = nodeRadius * 2;
         _gridSizeX = Mathf.RoundToInt(gridWorldSize.x / _nodeDiameter);
         _gridSizeY = Mathf.RoundToInt(gridWorldSize.y / _nodeDiameter);
-        CreateGrid();
-    }
-
-    void CreateGrid()
-    {
+        
         grid = new Node[_gridSizeX, _gridSizeY];
         Vector3 worldBottomLeft = transform.position - Vector3.right * gridWorldSize.x / 2 - Vector3.up * gridWorldSize.y / 2;
 
