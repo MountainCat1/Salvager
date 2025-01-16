@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-
-public class TouchWeapon : Weapon
+﻿public class TouchWeapon : Weapon
 {
     protected override void Attack(AttackContext ctx)
     {

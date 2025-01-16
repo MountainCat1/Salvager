@@ -1,10 +1,8 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using CreatureControllers;
 using Managers;
 using UnityEngine;
-using UnityEngine.Rendering;
 using Zenject;
 
 public class PlayerController : MonoBehaviour

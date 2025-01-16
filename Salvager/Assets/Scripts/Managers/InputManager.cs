@@ -1,15 +1,12 @@
 using System;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
 public interface IInputManager
 {
-    event Action<Vector2> CharacterMovement;
-    event Action<Vector2> CharacterMovementFixed;
-    event Action<Vector2> CharacterMovementChanged;
+    event Action<Vector2> CameraMovement;
     event Action<Vector2> Pointer1Pressed;
     event Action<Vector2> Pointer2Pressed;
     public event Action<Vector2> Pointer1Hold;
@@ -21,9 +18,7 @@ public interface IInputManager
 
 public class InputManager : MonoBehaviour, IInputManager
 {
-    public event Action<Vector2> CharacterMovement;
-    public event Action<Vector2> CharacterMovementFixed;
-    public event Action<Vector2> CharacterMovementChanged;
+    public event Action<Vector2> CameraMovement;
     public event Action<Vector2> Pointer1Pressed;
     public event Action<Vector2> Pointer2Pressed;
     public event Action<Vector2> Pointer1Hold;
@@ -42,8 +37,8 @@ public class InputManager : MonoBehaviour, IInputManager
         _inputActions = new InputActions();
         _inputActions.Enable();
 
-        _inputActions.CharacterControl.Movement.performed +=
-            ctx => CharacterMovement?.Invoke(ctx.ReadValue<Vector2>());
+        _inputActions.CameraControl.Movement.performed +=
+            ctx => CameraMovement?.Invoke(ctx.ReadValue<Vector2>());
 
         _inputActions.CharacterControl.Pointer1.performed += Pointer1OnPerformed;
         _inputActions.CharacterControl.Pointer2.performed += Pointer2OnPerformed;
@@ -57,26 +52,14 @@ public class InputManager : MonoBehaviour, IInputManager
 
     private void Update()
     {
-        var movement = _inputActions.CharacterControl.Movement.ReadValue<Vector2>();
-        if (movement.magnitude > 0)
-            CharacterMovement?.Invoke(movement);
-
+        if(_inputActions.CameraControl.Movement.IsPressed())
+        {
+            CameraMovement?.Invoke(_inputActions.CameraControl.Movement.ReadValue<Vector2>());
+        }
+        
         if (_inputActions.CharacterControl.Pointer1.IsPressed())
         {
             Pointer1Hold?.Invoke(Mouse.current.position.ReadValue());
-        }
-    }
-
-    private void FixedUpdate()
-    {
-        var movement = _inputActions.CharacterControl.Movement.ReadValue<Vector2>();
-        if (movement.magnitude > 0)
-            CharacterMovementFixed?.Invoke(movement);
-
-        if (_cachedCharacterMovement != movement)
-        {
-            _cachedCharacterMovement = movement;
-            CharacterMovementChanged?.Invoke(movement);
         }
     }
 

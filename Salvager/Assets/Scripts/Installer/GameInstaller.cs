@@ -1,4 +1,5 @@
 using Managers;
+using Services.MapGenerators;
 using Zenject;
 
 public class GameInstaller : MonoInstaller<GameInstaller>
@@ -19,5 +20,9 @@ public class GameInstaller : MonoInstaller<GameInstaller>
         Container.Bind<IPopupManager>().To<PopupManager>().FromComponentsInHierarchy().AsSingle();
         Container.Bind<ICreatureManager>().To<CreatureManager>().FromComponentsInHierarchy().AsSingle();
         Container.Bind<IPhaseManager>().To<PhaseManager>().FromComponentsInHierarchy().AsSingle();
+        Container.Bind<IRoomDecorator>().To<RoomDecorator>().FromComponentsInHierarchy().AsSingle();
+        Container.Bind<IMapGenerator>().To<DungeonGenerator>().FromComponentsInHierarchy().AsSingle();
+        Container.Bind<ISpawnerManager>().To<SpawnerManager>().FromComponentsInHierarchy().AsSingle();
+        Container.Bind<ICameraController>().To<CameraController>().FromComponentsInHierarchy().AsSingle();
     }
 }

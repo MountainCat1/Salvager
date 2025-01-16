@@ -2,7 +2,6 @@ using System;
 using Items;
 using Managers;
 using UnityEngine;
-using UnityEngine.Serialization;
 using Zenject;
 
 public abstract class Weapon : ItemBehaviour
