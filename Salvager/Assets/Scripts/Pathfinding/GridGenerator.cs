@@ -12,6 +12,8 @@ public class GridGenerator : MonoBehaviour
     float _nodeDiameter;
     int _gridSizeX, _gridSizeY;
 
+    public Node[,] GetNodes() => grid;
+    
     public void CreateGrid()
     {
         _nodeDiameter = nodeRadius * 2;
