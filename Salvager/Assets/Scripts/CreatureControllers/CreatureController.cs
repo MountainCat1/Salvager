@@ -13,7 +13,7 @@ public class CreatureController : MonoBehaviour
         Creature = GetComponent<Creature>();
     }
 
-    protected bool CanSee(Creature target)
+    public bool CanSee(Creature target)
     {
         var distance = Vector2.Distance(transform.position, target.transform.position); 
         

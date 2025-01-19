@@ -7,6 +7,7 @@ using Zenject;
 public abstract class Weapon : ItemBehaviour
 {
     [Inject] private ISoundPlayer _soundPlayer;
+    [Inject] private ICameraShakeService _cameraShakeService;
 
     [field: SerializeField] public float Range { get; set; }
 
@@ -14,6 +15,8 @@ public abstract class Weapon : ItemBehaviour
 
     [field: SerializeField] public float BaseDamage { get; set; }
     [field: SerializeField] public float PushFactor { get; set; }
+    [field: SerializeField] public float ShakeFactor { get; set; }
+    [field: SerializeField] public AudioClip HitSound { get; set; }
     [field: SerializeField] public AudioClip AttackSound { get; set; }
 
     public virtual bool AllowToMoveOnCooldown => false;
@@ -31,6 +34,11 @@ public abstract class Weapon : ItemBehaviour
     {
         _lastAttackTime = DateTime.Now;
 
+        _cameraShakeService.ShakeCamera(ctx.Attacker.transform.position, ShakeFactor);
+        
+        if(AttackSound != null)
+            _soundPlayer.PlaySound(AttackSound, transform.position);
+        
         Attack(ctx);
     }
 
@@ -51,8 +59,8 @@ public abstract class Weapon : ItemBehaviour
             target.Damage(hitContext);
         }
 
-        if (AttackSound != null)
-            _soundPlayer.PlaySound(AttackSound, transform.position);
+        if (HitSound != null)
+            _soundPlayer.PlaySound(HitSound, transform.position);
     }
 
     protected Vector2 CalculatePushForce(Creature target)

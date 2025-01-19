@@ -48,9 +48,11 @@ MonoBehaviour:
   <Name>k__BackingField: Gun
   <Weight>k__BackingField: 1
   <Range>k__BackingField: 5
-  <BaseAttackSpeed>k__BackingField: 1
+  <BaseAttackSpeed>k__BackingField: 4
   <BaseDamage>k__BackingField: 1
   <PushFactor>k__BackingField: 50
-  <AttackSound>k__BackingField: {fileID: 8300000, guid: 0adde7b342fa2b64da389424cac6a4fc, type: 3}
+  <ShakeFactor>k__BackingField: 1
+  <HitSound>k__BackingField: {fileID: 8300000, guid: 038a66a344c308446b06ec0324bc02d2, type: 3}
+  <AttackSound>k__BackingField: {fileID: 8300000, guid: b3cd14b600d15d84f97aeb7ec257a3fe, type: 3}
   projectilePrefab: {fileID: 547013878219590802, guid: 7c8c1b8711a36f4408ea8423bae7b269, type: 3}
   projectileSpeed: 50

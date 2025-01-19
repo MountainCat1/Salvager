@@ -7,6 +7,7 @@ namespace CreatureControllers
         private Vector2? _moveCommandTarget;
         private Creature _target;
         private IInteractable _interactionTarget;
+        private Interaction _interaction;
 
         private const bool MoveOnAttackCooldown = false; // TODO: This should be a configurable property of the weapon
 
@@ -14,10 +15,14 @@ namespace CreatureControllers
         {
             _moveCommandTarget = target;
             _target = null;
+            _interactionTarget = null;
+            _interaction?.Cancel();
         }
 
         public void SetTarget(Entity target)
         {
+            _interaction?.Cancel();
+            
             switch (target)
             {
                 case Creature creature:
@@ -71,6 +76,8 @@ namespace CreatureControllers
                 
                 if(interaction.Status == InteractionStatus.Created)
                 {
+                    _moveCommandTarget = null;
+                    
                     interaction.Completed += () =>
                     {
                         _interactionTarget = null;

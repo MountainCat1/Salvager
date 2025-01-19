@@ -24,5 +24,6 @@ public class GameInstaller : MonoInstaller<GameInstaller>
         Container.Bind<IMapGenerator>().To<DungeonGenerator>().FromComponentsInHierarchy().AsSingle();
         Container.Bind<ISpawnerManager>().To<SpawnerManager>().FromComponentsInHierarchy().AsSingle();
         Container.Bind<ICameraController>().To<CameraController>().FromComponentsInHierarchy().AsSingle();
+        Container.Bind<ICameraShakeService>().To<CameraShakeService>().FromComponentsInHierarchy().AsSingle();
     }
 }
