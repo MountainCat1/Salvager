@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7730636744092197846}
   - component: {fileID: 7239964462835434466}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Square
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -94,7 +94,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4214171162907724223}
   - component: {fileID: 6149033977962671947}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Light 2D
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -178,7 +178,7 @@ GameObject:
   - component: {fileID: 547013878219590802}
   - component: {fileID: 7286092426147599195}
   - component: {fileID: 8145664198407318657}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Projectile
   m_TagString: Untagged
   m_Icon: {fileID: 0}

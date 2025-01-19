@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Items;
 using Managers;
 using UnityEngine;
@@ -85,7 +86,7 @@ public class Creature : Entity
 
     public float Speed => GetSpeed();
     public CreatureController Controller => GetComponent<CreatureController>(); // TODO: PERFORMANCE ISSUE
-    public Collider2D Collider => _collider;
+    public CircleCollider2D MovementCollider => _movementCollider;
     
 
     // Private Variables
@@ -96,7 +97,7 @@ public class Creature : Entity
     private Vector2 _moveDirection;
     private Vector2 _momentum;
     private Creature _lastAttackedBy = null;
-    private Collider2D _collider;
+    private CircleCollider2D _movementCollider;
 
     private const float MomentumLoss = 2f;
 
@@ -107,7 +108,7 @@ public class Creature : Entity
     {
         _rootTransform = transform;
         _rigidbody2D = GetComponent<Rigidbody2D>();
-        _collider = GetComponent<Collider2D>();
+        _movementCollider = transform.GetComponentsInChildren<CircleCollider2D>().Single(x => x.gameObject.layer == LayerMask.NameToLayer("CreatureMovement"));
 
         health.ValueChanged += OnHealthChanged;
         health.CurrentValue = health.MaxValue;

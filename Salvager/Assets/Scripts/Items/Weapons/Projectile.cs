@@ -1,5 +1,6 @@
 ﻿using System;
 using Managers;
+using Markers;
 using UnityEngine;
 using Utilities;
 using Zenject;
@@ -55,7 +56,7 @@ namespace Items.Weapons
             if (Creature.IsCreature(other.gameObject) == false)
                 return;
 
-            var hitCreature = other.GetComponent<Creature>();
+            var hitCreature = other.GetComponent<CreatureCollider>()?.Creature;
 
             if (hitCreature == null)
             {
@@ -66,6 +67,9 @@ namespace Items.Weapons
             if (hitCreature == _attackContext.Attacker)
                 return;
 
+            if(hitCreature.GetAttitudeTowards(_attackContext.Attacker) == Attitude.Friendly)
+                return;
+            
             try
             {
                 if (hitSound)

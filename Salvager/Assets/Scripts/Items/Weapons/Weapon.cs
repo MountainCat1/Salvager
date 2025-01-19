@@ -124,8 +124,10 @@ public struct HitContext
 
     public void ValidateAndLog()
     {
-        if (Attacker == null)
-            Debug.LogError("Attacker is null");
+        // If the attacker is dead then the attacker is null, so we can't check for null
+        // TODO: Save dead creatures instead of removing them from memory
+        // if (Attacker == null)
+        //     Debug.LogError("Attacker is null");
 
         if (Target == null)
             Debug.LogError("Target is null");

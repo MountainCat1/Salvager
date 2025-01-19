@@ -24,9 +24,7 @@ namespace Managers
         
         private void Start()
         {
-            _mapGenerator.GenerateMap();
 
-            _map = _mapGenerator.MapData;
             
             StartCoroutine(WaitToCreateGrid());
         }
@@ -34,6 +32,9 @@ namespace Managers
         private IEnumerator WaitToCreateGrid()
         {
             // TODO: HACK
+            _mapGenerator.GenerateMap();
+            _map = _mapGenerator.MapData;
+            
             yield return new WaitForSeconds(1);
             GridGenerator.FindObjectOfType<GridGenerator>().CreateGrid();
 

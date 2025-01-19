@@ -159,7 +159,7 @@ namespace CreatureControllers
 
         protected void PerformMovementTowardsTarget(Creature target)
         {
-            float radius = Creature.GetComponent<CircleCollider2D>().radius;
+            float radius = Creature.MovementCollider.radius;
 
             var pathClear = PathClear(target, radius);
             if (pathClear)
@@ -174,7 +174,7 @@ namespace CreatureControllers
         
         protected void PerformMovementTowardsPosition(Vector2 position)
         {
-            float radius = Creature.GetComponent<CircleCollider2D>().radius;
+            float radius = Creature.MovementCollider.radius;
 
             var pathClear = PathClear(position, radius);
             if (pathClear)
