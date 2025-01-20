@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using Cinemachine;
 
-namespace Managers
+namespace Managers.Visual
 {
     public interface ICameraShakeService
     {

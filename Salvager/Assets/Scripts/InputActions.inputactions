@@ -241,6 +241,54 @@
                     "isPartOfComposite": true
                 }
             ]
+        },
+        {
+            "name": "Misc",
+            "id": "684a652c-d952-4594-a5d2-daffb1726c8e",
+            "actions": [
+                {
+                    "name": "TimeSpeedUp",
+                    "type": "Button",
+                    "id": "32d14890-0332-4140-bb61-1072dbb2ab20",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "TimeSpeedDown",
+                    "type": "Button",
+                    "id": "fd237850-3a59-43b5-b29a-2c329c1a882a",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "ab1fc891-ae3d-4e70-ac2d-036cea9f76dd",
+                    "path": "<Keyboard>/equals",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "TimeSpeedUp",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "8c782422-0365-4677-b128-6dd6b328e5b2",
+                    "path": "<Keyboard>/minus",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "TimeSpeedDown",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": [

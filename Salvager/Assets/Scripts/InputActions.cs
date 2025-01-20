@@ -263,6 +263,54 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": true
                 }
             ]
+        },
+        {
+            ""name"": ""Misc"",
+            ""id"": ""684a652c-d952-4594-a5d2-daffb1726c8e"",
+            ""actions"": [
+                {
+                    ""name"": ""TimeSpeedUp"",
+                    ""type"": ""Button"",
+                    ""id"": ""32d14890-0332-4140-bb61-1072dbb2ab20"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""TimeSpeedDown"",
+                    ""type"": ""Button"",
+                    ""id"": ""fd237850-3a59-43b5-b29a-2c329c1a882a"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""ab1fc891-ae3d-4e70-ac2d-036cea9f76dd"",
+                    ""path"": ""<Keyboard>/equals"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""TimeSpeedUp"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8c782422-0365-4677-b128-6dd6b328e5b2"",
+                    ""path"": ""<Keyboard>/minus"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""TimeSpeedDown"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -292,6 +340,10 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         // CameraControl
         m_CameraControl = asset.FindActionMap("CameraControl", throwIfNotFound: true);
         m_CameraControl_Movement = m_CameraControl.FindAction("Movement", throwIfNotFound: true);
+        // Misc
+        m_Misc = asset.FindActionMap("Misc", throwIfNotFound: true);
+        m_Misc_TimeSpeedUp = m_Misc.FindAction("TimeSpeedUp", throwIfNotFound: true);
+        m_Misc_TimeSpeedDown = m_Misc.FindAction("TimeSpeedDown", throwIfNotFound: true);
     }
 
     ~@InputActions()
@@ -299,6 +351,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         UnityEngine.Debug.Assert(!m_CharacterControl.enabled, "This will cause a leak and performance issues, InputActions.CharacterControl.Disable() has not been called.");
         UnityEngine.Debug.Assert(!m_UI.enabled, "This will cause a leak and performance issues, InputActions.UI.Disable() has not been called.");
         UnityEngine.Debug.Assert(!m_CameraControl.enabled, "This will cause a leak and performance issues, InputActions.CameraControl.Disable() has not been called.");
+        UnityEngine.Debug.Assert(!m_Misc.enabled, "This will cause a leak and performance issues, InputActions.Misc.Disable() has not been called.");
     }
 
     public void Dispose()
@@ -526,6 +579,60 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         }
     }
     public CameraControlActions @CameraControl => new CameraControlActions(this);
+
+    // Misc
+    private readonly InputActionMap m_Misc;
+    private List<IMiscActions> m_MiscActionsCallbackInterfaces = new List<IMiscActions>();
+    private readonly InputAction m_Misc_TimeSpeedUp;
+    private readonly InputAction m_Misc_TimeSpeedDown;
+    public struct MiscActions
+    {
+        private @InputActions m_Wrapper;
+        public MiscActions(@InputActions wrapper) { m_Wrapper = wrapper; }
+        public InputAction @TimeSpeedUp => m_Wrapper.m_Misc_TimeSpeedUp;
+        public InputAction @TimeSpeedDown => m_Wrapper.m_Misc_TimeSpeedDown;
+        public InputActionMap Get() { return m_Wrapper.m_Misc; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(MiscActions set) { return set.Get(); }
+        public void AddCallbacks(IMiscActions instance)
+        {
+            if (instance == null || m_Wrapper.m_MiscActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_MiscActionsCallbackInterfaces.Add(instance);
+            @TimeSpeedUp.started += instance.OnTimeSpeedUp;
+            @TimeSpeedUp.performed += instance.OnTimeSpeedUp;
+            @TimeSpeedUp.canceled += instance.OnTimeSpeedUp;
+            @TimeSpeedDown.started += instance.OnTimeSpeedDown;
+            @TimeSpeedDown.performed += instance.OnTimeSpeedDown;
+            @TimeSpeedDown.canceled += instance.OnTimeSpeedDown;
+        }
+
+        private void UnregisterCallbacks(IMiscActions instance)
+        {
+            @TimeSpeedUp.started -= instance.OnTimeSpeedUp;
+            @TimeSpeedUp.performed -= instance.OnTimeSpeedUp;
+            @TimeSpeedUp.canceled -= instance.OnTimeSpeedUp;
+            @TimeSpeedDown.started -= instance.OnTimeSpeedDown;
+            @TimeSpeedDown.performed -= instance.OnTimeSpeedDown;
+            @TimeSpeedDown.canceled -= instance.OnTimeSpeedDown;
+        }
+
+        public void RemoveCallbacks(IMiscActions instance)
+        {
+            if (m_Wrapper.m_MiscActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(IMiscActions instance)
+        {
+            foreach (var item in m_Wrapper.m_MiscActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_MiscActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public MiscActions @Misc => new MiscActions(this);
     private int m_KeyboardAndMouseSchemeIndex = -1;
     public InputControlScheme KeyboardAndMouseScheme
     {
@@ -550,5 +657,10 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
     public interface ICameraControlActions
     {
         void OnMovement(InputAction.CallbackContext context);
+    }
+    public interface IMiscActions
+    {
+        void OnTimeSpeedUp(InputAction.CallbackContext context);
+        void OnTimeSpeedDown(InputAction.CallbackContext context);
     }
 }

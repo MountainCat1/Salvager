@@ -5,7 +5,8 @@ namespace Managers
 {
     public interface ISpawnerManager
     {
-        Creature SpawnCreature(Creature creaturePrefab, Vector2 position);
+        T Spawn<T>(T prefab, Vector2 position) where T : MonoBehaviour;
+        GameObject Spawn(GameObject prefab, Vector2 position);
     }
 
     public class SpawnerManager : MonoBehaviour, ISpawnerManager
@@ -16,6 +17,16 @@ namespace Managers
         {
             var creature = _container.InstantiatePrefab(creaturePrefab, position, Quaternion.identity, null);
             return creature.GetComponent<Creature>();
+        }
+
+        public T Spawn<T>(T prefab, Vector2 position) where T : MonoBehaviour
+        {
+            return _container.InstantiatePrefab(prefab, position, Quaternion.identity, null).GetComponent<T>();
+        }
+
+        public GameObject Spawn(GameObject prefab, Vector2 position)
+        {
+            return _container.InstantiatePrefab(prefab, position, Quaternion.identity, null);
         }
     }
 }

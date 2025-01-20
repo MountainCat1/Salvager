@@ -15,6 +15,7 @@ public interface ITimeManager
 public class TimeManager : MonoBehaviour, ITimeManager
 {
     [Inject] private IGameConfiguration _gameConfiguration;
+    [Inject] private IInputManager _inputManager;
 
     public event Action TimeRunOut;
     public event Action<int> NewSecond;
@@ -25,7 +26,13 @@ public class TimeManager : MonoBehaviour, ITimeManager
     private bool _timeRunOut;
 
     private int _lastSecond = -1;
-    
+
+    private void Start()
+    {
+        _inputManager.SpeedDown += () => Time.timeScale -= 0.1f;
+        _inputManager.SpeedUp += () => Time.timeScale += 0.1f;
+    }
+
     private void Update()
     {
         GameTime += Time.deltaTime;

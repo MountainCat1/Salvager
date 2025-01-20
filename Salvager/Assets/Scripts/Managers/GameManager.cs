@@ -15,6 +15,7 @@ namespace Managers
         [Inject] private DiContainer _container;
         [Inject] private ISpawnerManager _spawnerManager;
         [Inject] private ICameraController _cameraController;
+        [Inject] private ICreatureManager _creatureManager;
 
 
         [SerializeField] private Creature playerPrefab;
@@ -47,15 +48,15 @@ namespace Managers
         {
             var startingRoom = _map.GetAllRooms().First(x => x.IsEntrance);
             
-            var firstUnit = _spawnerManager.SpawnCreature(playerPrefab, (Vector2)startingRoom.Positions.RandomElement() * _map.TileSize);
-            _spawnerManager.SpawnCreature(playerPrefab, (Vector2)startingRoom.Positions.RandomElement() * _map.TileSize);
-            _spawnerManager.SpawnCreature(playerPrefab, (Vector2)startingRoom.Positions.RandomElement() * _map.TileSize);
+            var firstUnit = _creatureManager.SpawnCreature(playerPrefab, (Vector2)startingRoom.Positions.RandomElement() * _map.TileSize);
+            _creatureManager.SpawnCreature(playerPrefab, (Vector2)startingRoom.Positions.RandomElement() * _map.TileSize);
+            _creatureManager.SpawnCreature(playerPrefab, (Vector2)startingRoom.Positions.RandomElement() * _map.TileSize);
             
             void SpawnEnemyInNonStartingRoom()
             {
                 var room = _map.GetAllRooms().Where(x => !x.IsEntrance).RandomElement();
                 
-                _spawnerManager.SpawnCreature(enemyPrefab, (Vector2)room.Positions.RandomElement() * _map.TileSize);
+                _creatureManager.SpawnCreature(enemyPrefab, (Vector2)room.Positions.RandomElement() * _map.TileSize);
             }
 
             for (int i = 0; i < 15; i++)

@@ -9,6 +9,7 @@ namespace Managers
     {
         event Action<Creature> CreatureSpawned;
         ICollection<Creature> GetCreatures();
+        public Creature SpawnCreature(Creature creaturePrefab, Vector3 position, Transform parent = null);
     }
 
     public class CreatureManager : MonoBehaviour, ICreatureManager
@@ -16,29 +17,30 @@ namespace Managers
         public event Action<Creature> CreatureSpawned;
 
         [Inject] private DiContainer _diContainer;
+        [Inject] private ISpawnerManager _spawnerManager;
 
         private void Start()
         {
-            var prespawnedCreatures = FindObjectsOfType<Creature>();
-            foreach (var creature in prespawnedCreatures)
+            var preSpawnedCreatures = FindObjectsOfType<Creature>();
+            foreach (var creature in preSpawnedCreatures)
             {
                 _diContainer.Inject(creature.gameObject);
                 CreatureSpawned?.Invoke(creature);
             }
         }
 
-        public void SpawnCreature(Creature creaturePrefab, Vector3 position, Transform parent = null)
+        public Creature SpawnCreature(Creature creaturePrefab, Vector3 position, Transform parent = null)
         {
-            var creatureGo = _diContainer.InstantiatePrefab(
+            var creatureGo = _spawnerManager.Spawn(
                 prefab: creaturePrefab.gameObject,
-                position: position,
-                rotation: Quaternion.identity,
-                parentTransform: parent
+                position: position
             );
 
             var creature = creatureGo.GetComponent<Creature>();
 
             CreatureSpawned?.Invoke(creature);
+            
+            return creature;
         }
 
         public ICollection<Creature> GetCreatures()

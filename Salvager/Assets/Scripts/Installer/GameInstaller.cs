@@ -1,4 +1,5 @@
 using Managers;
+using Managers.Visual;
 using Services.MapGenerators;
 using Zenject;
 
