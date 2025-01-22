@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6f327af661d9bc94abe3f843bc3401fe, type: 3}
-  m_Name: RoomBlueprint
+  m_Name: Misc Room
   m_EditorClassIdentifier: 
-  <Name>k__BackingField: Terminal Room
+  <Name>k__BackingField: Misc Room
   <Props>k__BackingField:
   - {fileID: 11400000, guid: 3f79ab03e2e3c4a4fb9fa0ba0cb3e13e, type: 2}
   <StartingRoom>k__BackingField: 1
-  <Count>k__BackingField: 1
+  <Count>k__BackingField: 5

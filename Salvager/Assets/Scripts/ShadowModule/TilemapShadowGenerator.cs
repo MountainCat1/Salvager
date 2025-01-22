@@ -1,9 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Services.MapGenerators;
 using ShadowModule;
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
+using UnityEngine.Serialization;
 using UnityEngine.Tilemaps;
 using Zenject;
 
@@ -11,20 +14,58 @@ using Zenject;
 public partial class TilemapShadowGenerator : MonoBehaviour
 {
     [Inject] private IMapGenerator _mapGenerator;
-    
-    [SerializeField] private Tilemap tilemap;
+
+    [FormerlySerializedAs("tilemap")] [SerializeField] private Tilemap wallTilemap;
+    [SerializeField] private Tilemap floorTilemap;
     [SerializeField] private ShadowCaster2D shadowCasterPrefab;
 
     [SerializeField] private float margin = 0.1f;
 
+    [SerializeField] private bool debugClusters = false;
+
     // Called when the node enters the scene tree for the first time.
-    
+
     private float _lastMargin = -1;
 
     private void Awake()
     {
         _mapGenerator.MapGenerated += OnMapGenerated;
     }
+
+    private void OnDrawGizmos()
+    {
+        if (debugClusters)
+        {
+            var getAllTilePositionsOfType = GetAllTilePositions(wallTilemap).Select(x => new Vector2Int(x.x, x.y)).ToList();
+
+            var clusters = TileCluster.GetConnectedClusters(getAllTilePositionsOfType);
+
+            // List of predefined colors, or you can dynamically create random colors.
+            List<Color> clusterColors = new List<Color>
+            {
+                Color.red, Color.green, Color.blue, Color.yellow, Color.cyan, Color.magenta, Color.white, Color.black, Color.gray
+            };
+
+            int colorIndex = 0;
+
+            foreach (var cluster in clusters)
+            {
+                var wrapPolygon = TilePolygon.GetWrappingPolygon(cluster, wallTilemap.cellSize.x);
+                wrapPolygon = PolygonMargin.ApplyMargin(wrapPolygon, margin);
+
+                // Cycle through colors or generate new ones.
+                Gizmos.color = clusterColors[colorIndex % clusterColors.Count];
+                colorIndex++;
+
+                for (int i = 0; i < wrapPolygon.Count; i++)
+                {
+                    var next = wrapPolygon[(i + 1) % wrapPolygon.Count];
+                    Gizmos.DrawLine(wrapPolygon[i], next);
+                }
+            }
+        }
+    }
+
 
     private void OnMapGenerated()
     {
@@ -37,25 +78,44 @@ public partial class TilemapShadowGenerator : MonoBehaviour
         {
             Destroy(child.gameObject);
         }
-        
-        var getAllTilePositionsOfType = GetAllTilePositions(tilemap).Select(x => new Vector2Int(x.x, x.y)).ToList();
 
-        var clusters = TileCluster.GetConnectedClusters(getAllTilePositionsOfType);
+        var wallTiles = GetAllTilePositions(wallTilemap).Select(x => new Vector2Int(x.x, x.y)).ToList();
+        var wallClusters = TileCluster.GetConnectedClusters(wallTiles);
 
-        foreach (var cluster in clusters)
+        foreach (var cluster in wallClusters)
         {
-            var wrapPolygon = TilePolygon.GetWrappingPolygon(cluster, tilemap.cellSize.x);
+            // If the polygon is the longest we assume it's the outer wall, so we ignore it
+            if (cluster.Count == wallClusters.Max(x => x.Count))
+                continue;
+            
+            var wrapPolygon = TilePolygon.GetWrappingPolygon(cluster, wallTilemap.cellSize.x);
 
             var shadowCaster = Instantiate(this.shadowCasterPrefab, transform);
             shadowCaster.transform.SetParent(transform);
-            
+            shadowCaster.name = "Wall Shadow Caster";
+
             wrapPolygon = PolygonMargin.ApplyMargin(wrapPolygon, margin);
 
             ShadowCasterUtility.UpdateShadowCasterShape(shadowCaster.gameObject, wrapPolygon.ToArray());
             
-            // If the polygon is the longest we assume it's the outer wall, so we set it to not cast self shadow
-            if(cluster.Count == clusters.Max(x => x.Count))
-                shadowCaster.selfShadows = false;
+        }
+        
+        var floorTiles = GetAllTilePositions(floorTilemap).Select(x => new Vector2Int(x.x, x.y)).ToList();
+        var floorClusters = TileCluster.GetConnectedClusters(floorTiles);
+
+        foreach (var cluster in floorClusters)
+        {
+            var wrapPolygon = TilePolygon.GetWrappingPolygon(cluster, wallTilemap.cellSize.x);
+
+            var shadowCaster = Instantiate(this.shadowCasterPrefab, transform);
+            shadowCaster.transform.SetParent(transform);
+            shadowCaster.name = "Floor Shadow Caster";
+
+            wrapPolygon = PolygonMargin.ApplyMargin(wrapPolygon, -margin);
+
+            ShadowCasterUtility.UpdateShadowCasterShape(shadowCaster.gameObject, wrapPolygon.ToArray());
+
+            shadowCaster.selfShadows = false;
         }
     }
 

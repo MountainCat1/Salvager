@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class GridGenerator : MonoBehaviour
 {
-    public bool displayGridGizmos;
     public LayerMask unwalkableMask;
     public Vector2 gridWorldSize;
     public float nodeRadius;
@@ -84,19 +83,5 @@ public class GridGenerator : MonoBehaviour
         }
 
         return neighbours;
-    }
-
-    void OnDrawGizmos()
-    {
-        Gizmos.DrawWireCube(transform.position, new Vector3(gridWorldSize.x, gridWorldSize.y, 1));
-
-        if (grid != null && displayGridGizmos)
-        {
-            foreach (Node n in grid)
-            {
-                Gizmos.color = (n.walkable) ? Color.white : Color.red;
-                Gizmos.DrawCube(n.worldPosition, Vector3.one * (_nodeDiameter - .1f));
-            }
-        }
     }
 }

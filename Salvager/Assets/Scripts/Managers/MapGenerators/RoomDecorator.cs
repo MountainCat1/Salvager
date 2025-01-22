@@ -15,8 +15,6 @@ public partial class RoomDecorator : MonoBehaviour, IRoomDecorator
     [Inject] private DiContainer _context = null!;
     [SerializeField] private List<RoomBlueprint> roomBlueprints = new();
 
-    private const string DataPath = "res://Data/RoomData/";
-
     public void DecorateRooms(ICollection<RoomData> roomData, float tileSize)
     {
         // TODO: Implement room decoration blueprint selection
@@ -35,11 +33,14 @@ public partial class RoomDecorator : MonoBehaviour, IRoomDecorator
         Debug.Log($"Decorating room {roomData.RoomID} with blueprint {blueprint.Name}");
         foreach (var prop in blueprint.Props)
         {
-            var randomPosition = roomData.Positions.RandomElement();
+            for (int i = 0; i < prop.count; i++)
+            {
+                var randomPosition = roomData.Positions.RandomElement();
 
-            var loadProp = prop.prefab;
+                var loadProp = prop.prefab;
 
-            InstantiatePrefab(loadProp, (Vector2)randomPosition * tileSize);
+                InstantiatePrefab(loadProp, (Vector2)randomPosition * tileSize);
+            }
         }
 
         roomData.IsEntrance = blueprint.StartingRoom;

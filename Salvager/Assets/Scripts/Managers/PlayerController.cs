@@ -42,6 +42,18 @@ public class PlayerController : MonoBehaviour
         var selectedCreatures = GetSelectedCreatures().ToList();
         if (!selectedCreatures.Any())
             return;
+        
+        if (selectedCreatures.Count == 1)
+        {
+            var creature = selectedCreatures.First();
+            var controller = creature.Controller as UnitController;
+            if (controller)
+            {
+                controller.SetMoveTarget(position);
+            }
+
+            return;
+        }
 
         var spreadPositions = _pathfinding.GetSpreadPosition(position, selectedCreatures.Count).ToList();
         if (!spreadPositions.Any())
@@ -49,6 +61,7 @@ public class PlayerController : MonoBehaviour
             Debug.LogWarning("No valid spread positions found.");
             return;
         }
+        
 
         // Pair each unit with the closest available target position
         var assignments = AssignPositionsToUnits(selectedCreatures, spreadPositions);

@@ -9,6 +9,8 @@ namespace Items.Weapons
 {
     public class Projectile : MonoBehaviour
     {
+        private const float Lifetime = 16f;
+        
         public event Action<Creature, AttackContext> Hit;
 
         [Inject] private ISoundPlayer _soundPlayer;
@@ -22,6 +24,11 @@ namespace Items.Weapons
         private bool _isLaunched = false;
         private bool _initialized = false;
         private AttackContext _attackContext;
+
+        private void Start()
+        {
+            Destroy(gameObject, Lifetime);
+        }
 
         public void Initialize(float speed, float damage)
         {

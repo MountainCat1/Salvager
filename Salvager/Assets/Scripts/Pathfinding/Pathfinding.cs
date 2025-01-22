@@ -10,12 +10,23 @@ public interface IPathfinding
     bool IsWalkable(Vector2 targetPosition);
 
     ICollection<Vector2> GetSpreadPosition(Vector2 position, int amount);
+    void AddObstacle(IObstacle obstacle);
+    void RemoveObstacle(IObstacle obstacle);
+}
+
+public interface IObstacle
+{
+    Vector2 Position { get; }
+    float Radius { get; }
 }
 
 [RequireComponent(typeof(GridGenerator))]
 public class Pathfinding : MonoBehaviour, IPathfinding
 {
     private GridGenerator _grid;
+
+    private List<IObstacle> _obstacles = new List<IObstacle>();
+    [SerializeField] private bool displayGridGizmos;
 
     void Awake()
     {
@@ -53,7 +64,7 @@ public class Pathfinding : MonoBehaviour, IPathfinding
 
             foreach (Node neighbour in _grid.GetNeighbours(currentNode))
             {
-                if (!neighbour.walkable || closedSet.Contains(neighbour))
+                if (!neighbour.walkable || closedSet.Contains(neighbour) || IsBlockedByObstacle(neighbour))
                     continue;
 
                 int newMovementCostToNeighbour = currentNode.gCost + GetDistance(currentNode, neighbour);
@@ -71,6 +82,19 @@ public class Pathfinding : MonoBehaviour, IPathfinding
 
         // Path not found
         return new List<Node>();
+    }
+
+    private bool IsBlockedByObstacle(Node neighbour)
+    {
+        foreach (var obstacle in _obstacles)
+        {
+            if (Vector2.Distance(neighbour.worldPosition, obstacle.Position) < obstacle.Radius)
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public bool IsClearPath(Vector2 a, Vector2 b)
@@ -96,82 +120,92 @@ public class Pathfinding : MonoBehaviour, IPathfinding
         Node node = _grid.NodeFromWorldPoint(targetPosition);
         return node.walkable;
     }
-    
-   public ICollection<Vector2> GetSpreadPosition(Vector2 position, int count)
-{
-    var nodes = _grid.GetNodes();
 
-    var selectedNodes = new List<Node>();
-    var visitedNodes = new HashSet<Node>();
-    int rows = nodes.GetLength(0);
-    int cols = nodes.GetLength(1);
-
-    // Helper method to check if a position is within bounds
-    bool IsInBounds(int x, int y) => x >= 0 && y >= 0 && x < rows && y < cols;
-
-    // Find the closest walkable node to the given position
-    Node closestNode = null;
-    float closestDistance = float.MaxValue;
-
-    for (int x = 0; x < rows; x++)
+    public ICollection<Vector2> GetSpreadPosition(Vector2 position, int count)
     {
-        for (int y = 0; y < cols; y++)
-        {
-            Node node = nodes[x, y];
+        var nodes = _grid.GetNodes();
 
-            if (node.walkable)
+        var selectedNodes = new List<Node>();
+        var visitedNodes = new HashSet<Node>();
+        int rows = nodes.GetLength(0);
+        int cols = nodes.GetLength(1);
+
+        // Helper method to check if a position is within bounds
+        bool IsInBounds(int x, int y) => x >= 0 && y >= 0 && x < rows && y < cols;
+
+        // Find the closest walkable node to the given position
+        Node closestNode = null;
+        float closestDistance = float.MaxValue;
+
+        for (int x = 0; x < rows; x++)
+        {
+            for (int y = 0; y < cols; y++)
             {
-                float distance = Vector2.Distance(node.worldPosition, position);
-                if (distance < closestDistance)
+                Node node = nodes[x, y];
+
+                if (node.walkable)
                 {
-                    closestDistance = distance;
-                    closestNode = node;
+                    float distance = Vector2.Distance(node.worldPosition, position);
+                    if (distance < closestDistance)
+                    {
+                        closestDistance = distance;
+                        closestNode = node;
+                    }
                 }
             }
         }
-    }
 
-    if (closestNode == null) return new List<Vector2>(); // If no walkable nodes found, return empty list
+        if (closestNode == null) return new List<Vector2>(); // If no walkable nodes found, return empty list
 
-    var queue = new Queue<(Node, int, int)>();
+        var queue = new Queue<(Node, int, int)>();
 
-    // Find the coordinates of the closest walkable node
-    for (int x = 0; x < rows; x++)
-    {
-        for (int y = 0; y < cols; y++)
+        // Find the coordinates of the closest walkable node
+        for (int x = 0; x < rows; x++)
         {
-            if (nodes[x, y] == closestNode)
+            for (int y = 0; y < cols; y++)
             {
-                queue.Enqueue((closestNode, x, y));
-                visitedNodes.Add(closestNode);
-                break;
-            }
-        }
-    }
-
-    // Perform BFS
-    while (queue.Count > 0 && selectedNodes.Count < count)
-    {
-        var (currentNode, x, y) = queue.Dequeue();
-        selectedNodes.Add(currentNode);
-
-        // Add neighbors (4-directional: up, down, left, right)
-        foreach (var (nx, ny) in new[] { (x - 1, y), (x + 1, y), (x, y - 1), (x, y + 1) })
-        {
-            if (IsInBounds(nx, ny))
-            {
-                Node neighbor = nodes[nx, ny];
-                if (!visitedNodes.Contains(neighbor) && neighbor.walkable)
+                if (nodes[x, y] == closestNode)
                 {
-                    queue.Enqueue((neighbor, nx, ny));
-                    visitedNodes.Add(neighbor);
+                    queue.Enqueue((closestNode, x, y));
+                    visitedNodes.Add(closestNode);
+                    break;
                 }
             }
         }
+
+        // Perform BFS
+        while (queue.Count > 0 && selectedNodes.Count < count)
+        {
+            var (currentNode, x, y) = queue.Dequeue();
+            selectedNodes.Add(currentNode);
+
+            // Add neighbors (4-directional: up, down, left, right)
+            foreach (var (nx, ny) in new[] { (x - 1, y), (x + 1, y), (x, y - 1), (x, y + 1) })
+            {
+                if (IsInBounds(nx, ny))
+                {
+                    Node neighbor = nodes[nx, ny];
+                    if (!visitedNodes.Contains(neighbor) && neighbor.walkable)
+                    {
+                        queue.Enqueue((neighbor, nx, ny));
+                        visitedNodes.Add(neighbor);
+                    }
+                }
+            }
+        }
+
+        return selectedNodes.Select(x => (Vector2)x.worldPosition).ToList();
     }
 
-    return selectedNodes.Select(x => (Vector2)x.worldPosition).ToList();
-}
+    public void AddObstacle(IObstacle obstacle)
+    {
+        _obstacles.Add(obstacle);
+    }
+
+    public void RemoveObstacle(IObstacle obstacle)
+    {
+        _obstacles.Remove(obstacle);
+    }
 
 
     List<Node> RetracePath(Node startNode, Node endNode)
@@ -198,5 +232,19 @@ public class Pathfinding : MonoBehaviour, IPathfinding
         if (dstX > dstY)
             return 14 * dstY + 10 * (dstX - dstY);
         return 14 * dstX + 10 * (dstY - dstX);
+    }
+
+    void OnDrawGizmos()
+    {
+        if (!displayGridGizmos)
+            return;
+
+        Gizmos.DrawWireCube(transform.position, new Vector3(_grid.gridWorldSize.x, _grid.gridWorldSize.y, 1));
+
+        foreach (Node n in _grid.GetNodes())
+        {
+            Gizmos.color = (n.walkable && !IsBlockedByObstacle(n)) ? Color.white : Color.red;
+            Gizmos.DrawCube(n.worldPosition, Vector3.one * (_grid.nodeRadius * 2 - .1f));
+        }
     }
 }
