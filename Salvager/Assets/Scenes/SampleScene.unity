@@ -293,7 +293,7 @@ GameObject:
   - component: {fileID: 297677171}
   - component: {fileID: 297677170}
   m_Layer: 0
-  m_Name: Canvas
+  m_Name: FPS Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2719,7 +2719,7 @@ GameObject:
   - component: {fileID: 1842412833}
   - component: {fileID: 1842412832}
   m_Layer: 0
-  m_Name: Text (TMP)
+  m_Name: FPS Display
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2756,6 +2756,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7f80511e97a09d4baa8a7e3f7f7d521, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  displayText: {fileID: 1842412833}
 --- !u!114 &1842412833
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2819,7 +2820,7 @@ MonoBehaviour:
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_enableWordWrapping: 1
+  m_enableWordWrapping: 0
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
   m_linkedTextComponent: {fileID: 0}
@@ -3614,6 +3615,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1143846647364dc1bf282e7792a9a40c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  displayGridGizmos: 0
 --- !u!114 &2143018523
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3626,7 +3628,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a36bef8d1d14eefa83d55eea6525cad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  displayGridGizmos: 0
   unwalkableMask:
     serializedVersion: 2
     m_Bits: 64

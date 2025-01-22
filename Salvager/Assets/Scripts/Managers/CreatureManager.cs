@@ -18,6 +18,8 @@ namespace Managers
 
         [Inject] private DiContainer _diContainer;
         [Inject] private ISpawnerManager _spawnerManager;
+        
+        private List<Creature> _creatures = new List<Creature>();
 
         private void Start()
         {
@@ -25,7 +27,8 @@ namespace Managers
             foreach (var creature in preSpawnedCreatures)
             {
                 _diContainer.Inject(creature.gameObject);
-                CreatureSpawned?.Invoke(creature);
+                
+                HandleNewCreature(creature);
             }
         }
 
@@ -38,15 +41,26 @@ namespace Managers
 
             var creature = creatureGo.GetComponent<Creature>();
 
-            CreatureSpawned?.Invoke(creature);
+            HandleNewCreature(creature);
             
             return creature;
         }
 
+        private void HandleNewCreature(Creature creature)
+        {
+            CreatureSpawned?.Invoke(creature);
+            
+            _creatures.Add(creature);
+
+            creature.Death += (DeathContext ctx) =>
+            {
+                _creatures.Remove(creature);
+            };
+        }
+
         public ICollection<Creature> GetCreatures()
         {
-            var creatures = FindObjectsOfType<Creature>(); // TODO: PERFORMANCE ISSUE
-            return creatures;
+            return _creatures;
         }
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -18,6 +19,7 @@ public interface IObstacle
 {
     Vector2 Position { get; }
     float Radius { get; }
+    event Action Moved;
 }
 
 [RequireComponent(typeof(GridGenerator))]
