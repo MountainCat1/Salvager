@@ -1652,7 +1652,8 @@ MonoBehaviour:
   floorTile: {fileID: 11400000, guid: 42e21e8572244594b8f9c9687bc7fe75, type: 2}
   wallTile: {fileID: 11400000, guid: bd42707613bbc6540b6431494d73b0c8, type: 2}
   addWallAroundMap: 0
-  wallsOnlyAroundFloor: 0
+  wallsOnlyAroundFloor: 1
+  entrancePrefab: {fileID: 6404418455233857910, guid: d92398bd84b341f47835a0c42fb856df, type: 3}
 --- !u!1 &1151040404
 GameObject:
   m_ObjectHideFlags: 0
