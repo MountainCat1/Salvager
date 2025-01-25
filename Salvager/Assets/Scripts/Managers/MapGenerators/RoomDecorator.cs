@@ -39,7 +39,7 @@ public partial class RoomDecorator : MonoBehaviour, IRoomDecorator
 
                 var loadProp = prop.prefab;
 
-                InstantiatePrefab(loadProp, (Vector2)randomPosition * tileSize);
+                InstantiatePrefab(loadProp, (Vector2)randomPosition * tileSize + new Vector2(tileSize, tileSize) / 2);
             }
         }
 

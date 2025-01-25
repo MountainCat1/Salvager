@@ -6,7 +6,7 @@ namespace UI
     {
         public override void InstallBindings()
         {
-            Container.Bind<IPopupManagerUI>().To<PopupManagerUI>().FromComponentInHierarchy().AsSingle();
+            Container.Bind<IInventoryDisplayUI>().To<InventoryDisplayUI>().FromComponentInHierarchy().AsSingle();
             
             
             Container.Bind<SelectionDisplayEntryUI>().FromComponentInHierarchy().AsSingle();

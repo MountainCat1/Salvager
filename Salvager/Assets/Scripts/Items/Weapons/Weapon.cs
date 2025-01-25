@@ -28,6 +28,7 @@ public abstract class Weapon : ItemBehaviour
 
     public bool GetOnCooldown(AttackContext ctx)
     {
+        // TODO: DO NOT USE DateTime.Now in Update or FixedUpdate, it is very slow coz it is a system call
         return DateTime.Now - _lastAttackTime < TimeSpan.FromSeconds(1f / CalculateAttackSpeed(ctx));
     }
 

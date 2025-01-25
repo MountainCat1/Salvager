@@ -4,12 +4,12 @@ using Zenject;
 
 namespace UI
 {
-    public interface IPopupManagerUI
+    public interface IInventoryDisplayUI
     {
         public InventoryUI ShowInventory(Creature creature);
     }
 
-    public class PopupManagerUI : MonoBehaviour, IPopupManagerUI
+    public class InventoryDisplayUI : MonoBehaviour, IInventoryDisplayUI
     {
         [SerializeField] private InventoryUI inventoryUIPrefab;
         [SerializeField] private Transform popupParent;

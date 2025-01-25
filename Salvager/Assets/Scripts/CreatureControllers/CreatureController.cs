@@ -13,6 +13,7 @@ public class CreatureController : MonoBehaviour
         Creature = GetComponent<Creature>();
     }
 
+    // TODO: this seems to be performance heavy, consider some optimizations
     public bool CanSee(Creature target)
     {
         var distance = Vector2.Distance(transform.position, target.transform.position); 

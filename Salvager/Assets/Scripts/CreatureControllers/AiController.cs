@@ -29,7 +29,7 @@ namespace CreatureControllers
         // Serialized Private Variables
 
         // Private Variables
-        private Dictionary<Creature, DateTime> _memorizedCreatures = new();
+        private Dictionary<Creature, long> _memorizedCreatures = new();
 
         // Properties
 
@@ -42,6 +42,8 @@ namespace CreatureControllers
         // Public Methods
         public ICollection<Creature> GetMemorizedCreatures()
         {
+            // TODO: performance optimization, avoid LINQ allocations, do we really need to return a list instead of enumerable? idk... 
+            // ToList() is really expensive
             return _memorizedCreatures
                 .Select(x => x.Key)
                 .Where(x => x) // Filter out null creatures, is it even necessary??? idk...
@@ -65,7 +67,7 @@ namespace CreatureControllers
             Vector2 direction = nextNode.worldPosition - Creature.transform.position;
             Creature.SetMovement(direction);
             Debug.DrawLine(Creature.transform.position, nextNode.worldPosition, Color.red);
-         
+
             // draw path
             for (int i = 0; i < path.Count - 1; i++)
             {
@@ -81,17 +83,17 @@ namespace CreatureControllers
         private void MoveStraightToTarget(Vector2 targetPosition)
         {
             var direction = (targetPosition - (Vector2)Creature.transform.position).normalized;
-            
-            if(Vector2.Distance(Creature.transform.position, targetPosition) < 0.1f)
+
+            if (Vector2.Distance(Creature.transform.position, targetPosition) < 0.1f)
             {
                 Creature.SetMovement(Vector2.zero);
                 return;
             }
-            
+
             Creature.SetMovement(direction);
             Debug.DrawLine(Creature.transform.position, targetPosition, Color.green);
         }
-        
+
         protected List<Vector3> GetCornerPoints(Vector3 center, float radius)
         {
             List<Vector3> cornerPoints = new List<Vector3>
@@ -104,27 +106,45 @@ namespace CreatureControllers
             return cornerPoints;
         }
 
+        // Private Methods
         private void UpdateMemory()
         {
-            var keys = _memorizedCreatures.Keys.ToList();
-            foreach (var key in keys)
+            // Get the current tick count (in milliseconds)
+            long currentTicks = Environment.TickCount;
+
+            // Use a list to store keys to be removed (avoids modifying the dictionary while iterating)
+            var keysToRemove = new List<Creature>();
+
+            foreach (var kvp in _memorizedCreatures)
             {
-                if ((DateTime.Now - _memorizedCreatures[key]).TotalSeconds > MemoryTime)
-                    _memorizedCreatures.Remove(key);
-                
-                if (!key)
-                    _memorizedCreatures.Remove(key);
+                // Check memory expiration
+                if ((currentTicks - kvp.Value) > MemoryTime * 1000 || !kvp.Key)
+                {
+                    keysToRemove.Add(kvp.Key);
+                }
             }
 
-            CreatureManager.GetCreatures()
-                .Where(CanSee)
-                .ToList()
-                .ForEach(Memorize);
+            // Remove expired or invalid keys
+            foreach (var key in keysToRemove)
+            {
+                _memorizedCreatures.Remove(key);
+            }
+
+            // Avoid LINQ allocations for creature processing
+            foreach (var creature in CreatureManager.GetCreatures())
+            {
+                if (CanSee(creature))
+                {
+                    Memorize(creature);
+                }
+            }
         }
+
 
         private void Memorize(Creature creature)
         {
-            _memorizedCreatures[creature] = DateTime.Now;
+            // Store the current tick count
+            _memorizedCreatures[creature] = Environment.TickCount;
         }
 
         // Event Handlers
@@ -137,9 +157,8 @@ namespace CreatureControllers
         protected bool PathClear(Creature target, float radius)
         {
             return PathClear(target.transform.position, radius);
-
         }
-        
+
         protected bool PathClear(Vector2 targetPosition, float radius)
         {
             Vector3 creaturePosition = Creature.transform.position;
@@ -168,10 +187,10 @@ namespace CreatureControllers
                 MoveStraightToTarget(target.transform.position);
                 return;
             }
-            
+
             MoveViaPathfinding(target.transform.position);
         }
-        
+
         protected void PerformMovementTowardsPosition(Vector2 position)
         {
             float radius = Creature.MovementCollider.radius;
@@ -183,7 +202,7 @@ namespace CreatureControllers
                 MoveStraightToTarget(position);
                 return;
             }
-            
+
             MoveViaPathfinding(position);
         }
 

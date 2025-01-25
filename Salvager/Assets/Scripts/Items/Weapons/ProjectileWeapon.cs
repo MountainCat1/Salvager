@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Managers;
+using UnityEngine;
 using Zenject;
 
 namespace Items.Weapons
@@ -6,6 +7,7 @@ namespace Items.Weapons
     public class ProjectileWeapon : Weapon
     {
         [Inject] private DiContainer _diContainer;
+        [Inject] private IProjectileManager _projectileManager;
 
         [SerializeField] private Projectile projectilePrefab;
         [SerializeField] private float projectileSpeed;
@@ -14,15 +16,8 @@ namespace Items.Weapons
         {
             var direction = ctx.Direction;
 
-            var projectileGo = _diContainer.InstantiatePrefab(
-                projectilePrefab.gameObject,
-                transform.position,
-                Quaternion.identity,
-                null
-            );
-
-            var projectile = projectileGo.GetComponent<Projectile>();
-
+            var projectile = _projectileManager.SpawnProjectile(projectilePrefab, transform.position);
+            
             Vector2 normalizedDirection = direction.normalized;
             float angle = Mathf.Atan2(normalizedDirection.y, normalizedDirection.x) * Mathf.Rad2Deg;
             projectile.transform.rotation = Quaternion.Euler(0, 0, angle);
@@ -36,6 +31,8 @@ namespace Items.Weapons
 
             projectile.Launch(ctx);
         }
+
+        
 
         private void OnProjectileHit(Creature hitCreature, AttackContext attackCtx)
         {

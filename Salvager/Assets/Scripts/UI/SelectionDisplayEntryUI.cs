@@ -6,7 +6,7 @@ using Zenject;
 
 public class SelectionDisplayEntryUI : MonoBehaviour
 {
-    [Inject] private IPopupManagerUI _popupManagerUI;
+    [Inject] private IInventoryDisplayUI _iIInventoryDisplayUI;
     
     [SerializeField] private TextMeshProUGUI creatureNameText;
     [SerializeField] private Slider healthSlider;
@@ -37,6 +37,6 @@ public class SelectionDisplayEntryUI : MonoBehaviour
     
     public void ShowInventory()
     {
-        _popupManagerUI.ShowInventory(_creature);
+        _iIInventoryDisplayUI.ShowInventory(_creature);
     }
 }

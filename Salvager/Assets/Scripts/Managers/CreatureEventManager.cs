@@ -7,7 +7,6 @@ namespace Managers
     public class CreatureEventManager : MonoBehaviour
     {
         [Inject] private ICreatureManager _creatureManager;
-        [Inject] private IPopupManager _popupManager;
 
         [Inject] 
         private void Construct()

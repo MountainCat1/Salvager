@@ -74,7 +74,7 @@ public class PlayerController : MonoBehaviour
             var controller = creature.Controller as UnitController;
             if (controller)
             {
-                controller.SetMoveTarget(targetPosition);
+                controller.SetMoveTarget(targetPosition + new Vector2(Random.Range(-0.1f, 0.1f), Random.Range(-0.1f, 0.1f)));
             }
         }
 

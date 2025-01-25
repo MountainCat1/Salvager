@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Managers;
 using Markers;
 using UnityEngine;
@@ -7,11 +8,19 @@ using Zenject;
 
 namespace Items.Weapons
 {
+    public class ProjectileSettings
+    {
+        public float BaseMissChance = 0.05f;
+        public float MissChanceForObstacle = 0.5f;
+        public float MissChanceForFriendly = 0.5f;
+    }
+    
     public class Projectile : MonoBehaviour
     {
         private const float Lifetime = 16f;
         
         public event Action<Creature, AttackContext> Hit;
+        public event Action<AttackContext, Entity> Missed;
 
         [Inject] private ISoundPlayer _soundPlayer;
 
@@ -21,9 +30,11 @@ namespace Items.Weapons
         public float Speed { get; private set; }
         public float Damage { get; private set; }
 
+
         private bool _isLaunched = false;
         private bool _initialized = false;
         private AttackContext _attackContext;
+        private ProjectileSettings _settings = new ProjectileSettings();
 
         private void Start()
         {
@@ -55,6 +66,12 @@ namespace Items.Weapons
         {
             if (CollisionUtility.IsObstacle(other.gameObject))
             {
+                if(TryMiss(_settings.MissChanceForObstacle, other.GetComponent<Entity>()))
+                    return;
+                
+                if (hitSound)
+                    _soundPlayer.PlaySound(hitSound, transform.position, SoundType.Sfx);
+                
                 Hit?.Invoke(null, _attackContext);
                 Destroy(gameObject);
                 return;
@@ -74,11 +91,17 @@ namespace Items.Weapons
             if (hitCreature == _attackContext.Attacker)
                 return;
 
-            if(hitCreature.GetAttitudeTowards(_attackContext.Attacker) == Attitude.Friendly)
-                return;
+            if (hitCreature.GetAttitudeTowards(_attackContext.Attacker) == Attitude.Friendly)
+            {
+                if(TryMiss(_settings.MissChanceForFriendly, hitCreature))
+                    return;
+            }
             
             try
             {
+                if(TryMiss(_settings.BaseMissChance, hitCreature))
+                    return;
+                
                 if (hitSound)
                     _soundPlayer.PlaySound(hitSound, transform.position, SoundType.Sfx);
                 
@@ -98,6 +121,18 @@ namespace Items.Weapons
                 return;
 
             transform.position += (Vector3)(_attackContext.Direction * (Speed * Time.deltaTime));
+        }
+
+        private bool TryMiss(float baseChance, Entity entity)
+        {
+            if (UnityEngine.Random.value < baseChance)
+            {
+                Missed?.Invoke(_attackContext, entity);
+                Debug.Log("Projectile missed");
+                return true;
+            }
+
+            return false;
         }
     }
 }

@@ -24,6 +24,7 @@ public class CachedPathfinding : IPathfinding
             return cachedPath;
         }
 
+        Debug.Log($"Path not found in cache, calculating path from {startPos} to {targetPos}");
         var path = _innerPathfinding.FindPath(startPos, targetPos);
         _pathCache[key] = path;
         return path;
