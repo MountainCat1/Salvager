@@ -7,7 +7,7 @@ using System.Linq;
 
 public class TileCluster
 {
-    public static List<List<Vector2Int>> GetConnectedClusters(List<Vector2Int> tilePositions)
+    public static List<List<Vector2Int>> GetConnectedClusters(IEnumerable<Vector2Int> tilePositions)
     {
         var remainingTiles = new HashSet<Vector2Int>(tilePositions);
         var clusters = new List<List<Vector2Int>>();

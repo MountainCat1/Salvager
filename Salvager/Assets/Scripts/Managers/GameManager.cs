@@ -25,8 +25,6 @@ namespace Managers
         
         private void Start()
         {
-
-            
             StartCoroutine(WaitToCreateGrid());
         }
         

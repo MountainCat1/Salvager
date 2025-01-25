@@ -1606,7 +1606,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1141345841}
-  - component: {fileID: 1141345842}
+  - component: {fileID: 1141345847}
+  - component: {fileID: 1141345846}
+  - component: {fileID: 1141345845}
+  - component: {fileID: 1141345844}
+  - component: {fileID: 1141345848}
+  - component: {fileID: 1141345843}
   m_Layer: 0
   m_Name: Map Generator
   m_TagString: Untagged
@@ -1629,7 +1634,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1891863599}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1141345842
+--- !u!114 &1141345843
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1638,21 +1643,89 @@ MonoBehaviour:
   m_GameObject: {fileID: 1141345840}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d54d99cc90367c849be033594ac0fba9, type: 3}
+  m_Script: {fileID: 11500000, guid: 643fd93667ec481aa1ea79e9c4f22d09, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  seed: 0
-  gridSize: {x: 50, y: 50}
-  roomCount: 10
-  roomMinSize: {x: 5, y: 5}
-  roomMaxSize: {x: 10, y: 10}
   wallTileMap: {fileID: 1724333501}
   floorTileMap: {fileID: 1993583554}
   shadowTileMap: {fileID: 0}
-  floorTile: {fileID: 11400000, guid: 42e21e8572244594b8f9c9687bc7fe75, type: 2}
   wallTile: {fileID: 11400000, guid: bd42707613bbc6540b6431494d73b0c8, type: 2}
-  addWallAroundMap: 0
+  floorTile: {fileID: 11400000, guid: 42e21e8572244594b8f9c9687bc7fe75, type: 2}
+--- !u!114 &1141345844
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1141345840}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a194f466f9a34754a5ad0f20534fe3e3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
   wallsOnlyAroundFloor: 1
+  addWallAroundMap: 0
+--- !u!114 &1141345845
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1141345840}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 46094848d6134e3180ae13b0c5590589, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1141345846
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1141345840}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 255550bac35a45469dd0ef4ecd573d38, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1141345847
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1141345840}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e74ead7bde84bd8ba27ccdf490aa079, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  generationSteps:
+  - {fileID: 1141345846}
+  - {fileID: 1141345845}
+  - {fileID: 1141345844}
+  - {fileID: 1141345848}
+  - {fileID: 1141345843}
+  seed: 0
+  settings:
+    roomCount: 10
+    roomMinSize: {x: 5, y: 5}
+    roomMaxSize: {x: 10, y: 10}
+    gridSize: {x: 50, y: 50}
+    tileSize: 1
+--- !u!114 &1141345848
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1141345840}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8f53260beea644edb0a6d63048e7e9d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
   entrancePrefab: {fileID: 6404418455233857910, guid: d92398bd84b341f47835a0c42fb856df, type: 3}
 --- !u!1 &1151040404
 GameObject:

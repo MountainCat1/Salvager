@@ -1,6 +1,7 @@
 using Managers;
 using Managers.Visual;
 using Services.MapGenerators;
+using Services.MapGenerators.GenerationSteps;
 using UI;
 using Zenject;
 
@@ -27,7 +28,7 @@ public class GameInstaller : MonoInstaller<GameInstaller>
         Container.Bind<ICreatureEventProducer>().To<CreatureEventProducer>().FromNew().AsSingle().NonLazy();
         Container.Bind<IPhaseManager>().To<PhaseManager>().FromComponentsInHierarchy().AsSingle();
         Container.Bind<IRoomDecorator>().To<RoomDecorator>().FromComponentsInHierarchy().AsSingle();
-        Container.Bind<IMapGenerator>().To<DungeonGenerator>().FromComponentsInHierarchy().AsSingle();
+        Container.Bind<IMapGenerator>().To<StepDungeonGenerator>().FromComponentsInHierarchy().AsSingle();
         Container.Bind<ICameraController>().To<CameraController>().FromComponentsInHierarchy().AsSingle();
         Container.Bind<ICameraShakeService>().To<CameraShakeService>().FromComponentsInHierarchy().AsSingle();
     }
