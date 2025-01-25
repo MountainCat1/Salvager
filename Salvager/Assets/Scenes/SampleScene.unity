@@ -1393,7 +1393,7 @@ GameObject:
   - component: {fileID: 995061535}
   - component: {fileID: 995061536}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: Pooling Manager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1960,10 +1960,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 723f3f856e4040edba01f8fb14504cb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  floatingTextPrefab: {fileID: 0}
-  floatingTextContainer: {fileID: 0}
-  timeToDestroyPopup: 1
-  popupOffset: {x: 0, y: 0.5}
 --- !u!1 &1564520957
 GameObject:
   m_ObjectHideFlags: 0

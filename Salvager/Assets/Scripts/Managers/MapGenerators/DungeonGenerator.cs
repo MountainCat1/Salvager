@@ -4,6 +4,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.Tilemaps;
+using Utilities;
 using Zenject;
 using Random = System.Random;
 
@@ -33,6 +34,11 @@ namespace Services.MapGenerators
 
         [SerializeField] private bool addWallAroundMap = false;
         [SerializeField] private bool wallsOnlyAroundFloor = false;
+        
+        [SerializeField] private GameObject entrancePrefab = null!;
+        
+        private List<Vector2Int> _wallTiles = new();
+        private List<Vector2Int> _floorTiles = new();
 
         private Random _random = new();
 
@@ -43,8 +49,13 @@ namespace Services.MapGenerators
 
         public void GenerateMap()
         {
+            Debug.Log("===== Generating map =====");
+            _wallTiles.Clear();
+            _floorTiles.Clear();
             var grid = new int[gridSize.x, gridSize.y];
             var rooms = GenerateRooms(grid);
+            var cellSize = wallTileMap.cellSize.x;
+            var cellSizeSquared = cellSize * cellSize;
 
             ConnectRooms(grid, rooms);
 
@@ -53,10 +64,29 @@ namespace Services.MapGenerators
             Debug.Log("===== Map generated =====");
 
             Debug.Log("Decorating rooms...");
-            _roomDecorator.DecorateRooms(rooms, tileSize: wallTileMap.cellSize.x);
+            
+            _roomDecorator.DecorateRooms(rooms, tileSize: cellSize);
 
-            MapData = new MapData(gridSize, grid, wallTileMap.cellSize, rooms);
+            MapData = new MapData(gridSize, grid, cellSize, rooms);
 
+            var startingRoom = rooms.First(x => x.IsEntrance);
+
+            var randomWallOfStartingRoom = _wallTiles
+                .Where(wallTile => 
+                    // Ensure the wall tile is within the required distance
+                    startingRoom.Positions.Any(roomTile => (roomTile - wallTile).sqrMagnitude <= cellSizeSquared) 
+                    // Ensure the wall tile is adjacent to at least one empty tile
+                    && GetAdjacentTiles(wallTile).Any(IsTileEmpty)
+                )
+                .RandomElement();
+
+            Debug.Log($"Creating entrance at {randomWallOfStartingRoom}");
+            Instantiate(entrancePrefab, new Vector3(randomWallOfStartingRoom.x, randomWallOfStartingRoom.y, 0), Quaternion.identity);
+            
+            // Remove the wall tile that the entrance is on
+            wallTileMap.SetTile(new Vector3Int(randomWallOfStartingRoom.x, randomWallOfStartingRoom.y, 0), null);
+            _wallTiles.Remove(randomWallOfStartingRoom);
+            
             MapGenerated?.Invoke();
         }
 
@@ -140,12 +170,10 @@ namespace Services.MapGenerators
                     if (grid[x, y] == (int)TileType.Floor)
                     {
                         floorTileMap.SetTile(new Vector3Int(x, y, 0), floorTile);
+                        _floorTiles.Add(new Vector2Int(x, y));
                     }
                 }
             }
-
-            // 2) Collect wall positions around floors
-            var wallTiles = new List<Vector2Int>();
 
             // 4-way (or 8-way) directions. This example is 4-way.
             var directions = new Vector2Int[]
@@ -183,7 +211,7 @@ namespace Services.MapGenerators
                                     if (IsInBounds(nx, ny))
                                     {
                                         var wallPos = new Vector2Int(nx, ny);
-                                        wallTiles.Add(wallPos);
+                                        _wallTiles.Add(wallPos);
                                     }
                                 }
                             }
@@ -201,7 +229,7 @@ namespace Services.MapGenerators
                             continue;
                         
                         grid[x, y] = (int)TileType.Wall;
-                        wallTiles.Add(new Vector2Int(x, y));
+                        _wallTiles.Add(new Vector2Int(x, y));
                     }
                 }
             }
@@ -214,10 +242,10 @@ namespace Services.MapGenerators
                 {
                     // If not floor, make it a wall
                     if (grid[x, 0] != (int)TileType.Floor)
-                        wallTiles.Add(new Vector2Int(x, 0));
+                        _wallTiles.Add(new Vector2Int(x, 0));
 
                     if (grid[x, gridSize.y - 1] != (int)TileType.Floor)
-                        wallTiles.Add(new Vector2Int(x, gridSize.y - 1));
+                        _wallTiles.Add(new Vector2Int(x, gridSize.y - 1));
                 }
             }
 
@@ -227,18 +255,18 @@ namespace Services.MapGenerators
                 for (int y = 0; y < gridSize.y; y++)
                 {
                     if (grid[0, y] != (int)TileType.Floor)
-                        wallTiles.Add(new Vector2Int(0, y));
+                        _wallTiles.Add(new Vector2Int(0, y));
 
                     if (grid[gridSize.x - 1, y] != (int)TileType.Floor)
-                        wallTiles.Add(new Vector2Int(gridSize.x - 1, y));
+                        _wallTiles.Add(new Vector2Int(gridSize.x - 1, y));
                 }
             }
 
             // 4) Use Godot’s terrain connection or standard SetCell to place walls
-            wallTileMap.SetTiles(wallTiles.Select(v => new Vector3Int(v.x, v.y, 0)).ToArray(),
-                wallTiles.Select(x => wallTile).ToArray());
+            wallTileMap.SetTiles(_wallTiles.Select(v => new Vector3Int(v.x, v.y, 0)).ToArray(),
+                _wallTiles.Select(x => wallTile).ToArray());
 
-            foreach (var wallTile in wallTiles)
+            foreach (var wallTile in _wallTiles)
             {
                 grid[wallTile.x, wallTile.y] = (int)TileType.Wall;
             }
@@ -252,6 +280,25 @@ namespace Services.MapGenerators
         private bool IsInBounds(int x, int y)
         {
             return x >= 0 && x < gridSize.x && y >= 0 && y < gridSize.y;
+        }
+        
+        // Gets adjacent tiles (up, down, left, right)
+        private IEnumerable<Vector2Int> GetAdjacentTiles(Vector2Int tile)
+        {
+            return new List<Vector2Int>
+            {
+                tile + Vector2Int.up,
+                tile + Vector2Int.down,
+                tile + Vector2Int.left,
+                tile + Vector2Int.right
+            };
+        }
+
+        // Checks if a tile is empty
+        private bool IsTileEmpty(Vector2Int tile)
+        {
+            // Replace it with your logic to determine if a tile is empty
+            return !_wallTiles.Contains(tile) && !_floorTiles.Contains(tile);
         }
     }
 }

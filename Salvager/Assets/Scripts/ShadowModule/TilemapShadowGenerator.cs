@@ -84,10 +84,6 @@ public partial class TilemapShadowGenerator : MonoBehaviour
 
         foreach (var cluster in wallClusters)
         {
-            // If the polygon is the longest we assume it's the outer wall, so we ignore it
-            if (cluster.Count == wallClusters.Max(x => x.Count))
-                continue;
-            
             var wrapPolygon = TilePolygon.GetWrappingPolygon(cluster, wallTilemap.cellSize.x);
 
             var shadowCaster = Instantiate(this.shadowCasterPrefab, transform);
@@ -100,23 +96,23 @@ public partial class TilemapShadowGenerator : MonoBehaviour
             
         }
         
-        var floorTiles = GetAllTilePositions(floorTilemap).Select(x => new Vector2Int(x.x, x.y)).ToList();
-        var floorClusters = TileCluster.GetConnectedClusters(floorTiles);
-
-        foreach (var cluster in floorClusters)
-        {
-            var wrapPolygon = TilePolygon.GetWrappingPolygon(cluster, wallTilemap.cellSize.x);
-
-            var shadowCaster = Instantiate(this.shadowCasterPrefab, transform);
-            shadowCaster.transform.SetParent(transform);
-            shadowCaster.name = "Floor Shadow Caster";
-
-            wrapPolygon = PolygonMargin.ApplyMargin(wrapPolygon, -margin);
-
-            ShadowCasterUtility.UpdateShadowCasterShape(shadowCaster.gameObject, wrapPolygon.ToArray());
-
-            shadowCaster.selfShadows = false;
-        }
+        // var floorTiles = GetAllTilePositions(floorTilemap).Select(x => new Vector2Int(x.x, x.y)).ToList();
+        // var floorClusters = TileCluster.GetConnectedClusters(floorTiles);
+        //
+        // foreach (var cluster in floorClusters)
+        // {
+        //     var wrapPolygon = TilePolygon.GetWrappingPolygon(cluster, wallTilemap.cellSize.x);
+        //
+        //     var shadowCaster = Instantiate(this.shadowCasterPrefab, transform);
+        //     shadowCaster.transform.SetParent(transform);
+        //     shadowCaster.name = "Floor Shadow Caster";
+        //
+        //     wrapPolygon = PolygonMargin.ApplyMargin(wrapPolygon, -margin);
+        //
+        //     ShadowCasterUtility.UpdateShadowCasterShape(shadowCaster.gameObject, wrapPolygon.ToArray());
+        //
+        //     shadowCaster.selfShadows = false;
+        // }
     }
 
 

@@ -8,15 +8,14 @@ namespace Services.MapGenerators
 {
     public class MapData
     {
-        public float TileSize => _tileSize.x;
+        public float TileSize { get; }
 
-        
+
         private readonly Dictionary<Vector2Int, TileType> _mapData = new();
         private readonly Dictionary<TileType, ICollection<Vector2>> _tilePositions = new();
         private readonly Dictionary<int, RoomData> _rooms = new(); // Stores room data
-        private Vector2 _tileSize;
 
-        public MapData(Vector2Int gridSize, int[,] grid, Vector2 tileSize, List<RoomData> rooms)
+        public MapData(Vector2Int gridSize, int[,] grid, float tileSize, List<RoomData> rooms)
         {
             // Populate tile data
             for (int x = 0; x < gridSize.x; x++)
@@ -41,7 +40,7 @@ namespace Services.MapGenerators
                 _rooms[room.RoomID] = room;
             }
 
-            _tileSize = tileSize;
+            TileSize = tileSize;
         }
         
         public TileType GetTileType(Vector2Int position)
@@ -61,7 +60,7 @@ namespace Services.MapGenerators
                 }
             }
 
-            return tiles[new Random().Next(0, tiles.Count)] * _tileSize;
+            return tiles[new Random().Next(0, tiles.Count)] * TileSize;
         }
         
         public List<Vector2> GetSpreadGlobalPositions(Vector2 startPosition, int count, TileType tileType)

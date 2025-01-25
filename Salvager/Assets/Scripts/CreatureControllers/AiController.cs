@@ -40,14 +40,15 @@ namespace CreatureControllers
         }
 
         // Public Methods
-        public ICollection<Creature> GetMemorizedCreatures()
+        public IEnumerable<Creature> GetMemorizedCreatures()
         {
             // TODO: performance optimization, avoid LINQ allocations, do we really need to return a list instead of enumerable? idk... 
-            // ToList() is really expensive
+
             return _memorizedCreatures
                 .Select(x => x.Key)
-                .Where(x => x) // Filter out null creatures, is it even necessary??? idk...
-                .ToList();
+                .Where(x => x); // Filter out null creatures, is it even necessary??? idk...
+            // .ToList() removed to avoid LINQ allocations, idk if its enough
+
         }
 
         // Virtual Methods
@@ -209,9 +210,7 @@ namespace CreatureControllers
         protected Creature GetNewTarget()
         {
             var targets = GetMemorizedCreatures()
-                .Where(x => Creature.GetAttitudeTowards(x) == Attitude.Hostile)
-                // .Where(x => CanSee(x))
-                .ToList();
+                .Where(x => Creature.GetAttitudeTowards(x) == Attitude.Hostile);
 
             // Get closest target
             var target = targets
