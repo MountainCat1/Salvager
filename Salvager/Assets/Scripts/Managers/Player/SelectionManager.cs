@@ -1,8 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.NetworkInformation;
 using UnityEngine;
+using UnityEngine.Animations;
 using UnityEngine.EventSystems;
+using UnityEngine.Serialization;
 using Zenject;
 
 namespace Managers
@@ -21,22 +24,30 @@ namespace Managers
         public event Action OnSelectionChanged;
 
         [Inject] ITeamManager _teamManager;
+        [Inject] IPoolingManager _poolingManager;
 
         public IEnumerable<Creature> SelectedCreatures => GetSelectedCreatures();
 
         [SerializeField] private List<Creature> _selectedCreatures = new();
         [SerializeField] private RectTransform selectionBox;
         [SerializeField] private Canvas canvas;
+        [SerializeField] private SelectionMarker selectionMarkerPrefab;
         [SerializeField] private Teams playerTeam;
 
         private Vector2 _startMousePosition;
         private Camera _camera;
+        private IPoolAccess<SelectionMarker> _selectionCirclesPool;
 
         private const float DragThreshold = 5f; // Threshold in pixels to differentiate between click and drag
 
         private void Awake()
         {
             _camera = Camera.main;
+        }
+
+        private void Start()
+        {
+            _selectionCirclesPool = _poolingManager.GetPoolAccess<SelectionMarker>();
         }
 
         private void Update()
@@ -189,10 +200,9 @@ namespace Managers
         // Public Methods
         public void ClearSelection()
         {
-            foreach (var creature in GetSelectedCreatures())
+            foreach (var selectionCircle in _selectionCirclesPool.GetInUseObjects().ToList())
             {
-                // Optional: Update creature's appearance to show deselection
-                creature.GetComponentInChildren<Renderer>().material.color = Color.white;
+                _selectionCirclesPool.DespawnObject(selectionCircle);
             }
 
             _selectedCreatures.Clear();
@@ -208,8 +218,14 @@ namespace Managers
             if (!_selectedCreatures.Contains(creature))
             {
                 _selectedCreatures.Add(creature);
-                // Optional: Update creature's appearance to show selection
-                creature.GetComponentInChildren<Renderer>().material.color = Color.green;
+                
+                var selectionMarker = _selectionCirclesPool.SpawnObject(selectionMarkerPrefab, creature.transform.position);
+                selectionMarker.ParentConstraint.AddSource(new ConstraintSource()
+                {
+                    sourceTransform = creature.transform,
+                    weight = 1
+                });
+                selectionMarker.Creature = creature;
             }
 
             OnSelectionChanged?.Invoke();
@@ -220,8 +236,11 @@ namespace Managers
             if (_selectedCreatures.Contains(creature))
             {
                 _selectedCreatures.Remove(creature);
-                // Optional: Update creature's appearance to show deselection
-                creature.GetComponentInChildren<Renderer>().material.color = Color.white;
+                
+                var selectionMarker = _selectionCirclesPool.GetInUseObjects()
+                    .FirstOrDefault(marker => marker.Creature == creature);
+                
+                _selectionCirclesPool.DespawnObject(selectionMarker);
             }
 
             OnSelectionChanged?.Invoke();

@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Constants;
 using Services.MapGenerators;
+using Unity.VisualScripting;
 using UnityEngine;
 using Utilities;
 using Zenject;
@@ -46,9 +49,16 @@ namespace Managers
         {
             var startingRoom = _map.GetAllRooms().First(x => x.IsEntrance);
             
-            var firstUnit = _creatureManager.SpawnCreature(playerPrefab, (Vector2)startingRoom.Positions.RandomElement() * _map.TileSize);
-            _creatureManager.SpawnCreature(playerPrefab, (Vector2)startingRoom.Positions.RandomElement() * _map.TileSize);
-            _creatureManager.SpawnCreature(playerPrefab, (Vector2)startingRoom.Positions.RandomElement() * _map.TileSize);
+            var playerUnits = new List<Creature>();
+            
+            playerUnits.Add(_creatureManager.SpawnCreature(playerPrefab, (Vector2)startingRoom.Positions.RandomElement() * _map.TileSize));
+            playerUnits.Add(_creatureManager.SpawnCreature(playerPrefab, (Vector2)startingRoom.Positions.RandomElement() * _map.TileSize));
+            playerUnits.Add(_creatureManager.SpawnCreature(playerPrefab, (Vector2)startingRoom.Positions.RandomElement() * _map.TileSize));
+
+            foreach (var unit in playerUnits)
+            {
+                unit.name = $"{Names.Human.RandomElement()} {Surnames.Human.RandomElement()}";
+            }
             
             void SpawnEnemyInNonStartingRoom()
             {
@@ -62,7 +72,7 @@ namespace Managers
                 SpawnEnemyInNonStartingRoom();
             }
             
-            _cameraController.MoveTo(firstUnit.transform.position);
+            _cameraController.MoveTo(playerUnits.First().transform.position);
         }
     }
     

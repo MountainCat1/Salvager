@@ -6,6 +6,7 @@ using JetBrains.Annotations;
 using Managers;
 using UnityEngine;
 using Zenject;
+using Object = UnityEngine.Object;
 
 
 public interface IFreeable
@@ -20,26 +21,77 @@ public interface IPoolingManager
         T prefabGameObject,
         Vector2 position,
         float rotation = 0,
-        [CanBeNull] Transform parent = null) where T : MonoBehaviour;
+        [CanBeNull] Transform parent = null) where T : Component;
+    
+    public T SpawnObject<T>(
+        T prefabGameObject,
+        string poolName,
+        Vector2 position,
+        float rotation = 0,
+        [CanBeNull] Transform parent = null) where T : Component;
 
-    public void DespawnObject<T>(T node) where T : MonoBehaviour;
+    public void DespawnObject<T>(T node) where T : Component;
+    public void DespawnObject<T>(T node, string poolName) where T : Component;
 
-    public IReadOnlyCollection<T> GetPooledObjects<T>() where T : MonoBehaviour;
+    public IReadOnlyCollection<T> GetInUseObjects<T>() where T : Component;
+    public IReadOnlyCollection<T> GetInUseObjects<T>(string poolName) where T : Component;
+    
+    [Pure]
+    public IPoolAccess<T> GetPoolAccess<T>() where T : Component;
+}
+
+public interface IPoolAccess<T> where T : Component
+{
+    T SpawnObject(T prefabGameObject, Vector2 position, float rotation = 0, Transform parent = null);
+    void DespawnObject(T node);
+    IReadOnlyCollection<T> GetInUseObjects();
+}
+
+public class PoolAccess<T> : IPoolAccess<T> where T : Component
+{
+    private IPoolingManager _poolingManager;
+    private string _poolName;
+    
+    public PoolAccess(IPoolingManager poolingManager, string poolName)
+    {
+        _poolingManager = poolingManager;
+        _poolName = poolName;   
+    }
+    
+    public T SpawnObject(T prefabGameObject, Vector2 position, float rotation = 0, Transform parent = null)
+    {
+        return _poolingManager.SpawnObject(prefabGameObject, _poolName, position, rotation, parent);
+    }
+    
+    public void DespawnObject(T node)
+    {
+        _poolingManager.DespawnObject(node, _poolName);
+    }
+
+    public IReadOnlyCollection<T> GetInUseObjects()
+    {
+        return _poolingManager.GetInUseObjects<T>(_poolName);
+    }
 }
 
 public class PoolingManager : MonoBehaviour, IPoolingManager
 {
     [Inject] private ISpawnerManager _spawnerManager = null!;
 
-    private Dictionary<Type, ObjectPool> _pooledObjects = new();
+    private Dictionary<string, ObjectPool> _pooledObjects = new();
 
     public T SpawnObject<T>(
         T prefabGameObject,
         Vector2 position,
         float rotation = 0,
-        Transform parent = null) where T : MonoBehaviour
+        Transform parent = null) where T : Component
     {
-        var pool = GetPool<T>();
+        return SpawnObject(prefabGameObject, prefabGameObject.GetType().FullName!, position, rotation, parent);
+    }
+
+    public T SpawnObject<T>(T prefabGameObject, string poolName, Vector2 position, float rotation = 0, Transform parent = null) where T : Component
+    {
+        var pool = GetPool<T>(poolName);
         var node = pool.GetFreeObject();
         if (node == null)
         {
@@ -63,28 +115,44 @@ public class PoolingManager : MonoBehaviour, IPoolingManager
 
         return node;
     }
-
-    public void DespawnObject<T>(T node) where T : MonoBehaviour
+    public void DespawnObject<T>(T node, string poolName) where T : Component
     {
-        var pool = GetPool<T>();
+        var pool = GetPool<T>(poolName);
         pool.FreeObject(node);
     }
 
-    public IReadOnlyCollection<T> GetPooledObjects<T>() where T : MonoBehaviour
+    public void DespawnObject<T>(T node) where T : Component
     {
-        var pool = GetPool<T>();
-        return pool.GetFreeObjects();
+        var pool = GetPool<T>(typeof(T).FullName);
+        pool.FreeObject(node);
     }
 
+    public IReadOnlyCollection<T> GetInUseObjects<T>() where T : Component
+    {
+        var pool = GetPool<T>(typeof(T).FullName);
+        return pool.GetFreeObjects();
+    }
+    
+    public IReadOnlyCollection<T> GetInUseObjects<T>(string poolName) where T : Component
+    {
+        var pool = GetPool<T>(poolName);
+        return pool.GetInUseObjects();
+    }
 
-    private ObjectPool<T> GetPool<T>() where T : MonoBehaviour
+    [Pure]
+    public IPoolAccess<T> GetPoolAccess<T>() where T : Component
+    {
+        return new PoolAccess<T>(this, Guid.NewGuid().ToString());
+    }
+
+    private ObjectPool<T> GetPool<T>(string poolName) where T : Component
     {
         var type = typeof(T);
-        var pool = _pooledObjects.GetValueOrDefault(type) as ObjectPool<T>;
+        var pool = _pooledObjects.GetValueOrDefault(poolName) as ObjectPool<T>;
         if (pool == null)
         {
             pool = new ObjectPool<T>();
-            _pooledObjects[type] = pool;
+            _pooledObjects[poolName] = pool;
         }
 
         return pool;
@@ -95,7 +163,7 @@ public class ObjectPool
 {
 }
 
-public class ObjectPool<T> : ObjectPool where T : MonoBehaviour
+public class ObjectPool<T> : ObjectPool where T : Component
 {
     private const int WarningThreshold = 40;
 
@@ -157,5 +225,10 @@ public class ObjectPool<T> : ObjectPool where T : MonoBehaviour
     public IReadOnlyCollection<T> GetFreeObjects()
     {
         return _freeObjects;
+    }
+
+    public IReadOnlyCollection<T> GetInUseObjects()
+    {
+        return _inUseObjects;
     }
 }

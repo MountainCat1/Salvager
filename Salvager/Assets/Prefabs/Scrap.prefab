@@ -44,6 +44,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 40e6bab0fd314251bc892c16c9315ca5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <Icon>k__BackingField: {fileID: 21300000, guid: 5b331c5915a0483baf788a6c7479266f, type: 3}
+  <Icon>k__BackingField: {fileID: -82778302572798590, guid: cc4bc55be23638a4f94f99538bd0a965, type: 3}
   <Name>k__BackingField: Scrap
   <Weight>k__BackingField: 1

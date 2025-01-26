@@ -167,12 +167,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac347d32ca388e8458d3442c991f1cbc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _selectedCreatures:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  _selectedCreatures: []
   selectionBox: {fileID: 1951222304}
   canvas: {fileID: 1613153534}
+  selectionMarkerPrefab: {fileID: 5814704497398151501, guid: 31356e66a2521c548a997c84961c676d, type: 3}
   playerTeam: 1
 --- !u!1 &36719768
 GameObject:
