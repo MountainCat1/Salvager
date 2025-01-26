@@ -6,7 +6,7 @@ using Zenject;
 
 public class Inventory
 {
-    public event Action OnChange;
+    public event Action Changed;
     public event Action<ItemBehaviour> ItemUsed;
 
     [Inject] private DiContainer _diContainer;
@@ -46,7 +46,7 @@ public class Inventory
         
         RegisterItem(itemScript);
         
-        OnChange?.Invoke();
+        Changed?.Invoke();
     }
     
     public void RemoveItem(ItemBehaviour item)
@@ -55,7 +55,7 @@ public class Inventory
         
         UnregisterItem(item);
         
-        OnChange?.Invoke();
+        Changed?.Invoke();
     }
     
     public ItemBehaviour GetItem(string identifier)

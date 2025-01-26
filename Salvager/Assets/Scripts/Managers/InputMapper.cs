@@ -65,8 +65,10 @@ public class InputMapper : MonoBehaviour, IInputMapper
     [CanBeNull]
     public Entity GetEntityUnderMouse()
     {
-        var ray = _camera.ScreenPointToRay(Input.mousePosition);
-        if (Physics.Raycast(ray, out var hit))
+        var mousePosition = _camera.ScreenToWorldPoint(Input.mousePosition);
+        var hit = Physics2D.Raycast(mousePosition, Vector2.zero); // Raycast in 2D
+
+        if (hit.collider != null)
         {
             var entity = hit.collider.GetComponent<Entity>();
             if (entity != null)

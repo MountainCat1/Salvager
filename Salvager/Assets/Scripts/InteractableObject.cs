@@ -1,3 +1,4 @@
+using System;
 using JetBrains.Annotations;
 using Managers;
 using UnityEngine;
@@ -47,14 +48,25 @@ public class InteractableObject : Entity, IInteractable
 
         _interaction.Completed += () =>
         {
-            _interaction = null;
-            
             if (interactionSound)
                 _soundPlayer.PlaySound(interactionSound, Position);
+
+            try
+            {
+                OnInteractionComplete(_interaction);
+            }
+            finally
+            {
+                _interaction = null;
+            }
         };
         _interaction!.Canceled += () => { _interaction = null; };
 
         return _interaction;
+    }
+
+    protected virtual void OnInteractionComplete(Interaction interaction)
+    {
     }
 
     public Vector2 Position => transform.position;

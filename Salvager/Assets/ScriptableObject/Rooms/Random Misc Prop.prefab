@@ -118,6 +118,7 @@ GameObject:
   - component: {fileID: 7749415076972555007}
   - component: {fileID: 1620334314628338296}
   - component: {fileID: 5788253491434673039}
+  - component: {fileID: 8710917979448517051}
   m_Layer: 6
   m_Name: Random Misc Prop
   m_TagString: Untagged
@@ -189,6 +190,21 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.5
+--- !u!114 &8710917979448517051
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8667083905584706207}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e46f0fc2a354ea8b7b9f27c4b60f3f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  interactionTime: 1
+  interactionSound: {fileID: 8300000, guid: f55c4d302f66c1f4ba3a397272742d15, type: 3}
+  itemBehaviour: {fileID: 352487764999285703, guid: dbe43bd481165264bbe8bbef6f56baf6, type: 3}
 --- !u!1001 &556012255856125039
 PrefabInstance:
   m_ObjectHideFlags: 0

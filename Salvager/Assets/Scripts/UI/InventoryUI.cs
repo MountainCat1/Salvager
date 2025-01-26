@@ -10,16 +10,27 @@ namespace UI
         [SerializeField] private Transform entriesParent;
         [SerializeField] private TextMeshProUGUI creatureNameText;
         
+        private Creature _creature;
+        
         public void SetCreature(Creature creature)
+        {
+            _creature = creature;
+            
+            creature.Inventory.Changed += UpdateInventory;
+            
+           UpdateInventory();
+        }
+
+        private void UpdateInventory()
         {
             foreach (Transform child in entriesParent)
             {
                 Destroy(child.gameObject);
             }
             
-            creatureNameText.text = creature.name;
+            creatureNameText.text = _creature.name;
             
-            foreach (var item in creature.Inventory.Items)
+            foreach (var item in _creature.Inventory.Items)
             {
                 var inventoryEntryUI = Instantiate(inventoryEntryUIPrefab, entriesParent);
                 inventoryEntryUI.SetItem(item);

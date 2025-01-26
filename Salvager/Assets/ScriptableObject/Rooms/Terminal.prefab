@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7749415076972555007}
   - component: {fileID: 1537128874834053102}
   - component: {fileID: 9141754217765262000}
-  - component: {fileID: 1720714710367388748}
+  - component: {fileID: 6832043767885695631}
   - component: {fileID: 118354269427039810}
   m_Layer: 6
   m_Name: Terminal
@@ -109,13 +109,15 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!65 &1720714710367388748
-BoxCollider:
+--- !u!58 &6832043767885695631
+CircleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8667083905584706207}
+  m_Enabled: 1
+  m_Density: 1
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -124,12 +126,24 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
   m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 0.887275, y: 0.7745497, z: 0.2}
-  m_Center: {x: 0.10467327, y: 0.29791617, z: 0}
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0.09375, y: 0.34375}
+  serializedVersion: 2
+  m_Radius: 0.40625
 --- !u!114 &118354269427039810
 MonoBehaviour:
   m_ObjectHideFlags: 0
