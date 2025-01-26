@@ -53,6 +53,11 @@ namespace Services.MapGenerators
 
             return tiles;
         }
+
+        public bool IsInBounds(int x, int y)
+        {
+            return x >= 0 && x < GridSize.x && y >= 0 && y < GridSize.y;
+        }
     }
 
     public abstract class GenerationStep : MonoBehaviour

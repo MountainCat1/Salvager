@@ -63,6 +63,7 @@ public class Pathfinding : MonoBehaviour, IPathfinding
                 Debug.LogWarning("Pathfinding reached the iteration limit and was stopped.");
                 return new List<Node>(); // Return an empty list if the limit is exceeded
             }
+            iterations++;
             
             Node currentNode = openSet[0];
             for (int i = 1; i < openSet.Count; i++)
