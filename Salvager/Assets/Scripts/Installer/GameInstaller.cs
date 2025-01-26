@@ -19,7 +19,7 @@ public class GameInstaller : MonoInstaller<GameInstaller>
         Container.Bind<ITimeManager>().To<TimeManager>().FromComponentsInHierarchy().AsSingle();
         Container.Bind<ISelectionManager>().To<SelectionManager>().FromComponentsInHierarchy().AsSingle();
         Container.Bind<IWinManager>().To<WinManager>().FromNew().AsSingle();
-        Container.Bind<IPathfinding>().To<CachedPathfinding>().FromInstance(new CachedPathfinding(FindObjectOfType<Pathfinding>())).AsSingle();
+        Container.Bind<IPathfinding>().To<CachedPathfinding>().FromInstance(new CachedPathfinding(FindObjectOfType<Pathfinding>(), FindObjectOfType<GridGenerator>())).AsSingle();
         Container.Bind<IFlagManager>().To<FlagManager>().FromComponentsInHierarchy().AsSingle();
         Container.Bind<ISoundPlayer>().To<SoundPlayer>().AsSingle().NonLazy();
         Container.Bind<ITeamManager>().To<TeamManager>().FromComponentsInHierarchy().AsSingle();

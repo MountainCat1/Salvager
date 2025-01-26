@@ -30,6 +30,11 @@ public class Pathfinding : MonoBehaviour, IPathfinding
     private List<IObstacle> _obstacles = new List<IObstacle>();
     [SerializeField] private bool displayGridGizmos;
 
+    
+    
+    public const int PathLimit = 100;
+    public const int FindClosestNodeLimit = 25;
+    
     void Awake()
     {
         _grid = GetComponent<GridGenerator>();
@@ -38,14 +43,27 @@ public class Pathfinding : MonoBehaviour, IPathfinding
     public List<Node> FindPath(Vector3 startPos, Vector3 targetPos)
     {
         Node startNode = _grid.NodeFromWorldPoint(startPos);
+        startNode = GetClosestWalkableNode(startNode); // We need to find the closest walkable node to the start
+        
         Node targetNode = _grid.NodeFromWorldPoint(targetPos);
+        targetNode = GetClosestWalkableNode(targetNode); // We need to find the closest walkable node to the target
 
         List<Node> openSet = new List<Node>();
         HashSet<Node> closedSet = new HashSet<Node>();
         openSet.Add(startNode);
 
+        
+        int iterations = 0; // Track the number of iterations, to apply limit
+        
         while (openSet.Count > 0)
         {
+            // Check if the pathfinding exceeds the iteration limit
+            if (iterations >= PathLimit)
+            {
+                Debug.LogWarning("Pathfinding reached the iteration limit and was stopped.");
+                return new List<Node>(); // Return an empty list if the limit is exceeded
+            }
+            
             Node currentNode = openSet[0];
             for (int i = 1; i < openSet.Count; i++)
             {
@@ -84,6 +102,27 @@ public class Pathfinding : MonoBehaviour, IPathfinding
 
         // Path not found
         return new List<Node>();
+    }
+
+    private Node GetClosestWalkableNode(Node startNode)
+    {
+        int checks = 0;
+
+        foreach (var node in _grid.GetAllReachableNodesBFS(startNode))
+        {
+            if (node.walkable && !IsBlockedByObstacle(node))
+            {
+                return node;
+            }
+
+            checks++;
+            if (checks > FindClosestNodeLimit)
+            {
+                break;
+            }
+        }
+
+        return null;
     }
 
     private bool IsBlockedByObstacle(Node neighbour)

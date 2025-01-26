@@ -1,30 +1,36 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using Zenject;
 
 public class CachedPathfinding : IPathfinding
 {
+    private readonly GridGenerator _gridGenerator;
     private readonly IPathfinding _innerPathfinding;
 
-    private readonly Dictionary<(Vector3, Vector3), List<Node>> _pathCache = new();
+    private readonly Dictionary<(Node, Node), List<Node>> _pathCache = new();
     private readonly Dictionary<(Vector2, Vector2), bool> _clearPathCache = new();
     private readonly Dictionary<Vector2, bool> _walkableCache = new();
     private readonly Dictionary<(Vector2, int), ICollection<Vector2>> _spreadPositionCache = new();
 
-    public CachedPathfinding(IPathfinding innerPathfinding)
+    public CachedPathfinding(IPathfinding innerPathfinding, GridGenerator gridGenerator)
     {
         _innerPathfinding = innerPathfinding;
+        _gridGenerator = gridGenerator;
     }
 
     public List<Node> FindPath(Vector3 startPos, Vector3 targetPos)
     {
-        var key = (startPos, targetPos);
+        Node startNode = _gridGenerator.NodeFromWorldPoint(startPos);
+        Node targetNode = _gridGenerator.NodeFromWorldPoint(targetPos);
+
+        var key = (startNode, targetNode);
         if (_pathCache.TryGetValue(key, out var cachedPath))
         {
             return cachedPath;
         }
 
-        Debug.Log($"Path not found in cache, calculating path from {startPos} to {targetPos}");
+        Debug.Log($"Path not found in cache, calculating path from {startNode.worldPosition} to {targetNode.worldPosition}");
         var path = _innerPathfinding.FindPath(startPos, targetPos);
         _pathCache[key] = path;
         return path;
@@ -32,7 +38,7 @@ public class CachedPathfinding : IPathfinding
 
     public bool IsClearPath(Vector2 a, Vector2 b)
     {
-        var key = (a, b);
+        var key = (RoundToGrid(a), RoundToGrid(b));
         if (_clearPathCache.TryGetValue(key, out var cachedResult))
         {
             return cachedResult;
@@ -73,7 +79,7 @@ public class CachedPathfinding : IPathfinding
         _innerPathfinding.AddObstacle(obstacle);
         obstacle.Moved += () =>
         {
-            Debug.Log("Obstacle moved - invalidating nmav cache");
+            Debug.Log("Obstacle moved - invalidating cache");
             InvalidateCache(obstacle.Position, obstacle.Radius);
         };
         ClearCache();
@@ -88,11 +94,11 @@ public class CachedPathfinding : IPathfinding
     public void InvalidateCache(Vector2 position, float radius)
     {
         // Remove affected paths
-        var keysToRemovePath = new List<(Vector3, Vector3)>();
+        var keysToRemovePath = new List<(Node, Node)>();
         foreach (var key in _pathCache.Keys)
         {
-            if (Vector2.Distance((Vector2)key.Item1, position) <= radius ||
-                Vector2.Distance((Vector2)key.Item2, position) <= radius)
+            if (Vector2.Distance(key.Item1.worldPosition, position) <= radius ||
+                Vector2.Distance(key.Item2.worldPosition, position) <= radius)
             {
                 keysToRemovePath.Add(key);
             }
@@ -152,5 +158,11 @@ public class CachedPathfinding : IPathfinding
         _clearPathCache.Clear();
         _walkableCache.Clear();
         _spreadPositionCache.Clear();
+    }
+    
+    private Vector2 RoundToGrid(Vector2 position)
+    {
+        const int precision = 1;
+        return new Vector2((float)Math.Round(position.x, precision), (float)Math.Round(position.y, precision));
     }
 }

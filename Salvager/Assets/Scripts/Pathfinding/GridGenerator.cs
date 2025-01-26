@@ -84,4 +84,28 @@ public class GridGenerator : MonoBehaviour
 
         return neighbours;
     }
+    
+    public IEnumerable<Node> GetAllReachableNodesBFS(Node startNode)
+    {
+        Queue<Node> queue = new Queue<Node>();
+        HashSet<Node> visited = new HashSet<Node>();
+    
+        queue.Enqueue(startNode);
+        visited.Add(startNode);
+
+        while (queue.Count > 0)
+        {
+            Node currentNode = queue.Dequeue();
+            yield return currentNode;
+
+            foreach (Node neighbor in GetNeighbours(currentNode))
+            {
+                if (neighbor.walkable && !visited.Contains(neighbor))
+                {
+                    queue.Enqueue(neighbor);
+                    visited.Add(neighbor);
+                }
+            }
+        }
+    }
 }
