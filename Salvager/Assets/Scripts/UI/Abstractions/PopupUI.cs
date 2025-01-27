@@ -7,7 +7,9 @@ namespace UI.Abstractions
     public class PopupUI : MonoBehaviour
     {
         [Inject] private IInputManager _inputManager;
-
+  
+        public bool IsVisible { get; private set; }
+            
         private RectTransform _rectTransform;
         private Canvas _canvas;
 
@@ -62,12 +64,14 @@ namespace UI.Abstractions
 
         public void Show()
         {
+            IsVisible = true;
             gameObject.SetActive(true);
             OnShow();
         }
 
         public void Hide()
         {
+            IsVisible = false;
             gameObject.SetActive(false);
             OnHide();
         }

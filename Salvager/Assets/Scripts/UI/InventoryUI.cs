@@ -11,7 +11,8 @@ namespace UI
         [SerializeField] private TextMeshProUGUI creatureNameText;
         
         private Creature _creature;
-        
+        public Creature Creature => _creature;
+
         public void SetCreature(Creature creature)
         {
             _creature = creature;

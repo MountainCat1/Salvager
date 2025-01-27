@@ -17,6 +17,22 @@ public interface IInputManager
 
     event Action SpeedUp;
     event Action SpeedDown;
+    IUIEvents UI { get; }
+}
+
+public interface IUIEvents
+{
+    public event Action ShowInventory;
+}
+
+public class UIEvents : IUIEvents
+{
+    public event Action ShowInventory;
+
+    public UIEvents(InputActions inputActions)
+    {
+        inputActions.UI.ShowInventory.performed += _ => ShowInventory?.Invoke();
+    }
 }
 
 public class InputManager : MonoBehaviour, IInputManager
@@ -31,11 +47,10 @@ public class InputManager : MonoBehaviour, IInputManager
     public event Action OnCancel;
     public event Action SpeedUp;
     public event Action SpeedDown;
-
+    public IUIEvents UI { get; private set; }
     [SerializeField] private int uiLayer = 5;
 
     private InputActions _inputActions;
-    private Vector2 _cachedCharacterMovement = Vector2.zero;
 
     private void Awake()
     {
@@ -48,14 +63,17 @@ public class InputManager : MonoBehaviour, IInputManager
         _inputActions.CharacterControl.Pointer1.performed += Pointer1OnPerformed;
         _inputActions.CharacterControl.Pointer2.performed += Pointer2OnPerformed;
 
+        _inputActions.Misc.TimeSpeedDown.performed += _ => SpeedDown?.Invoke();
+        _inputActions.Misc.TimeSpeedUp.performed += _ => SpeedUp?.Invoke();
+        
+        
         _inputActions.UI.Confirm.performed += _ => OnConfirm?.Invoke();
         _inputActions.UI.SkipDialog.performed += _ => OnSkip?.Invoke();
         _inputActions.UI.SpeedUpDialog.performed += _ => OnSpeedUpDialog?.Invoke();
         
         _inputActions.UI.Cancel.performed += _ => OnCancel?.Invoke();
         
-        _inputActions.Misc.TimeSpeedUp.performed += _ => SpeedUp?.Invoke();
-        _inputActions.Misc.TimeSpeedDown.performed += _ => SpeedDown?.Invoke();
+        UI = new UIEvents(_inputActions);
     }
 
     private void Update()

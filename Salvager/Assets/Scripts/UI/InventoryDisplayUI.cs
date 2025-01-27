@@ -1,3 +1,5 @@
+using System.Linq;
+using Managers;
 using UI.Abstractions;
 using UnityEngine;
 using Zenject;
@@ -11,22 +13,61 @@ namespace UI
 
     public class InventoryDisplayUI : MonoBehaviour, IInventoryDisplayUI
     {
-        [SerializeField] private InventoryUI inventoryUIPrefab;
+        [Inject] private IInputManager _inputManager;
+        [Inject] private ISelectionManager _selectionManager;
+        
         [SerializeField] private Transform popupParent;
-
-        private InventoryUI _instantiatedInventoryUI;
+        [SerializeField] private InventoryUI instantiatedInventoryUI;
 
         [Inject] private DiContainer _container;
 
+        void Start()
+        {
+            _inputManager.UI.ShowInventory += OnInventoryPressed;
+            _selectionManager.OnSelectionChanged += OnSelectionChanged;
+            
+            instantiatedInventoryUI.Hide();
+        }
+
+        private void OnSelectionChanged()
+        {
+            if(!instantiatedInventoryUI.IsVisible)
+                return;
+            
+            if(_selectionManager.SelectedCreatures.Contains(instantiatedInventoryUI.Creature))
+                return;
+
+            if (!_selectionManager.SelectedCreatures.Any())
+            {
+                instantiatedInventoryUI.Hide();
+                return;
+            }
+            
+            ShowInventory(_selectionManager.SelectedCreatures.First());
+        }
+
+        private void OnInventoryPressed()
+        {
+            if(instantiatedInventoryUI.IsVisible)
+            {
+                instantiatedInventoryUI.Hide();
+                return;
+            }
+            
+            if(!_selectionManager.SelectedCreatures.Any())
+                return;
+            
+            var creature = _selectionManager.SelectedCreatures.First();
+
+            ShowInventory(creature);
+        }
+
         public InventoryUI ShowInventory(Creature creature)
         {
-            if (!_instantiatedInventoryUI)
-                _instantiatedInventoryUI = InstantiatePopup<InventoryUI>(inventoryUIPrefab);
+            instantiatedInventoryUI.SetCreature(creature);
+            instantiatedInventoryUI.Show();
 
-            _instantiatedInventoryUI.SetCreature(creature);
-            _instantiatedInventoryUI.Show();
-
-            return _instantiatedInventoryUI;
+            return instantiatedInventoryUI;
         }
         
         private T InstantiatePopup<T>(T prefab) where T : PopupUI

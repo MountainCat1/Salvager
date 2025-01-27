@@ -55,7 +55,7 @@ public class PlayerController : MonoBehaviour
             return;
         }
 
-        var spreadPositions = _pathfinding.GetSpreadPosition(position, selectedCreatures.Count).ToList();
+        var spreadPositions = IPathfinding.GetSpreadPosition(position, selectedCreatures.Count, LayerMask.GetMask("Walls"), 1f);
         if (!spreadPositions.Any())
         {
             Debug.LogWarning("No valid spread positions found.");

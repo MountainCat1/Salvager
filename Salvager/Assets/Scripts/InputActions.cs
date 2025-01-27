@@ -110,6 +110,15 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ShowInventory"",
+                    ""type"": ""Button"",
+                    ""id"": ""78d4f6d2-1d3d-456e-8e96-047f47305c1b"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -187,6 +196,17 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Cancel"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8afe3273-5966-48c8-ac77-4f8298f24b93"",
+                    ""path"": ""<Keyboard>/i"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ShowInventory"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -337,6 +357,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         m_UI_SkipDialog = m_UI.FindAction("SkipDialog", throwIfNotFound: true);
         m_UI_SpeedUpDialog = m_UI.FindAction("SpeedUpDialog", throwIfNotFound: true);
         m_UI_Cancel = m_UI.FindAction("Cancel", throwIfNotFound: true);
+        m_UI_ShowInventory = m_UI.FindAction("ShowInventory", throwIfNotFound: true);
         // CameraControl
         m_CameraControl = asset.FindActionMap("CameraControl", throwIfNotFound: true);
         m_CameraControl_Movement = m_CameraControl.FindAction("Movement", throwIfNotFound: true);
@@ -471,6 +492,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_UI_SkipDialog;
     private readonly InputAction m_UI_SpeedUpDialog;
     private readonly InputAction m_UI_Cancel;
+    private readonly InputAction m_UI_ShowInventory;
     public struct UIActions
     {
         private @InputActions m_Wrapper;
@@ -479,6 +501,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         public InputAction @SkipDialog => m_Wrapper.m_UI_SkipDialog;
         public InputAction @SpeedUpDialog => m_Wrapper.m_UI_SpeedUpDialog;
         public InputAction @Cancel => m_Wrapper.m_UI_Cancel;
+        public InputAction @ShowInventory => m_Wrapper.m_UI_ShowInventory;
         public InputActionMap Get() { return m_Wrapper.m_UI; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -500,6 +523,9 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @Cancel.started += instance.OnCancel;
             @Cancel.performed += instance.OnCancel;
             @Cancel.canceled += instance.OnCancel;
+            @ShowInventory.started += instance.OnShowInventory;
+            @ShowInventory.performed += instance.OnShowInventory;
+            @ShowInventory.canceled += instance.OnShowInventory;
         }
 
         private void UnregisterCallbacks(IUIActions instance)
@@ -516,6 +542,9 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @Cancel.started -= instance.OnCancel;
             @Cancel.performed -= instance.OnCancel;
             @Cancel.canceled -= instance.OnCancel;
+            @ShowInventory.started -= instance.OnShowInventory;
+            @ShowInventory.performed -= instance.OnShowInventory;
+            @ShowInventory.canceled -= instance.OnShowInventory;
         }
 
         public void RemoveCallbacks(IUIActions instance)
@@ -653,6 +682,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         void OnSkipDialog(InputAction.CallbackContext context);
         void OnSpeedUpDialog(InputAction.CallbackContext context);
         void OnCancel(InputAction.CallbackContext context);
+        void OnShowInventory(InputAction.CallbackContext context);
     }
     public interface ICameraControlActions
     {

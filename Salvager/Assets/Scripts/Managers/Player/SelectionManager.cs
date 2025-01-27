@@ -99,6 +99,9 @@ namespace Managers
                 }
                 else
                 {
+                    if (IsPointerOverInteractiveUI())
+                        return;
+                    
                     SelectUnitsWithinBox();
                 }
             }
@@ -153,6 +156,9 @@ namespace Managers
             {
                 AddToSelection(creature);
             }
+            
+            
+            OnSelectionChanged?.Invoke();
         }
 
         private void HandleSingleClick()
@@ -165,15 +171,21 @@ namespace Managers
                 {
                     ClearSelection(); // Deselect all and select the clicked creature
                     AddToSelection(creature);
+                    
+                    OnSelectionChanged?.Invoke();
                 }
                 else
                 {
                     ClearSelection(); // Deselect all if no creature is clicked
+                    
+                    OnSelectionChanged?.Invoke();
                 }
             }
             else
             {
                 ClearSelection(); // Deselect all if click hits nothing
+                
+                OnSelectionChanged?.Invoke();
             }
         }
 
@@ -206,8 +218,6 @@ namespace Managers
             }
 
             _selectedCreatures.Clear();
-
-            OnSelectionChanged?.Invoke();
         }
 
         public void AddToSelection(Creature creature)
@@ -227,8 +237,6 @@ namespace Managers
                 });
                 selectionMarker.Creature = creature;
             }
-
-            OnSelectionChanged?.Invoke();
         }
 
         public void RemoveFromSelection(Creature creature)
@@ -252,5 +260,31 @@ namespace Managers
 
             return _selectedCreatures;
         }
+        
+        private bool IsPointerOverInteractiveUI()
+        {
+            PointerEventData pointerEventData = new PointerEventData(EventSystem.current)
+            {
+                position = Input.mousePosition
+            };
+
+            List<RaycastResult> results = new List<RaycastResult>();
+            EventSystem.current.RaycastAll(pointerEventData, results);
+
+            // Filter out the selection box or other non-interactive elements
+            foreach (var result in results)
+            {
+                if (result.gameObject == selectionBox.gameObject)
+                {
+                    // Ignore the selection box
+                    continue;
+                }
+
+                return true;
+            }
+
+            return false;
+        }
+
     }
 }
