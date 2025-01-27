@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -14,8 +15,9 @@ namespace Services.MapGenerators
     {
         [Inject] private IRoomDecorator _roomDecorator = null!;
 
-        public event Action? MapGenerated;
-        public MapData? MapData { get; private set; }
+        public event Action MapGenerated;
+        public event Action MapGeneratedLate;
+        public MapData MapData { get; private set; }
 
         [SerializeField] private int seed = 696969;
 
@@ -88,6 +90,13 @@ namespace Services.MapGenerators
             _wallTiles.Remove(randomWallOfStartingRoom);
             
             MapGenerated?.Invoke();
+            StartCoroutine(DelayedInvoke());
+        }
+        
+        private IEnumerator DelayedInvoke()
+        {
+            yield return null;
+            MapGeneratedLate?.Invoke();
         }
 
         private List<RoomData> GenerateRooms(int[,] grid)

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace CreatureControllers
 {
@@ -46,6 +47,23 @@ namespace CreatureControllers
         private void PerformAttack(AttackContext ctx)
         {
             Creature.Weapon.ContiniousAttack(ctx);
+        }
+        
+        protected bool PathClear(Vector2 targetPosition, float radius)
+        {
+            Vector3 creaturePosition = Creature.transform.position;
+            List<Vector3> cornerPoints = GetCornerPoints(creaturePosition, radius);
+
+            bool pathClear = true;
+            foreach (Vector3 corner in cornerPoints)
+            {
+                if (!Pathfinding.IsClearPath(corner, targetPosition))
+                    pathClear = false;
+
+                Debug.DrawLine(corner, targetPosition, Color.blue);
+            }
+
+            return pathClear;
         }
     }
 }

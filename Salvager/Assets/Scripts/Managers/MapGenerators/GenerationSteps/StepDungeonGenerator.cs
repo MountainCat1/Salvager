@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
@@ -16,6 +17,8 @@ namespace Services.MapGenerators.GenerationSteps
 
         
         public event Action MapGenerated;
+        public event Action MapGeneratedLate;
+        
         public MapData MapData { get; private set; }
         
         public void GenerateMap()
@@ -32,6 +35,14 @@ namespace Services.MapGenerators.GenerationSteps
             
             MapData = CreateMapData(data);
             MapGenerated?.Invoke();
+            
+            StartCoroutine(DelayedInvoke());
+        }
+
+        private IEnumerator DelayedInvoke()
+        {
+            yield return new WaitForEndOfFrame();
+            MapGeneratedLate?.Invoke();
         }
 
         private MapData CreateMapData(GenerateMapData data)

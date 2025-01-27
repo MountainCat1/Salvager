@@ -4,6 +4,7 @@ using Services.MapGenerators;
 public interface IMapGenerator
 {
     public event Action MapGenerated;
+    public event Action MapGeneratedLate;
     public MapData MapData { get; }
     
     public void GenerateMap();

@@ -5,7 +5,7 @@ using UnityEngine;
 
 public interface IPathfinding
 {
-    List<Node> FindPath(Vector3 startPos, Vector3 targetPos);
+    // List<Node> FindPath(Vector3 startPos, Vector3 targetPos);
 
     bool IsClearPath(Vector2 a, Vector2 b);
     bool IsWalkable(Vector2 targetPosition);
@@ -22,8 +22,10 @@ public interface IObstacle
     event Action Moved;
 }
 
+
+
 [RequireComponent(typeof(GridGenerator))]
-public class Pathfinding : MonoBehaviour, IPathfinding
+public class OldPathfinding : MonoBehaviour, IPathfinding
 {
     private GridGenerator _grid;
 

@@ -6,14 +6,14 @@ using Zenject;
 public class CachedPathfinding : IPathfinding
 {
     private readonly GridGenerator _gridGenerator;
-    private readonly IPathfinding _innerPathfinding;
+    private readonly OldPathfinding _innerPathfinding;
 
     private readonly Dictionary<(Node, Node), List<Node>> _pathCache = new();
     private readonly Dictionary<(Vector2, Vector2), bool> _clearPathCache = new();
     private readonly Dictionary<Vector2, bool> _walkableCache = new();
     private readonly Dictionary<(Vector2, int), ICollection<Vector2>> _spreadPositionCache = new();
 
-    public CachedPathfinding(IPathfinding innerPathfinding, GridGenerator gridGenerator)
+    public CachedPathfinding(OldPathfinding innerPathfinding, GridGenerator gridGenerator)
     {
         _innerPathfinding = innerPathfinding;
         _gridGenerator = gridGenerator;
