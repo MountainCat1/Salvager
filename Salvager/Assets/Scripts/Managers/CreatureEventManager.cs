@@ -33,15 +33,16 @@ namespace Managers
                 Debug.LogWarning("Killer is null in DeathContext");
                 return;
             }
-            if(ctx.Creature == null)
+            if(ctx.KilledEntity == null)
                 throw new NullReferenceException("Creature is null in DeathContext");
             
-            var creature = ctx.Creature;
+            var killedEntity = ctx.KilledEntity;
             var killer = ctx.Killer;
 
-            killer.AwardXp(creature.XpAmount);
+            if(killer is Creature killerCreature && killedEntity is Creature killedCreature)
+                killerCreature.AwardXp(killedCreature.XpAmount);
             
-            Debug.Log($"{creature.name} was killed by {killer.name}");
+            Debug.Log($"{killedEntity.name} was killed by {killer.name}");
         }
     }
 }
