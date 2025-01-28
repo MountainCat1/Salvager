@@ -8,12 +8,12 @@ public class ShadowGameObjectPool : MonoBehaviour
     public Transform poolTransform;
     public GameObject prefab;
     public int poolSize = 0;
-    private readonly Dictionary<int, List<GameObject>> objectPool = new();
+    private readonly Dictionary<int, List<GameObject>> _objectPool = new();
 
     private void Update()
     {
         poolSize = 0;
-        foreach (var item in objectPool)
+        foreach (var item in _objectPool)
         {
             poolSize += item.Value.Count;
         }
@@ -23,10 +23,10 @@ public class ShadowGameObjectPool : MonoBehaviour
     {
         int hash = CreateHash(sprite);
 
-        if (objectPool.ContainsKey(hash))
+        if (_objectPool.ContainsKey(hash))
         {
             // Retrieve the list of GameObjects associated with the hash.
-            List<GameObject> objectsWithSameHash = objectPool[hash];
+            List<GameObject> objectsWithSameHash = _objectPool[hash];
 
             // Find the first inactive GameObject in the list, if any.
             GameObject obj = objectsWithSameHash.FirstOrDefault(o => !o.activeInHierarchy);
@@ -59,13 +59,13 @@ public class ShadowGameObjectPool : MonoBehaviour
         BakeShadow(sprite, gameObject);
 
         // Add the new GameObject to the list associated with the hash.
-        if (objectPool.ContainsKey(hash))
+        if (_objectPool.ContainsKey(hash))
         {
-            objectPool[hash].Add(gameObject);
+            _objectPool[hash].Add(gameObject);
         }
         else
         {
-            objectPool.Add(hash, new List<GameObject> { gameObject });
+            _objectPool.Add(hash, new List<GameObject> { gameObject });
         }
 
         gameObject.SetActive(true);
