@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Managers;
@@ -11,23 +12,22 @@ namespace CreatureControllers
     public class AiController : CreatureController
     {
         protected Seeker Seeker { get; private set; }
+        
+        
+        // Private Variables
+        private const float MemoryUpdateInterval = 1.0f; // Base interval in seconds
+
 
         // Events
         protected virtual void Start()
         {
             Creature.Health.Hit += OnHit;
+            
+            // Add a random offset to spread updates
+            var randomOffset = UnityEngine.Random.Range(0f, MemoryUpdateInterval);
+            StartCoroutine(UpdateMemoryPeriodically(randomOffset));
         }
 
-        protected override void Awake()
-        {
-            base.Awake();
-
-            Seeker = GetComponent<Seeker>();
-            if (Seeker == null)
-            {
-                Debug.LogError("Seeker component is missing on the Creature.");
-            }
-        }
 
         // Injected Dependencies (using Zenject)
         [Inject] protected IPathfinding Pathfinding;
@@ -40,9 +40,29 @@ namespace CreatureControllers
         private Dictionary<Creature, long> _memorizedCreatures = new();
 
         // Unity Callbacks
-        private void FixedUpdate()
+        protected override void Awake()
         {
-            UpdateMemory();
+            base.Awake();
+
+            Seeker = GetComponent<Seeker>();
+            if (Seeker == null)
+            {
+                Debug.LogError("Seeker component is missing on the Creature.");
+            }
+        }
+
+        private IEnumerator UpdateMemoryPeriodically(float randomOffset)
+        {
+            // Initial delay to stagger updates
+            yield return new WaitForSeconds(randomOffset);
+
+            while (true)
+            {
+                UpdateMemory();
+                yield return new WaitForSeconds(MemoryUpdateInterval);
+            }
+            
+            // ReSharper disable once IteratorNeverReturns
         }
 
         // Public Methods
@@ -190,7 +210,7 @@ namespace CreatureControllers
 
         protected void PerformMovementTowardsTarget(Creature target)
         {
-            float radius = Creature.MovementCollider.radius;
+            float radius = Creature.Movement.Collider.radius;
 
             if (PathClear(target, radius))
             {
@@ -205,7 +225,7 @@ namespace CreatureControllers
 
         protected void PerformMovementTowardsPosition(Vector2 position)
         {
-            float radius = Creature.MovementCollider.radius;
+            float radius = Creature.Movement.Collider.radius;
 
             if (PathClear(position, radius))
             {
