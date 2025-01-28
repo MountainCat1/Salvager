@@ -15,7 +15,7 @@ public class ShadowGameObjectPool : MonoBehaviour
         poolSize = 0;
         foreach (var item in objectPool)
         {
-            poolSize+=item.Value.Count;
+            poolSize += item.Value.Count;
         }
     }
 

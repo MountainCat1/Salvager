@@ -24,6 +24,7 @@ public class PlayerController : MonoBehaviour
         if (entityUnderMouse == null)
         {
             MoveCommand(position);
+            return;
         }
 
         var creature = GetSelectedCreatures().FirstOrDefault();

@@ -9,6 +9,7 @@ using Zenject;
 
 namespace CreatureControllers
 {
+    [RequireComponent(typeof(Seeker))]
     public class AiController : CreatureController
     {
         protected Seeker Seeker { get; private set; }
@@ -19,15 +20,7 @@ namespace CreatureControllers
 
 
         // Events
-        protected virtual void Start()
-        {
-            Creature.Health.Hit += OnHit;
-            
-            // Add a random offset to spread updates
-            var randomOffset = UnityEngine.Random.Range(0f, MemoryUpdateInterval);
-            StartCoroutine(UpdateMemoryPeriodically(randomOffset));
-        }
-
+        
 
         // Injected Dependencies (using Zenject)
         [Inject] protected IPathfinding Pathfinding;
@@ -38,6 +31,7 @@ namespace CreatureControllers
 
         // Private Variables
         private Dictionary<Creature, long> _memorizedCreatures = new();
+        private NavigationCache _navigationCache;
 
         // Unity Callbacks
         protected override void Awake()
@@ -49,20 +43,16 @@ namespace CreatureControllers
             {
                 Debug.LogError("Seeker component is missing on the Creature.");
             }
-        }
-
-        private IEnumerator UpdateMemoryPeriodically(float randomOffset)
-        {
-            // Initial delay to stagger updates
-            yield return new WaitForSeconds(randomOffset);
-
-            while (true)
-            {
-                UpdateMemory();
-                yield return new WaitForSeconds(MemoryUpdateInterval);
-            }
             
-            // ReSharper disable once IteratorNeverReturns
+            _navigationCache = new NavigationCache(Seeker);
+        }
+        protected virtual void Start()
+        {
+            Creature.Health.Hit += OnHit;
+            
+            // Add a random offset to spread updates
+            var randomOffset = UnityEngine.Random.Range(0f, MemoryUpdateInterval);
+            StartCoroutine(UpdateMemoryPeriodically(randomOffset));
         }
 
         // Public Methods
@@ -83,7 +73,7 @@ namespace CreatureControllers
             }
 
             // Request a path from the current position to the target
-            Seeker.StartPath(Creature.transform.position, targetPosition, OnPathComplete);
+            _navigationCache.StartPath(Creature.transform.position, targetPosition, OnPathComplete);
         }
 
         private void OnPathComplete(Path p)
@@ -146,7 +136,6 @@ namespace CreatureControllers
             };
             return cornerPoints;
         }
-
         private void UpdateMemory()
         {
             long currentTicks = Environment.TickCount;
@@ -172,6 +161,19 @@ namespace CreatureControllers
                     Memorize(creature);
                 }
             }
+        }
+        private IEnumerator UpdateMemoryPeriodically(float randomOffset)
+        {
+            // Initial delay to stagger updates
+            yield return new WaitForSeconds(randomOffset);
+
+            while (true)
+            {
+                UpdateMemory();
+                yield return new WaitForSeconds(MemoryUpdateInterval);
+            }
+            
+            // ReSharper disable once IteratorNeverReturns
         }
         
         // Event Handlers

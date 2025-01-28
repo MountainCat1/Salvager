@@ -1,5 +1,4 @@
 using UnityEngine;
-using Pathfinding;
 
 namespace CreatureControllers
 {
@@ -10,8 +9,10 @@ namespace CreatureControllers
         private IInteractable _interactionTarget;
         private Interaction _interaction;
 
+
         private const bool MoveOnAttackCooldown = false; // TODO: This should be a configurable property of the weapon
 
+        // Public Methods
         public void SetMoveTarget(Vector2 target)
         {
             _moveCommandTarget = target;
@@ -42,10 +43,9 @@ namespace CreatureControllers
         }
 
 
+        // Unity Methods
         private void Update()
         {
-            Creature.SetMovement(Vector2.zero);
-
             if (_interactionTarget != null)
             {
                 HandleInteraction();
@@ -62,13 +62,17 @@ namespace CreatureControllers
             {
                 _target = GetNewTarget();
             }
-
             if (_target != null)
             {
                 HandleAttack();
+                return;
             }
+            
+            Creature.SetMovement(Vector2.zero);
         }
 
+
+        // Private Methods
         private void HandleInteraction()
         {
             if (!_interactionTarget.CanInteract(Creature))
@@ -90,6 +94,7 @@ namespace CreatureControllers
                     interaction.Canceled += () => { _interactionTarget = null; };
                 }
 
+                Creature.SetMovement(Vector2.zero);
                 return;
             }
             else
