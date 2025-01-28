@@ -6,7 +6,7 @@ public interface IInteractable
     bool CanInteract(Creature creature);
     Interaction Interact(Creature creature, float deltaTime);
     public Vector2 Position { get; }
-    bool Occupied { get; }
+    bool IsInteractable { get; }
 }
 
 public enum InteractionStatus

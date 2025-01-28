@@ -82,6 +82,9 @@ public class Entity : MonoBehaviour
     
     private void UpdateVelocity()
     {
+        if(_rigidbody2D == null)
+            return;
+        
         _momentum -= _momentum * (MomentumLoss * Time.fixedDeltaTime);
         if (_momentum.magnitude < 0.1f)
             _momentum = Vector2.zero;

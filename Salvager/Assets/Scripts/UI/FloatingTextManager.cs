@@ -6,7 +6,12 @@ using Zenject;
 
 namespace UI
 {
-    public class FloatingTextManager : MonoBehaviour
+    public interface IFloatingTextManager
+    {
+        void SpawnFloatingText(Vector3 position, string text, Color color, float size = 1f, FontStyles fontStyle = FontStyles.Normal);
+    }
+
+    public class FloatingTextManager : MonoBehaviour, IFloatingTextManager
     {
         [Inject] IProjectileManager _projectileManager;
         [Inject] ICreatureEventProducer _creatureEventProducer;
@@ -24,7 +29,6 @@ namespace UI
             _projectileManager.ProjectileMissed += OnProjectileMissed;
         }
         
-
 
         public void SpawnFloatingText(Vector3 position, string text, Color color, float size = 1f, FontStyles fontStyle = FontStyles.Normal)
         {

@@ -12,13 +12,38 @@ public class InteractableObject : Entity, IInteractable
 
     [SerializeField] private float interactionTime = 1f;
     [SerializeField] private AudioClip interactionSound;
+    [SerializeField] private bool useOnce = true;
+    
+    // Accessors
+    public bool IsInteractable => GetIsInteractable();
+    public Vector2 Position => transform.position;
+    public bool Occupied => _interaction != null;
+    
+    // Private Variables
+    protected bool Used = false;
+
+    // Methods
+    private bool GetIsInteractable()
+    {
+        if(Used && useOnce)
+            return false;
+        
+        return true;
+    }
+
 
 
     public virtual bool CanInteract(Creature creature)
     {
+        if(IsInteractable == false)
+            return false;
+        
+        if(Occupied && _interaction!.Creature != creature)
+            return false;
+        
         return true;
     }
-
+    
     public virtual Interaction Interact(Creature creature, float deltaTime)
     {
         if (_interaction == null)
@@ -50,6 +75,8 @@ public class InteractableObject : Entity, IInteractable
         {
             if (interactionSound)
                 _soundPlayer.PlaySound(interactionSound, Position);
+            
+            Used = true;
 
             try
             {
@@ -68,7 +95,4 @@ public class InteractableObject : Entity, IInteractable
     protected virtual void OnInteractionComplete(Interaction interaction)
     {
     }
-
-    public Vector2 Position => transform.position;
-    public bool Occupied => _interaction != null;
 }

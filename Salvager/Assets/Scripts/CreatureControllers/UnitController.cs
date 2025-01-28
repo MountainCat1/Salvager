@@ -23,29 +23,30 @@ namespace CreatureControllers
         public void SetTarget(Entity target)
         {
             _interaction?.Cancel();
-            
+
             switch (target)
             {
                 case Creature creature:
                     _target = creature;
                     break;
                 case IInteractable interactable:
-                    _interactionTarget = interactable;
+                    if (interactable.CanInteract(Creature))
+                        _interactionTarget = interactable;
                     break;
             }
         }
-        
+
 
         private void Update()
         {
             Creature.SetMovement(Vector2.zero);
-            
-            if(_interactionTarget != null)
+
+            if (_interactionTarget != null)
             {
                 HandleInteraction();
                 return;
             }
-            
+
             if (_moveCommandTarget.HasValue)
             {
                 HandleMovementToTarget();
@@ -71,25 +72,19 @@ namespace CreatureControllers
                 return;
             }
 
-            if(Vector2.Distance(Creature.transform.position, _interactionTarget.Position) < Creature.InteractionRange)
+            if (Vector2.Distance(Creature.transform.position, _interactionTarget.Position) < Creature.InteractionRange)
             {
                 var interaction = Creature.Interact(_interactionTarget);
-                
-                if(interaction.Status == InteractionStatus.Created)
+
+                if (interaction.Status == InteractionStatus.Created)
                 {
                     _moveCommandTarget = null;
-                    
-                    interaction.Completed += () =>
-                    {
-                        _interactionTarget = null;
-                    };
-                    
-                    interaction.Canceled += () =>
-                    {
-                        _interactionTarget = null;
-                    };
+
+                    interaction.Completed += () => { _interactionTarget = null; };
+
+                    interaction.Canceled += () => { _interactionTarget = null; };
                 }
-                
+
                 return;
             }
             else

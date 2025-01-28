@@ -31,5 +31,8 @@ public class GameInstaller : MonoInstaller<GameInstaller>
         Container.Bind<IMapGenerator>().To<StepDungeonGenerator>().FromComponentsInHierarchy().AsSingle();
         Container.Bind<ICameraController>().To<CameraController>().FromComponentsInHierarchy().AsSingle();
         Container.Bind<ICameraShakeService>().To<CameraShakeService>().FromComponentsInHierarchy().AsSingle();
+
+        Container.Bind<IFloatingTextManager>().To<FloatingTextManager>()
+            .FromInstance(FindObjectOfType<FloatingTextManager>());
     }
 }
