@@ -40,7 +40,7 @@ namespace Managers.Visual
 
         private void OnCreatureSpawned(Creature creature)
         {
-            creature.Hit += OnCreatureHit;
+            creature.Health.Hit += OnCreatureHit;
         }
 
         private void OnCreatureHit(HitContext obj)

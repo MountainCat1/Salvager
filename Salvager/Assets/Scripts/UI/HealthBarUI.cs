@@ -10,11 +10,11 @@ namespace UI
 
         private void Start()
         {
-            creature.Health.ValueChanged += OnHealthChanged;
-            OnHealthChanged();
+            creature.Health.ValueChanged += OnHealthValueChanged;
+            OnHealthValueChanged();
         }
 
-        private void OnHealthChanged()
+        private void OnHealthValueChanged()
         {
             slider.maxValue = creature.Health.MaxValue;
             slider.value = creature.Health.CurrentValue;

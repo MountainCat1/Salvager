@@ -15,7 +15,7 @@ namespace CreatureControllers
         // Events
         protected virtual void Start()
         {
-            Creature.Hit += OnHit;
+            Creature.Health.Hit += OnHit;
         }
 
         protected override void Awake()

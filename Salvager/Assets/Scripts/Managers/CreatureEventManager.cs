@@ -21,7 +21,7 @@ namespace Managers
         
         private void RegisterCreatureEvents(Creature creature)
         {
-           creature.Death += OnCreatureDeath;
+           creature.Health.Death += OnCreatureDeath;
         }
 
         

@@ -30,12 +30,12 @@ namespace Managers
 
         private void OnCreatureSpawned(Creature creature)
         {
-            creature.Hit += (HitContext context) =>
+            creature.Health.Hit += (HitContext context) =>
             {
                 CreatureHit?.Invoke(creature, context);
             };
             
-            creature.Death += (DeathContext context) =>
+            creature.Health.Death += (DeathContext context) =>
             {
                 CreatureDied?.Invoke(creature, context);
             };

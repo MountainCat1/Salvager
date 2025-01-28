@@ -52,7 +52,7 @@ namespace Managers
             
             _creatures.Add(creature);
 
-            creature.Death += (DeathContext ctx) =>
+            creature.Health.Death += (DeathContext ctx) =>
             {
                 _creatures.Remove(creature);
             };

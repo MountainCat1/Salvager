@@ -30,8 +30,13 @@ namespace CreatureControllers
                     _target = creature;
                     break;
                 case IInteractable interactable:
-                    if (interactable.CanInteract(Creature))
+                    if (interactable.IsInteractable)
                         _interactionTarget = interactable;
+                    break;
+                default:
+                    _target = null;
+                    _interactionTarget = null;
+                    Debug.LogWarning($"Invalid target type {target.GetType()}");
                     break;
             }
         }

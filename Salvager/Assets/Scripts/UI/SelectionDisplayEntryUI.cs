@@ -21,11 +21,11 @@ public class SelectionDisplayEntryUI : MonoBehaviour
         creatureNameText.text = creature.name;
         healthSlider.maxValue = creature.Health.MaxValue;
         healthSlider.value = creature.Health.CurrentValue;
-        _creature.Health.ValueChanged += OnHealthChanged;
+        _creature.Health.ValueChanged += OnHealthValueChanged;
         creatureImage.sprite = creature.GetComponentInChildren<SpriteRenderer>().sprite;
     }
 
-    private void OnHealthChanged()
+    private void OnHealthValueChanged()
     {
         if(!_creature)
         {

@@ -23,6 +23,10 @@ public class InteractableObject : Entity, IInteractable
     protected bool Used = false;
 
     // Methods
+    protected virtual void Awake()
+    {
+    }
+
     private bool GetIsInteractable()
     {
         if(Used && useOnce)
@@ -30,8 +34,6 @@ public class InteractableObject : Entity, IInteractable
         
         return true;
     }
-
-
 
     public virtual bool CanInteract(Creature creature)
     {

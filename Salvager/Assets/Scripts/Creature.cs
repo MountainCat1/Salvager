@@ -84,9 +84,6 @@ public class Creature : Entity
     {
         base.Awake();
 
-        health.ValueChanged += OnHealthChanged;
-        health.CurrentValue = health.MaxValue;
-
         if (inventoryRoot == null)
         {
             inventoryRoot = new GameObject("Inventory").transform;
@@ -97,6 +94,14 @@ public class Creature : Entity
 
         _inventory = new Inventory(inventoryRoot);
         _diContainer.Inject(Inventory);
+        
+        Health.Hit += OnHit;
+    }
+
+    private void OnHit(HitContext ctx)
+    {
+        if (ctx.Push.magnitude > 0)
+            Push(ctx.Push);
     }
 
     protected override void Update()

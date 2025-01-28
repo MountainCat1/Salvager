@@ -60,9 +60,9 @@ public class RangedValue : IReadonlyRangedValue
     // Public Methods
     public RangedValue(float baseValue, float minValue, float maxValue)
     {
-        this._baseValue = baseValue;
         this._minValue = minValue;
         this.maxValue = maxValue;
+        this._currentValue = baseValue;
         UpdateCurrentValue();
     }
 

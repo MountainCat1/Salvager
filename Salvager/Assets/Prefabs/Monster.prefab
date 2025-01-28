@@ -506,6 +506,7 @@ GameObject:
   - component: {fileID: 2861165738869774013}
   - component: {fileID: 5125440617428366146}
   - component: {fileID: 8620425100322646659}
+  - component: {fileID: 7748546943704470895}
   - component: {fileID: 7147432190938795954}
   - component: {fileID: 4149144107216106995}
   m_Layer: 0
@@ -579,12 +580,23 @@ MonoBehaviour:
   <BaseSpeed>k__BackingField: 5
   inventoryRoot: {fileID: 0}
   weapon: {fileID: 838743690902828222}
-  health:
-    maxValue: 5
   <SightRange>k__BackingField: 13
   <XpAmount>k__BackingField: 0
   <Team>k__BackingField: 4
   <InteractionRange>k__BackingField: 1.5
+--- !u!114 &7748546943704470895
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3809199647940728333}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9cef0923d2f48aa839a615fe078d63b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 10
 --- !u!114 &7147432190938795954
 MonoBehaviour:
   m_ObjectHideFlags: 0
