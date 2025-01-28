@@ -83,7 +83,7 @@ public class PlayerController : MonoBehaviour
         {
             foreach (var otherCreature in selectedCreatures)
             {
-                Physics2D.IgnoreCollision(creature.MovementCollider, otherCreature.MovementCollider, true);
+                Physics2D.IgnoreCollision(creature.Movement.Collider, otherCreature.Movement.Collider, true);
             }
         }
     }

@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 6919997015472372386}
   - component: {fileID: 877500608067211780}
   - component: {fileID: 6794261445125227000}
+  - component: {fileID: 7830816832519447740}
   - component: {fileID: 4828727458972711647}
   m_Layer: 0
   m_Name: Creature
@@ -82,8 +83,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2899d861cc3249a1be172bc47875c55c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <Drag>k__BackingField: 200
-  <BaseSpeed>k__BackingField: 5
   inventoryRoot: {fileID: 2692115022045672749}
   weapon: {fileID: 4762621113912693358}
   <SightRange>k__BackingField: 5
@@ -115,6 +114,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1de455758c064ee391acb5d80f3cf35e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &7830816832519447740
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 553315852338533171}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b027bb179e24df296218234772c0bb0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Drag>k__BackingField: 300
+  <BaseSpeed>k__BackingField: 6
 --- !u!114 &4828727458972711647
 MonoBehaviour:
   m_ObjectHideFlags: 0

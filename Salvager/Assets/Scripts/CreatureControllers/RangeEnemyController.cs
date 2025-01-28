@@ -25,7 +25,7 @@ namespace CreatureControllers
 
             var attackContext = new AttackContext()
             {
-                Direction = (_target.transform.position - Creature.Rigidbody2D.transform.position).normalized,
+                Direction = (_target.transform.position - Creature.transform.position).normalized,
                 Target = _target,
                 Attacker = Creature
             };
