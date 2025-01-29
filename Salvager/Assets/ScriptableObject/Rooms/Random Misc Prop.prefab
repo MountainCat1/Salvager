@@ -202,13 +202,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c780ab88161f460ca308e75c0a1a0c85, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health:
-    maxValue: 0
-  <Drag>k__BackingField: 300
-  <BaseSpeed>k__BackingField: 0
   interactionTime: 1
   interactionSound: {fileID: 8300000, guid: f55c4d302f66c1f4ba3a397272742d15, type: 3}
   useOnce: 1
+  message: Searching...
   lootTable: {fileID: 11400000, guid: 0b197bd77f965364ab91ad811a8e0dfa, type: 2}
 --- !u!1001 &556012255856125039
 PrefabInstance:

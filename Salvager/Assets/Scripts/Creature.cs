@@ -1,6 +1,7 @@
 ﻿using System;
 using Items;
 using Managers;
+using UI;
 using UnityEngine;
 using Zenject;
 
@@ -24,6 +25,7 @@ public class Creature : Entity
     [Inject] private ITeamManager _teamManager;
     [Inject] private DiContainer _diContainer;
     [Inject] private ICreatureManager _creatureManager;
+    [Inject] private IFloatingTextManager _floatingTextManager;
 
     // Public Variables
 
@@ -38,8 +40,8 @@ public class Creature : Entity
             _state = value;
             StateChanged?.Invoke(_state);
         }
-        
     }
+
     private CreatureState _state = CreatureState.Idle;
 
     // Serialized Private Variables
@@ -66,14 +68,14 @@ public class Creature : Entity
     public Teams Team { get; private set; }
 
     [field: SerializeField] public float InteractionRange { get; private set; } = 1.5f;
-    
+
     // Accessors
     public CreatureController Controller => GetComponent<CreatureController>(); // TODO: PERFORMANCE ISSUE
     public Inventory Inventory => _inventory;
     public ILevelSystem LevelSystem => _levelSystem;
-    
+
     // Private Referenes
-    
+
     private readonly LevelSystem _levelSystem = new();
     private Inventory _inventory;
 
@@ -92,7 +94,7 @@ public class Creature : Entity
 
         _inventory = new Inventory(inventoryRoot);
         _diContainer.Inject(Inventory);
-        
+
         Health.Hit += OnHit;
     }
 
@@ -105,7 +107,7 @@ public class Creature : Entity
     protected override void Update()
     {
         base.Update();
-        
+
         if (weapon.IsOnCooldown)
             State = CreatureState.Attacking;
         else if (Movement.MoveDirection.magnitude > 0)
@@ -126,7 +128,7 @@ public class Creature : Entity
 
         return _teamManager.GetAttitude(Team, other.Team);
     }
-    
+
 
     public void StartUsingWeapon(Weapon weaponItem)
     {
@@ -145,16 +147,21 @@ public class Creature : Entity
     {
         _levelSystem.AddXp(amount);
     }
-    
+
     public Interaction Interact(IInteractable interactionTarget)
     {
         var interaction = interactionTarget.Interact(this, Time.deltaTime);
+        if (interaction.Status == InteractionStatus.Created)
+        {
+            _floatingTextManager.SpawnFloatingText(RootTransform.position, interaction.Message, Color.white);
+        }
+
         Interacted?.Invoke(interaction);
         return interaction;
     }
-    
+
     // Static Methods
-    
+
     public static bool IsCreature(GameObject go)
     {
         return go.CompareTag("Player") || go.CompareTag("Creature");

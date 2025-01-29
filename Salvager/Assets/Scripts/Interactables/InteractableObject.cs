@@ -12,6 +12,7 @@ public class InteractableObject : Entity, IInteractable
     [SerializeField] private float interactionTime = 1f;
     [SerializeField] private AudioClip interactionSound;
     [SerializeField] private bool useOnce = true;
+    [SerializeField] private string message = "Interacting...";
     
     // Accessors
     public bool IsInteractable => GetIsInteractable();
@@ -70,7 +71,7 @@ public class InteractableObject : Entity, IInteractable
 
     private Interaction CreateInteraction(Creature creature)
     {
-        _interaction = new Interaction(creature, interactionTime);
+        _interaction = new Interaction(creature, interactionTime, message);
 
         _interaction.Completed += () =>
         {

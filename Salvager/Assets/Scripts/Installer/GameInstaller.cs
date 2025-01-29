@@ -8,11 +8,11 @@ public class GameInstaller : MonoInstaller<GameInstaller>
 {
     public override void InstallBindings()
     {
+        Container.Bind<ISignalManager>().To<SignalManager>().FromNew().AsSingle().NonLazy();
         Container.Bind<ISpawnerManager>().To<SpawnerManager>().FromComponentsInHierarchy().AsSingle();
         Container.Bind<IPoolingManager>().To<PoolingManager>().FromComponentsInHierarchy().AsSingle();
         Container.Bind<IProjectileManager>().To<ProjectileManager>().FromNew().AsSingle().NonLazy();
         Container.Bind<IGameDataManager>().To<GameDataManager>().FromNew().AsSingle();
-        Container.Bind<ISignalManager>().To<SignalManager>().FromNew().AsSingle().NonLazy();
         Container.Bind<IInputManager>().To<InputManager>().FromComponentsInHierarchy().AsSingle();
         Container.Bind<IInputMapper>().To<InputMapper>().FromComponentsInHierarchy().AsSingle();
         Container.Bind<ITimeManager>().To<TimeManager>().FromComponentsInHierarchy().AsSingle();

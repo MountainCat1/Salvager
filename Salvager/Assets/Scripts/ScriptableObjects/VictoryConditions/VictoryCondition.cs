@@ -1,6 +1,7 @@
+using System;
 using UnityEngine;
 
-namespace Managers
+namespace VictoryConditions
 {
     public abstract class VictoryCondition : ScriptableObject
     {

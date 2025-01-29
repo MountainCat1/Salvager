@@ -28,10 +28,12 @@ public class Interaction
     public decimal CurrentProgress { get; private set; }
     public Creature Creature { get; }
     public decimal InteractionTime { get; }
+    public string Message { get; }
 
-    public Interaction(Creature creature, float interactionTime)
+    public Interaction(Creature creature, float interactionTime, string message = "")
     {
         Creature = creature;
+        Message = message;
         InteractionTime = (decimal)interactionTime;
     }
     

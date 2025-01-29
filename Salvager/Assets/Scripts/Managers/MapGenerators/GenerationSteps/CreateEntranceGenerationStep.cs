@@ -47,7 +47,7 @@ namespace Services.MapGenerators.GenerationSteps
                 return false;
 
             // Check if the entrance is not surrounded by floors
-            if (neighbour.Count(x => x.type == (int)TileType.Floor) > 1)
+            if (neighbour.Count(x => x.type == (int)TileType.Floor) != 1)
                 return false;
 
             // Check if there is a direct path to the edge of the map in one direction

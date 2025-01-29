@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
+using VictoryConditions;
 using Zenject;
 
 namespace Managers
@@ -19,7 +20,9 @@ namespace Managers
 
         // Dependencies
         [Inject] private ISpawnerManager _spawnerManager;
+        [Inject] private ISignalManager _signalManager;
         [Inject] private DiContainer _diContainer;
+        
 
         // Serialized Variables
         [SerializeField] private List<VictoryCondition> victoryConditions;
@@ -32,8 +35,6 @@ namespace Managers
 
         private void Start()
         {
-            Debug.Log("XD"); 
-            
             foreach (var condition in victoryConditions)
             {
                 _conditionStates.Add(condition, false);
@@ -41,6 +42,7 @@ namespace Managers
             }
 
             _spawnerManager.Spawned += OnSpawned;
+            _signalManager.Signaled += (_) => UpdateWinConditions();
 
             VictoryConditionsChanged?.Invoke();
         }
@@ -54,21 +56,15 @@ namespace Managers
             }
         }
 
-        private void UpdateWinConditions()
+        private void UpdateWinConditions(bool force = false)
         {
-            var changed = false;
             foreach (var condition in victoryConditions)
             {
                 var conditionState = condition.Check();
-                if (_conditionStates[condition] != conditionState)
-                {
-                    _conditionStates[condition] = conditionState;
-                    changed = true;
-                }
+                _conditionStates[condition] = conditionState;
             }
 
-            if (changed)
-                VictoryConditionsChanged?.Invoke();
+            VictoryConditionsChanged?.Invoke();
         }
     }
 }

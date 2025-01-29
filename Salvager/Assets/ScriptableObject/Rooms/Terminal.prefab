@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1537128874834053102}
   - component: {fileID: 9141754217765262000}
   - component: {fileID: 6832043767885695631}
-  - component: {fileID: 118354269427039810}
+  - component: {fileID: -6730975168039837459}
   m_Layer: 6
   m_Name: Terminal
   m_TagString: Untagged
@@ -144,7 +144,7 @@ CircleCollider2D:
   m_Offset: {x: 0.09375, y: 0.34375}
   serializedVersion: 2
   m_Radius: 0.40625
---- !u!114 &118354269427039810
+--- !u!114 &-6730975168039837459
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -153,11 +153,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 8667083905584706207}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 50e51a2383124b4f96a7cc1d78aaf835, type: 3}
+  m_Script: {fileID: 11500000, guid: ba3344102780433c8c77b03927435f94, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactionTime: 3
+  interactionTime: 5
   interactionSound: {fileID: 8300000, guid: 402ec0e3f813dbb4fb0baf4f1f22785b, type: 3}
+  useOnce: 1
+  message: Hacking...
+  signal: 0
 --- !u!1001 &556012255856125039
 PrefabInstance:
   m_ObjectHideFlags: 0

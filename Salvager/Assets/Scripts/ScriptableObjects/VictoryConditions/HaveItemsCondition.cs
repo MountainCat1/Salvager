@@ -1,9 +1,10 @@
 using System.Linq;
 using Items;
+using Managers;
 using UnityEngine;
 using Zenject;
 
-namespace Managers
+namespace VictoryConditions
 {
     [CreateAssetMenu(fileName = "VictoryCondition", menuName = "Custom/VictoryConditions/HaveItems")]
     public class HaveItemsCondition : VictoryCondition
@@ -13,9 +14,23 @@ namespace Managers
         [SerializeField] private ItemBehaviour item;
         [SerializeField] private int count = 3;
 
+        [Header("Available variables: \n<count>\n<current_count>\n<item_name>")]
+        [SerializeField] private string description = "Have <current_count>/<count> of item <item_name>";
+        
         public override string GetDescription()
         {
-            return $"Have {count} of item <b>{item.name}</b>";
+            var creatures = _creatureManager.GetCreatures();
+            var itemCount = 0;
+            
+            foreach (var creature in creatures)
+            {
+                itemCount += creature.Inventory.Items.Count(x => x.GetIdentifier() == item.GetIdentifier());
+            }
+            
+            return description
+                .Replace("<count>", count.ToString())
+                .Replace("<current_count>", itemCount.ToString())
+                .Replace("<item_name>", item.Name);
         }
 
         public override bool Check()
@@ -28,7 +43,6 @@ namespace Managers
             {
                 itemCount += creature.Inventory.Items.Count(x => x.GetIdentifier() == item.GetIdentifier());
             }
-
 
             return itemCount >= count;
         }

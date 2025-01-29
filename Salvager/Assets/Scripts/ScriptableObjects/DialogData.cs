@@ -12,6 +12,6 @@ public class DialogData : ScriptableObject
 [System.Serializable]
 public class DialogSentenceSignal
 {
-    [field: SerializeField] public Signals Signal { get; set; }
+    [field: SerializeField] public Signal Signal { get; set; }
     [field: SerializeField] public int SentenceIndex { get; set; }
 }

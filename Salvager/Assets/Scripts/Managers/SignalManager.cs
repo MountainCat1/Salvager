@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
 
@@ -6,8 +7,9 @@ namespace Managers
 {
     public interface ISignalManager
     {
-        event Action<Signals> Signaled;
-        void Signal(Signals signal);
+        event Action<Signal> Signaled;
+        void Signal(Signal signal);
+        int GetSignalCount(Signal signal);
     }
 
 
@@ -15,12 +17,23 @@ namespace Managers
     {
         [Inject] private ISpawnerManager _spawnerManager;
         
-        public event Action<Signals> Signaled;
+        private readonly Dictionary<Signal, int > _signalCounts = new();
+        
+        public event Action<Signal> Signaled;
 
-        public void Signal(Signals signal)
+        public void Signal(Signal signal)
         {
             Debug.Log($"Signal {signal} called");
+            
+            _signalCounts.TryAdd(signal, 0);
+            _signalCounts[signal]++;
+            
             Signaled?.Invoke(signal);
+        }
+
+        public int GetSignalCount(Signal signal)
+        {
+            return _signalCounts.GetValueOrDefault(signal, 0);
         }
     }
 }
