@@ -34,12 +34,10 @@ namespace Managers
 
         public Creature SpawnCreature(Creature creaturePrefab, Vector3 position, Transform parent = null)
         {
-            var creatureGo = _spawnerManager.Spawn(
-                prefab: creaturePrefab.gameObject,
+            var creature = _spawnerManager.Spawn(
+                prefab: creaturePrefab,
                 position: position
             );
-
-            var creature = creatureGo.GetComponent<Creature>();
 
             HandleNewCreature(creature);
             

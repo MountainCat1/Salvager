@@ -9,11 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ba0217508e9c4bcea82072745b7ff13b, type: 3}
-  m_Name: LootTable
+  m_Script: {fileID: 11500000, guid: e74a0b7f612748adb9757fc82e9af6ca, type: 3}
+  m_Name: Get5ScrapVictorycondition
   m_EditorClassIdentifier: 
-  entries:
-  - item: {fileID: 352487764999285703, guid: dbe43bd481165264bbe8bbef6f56baf6, type: 3}
-    weight: 75
-  - item: {fileID: 0}
-    weight: 25
+  item: {fileID: 352487764999285703, guid: dbe43bd481165264bbe8bbef6f56baf6, type: 3}
+  count: 5

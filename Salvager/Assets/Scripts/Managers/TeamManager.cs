@@ -90,7 +90,7 @@ namespace Managers
         {
             return _relations[team1][team2];
         }
-
+        
         // Virtual Methods
 
         // Abstract Methods

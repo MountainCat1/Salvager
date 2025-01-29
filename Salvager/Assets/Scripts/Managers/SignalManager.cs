@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using Zenject;
 
 namespace Managers
 {
@@ -12,6 +13,8 @@ namespace Managers
 
     public class SignalManager : ISignalManager
     {
+        [Inject] private ISpawnerManager _spawnerManager;
+        
         public event Action<Signals> Signaled;
 
         public void Signal(Signals signal)

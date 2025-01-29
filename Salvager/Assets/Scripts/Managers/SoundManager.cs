@@ -15,7 +15,6 @@ namespace Managers
     public class SoundManager : MonoBehaviour, ISoundManager
     {
         [Inject] private ISoundPlayer _soundPlayer;
-        [Inject] private IPhaseManager _phaseManager;
 
         [SerializeField] private List<AudioClip> soundtracks;
         
@@ -36,15 +35,8 @@ namespace Managers
         {
             _soundPlayer.AddAudioSource(_soundtrackAudioSource, SoundType.Music);
             PlaySoundtrack(soundtracks.First());
-            
-            _phaseManager.PhaseChanged += OnPhaseChanged;
         }
-
-        private void OnPhaseChanged(int phase)
-        {
-            _soundtrackAnimator.SetInteger(Phase, phase);
-        }
-
+        
         private void OnDestroy()
         {
             if (_soundPlayer != null)

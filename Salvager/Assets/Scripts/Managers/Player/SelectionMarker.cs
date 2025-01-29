@@ -1,7 +1,6 @@
 using System;
 using UnityEngine;
 using UnityEngine.Animations;
-using Zenject;
 
 namespace Managers
 {
