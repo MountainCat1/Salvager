@@ -39,6 +39,6 @@ public class RandomContainerObject : InteractableObject
         
         creature.Inventory.AddItem(_itemBehaviour);
         
-        _floatingTextManager.SpawnFloatingText(transform.position, _itemBehaviour.Name, Color.green);
+        _floatingTextManager.SpawnFloatingText(transform.position, _itemBehaviour.Name, FloatingTextType.InteractionCompleted);
     }
 }

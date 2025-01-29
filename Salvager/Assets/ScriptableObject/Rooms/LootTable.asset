@@ -15,5 +15,5 @@ MonoBehaviour:
   entries:
   - item: {fileID: 352487764999285703, guid: dbe43bd481165264bbe8bbef6f56baf6, type: 3}
     weight: 75
-  - item: {fileID: 0}
+  - item: {fileID: 352487764999285703, guid: 7c73cdb68113e304db957549896d78b4, type: 3}
     weight: 25

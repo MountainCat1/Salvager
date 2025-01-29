@@ -153,7 +153,7 @@ public class Creature : Entity
         var interaction = interactionTarget.Interact(this, Time.deltaTime);
         if (interaction.Status == InteractionStatus.Created)
         {
-            _floatingTextManager.SpawnFloatingText(RootTransform.position, interaction.Message, Color.white);
+            _floatingTextManager.SpawnFloatingText(RootTransform.position, interaction.Message, FloatingTextType.Interaction);
         }
 
         Interacted?.Invoke(interaction);
