@@ -23,11 +23,6 @@ public class RandomContainerObject : InteractableObject
         }
         
         _itemBehaviour = lootTable.GetRandomItem();
-
-        if (_itemBehaviour == null) // we randomly chose empty item
-        {
-            Used = true; // we don't want to interact with this object anymore
-        }
     }
 
 
@@ -37,8 +32,13 @@ public class RandomContainerObject : InteractableObject
         
         var creature = interaction.Creature;
         
-        creature.Inventory.AddItem(_itemBehaviour);
+        if(_itemBehaviour == null)
+        {
+            _floatingTextManager.SpawnFloatingText(transform.position, "Empty", FloatingTextType.Miss);
+            return;
+        }
         
+        creature.Inventory.AddItem(_itemBehaviour);
         _floatingTextManager.SpawnFloatingText(transform.position, _itemBehaviour.Name, FloatingTextType.InteractionCompleted);
     }
 }
