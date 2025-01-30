@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Serialization;
 using VictoryConditions;
@@ -10,6 +11,7 @@ namespace Managers
     public interface IVictoryConditionManager
     {
         event Action VictoryConditionsChanged;
+        event Action VictoryAchieved;
         public IEnumerable<KeyValuePair<VictoryCondition, bool>>  VictoryConditions { get; }
     }
 
@@ -17,6 +19,7 @@ namespace Managers
     {
         // Events
         public event Action VictoryConditionsChanged;
+        public event Action VictoryAchieved;
 
         // Dependencies
         [Inject] private ISpawnerManager _spawnerManager;
@@ -65,6 +68,11 @@ namespace Managers
             }
 
             VictoryConditionsChanged?.Invoke();
+            
+            if (_conditionStates.Values.All(x => x))
+            {
+                VictoryAchieved?.Invoke();
+            }
         }
     }
 }
