@@ -24,17 +24,17 @@ public abstract class Weapon : ItemBehaviour
     public virtual bool NeedsLineOfSight => false;
     public bool IsOnCooldown => GetOnCooldown(new AttackContext());
 
-    private DateTime _lastAttackTime;
+    private float _lastAttackTime = -1;
 
     public bool GetOnCooldown(AttackContext ctx)
     {
         // TODO: DO NOT USE DateTime.Now in Update or FixedUpdate, it is very slow coz it is a system call
-        return DateTime.Now - _lastAttackTime < TimeSpan.FromSeconds(1f / CalculateAttackSpeed(ctx));
+        return Time.time - _lastAttackTime < 1f / CalculateAttackSpeed(ctx);
     }
 
     public void PerformAttack(AttackContext ctx)
     {
-        _lastAttackTime = DateTime.Now;
+        _lastAttackTime = Time.time;
 
         _cameraShakeService.ShakeCamera(ctx.Attacker.transform.position, ShakeFactor);
         
