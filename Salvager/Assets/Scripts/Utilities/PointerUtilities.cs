@@ -32,6 +32,12 @@ namespace Utilities
                     continue;
                 }
                 
+                if(result.gameObject.CompareTag("TransparentUI"))
+                {
+                    // Ignore the in-world UI
+                    continue;
+                }
+                
                 if(!result.gameObject.activeInHierarchy)
                     continue;
 

@@ -34,13 +34,21 @@ public class Inventory
     
     public void AddItem(ItemBehaviour itemPrefab)
     {
+        if(itemPrefab == null)
+            throw new NullReferenceException("Tried to add item to inventory that is null");
+        
         var instantiateItem = _diContainer.InstantiatePrefab(
             itemPrefab,
             _transform.position,
             Quaternion.identity,
             _transform
         );
+        
         var itemScript = instantiateItem.GetComponent<ItemBehaviour>();
+        
+        itemScript.Original = itemPrefab.Original == null 
+            ? itemPrefab 
+            : itemPrefab.Original;
         
         _items.Add(itemScript);
         

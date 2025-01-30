@@ -61,9 +61,8 @@ namespace Managers
             {
                 _startMousePosition = Input.mousePosition;
                 
-                if (EventSystem.current.IsPointerOverGameObject())
+                if (PointerUtilities.IsPointerOverInteractiveUI(selectionBox.gameObject))
                     return;
-
                 
                 if (selectionBox != null)
                 {
@@ -91,7 +90,7 @@ namespace Managers
 
                 if (Vector2.Distance(_startMousePosition, Input.mousePosition) <= DragThreshold)
                 {
-                    if (EventSystem.current.IsPointerOverGameObject())
+                    if (PointerUtilities.IsPointerOverInteractiveUI(selectionBox.gameObject))
                         return;
 
                     HandleSingleClick();

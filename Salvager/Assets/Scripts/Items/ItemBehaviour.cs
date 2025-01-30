@@ -11,6 +11,8 @@ namespace Items
         [field: SerializeField] public string Name { get; set; }
         [field: SerializeField] public float Weight { get; set; } = 1f;
 
+        public ItemBehaviour Original { get; set; }
+        
         public string GetIdentifier()
         {
             return $"{Name}";
