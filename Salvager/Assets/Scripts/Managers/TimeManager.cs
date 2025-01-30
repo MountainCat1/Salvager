@@ -26,11 +26,24 @@ public class TimeManager : MonoBehaviour, ITimeManager
     private bool _timeRunOut;
 
     private int _lastSecond = -1;
+    private float _lastTimeScale = 0;
 
     private void Start()
     {
         _inputManager.SpeedDown += () => Time.timeScale -= 0.1f;
         _inputManager.SpeedUp += () => Time.timeScale += 0.1f;
+        _inputManager.Pause += () =>
+        {
+            if(Time.timeScale <= 0.01f)
+            {
+                Time.timeScale = _lastTimeScale;
+            }
+            else
+            {
+                _lastTimeScale = Time.timeScale;
+                Time.timeScale = 0.01f;
+            }
+        };
     }
 
     private void Update()

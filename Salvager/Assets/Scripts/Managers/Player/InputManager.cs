@@ -17,6 +17,7 @@ public interface IInputManager
 
     event Action SpeedUp;
     event Action SpeedDown;
+    event Action Pause;
     IUIEvents UI { get; }
 }
 
@@ -47,6 +48,7 @@ public class InputManager : MonoBehaviour, IInputManager
     public event Action OnCancel;
     public event Action SpeedUp;
     public event Action SpeedDown;
+    public event Action Pause;
     public IUIEvents UI { get; private set; }
     [SerializeField] private int uiLayer = 5;
 
@@ -65,7 +67,7 @@ public class InputManager : MonoBehaviour, IInputManager
 
         _inputActions.Misc.TimeSpeedDown.performed += _ => SpeedDown?.Invoke();
         _inputActions.Misc.TimeSpeedUp.performed += _ => SpeedUp?.Invoke();
-        
+        _inputActions.Misc.Pause.performed += _ => Pause?.Invoke();
         
         _inputActions.UI.Confirm.performed += _ => OnConfirm?.Invoke();
         _inputActions.UI.SkipDialog.performed += _ => OnSkip?.Invoke();

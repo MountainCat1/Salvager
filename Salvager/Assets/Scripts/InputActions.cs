@@ -305,6 +305,15 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Pause"",
+                    ""type"": ""Button"",
+                    ""id"": ""a70b9384-e175-4981-b517-7de94480985b"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -327,6 +336,17 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""TimeSpeedDown"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2ab5bbb9-d055-4862-adec-3e6194b4bcca"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pause"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -365,6 +385,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         m_Misc = asset.FindActionMap("Misc", throwIfNotFound: true);
         m_Misc_TimeSpeedUp = m_Misc.FindAction("TimeSpeedUp", throwIfNotFound: true);
         m_Misc_TimeSpeedDown = m_Misc.FindAction("TimeSpeedDown", throwIfNotFound: true);
+        m_Misc_Pause = m_Misc.FindAction("Pause", throwIfNotFound: true);
     }
 
     ~@InputActions()
@@ -614,12 +635,14 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
     private List<IMiscActions> m_MiscActionsCallbackInterfaces = new List<IMiscActions>();
     private readonly InputAction m_Misc_TimeSpeedUp;
     private readonly InputAction m_Misc_TimeSpeedDown;
+    private readonly InputAction m_Misc_Pause;
     public struct MiscActions
     {
         private @InputActions m_Wrapper;
         public MiscActions(@InputActions wrapper) { m_Wrapper = wrapper; }
         public InputAction @TimeSpeedUp => m_Wrapper.m_Misc_TimeSpeedUp;
         public InputAction @TimeSpeedDown => m_Wrapper.m_Misc_TimeSpeedDown;
+        public InputAction @Pause => m_Wrapper.m_Misc_Pause;
         public InputActionMap Get() { return m_Wrapper.m_Misc; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -635,6 +658,9 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @TimeSpeedDown.started += instance.OnTimeSpeedDown;
             @TimeSpeedDown.performed += instance.OnTimeSpeedDown;
             @TimeSpeedDown.canceled += instance.OnTimeSpeedDown;
+            @Pause.started += instance.OnPause;
+            @Pause.performed += instance.OnPause;
+            @Pause.canceled += instance.OnPause;
         }
 
         private void UnregisterCallbacks(IMiscActions instance)
@@ -645,6 +671,9 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @TimeSpeedDown.started -= instance.OnTimeSpeedDown;
             @TimeSpeedDown.performed -= instance.OnTimeSpeedDown;
             @TimeSpeedDown.canceled -= instance.OnTimeSpeedDown;
+            @Pause.started -= instance.OnPause;
+            @Pause.performed -= instance.OnPause;
+            @Pause.canceled -= instance.OnPause;
         }
 
         public void RemoveCallbacks(IMiscActions instance)
@@ -692,5 +721,6 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
     {
         void OnTimeSpeedUp(InputAction.CallbackContext context);
         void OnTimeSpeedDown(InputAction.CallbackContext context);
+        void OnPause(InputAction.CallbackContext context);
     }
 }
