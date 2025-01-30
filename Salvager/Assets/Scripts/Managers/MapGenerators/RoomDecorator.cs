@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Services.MapGenerators;
 using UnityEngine;
 using Utilities;
@@ -14,6 +15,8 @@ public partial class RoomDecorator : MonoBehaviour, IRoomDecorator
 {
     [Inject] private DiContainer _context = null!;
     [SerializeField] private List<RoomBlueprint> roomBlueprints = new();
+    
+    private List<Vector2> _occupiedPositions = new();
 
     public void DecorateRooms(ICollection<RoomData> roomData, float tileSize)
     {
@@ -35,7 +38,9 @@ public partial class RoomDecorator : MonoBehaviour, IRoomDecorator
         {
             for (int i = 0; i < prop.count; i++)
             {
-                var randomPosition = roomData.Positions.RandomElement();
+                var randomPosition = roomData.Positions
+                    .Where(ValidatePosition)
+                    .RandomElement();
 
                 var loadProp = prop.prefab;
 
@@ -44,6 +49,17 @@ public partial class RoomDecorator : MonoBehaviour, IRoomDecorator
         }
 
         roomData.IsEntrance = blueprint.StartingRoom;
+    }
+
+    private bool ValidatePosition(Vector2Int position)
+    {
+        if(_occupiedPositions.Contains(position))
+        {
+            return false;
+        }
+
+
+        return true;
     }
 
     private void InstantiatePrefab(GameObject prefab, Vector2 position)
