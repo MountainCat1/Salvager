@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+using Utilities;
 
 public interface IInputManager
 {
@@ -93,36 +94,13 @@ public class InputManager : MonoBehaviour, IInputManager
 
     private void Pointer1OnPerformed(InputAction.CallbackContext callback)
     {
-        if (IsPointerOverUI()) return;
-
         var pointerPosition = Mouse.current.position;
         Pointer1Pressed?.Invoke(pointerPosition.ReadValue());
     }
 
     private void Pointer2OnPerformed(InputAction.CallbackContext callback)
     {
-        if (IsPointerOverUI()) return;
-
         var pointerPosition = Mouse.current.position;
         Pointer2Pressed?.Invoke(pointerPosition.ReadValue());
-    }
-
-    private bool IsPointerOverUI()
-    {
-        PointerEventData pointerEventData = new PointerEventData(EventSystem.current);
-        pointerEventData.position = Mouse.current.position.ReadValue();
-        List<RaycastResult> raycastResultsList = new List<RaycastResult>();
-        EventSystem.current.RaycastAll(pointerEventData, raycastResultsList);
-
-        for (int i = 0; i < raycastResultsList.Count; i++)
-        {
-            var raycastResult = raycastResultsList[i];
-            if (raycastResult.gameObject.transform is RectTransform && raycastResult.gameObject.layer == uiLayer)
-            {
-                return true;
-            }
-        }
-
-        return false;
     }
 }

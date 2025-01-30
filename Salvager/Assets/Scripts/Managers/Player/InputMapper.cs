@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using JetBrains.Annotations;
 using UnityEngine;
+using Utilities;
 using Zenject;
 
 public class MoveCommandContext
@@ -36,12 +37,18 @@ public class InputMapper : MonoBehaviour, IInputMapper
 
     private void OnPointer1Pressed(Vector2 obj)
     {
+        if(IsPointerOverUI())
+            return;
+        
         var worldPosition = _camera.ScreenToWorldPoint(obj);
         OnWorldPressed1?.Invoke(worldPosition);
     }
 
     private void OnPointer2Pressed(Vector2 position)
     {
+        if(IsPointerOverUI())
+            return;
+        
         var worldPosition = _camera.ScreenToWorldPoint(position);
         OnWorldPressed2?.Invoke(worldPosition);
     }
@@ -78,5 +85,11 @@ public class InputMapper : MonoBehaviour, IInputMapper
         }
 
         return null;
+    }
+    
+    
+    private bool IsPointerOverUI()
+    {
+        return PointerUtilities.IsPointerOverInteractiveUI();
     }
 }

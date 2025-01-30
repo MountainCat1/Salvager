@@ -4,6 +4,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.Animations;
 using UnityEngine.EventSystems;
+using Utilities;
 using Zenject;
 
 namespace Managers
@@ -97,7 +98,7 @@ namespace Managers
                 }
                 else
                 {
-                    if (IsPointerOverInteractiveUI())
+                    if (PointerUtilities.IsPointerOverInteractiveUI(selectionBox.gameObject))
                         return;
                     
                     SelectUnitsWithinBox();
@@ -259,30 +260,7 @@ namespace Managers
             return _selectedCreatures;
         }
         
-        private bool IsPointerOverInteractiveUI()
-        {
-            PointerEventData pointerEventData = new PointerEventData(EventSystem.current)
-            {
-                position = Input.mousePosition
-            };
-
-            List<RaycastResult> results = new List<RaycastResult>();
-            EventSystem.current.RaycastAll(pointerEventData, results);
-
-            // Filter out the selection box or other non-interactive elements
-            foreach (var result in results)
-            {
-                if (result.gameObject == selectionBox.gameObject)
-                {
-                    // Ignore the selection box
-                    continue;
-                }
-
-                return true;
-            }
-
-            return false;
-        }
+        
 
     }
 }
