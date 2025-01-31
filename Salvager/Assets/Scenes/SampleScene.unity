@@ -2331,7 +2331,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   wallTileMap: {fileID: 1724333501}
   floorTileMap: {fileID: 1993583554}
-  shadowTileMap: {fileID: 0}
   wallTile: {fileID: 11400000, guid: bd42707613bbc6540b6431494d73b0c8, type: 2}
   floorTile: {fileID: 11400000, guid: 42e21e8572244594b8f9c9687bc7fe75, type: 2}
 --- !u!114 &1141345844
@@ -2715,7 +2714,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4fadf7dc7b50e624bba4283468d40d2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  uiLayer: 5
 --- !u!1 &1613153530
 GameObject:
   m_ObjectHideFlags: 0

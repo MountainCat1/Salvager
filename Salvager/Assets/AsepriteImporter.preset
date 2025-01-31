@@ -138,7 +138,7 @@ Preset:
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TextureImporterSettings.m_SpritePixelsToUnits
-    value: 32
+    value: 16
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TextureImporterSettings.m_SpriteBorder.x
@@ -398,7 +398,7 @@ Preset:
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_PlatformSettingsDirtyTick
-    value: 638706724227056306
+    value: 638739226188367962
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_TextureAssetName
