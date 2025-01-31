@@ -18,19 +18,17 @@ public class Entity : MonoBehaviour
 
         // Initialize MovementComponent
         Movement = GetComponent<MovementComponent>();
-        if (Movement == null)
+        if (Movement)
         {
-            Movement = gameObject.AddComponent<MovementComponent>();
+            Movement.Moved += OnMoved;
         }
-        Movement.Moved += OnMoved;
 
         // Initialize HealthComponent
         Health = GetComponent<HealthComponent>();
-        if (Health == null)
+        if (Health)
         {
-            Health = gameObject.AddComponent<HealthComponent>();
+            Health.Death += HandleDeath;
         }
-        Health.Death += HandleDeath;
     }
 
     protected virtual void Update()
