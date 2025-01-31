@@ -169,7 +169,7 @@ namespace CreatureControllers
 
         private void PerformAttack(AttackContext context)
         {
-            Creature.Weapon.ContiniousAttack(context);
+            Creature.Weapon.ContinuousAttack(context);
         }
     }
 }

@@ -43,11 +43,18 @@ public class SimpleCreatureAnimator : CreatureAnimator
         if (Creature != null)
         {
             Creature.StateChanged += OnState;
+            Creature.Attacked += OnAttack;
         }
         else
         {
             Debug.LogWarning($"No Creature assigned to {name}!");
         }
+    }
+
+    private void OnAttack(AttackContext ctx)
+    {
+        if(ctx.Direction.x != 0)
+            _spriteRenderer.flipX = ctx.Direction.x > 0;
     }
 
 

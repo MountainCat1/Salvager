@@ -20,6 +20,7 @@ public class Creature : Entity
     public event Action WeaponChanged;
     public event Action<CreatureState> StateChanged;
     public event Action<Interaction> Interacted;
+    public event Action<AttackContext> Attacked; 
 
     // Injected Dependencies (using Zenject)
     [Inject] private ITeamManager _teamManager;
@@ -55,7 +56,12 @@ public class Creature : Entity
         get => weapon;
         private set
         {
+            if(weapon != null)
+                weapon.Attacked -= OnWeaponAttack;
+            
             weapon = value;
+            weapon.Attacked += OnWeaponAttack;
+            
             WeaponChanged?.Invoke();
         }
     }
@@ -84,6 +90,11 @@ public class Creature : Entity
     {
         base.Awake();
 
+        if (weapon != null)
+        {
+            Weapon = weapon;
+        }
+        
         if (inventoryRoot == null)
         {
             inventoryRoot = new GameObject("Inventory").transform;
@@ -172,6 +183,11 @@ public class Creature : Entity
     // Abstract Methods
 
     // Private Methods
+    
+    private void OnWeaponAttack(AttackContext ctx)
+    {
+       Attacked?.Invoke(ctx);
+    }
 }
 
 public struct DeathContext

@@ -555,9 +555,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Creature>k__BackingField: {fileID: 6919997015472372386}
-  idle: {fileID: 4776009721099476062, guid: bb52cef64024bfb4185e4e495c8716ce, type: 3}
-  walk: {fileID: 1662351089616768836, guid: 36b6aa04146c81b4ea711bf79534e916, type: 3}
-  attack: {fileID: -6864418598007316027, guid: d9dc2069fa52e194c8b709e470343df1, type: 3}
+  idle: {fileID: -3100369314251171874, guid: bb52cef64024bfb4185e4e495c8716ce, type: 3}
+  walk: {fileID: 2667949614841947897, guid: bb52cef64024bfb4185e4e495c8716ce, type: 3}
+  attack: {fileID: 6720303635017113406, guid: bb52cef64024bfb4185e4e495c8716ce, type: 3}
 --- !u!1 &7178152661795299375
 GameObject:
   m_ObjectHideFlags: 0

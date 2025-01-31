@@ -101,7 +101,7 @@ public class NecromancerController : AiController
 
     private void PerformAttack(Weapon weapon, AttackContext ctx)
     {
-        weapon.ContiniousAttack(ctx);
+        weapon.ContinuousAttack(ctx);
     }
 
     private Vector2 GetRandomPosition(Vector2 center, float radius)

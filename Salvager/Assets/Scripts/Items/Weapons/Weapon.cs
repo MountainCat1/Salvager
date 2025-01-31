@@ -7,6 +7,8 @@ using Zenject;
 
 public abstract class Weapon : ItemBehaviour
 {
+    public event Action<AttackContext> Attacked;
+    
     [Inject] private ISoundPlayer _soundPlayer;
     [Inject] private ICameraShakeService _cameraShakeService;
 
@@ -41,10 +43,11 @@ public abstract class Weapon : ItemBehaviour
         if(AttackSound != null)
             _soundPlayer.PlaySound(AttackSound, transform.position);
         
+        Attacked?.Invoke(ctx);
         Attack(ctx);
     }
 
-    public void ContiniousAttack(AttackContext ctx)
+    public void ContinuousAttack(AttackContext ctx)
     {
         if (GetOnCooldown(ctx))
             return;
@@ -52,6 +55,9 @@ public abstract class Weapon : ItemBehaviour
         PerformAttack(ctx);
     }
 
+    // !!!
+    // Should always ONLY be invoked by PerformAttack, to ensure that the weapon is on cooldown and events are invoked
+    // !!!
     protected abstract void Attack(AttackContext ctx);
 
     protected virtual void OnHit(Creature target, HitContext hitContext)

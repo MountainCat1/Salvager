@@ -42,6 +42,6 @@ public class MeleeEnemyController : AiController
 
     private void PerformAttack(AttackContext ctx)
     {
-        Creature.Weapon.ContiniousAttack(ctx);
+        Creature.Weapon.ContinuousAttack(ctx);
     }
 }
