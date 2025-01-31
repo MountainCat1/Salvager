@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using JetBrains.Annotations;
 using UnityEngine;
 using Random = System.Random;
 
@@ -75,7 +76,8 @@ namespace Services.MapGenerators
             return tiles.GetRange(0, count).Select(x => x).ToList();
         }
 
-        public RoomData? GetRoomData(int roomID)
+        [CanBeNull]
+        public RoomData GetRoomData(int roomID)
         {
             return _rooms.ContainsKey(roomID) ? _rooms[roomID] : null;
         }

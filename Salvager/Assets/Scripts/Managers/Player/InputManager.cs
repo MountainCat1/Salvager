@@ -51,7 +51,6 @@ public class InputManager : MonoBehaviour, IInputManager
     public event Action SpeedDown;
     public event Action Pause;
     public IUIEvents UI { get; private set; }
-    [SerializeField] private int uiLayer = 5;
 
     private InputActions _inputActions;
 

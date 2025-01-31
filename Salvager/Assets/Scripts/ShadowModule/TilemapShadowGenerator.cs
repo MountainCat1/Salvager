@@ -22,8 +22,6 @@ public partial class TilemapShadowGenerator : MonoBehaviour
 
     // Called when the node enters the scene tree for the first time.
 
-    private float _lastMargin = -1;
-
     private void Awake()
     {
         _mapGenerator.MapGenerated += OnMapGenerated;

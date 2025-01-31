@@ -310,7 +310,9 @@ namespace CRTFilter
                 var textureId = Shader.PropertyToID("_CRTFilterTexture");
                 cmd.GetTemporaryRT(textureId, width, height, 0, FilterMode.Point, RenderTextureFormat.ARGB32);
                 tempRT = new RenderTargetIdentifier(textureId);
+#pragma warning disable CS0618 // Type or member is obsolete
                 ConfigureTarget(tempRT);
+#pragma warning restore CS0618 // Type or member is obsolete
             }
 
             public override void Execute(ScriptableRenderContext context, ref RenderingData renderingData)
@@ -318,7 +320,9 @@ namespace CRTFilter
                 if (material == null)
                     return;
 
+#pragma warning disable CS0618 // Type or member is obsolete
                 var cameraColorTexture = renderingData.cameraData.renderer.cameraColorTarget;
+#pragma warning restore CS0618 // Type or member is obsolete
                 if ((cameraColorTexture == new RenderTargetIdentifier(BuiltinRenderTextureType.CameraTarget)))
                 {
                     Debug.LogWarning("CRT Filter: camera doesn't render to the texture. Please make sure, that there is PixelPerfectCamera component attached with CropFrame setting anything but 'None'");

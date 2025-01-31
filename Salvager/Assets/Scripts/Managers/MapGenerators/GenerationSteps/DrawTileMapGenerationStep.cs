@@ -9,7 +9,6 @@ namespace Services.MapGenerators.GenerationSteps
     {
         [SerializeField] private Tilemap wallTileMap = null!;
         [SerializeField] private Tilemap floorTileMap = null!;
-        [SerializeField] private Tilemap shadowTileMap = null!;
         
         [SerializeField] private TileBase wallTile = null!;
         [SerializeField] private TileBase floorTile = null!;

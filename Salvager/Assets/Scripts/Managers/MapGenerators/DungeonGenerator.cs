@@ -28,7 +28,6 @@ namespace Services.MapGenerators
 
         [SerializeField] private Tilemap wallTileMap = null!;
         [SerializeField] private Tilemap floorTileMap = null!;
-        [SerializeField] private Tilemap shadowTileMap = null!;
 
         [SerializeField] private TileBase floorTile = null!;
         [SerializeField] private TileBase wallTile = null!;

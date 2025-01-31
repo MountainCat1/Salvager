@@ -23,9 +23,6 @@ public class InteractableObject : Entity, IInteractable
     protected bool Used = false;
 
     // Methods
-    protected virtual void Awake()
-    {
-    }
 
     private bool GetIsInteractable()
     {
