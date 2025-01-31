@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   debugShaders:
     debugReplacementPS: {fileID: 4800000, guid: cf852408f2e174538bcd9b7fda1c5ae7, type: 3}
+    hdrDebugViewPS: {fileID: 4800000, guid: 573620ae32aec764abd4d728906d2587, type: 3}
   m_RendererFeatures:
   - {fileID: 2820282000497542982}
   m_RendererFeatureMap: 4687157689a72327
@@ -45,7 +46,9 @@ MonoBehaviour:
   m_ShapeLightVolumeShader: {fileID: 4800000, guid: 7e60080c8cd24a2468cb08b4bfee5606, type: 3}
   m_PointLightShader: {fileID: 4800000, guid: e35a31e1679aeff489e202f5cc4853d5, type: 3}
   m_PointLightVolumeShader: {fileID: 4800000, guid: c7d04ca57e5449d49ad9cee1c604bc26, type: 3}
-  m_BlitShader: {fileID: 4800000, guid: c17132b1f77d20942aa75f8429c0f8bc, type: 3}
+  m_CoreBlitShader: {fileID: 4800000, guid: 93446b5c5339d4f00b85c159e1159b7c, type: 3}
+  m_BlitHDROverlay: {fileID: 4800000, guid: a89bee29cffa951418fc1e2da94d1959, type: 3}
+  m_CoreBlitColorAndDepthPS: {fileID: 4800000, guid: d104b2fc1ca6445babb8e90b0758136b, type: 3}
   m_SamplingShader: {fileID: 4800000, guid: 04c410c9937594faa893a11dceb85f7e, type: 3}
   m_ProjectedShadowShader: {fileID: 4800000, guid: ce09d4a80b88c5a4eb9768fab4f1ee00, type: 3}
   m_SpriteShadowShader: {fileID: 4800000, guid: 44fc62292b65ab04eabcf310e799ccf6, type: 3}
@@ -74,31 +77,31 @@ MonoBehaviour:
   m_Active: 1
   shader: {fileID: 4800000, guid: 6f2fcdc189458914eb8a323f19e3a27b, type: 3}
   preset: 6
-  pixelResolutionX: 1000
-  pixelResolutionY: 210
-  screenBend: 7.2
-  screenOverscan: 0.5
+  pixelResolutionX: 380
+  pixelResolutionY: 180
+  screenBend: 0
+  screenOverscan: 0
   blur: 0
-  bleed: 3
+  bleed: 0
   smidge: 0
-  scanlinesStrength: 9
-  apertureStrength: 4
+  scanlinesStrength: 1
+  apertureStrength: 0.1
   shadowlines: 0
   shadowlinesSpeed: 0
   shadowlinesAlpha: 0
-  noiseSize: 0
-  noiseSpeed: 0
-  noiseAlpha: 0
-  vignetteSize: 5.7
-  vignetteSmooth: 1
-  vignetteRound: 15
-  brightness: 0
+  noiseSize: 9.9
+  noiseSpeed: 2.15
+  noiseAlpha: 0.021
+  vignetteSize: 5.65
+  vignetteSmooth: 2
+  vignetteRound: 37
+  brightness: -0.04
   contrast: 1
   gamma: 1
   red: 1
   green: 1
   blue: 1
   chromaticAberration: 0
-  redOffset: {x: 0, y: 0}
-  blueOffset: {x: 0, y: 0}
-  greenOffset: {x: -0, y: 0}
+  redOffset: {x: 0.02, y: 0.02}
+  blueOffset: {x: 0, y: -0.028}
+  greenOffset: {x: -0.02, y: 0.02}
