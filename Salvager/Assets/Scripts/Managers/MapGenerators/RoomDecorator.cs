@@ -41,10 +41,9 @@ public partial class RoomDecorator : MonoBehaviour, IRoomDecorator
                 var randomPosition = roomData.Positions
                     .Where(ValidatePosition)
                     .RandomElement();
-
-                var loadProp = prop.prefab;
-
-                InstantiatePrefab(loadProp, (Vector2)randomPosition * tileSize + new Vector2(tileSize, tileSize) / 2);
+                
+                InstantiatePrefab(prop.prefab, (Vector2)randomPosition * tileSize + new Vector2(tileSize, tileSize) / 2);
+                _occupiedPositions.Add(randomPosition);
             }
         }
 

@@ -12,16 +12,15 @@ namespace CreatureControllers
     [RequireComponent(typeof(Seeker))]
     public class AiController : CreatureController
     {
+        public event Action<IEnumerable<Vector3>> PathChanged;
+
         protected Seeker Seeker { get; private set; }
-        
         
         // Private Variables
         private const float MemoryUpdateInterval = 1.0f; // Base interval in seconds
 
-
         // Events
         
-
         // Injected Dependencies (using Zenject)
         [Inject] protected IPathfinding Pathfinding;
         [Inject] protected ICreatureManager CreatureManager;
@@ -43,13 +42,14 @@ namespace CreatureControllers
             {
                 Debug.LogError("Seeker component is missing on the Creature.");
             }
-            
+
             _navigationCache = new NavigationCache(Seeker);
         }
+
         protected virtual void Start()
         {
             Creature.Health.Hit += OnHit;
-            
+
             // Add a random offset to spread updates
             var randomOffset = UnityEngine.Random.Range(0f, MemoryUpdateInterval);
             StartCoroutine(UpdateMemoryPeriodically(randomOffset));
@@ -92,6 +92,9 @@ namespace CreatureControllers
             if (Vector2.Distance(Creature.transform.position, nextNode) < 0.1f)
             {
                 Creature.SetMovement(Vector2.zero);
+                
+                PathChanged?.Invoke(Enumerable.Empty<Vector3>());
+                
                 return;
             }
 
@@ -104,22 +107,21 @@ namespace CreatureControllers
             {
                 Debug.DrawLine(p.vectorPath[i], p.vectorPath[i + 1], Color.green);
             }
+            
+            PathChanged?.Invoke(p.vectorPath);
         }
-
-        private void MoveStraightToTarget(Creature target)
-        {
-            MoveStraightToTarget(target.transform.position);
-        }
-
+        
         private void MoveStraightToTarget(Vector2 targetPosition)
         {
             var direction = (targetPosition - (Vector2)Creature.transform.position).normalized;
 
             if (Vector2.Distance(Creature.transform.position, targetPosition) < 0.1f)
             {
+                PathChanged?.Invoke(Array.Empty<Vector3>());
                 Creature.SetMovement(Vector2.zero);
                 return;
             }
+            PathChanged?.Invoke(new Vector3[]{ transform.position, targetPosition });
 
             Creature.SetMovement(direction);
             Debug.DrawLine(Creature.transform.position, targetPosition, Color.green);
@@ -136,6 +138,7 @@ namespace CreatureControllers
             };
             return cornerPoints;
         }
+
         private void UpdateMemory()
         {
             long currentTicks = Environment.TickCount;
@@ -162,6 +165,7 @@ namespace CreatureControllers
                 }
             }
         }
+
         private IEnumerator UpdateMemoryPeriodically(float randomOffset)
         {
             // Initial delay to stagger updates
@@ -172,22 +176,22 @@ namespace CreatureControllers
                 UpdateMemory();
                 yield return new WaitForSeconds(MemoryUpdateInterval);
             }
-            
+
             // ReSharper disable once IteratorNeverReturns
         }
-        
+
         // Event Handlers
         private void OnHit(HitContext ctx)
         {
             Memorize(ctx.Attacker);
         }
-        
+
         // Helper Methods
         protected bool PathClear(Creature target, float radius)
         {
             return PathClear(target.transform.position, radius);
         }
-        
+
         protected bool PathClear(Vector2 targetPosition, float radius)
         {
             Vector3 creaturePosition = Creature.transform.position;

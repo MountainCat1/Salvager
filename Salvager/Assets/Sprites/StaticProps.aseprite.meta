@@ -144,7 +144,7 @@ ScriptedImporter:
   spriteSheetImportData:
   - name: StaticProps_0
     originalName: 
-    pivot: {x: 0.5, y: 0.5}
+    pivot: {x: 0, y: 0}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -164,12 +164,12 @@ ScriptedImporter:
     uvTransform: {x: 0, y: 0}
   - name: StaticProps_1
     originalName: 
-    pivot: {x: 0.5, y: 0.5}
+    pivot: {x: 0, y: 0}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 16
+      x: 32
       y: 240
       width: 16
       height: 16
@@ -184,12 +184,12 @@ ScriptedImporter:
     uvTransform: {x: 0, y: 0}
   - name: StaticProps_2
     originalName: 
-    pivot: {x: 0.5, y: 0.5}
+    pivot: {x: 0, y: 0}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 32
+      x: 48
       y: 240
       width: 16
       height: 16
@@ -204,12 +204,12 @@ ScriptedImporter:
     uvTransform: {x: 0, y: 0}
   - name: StaticProps_3
     originalName: 
-    pivot: {x: 0.5, y: 0.5}
+    pivot: {x: 0, y: 0}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 48
+      x: 64
       y: 240
       width: 16
       height: 16
@@ -224,12 +224,12 @@ ScriptedImporter:
     uvTransform: {x: 0, y: 0}
   - name: StaticProps_4
     originalName: 
-    pivot: {x: 0.5, y: 0.5}
+    pivot: {x: 0, y: 0}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 64
+      x: 80
       y: 240
       width: 16
       height: 16
@@ -244,12 +244,12 @@ ScriptedImporter:
     uvTransform: {x: 0, y: 0}
   - name: StaticProps_5
     originalName: 
-    pivot: {x: 0.5, y: 0.5}
+    pivot: {x: 0, y: 0}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 240
+      x: 96
       y: 240
       width: 16
       height: 16
@@ -264,13 +264,13 @@ ScriptedImporter:
     uvTransform: {x: 0, y: 0}
   - name: StaticProps_6
     originalName: 
-    pivot: {x: 0.5, y: 0.5}
+    pivot: {x: 0, y: 0}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 0
-      y: 224
+      x: 112
+      y: 240
       width: 16
       height: 16
     spriteID: 6f8db8337e9a5ae48b677f8d95a3a0bb
@@ -284,13 +284,13 @@ ScriptedImporter:
     uvTransform: {x: 0, y: 0}
   - name: StaticProps_7
     originalName: 
-    pivot: {x: 0.5, y: 0.5}
+    pivot: {x: 0, y: 0}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 16
-      y: 224
+      x: 240
+      y: 240
       width: 16
       height: 16
     spriteID: 122f5edb76b81194e853852d2ef52bf3
@@ -304,12 +304,12 @@ ScriptedImporter:
     uvTransform: {x: 0, y: 0}
   - name: StaticProps_8
     originalName: 
-    pivot: {x: 0.5, y: 0.5}
+    pivot: {x: 0, y: 0}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 32
+      x: 0
       y: 224
       width: 16
       height: 16
@@ -324,12 +324,12 @@ ScriptedImporter:
     uvTransform: {x: 0, y: 0}
   - name: StaticProps_9
     originalName: 
-    pivot: {x: 0.5, y: 0.5}
+    pivot: {x: 0, y: 0}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 48
+      x: 16
       y: 224
       width: 16
       height: 16
@@ -344,13 +344,13 @@ ScriptedImporter:
     uvTransform: {x: 0, y: 0}
   - name: StaticProps_10
     originalName: 
-    pivot: {x: 0.5, y: 0.5}
+    pivot: {x: 0, y: 0}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 0
-      y: 0
+      x: 32
+      y: 224
       width: 16
       height: 16
     spriteID: 61de02a4867e92c4b84245840982f954
@@ -364,6 +364,126 @@ ScriptedImporter:
     uvTransform: {x: 0, y: 0}
   - name: StaticProps_11
     originalName: 
+    pivot: {x: 0, y: 0}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 48
+      y: 224
+      width: 16
+      height: 16
+    spriteID: 25e61f3529bda554bb96256e850bac7b
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: StaticProps_12
+    originalName: 
+    pivot: {x: 0, y: 0}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 64
+      y: 224
+      width: 16
+      height: 16
+    spriteID: 844ffdde6cdad6d4fbef587559496d39
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: StaticProps_13
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 80
+      y: 224
+      width: 16
+      height: 16
+    spriteID: 9ff9385a27f37b94890610a617c604c2
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: StaticProps_14
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 0
+      y: 208
+      width: 16
+      height: 16
+    spriteID: d0ae5a989437ca6478dd206b724258ef
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: StaticProps_15
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 16
+      y: 208
+      width: 16
+      height: 16
+    spriteID: c6bbdc0f32cd77842a7bb85f82532ea8
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: StaticProps_16
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 16
+      height: 16
+    spriteID: c84381e7adec79d4fa9b7f29f34e80f9
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: StaticProps_17
+    originalName: 
     pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
@@ -373,7 +493,7 @@ ScriptedImporter:
       y: 0
       width: 16
       height: 16
-    spriteID: 25e61f3529bda554bb96256e850bac7b
+    spriteID: f1c01404275617d4ea93fa417574afa7
     spriteBone: []
     spriteOutline: []
     vertices: []
