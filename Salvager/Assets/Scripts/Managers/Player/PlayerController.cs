@@ -1,9 +1,13 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using CreatureControllers;
 using Managers;
+using UI;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using Zenject;
+using Random = UnityEngine.Random;
 
 public class PlayerController : MonoBehaviour
 {
@@ -16,6 +20,18 @@ public class PlayerController : MonoBehaviour
     private void Start()
     {
         _inputMapper.OnWorldPressed2 += OnMoveCommand;
+        _inputManager.GoBackToMenu += OnGoBackToMenu;
+    }
+
+    private void OnDestroy()
+    {
+        _inputMapper.OnWorldPressed2 -= OnMoveCommand;
+        _inputManager.GoBackToMenu -= OnGoBackToMenu;
+    }
+
+    private void OnGoBackToMenu()
+    {
+        SceneManager.LoadScene("Scenes/Menu");
     }
 
     private void OnMoveCommand(Vector2 position)

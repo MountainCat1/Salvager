@@ -19,6 +19,7 @@ public interface IInputManager
     event Action SpeedUp;
     event Action SpeedDown;
     event Action Pause;
+    event Action GoBackToMenu;
     IUIEvents UI { get; }
 }
 
@@ -50,11 +51,12 @@ public class InputManager : MonoBehaviour, IInputManager
     public event Action SpeedUp;
     public event Action SpeedDown;
     public event Action Pause;
+    public event Action GoBackToMenu;
     public IUIEvents UI { get; private set; }
 
     private InputActions _inputActions;
 
-    private void Awake()
+    private void OnEnable()
     {
         _inputActions = new InputActions();
         _inputActions.Enable();
@@ -68,6 +70,7 @@ public class InputManager : MonoBehaviour, IInputManager
         _inputActions.Misc.TimeSpeedDown.performed += _ => SpeedDown?.Invoke();
         _inputActions.Misc.TimeSpeedUp.performed += _ => SpeedUp?.Invoke();
         _inputActions.Misc.Pause.performed += _ => Pause?.Invoke();
+        _inputActions.Misc.GoBackToMenu.performed += _ => GoBackToMenu?.Invoke();
         
         _inputActions.UI.Confirm.performed += _ => OnConfirm?.Invoke();
         _inputActions.UI.SkipDialog.performed += _ => OnSkip?.Invoke();

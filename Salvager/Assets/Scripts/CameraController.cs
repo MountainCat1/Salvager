@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using Zenject;
 
@@ -16,6 +17,11 @@ public class CameraController : MonoBehaviour, ICameraController
     private void Start()
     {
         _inputManager.CameraMovement += OnCameraMovement;
+    }
+
+    private void OnDestroy()
+    {
+        _inputManager.CameraMovement -= OnCameraMovement;
     }
 
     private void OnCameraMovement(Vector2 move)

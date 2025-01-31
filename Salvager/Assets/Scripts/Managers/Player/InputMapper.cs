@@ -26,13 +26,18 @@ public class InputMapper : MonoBehaviour, IInputMapper
     [Inject] private IInputManager _inputManager;
     private Camera _camera;
 
-    [Inject]
-    private void Construct()
+    private void OnEnable()
     {
         _camera = Camera.main;
 
         _inputManager.Pointer2Pressed += OnPointer2Pressed;
         _inputManager.Pointer1Pressed += OnPointer1Pressed;
+    }
+
+    private void OnDisable()
+    {
+        _inputManager.Pointer2Pressed -= OnPointer2Pressed;
+        _inputManager.Pointer1Pressed -= OnPointer1Pressed;
     }
 
     private void OnPointer1Pressed(Vector2 obj)

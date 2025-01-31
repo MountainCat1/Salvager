@@ -314,6 +314,15 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""GoBackToMenu"",
+                    ""type"": ""Button"",
+                    ""id"": ""5c66ba06-3603-4c62-9caa-ff121e8ff5e5"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -347,6 +356,17 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Pause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0dcd1ddf-d0a2-47aa-a165-a0695b2dd1fd"",
+                    ""path"": ""<Keyboard>/f4"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""GoBackToMenu"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -386,6 +406,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         m_Misc_TimeSpeedUp = m_Misc.FindAction("TimeSpeedUp", throwIfNotFound: true);
         m_Misc_TimeSpeedDown = m_Misc.FindAction("TimeSpeedDown", throwIfNotFound: true);
         m_Misc_Pause = m_Misc.FindAction("Pause", throwIfNotFound: true);
+        m_Misc_GoBackToMenu = m_Misc.FindAction("GoBackToMenu", throwIfNotFound: true);
     }
 
     ~@InputActions()
@@ -636,6 +657,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Misc_TimeSpeedUp;
     private readonly InputAction m_Misc_TimeSpeedDown;
     private readonly InputAction m_Misc_Pause;
+    private readonly InputAction m_Misc_GoBackToMenu;
     public struct MiscActions
     {
         private @InputActions m_Wrapper;
@@ -643,6 +665,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         public InputAction @TimeSpeedUp => m_Wrapper.m_Misc_TimeSpeedUp;
         public InputAction @TimeSpeedDown => m_Wrapper.m_Misc_TimeSpeedDown;
         public InputAction @Pause => m_Wrapper.m_Misc_Pause;
+        public InputAction @GoBackToMenu => m_Wrapper.m_Misc_GoBackToMenu;
         public InputActionMap Get() { return m_Wrapper.m_Misc; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -661,6 +684,9 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @Pause.started += instance.OnPause;
             @Pause.performed += instance.OnPause;
             @Pause.canceled += instance.OnPause;
+            @GoBackToMenu.started += instance.OnGoBackToMenu;
+            @GoBackToMenu.performed += instance.OnGoBackToMenu;
+            @GoBackToMenu.canceled += instance.OnGoBackToMenu;
         }
 
         private void UnregisterCallbacks(IMiscActions instance)
@@ -674,6 +700,9 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @Pause.started -= instance.OnPause;
             @Pause.performed -= instance.OnPause;
             @Pause.canceled -= instance.OnPause;
+            @GoBackToMenu.started -= instance.OnGoBackToMenu;
+            @GoBackToMenu.performed -= instance.OnGoBackToMenu;
+            @GoBackToMenu.canceled -= instance.OnGoBackToMenu;
         }
 
         public void RemoveCallbacks(IMiscActions instance)
@@ -722,5 +751,6 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         void OnTimeSpeedUp(InputAction.CallbackContext context);
         void OnTimeSpeedDown(InputAction.CallbackContext context);
         void OnPause(InputAction.CallbackContext context);
+        void OnGoBackToMenu(InputAction.CallbackContext context);
     }
 }

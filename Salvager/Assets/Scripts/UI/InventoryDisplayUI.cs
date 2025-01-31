@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using Managers;
 using UI.Abstractions;
@@ -27,6 +28,13 @@ namespace UI
             _selectionManager.OnSelectionChanged += OnSelectionChanged;
             
             instantiatedInventoryUI.Hide();
+        }
+
+        private void OnDestroy()
+        {
+            _inputManager.UI.ShowInventory -= OnInventoryPressed;
+            _selectionManager.OnSelectionChanged -= OnSelectionChanged;
+
         }
 
         private void OnSelectionChanged()
