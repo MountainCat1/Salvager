@@ -1,4 +1,7 @@
+using System.Diagnostics;
+using Managers;
 using UnityEngine.Serialization;
+using Zenject;
 
 namespace Components
 {
@@ -7,23 +10,23 @@ namespace Components
 
     public class HealthComponent : MonoBehaviour, IReadonlyRangedValue
     {
+        // Events
         public event Action<DeathContext> Death;
         public event Action ValueChanged;
         public event Action<HitContext> Hit;
 
-        [FormerlySerializedAs("rangeValeu")]
-        [FormerlySerializedAs("health")]
-        [Header("Health Settings")]
-        [SerializeField]
+        // Settings
+        [Header("Health Settings")] [SerializeField]
         private float maxHealth = 10;
-
+        
         // Accessors
         public float CurrentValue => _rangeValue.CurrentValue;
         public float MinValue => _rangeValue.MinValue;
         public float MaxValue => _rangeValue.MaxValue;
-        
+
+        // Fields
         private RangedValue _rangeValue;
-        
+
         private void Awake()
         {
             _rangeValue = new RangedValue(maxHealth, 0f, maxHealth);
@@ -33,10 +36,10 @@ namespace Components
         {
             ctx.ValidateAndLog();
 
-            
+
             _rangeValue.CurrentValue -= ctx.Damage;
             ValueChanged?.Invoke();
-            
+
             Hit?.Invoke(ctx);
 
             if (_rangeValue.CurrentValue <= _rangeValue.MinValue)
@@ -62,8 +65,5 @@ namespace Components
             Death?.Invoke(deathContext);
             Destroy(gameObject); // Optional: Destroy the GameObject
         }
-
-
     }
-
 }

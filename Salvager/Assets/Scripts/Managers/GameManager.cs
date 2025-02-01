@@ -17,7 +17,6 @@ namespace Managers
         [Inject] private ICameraController _cameraController;
         [Inject] private ICreatureManager _creatureManager;
 
-
         [SerializeField] private Creature playerPrefab;
         [SerializeField] private Creature enemyPrefab;
 

@@ -27,6 +27,8 @@ public abstract class Weapon : ItemBehaviour
     public bool IsOnCooldown => GetOnCooldown(new AttackContext());
 
     private float _lastAttackTime = -1;
+    
+    protected const float RandomPitch = 0.3f;
 
     public bool GetOnCooldown(AttackContext ctx)
     {
@@ -68,7 +70,7 @@ public abstract class Weapon : ItemBehaviour
         }
 
         if (HitSound != null)
-            _soundPlayer.PlaySound(HitSound, transform.position);
+            _soundPlayer.PlaySound(HitSound, transform.position, SoundType.Sfx, RandomPitch);
     }
 
     protected Vector2 CalculatePushForce(Creature target)

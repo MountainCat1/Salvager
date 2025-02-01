@@ -14,7 +14,9 @@ namespace Managers
 
     public interface ISoundPlayer
     {
-        public void PlaySound(AudioClip clip, Vector2 position, SoundType soundType = SoundType.Sfx);
+        public void PlaySound(AudioClip clip, Vector2 position, SoundType soundType = SoundType.Sfx,
+            float pitchRandomness = 0f);
+
         public void PlaySoundGlobal(AudioClip clip, SoundType soundType = SoundType.Sfx);
         AudioSource CreateSound(AudioClip clip, SoundType soundType, bool destroy = true);
         void AddAudioSource(AudioSource audioSource, SoundType soundType);
@@ -55,36 +57,37 @@ namespace Managers
         //     ChangeVolume(SoundType.Sfx, gameSettings.sfxVolume);
         //     ChangeVolume(SoundType.UI, gameSettings.uiVolume);
         // }
-        
+
         public void AddAudioSource(AudioSource audioSource, SoundType soundType)
         {
             _audioSources[soundType].Add(audioSource);
             audioSource.volume = _volumes[soundType];
         }
-        
+
         public void RemoveAudioSource(AudioSource audioSource, SoundType soundType)
         {
             _audioSources[soundType].Remove(audioSource);
         }
 
-        public void PlaySound(AudioClip clip, Vector2 position, SoundType soundType = SoundType.Sfx)
+        public void PlaySound(AudioClip clip, Vector2 position, SoundType soundType = SoundType.Sfx, float pitchRandomness = 0f)
         {
             if (clip is null)
                 Debug.LogWarning($"Missing sound!");
 
             var audioSource = CreateSound(clip, soundType);
             audioSource.transform.position = position;
-            
+
+            audioSource.pitch = 1 + Random.Range(-pitchRandomness, pitchRandomness);
             audioSource.spatialBlend = 1;
         }
-        
+
         public void PlaySoundGlobal(AudioClip clip, SoundType soundType = SoundType.Sfx)
         {
             if (clip is null)
                 Debug.LogWarning($"Missing sound!");
 
             var audioSource = CreateSound(clip, soundType);
-            
+
             audioSource.maxDistance = int.MaxValue;
             audioSource.spatialBlend = 0;
         }
