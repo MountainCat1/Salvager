@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using Items;
 using TMPro;
 using UnityEngine;
@@ -10,10 +11,25 @@ namespace UI
         [SerializeField] private TextMeshProUGUI itemNameText;
         [SerializeField] private Image itemImage;
         
-        public void SetItem(ItemBehaviour item)
+        private ItemBehaviour _item;
+        private Creature _creature;
+         
+        public void SetItem(ItemBehaviour item, Creature creature)
         {
             itemNameText.text = item.Name;
             itemImage.sprite = item.Icon;
+            
+            _item = item;
+            _creature = creature;
+        }
+        
+        public void UseItem()
+        {
+            // Use item
+            _item.Use(new ItemUseContext()
+            {
+                Creature = _creature
+            });
         }
     }
 }

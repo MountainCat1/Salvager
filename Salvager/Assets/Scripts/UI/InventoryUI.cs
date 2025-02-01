@@ -34,7 +34,7 @@ namespace UI
             foreach (var item in _creature.Inventory.Items)
             {
                 var inventoryEntryUI = Instantiate(inventoryEntryUIPrefab, entriesParent);
-                inventoryEntryUI.SetItem(item);
+                inventoryEntryUI.SetItem(item, _creature);
             }
         }
     }

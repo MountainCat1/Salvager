@@ -32,7 +32,7 @@ public class Inventory
         }
     }    
     
-    public void AddItem(ItemBehaviour itemPrefab)
+    public ItemBehaviour AddItem(ItemBehaviour itemPrefab)
     {
         if(itemPrefab == null)
             throw new NullReferenceException("Tried to add item to inventory that is null");
@@ -55,6 +55,8 @@ public class Inventory
         RegisterItem(itemScript);
         
         Changed?.Invoke();
+
+        return itemScript;
     }
     
     public void RemoveItem(ItemBehaviour item)

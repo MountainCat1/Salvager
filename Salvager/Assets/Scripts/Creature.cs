@@ -76,12 +76,13 @@ public class Creature : Entity
     [field: SerializeField] public float InteractionRange { get; private set; } = 1.5f;
 
     // Accessors
-    public CreatureController Controller => GetComponent<CreatureController>(); // TODO: PERFORMANCE ISSUE
+    public CreatureController Controller => _controller;
     public Inventory Inventory => _inventory;
     public ILevelSystem LevelSystem => _levelSystem;
 
     // Private Referenes
 
+    private CreatureController _controller;
     private readonly LevelSystem _levelSystem = new();
     private Inventory _inventory;
 
@@ -102,6 +103,8 @@ public class Creature : Entity
             inventoryRoot.localPosition = Vector3.zero;
             Debug.LogWarning("Inventory root is not set, creating a new one", this);
         }
+        
+        _controller = GetComponent<CreatureController>();
 
         _inventory = new Inventory(inventoryRoot);
         _diContainer.Inject(Inventory);
