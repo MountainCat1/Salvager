@@ -258,5 +258,10 @@ namespace CreatureControllers
         {
             return Vector2.Distance(Creature.transform.position, creature.transform.position) < range;
         }
+        
+        protected void InvokePathChanged(IEnumerable<Vector2> path)
+        {
+            PathChanged?.Invoke(path.Select(x => (Vector3)x));
+        }
     }
 }

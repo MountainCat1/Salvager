@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace CreatureControllers
@@ -63,12 +65,13 @@ namespace CreatureControllers
             {
                 _target = GetNewTarget();
             }
+
             if (_target != null)
             {
                 HandleAttack();
                 return;
             }
-            
+
             Creature.SetMovement(Vector2.zero);
         }
 
@@ -84,6 +87,9 @@ namespace CreatureControllers
 
             if (Vector2.Distance(Creature.transform.position, _interactionTarget.Position) < Creature.InteractionRange)
             {
+                Creature.SetMovement(Vector2.zero);
+                InvokePathChanged(Enumerable.Empty<Vector2>());
+
                 var interaction = Creature.Interact(_interactionTarget);
 
                 if (interaction.Status == InteractionStatus.Created)
@@ -128,6 +134,7 @@ namespace CreatureControllers
             }
             else
             {
+                InvokePathChanged(Enumerable.Empty<Vector2>()); // Clear the path
                 _moveCommandTarget = null; // Reached the destination
             }
         }

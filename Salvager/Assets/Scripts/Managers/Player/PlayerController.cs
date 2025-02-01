@@ -6,6 +6,7 @@ using Managers;
 using UI;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Utilities;
 using Zenject;
 using Random = UnityEngine.Random;
 
@@ -73,6 +74,17 @@ public class PlayerController : MonoBehaviour
         }
 
         var spreadPositions = IPathfinding.GetSpreadPosition(position, selectedCreatures.Count, LayerMask.GetMask("Walls"), 1f);
+        if (!spreadPositions.Any())
+        {
+            Debug.LogWarning("No valid spread positions found. Using rounded position instead.");
+            var roundedPosition = (position - Vector2.one).RoundToNearest(0.5f);
+            spreadPositions = IPathfinding.GetSpreadPosition(roundedPosition, selectedCreatures.Count, LayerMask.GetMask("Walls"), 1f);
+        }
+        if (!spreadPositions.Any())
+        {
+            Debug.LogWarning("No valid spread positions found. Using smaller radius.");
+            spreadPositions = IPathfinding.GetSpreadPosition(position, selectedCreatures.Count, LayerMask.GetMask("Walls"), 0.75f);
+        }
         if (!spreadPositions.Any())
         {
             Debug.LogWarning("No valid spread positions found.");
