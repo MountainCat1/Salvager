@@ -1,6 +1,8 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using CreatureControllers;
+using DefaultNamespace.Pathfinding;
 using Managers;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -71,17 +73,17 @@ public class PlayerController : MonoBehaviour
             return;
         }
 
-        var spreadPositions = IPathfinding.GetSpreadPosition(position, selectedCreatures.Count, LayerMask.GetMask("Walls"), 1f);
+        var spreadPositions = PathfindingUtilities.GetSpreadPosition(position, selectedCreatures.Count, LayerMask.GetMask("Walls"), 1f);
         if (!spreadPositions.Any())
         {
             Debug.LogWarning("No valid spread positions found. Using rounded position instead.");
             var roundedPosition = (position - Vector2.one).RoundToNearest(0.5f);
-            spreadPositions = IPathfinding.GetSpreadPosition(roundedPosition, selectedCreatures.Count, LayerMask.GetMask("Walls"), 1f);
+            spreadPositions = PathfindingUtilities.GetSpreadPosition(roundedPosition, selectedCreatures.Count, LayerMask.GetMask("Walls"), 1f);
         }
         if (!spreadPositions.Any())
         {
             Debug.LogWarning("No valid spread positions found. Using smaller radius.");
-            spreadPositions = IPathfinding.GetSpreadPosition(position, selectedCreatures.Count, LayerMask.GetMask("Walls"), 0.75f);
+            spreadPositions = PathfindingUtilities.GetSpreadPosition(position, selectedCreatures.Count, LayerMask.GetMask("Walls"), 0.75f);
         }
         if (!spreadPositions.Any())
         {
@@ -115,34 +117,53 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+
     /// <summary>
-    /// Assigns target positions to creatures based on the shortest distance.
-    /// Ensures each target is assigned only once.
+    /// Assigns positions to units in a way that minimizes the total distance between units and their assigned positions.
     /// </summary>
-    /// <param name="creatures">List of creatures to assign positions to.</param>
-    /// <param name="positions">List of target positions.</param>
-    /// <returns>A dictionary mapping creatures to their assigned positions.</returns>
-    private Dictionary<Creature, Vector2> AssignPositionsToUnits(List<Creature> creatures, List<Vector2> positions)
+    /// <param name="creatures"></param>
+    /// <param name="positions"></param>
+    /// <returns></returns>
+    /// <exception cref="ArgumentException"></exception>
+    public Dictionary<Creature, Vector2> AssignPositionsToUnits(List<Creature> creatures, List<Vector2> positions)
     {
-        var assignments = new Dictionary<Creature, Vector2>();
-        var availablePositions = new HashSet<Vector2>(positions);
+        if (creatures.Count != positions.Count)
+            throw new ArgumentException("Number of creatures and positions must be equal.");
 
-        foreach (var creature in creatures)
+        var bestAssignment = new Dictionary<Creature, Vector2>();
+        float bestLength = float.MaxValue;
+
+        foreach (var permutation in GetPermutations(positions, positions.Count))
         {
-            if (!availablePositions.Any())
-                break;
+            var assignment = new Dictionary<Creature, Vector2>();
+            float totalLength = 0;
 
-            var currentPos = (Vector2)creature.transform.position;
+            for (int i = 0; i < creatures.Count; i++)
+            {
+                var creature = creatures[i];
+                var position = permutation.ElementAt(i);
+                assignment[creature] = position;
+                var distance = Vector2.Distance(creature.transform.position, position);
+                totalLength += distance * distance;
+            }
 
-            // Find the closest available position
-            var closestPosition = availablePositions.OrderBy(pos => Vector2.Distance(currentPos, pos)).FirstOrDefault();
-
-            // Assign it to the creature and remove from available positions
-            assignments[creature] = closestPosition;
-            availablePositions.Remove(closestPosition);
+            if (totalLength < bestLength)
+            {
+                bestLength = totalLength;
+                bestAssignment = new Dictionary<Creature, Vector2>(assignment);
+            }
         }
 
-        return assignments;
+        return bestAssignment;
+    }
+
+    private IEnumerable<IEnumerable<T>> GetPermutations<T>(IEnumerable<T> list, int length)
+    {
+        if (length == 1) return list.Select(t => new T[] { t });
+
+        return list.SelectMany((t, i) => 
+            GetPermutations(list.Where((_, index) => index != i), length - 1)
+                .Select(tail => (new T[] { t }).Concat(tail)));
     }
 
 
