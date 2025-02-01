@@ -1,8 +1,3 @@
-using System.Diagnostics;
-using Managers;
-using UnityEngine.Serialization;
-using Zenject;
-
 namespace Components
 {
     using System;
