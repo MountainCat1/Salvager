@@ -37,16 +37,13 @@ public class CreatureController : MonoBehaviour
     public ICollection<Creature> GetCreatureInLine(Vector2 towards, float range)
     {
         var layerMask = LayerMask.GetMask("CreatureHit");
-        
-        var hits = Physics2D.RaycastAll(
-            Creature.transform.position, towards - (Vector2)Creature.transform.position,
-            range,
-            layerMask
-        );
+
+        RaycastHit2D[] results = new RaycastHit2D[10];
+        var size = Physics2D.RaycastNonAlloc(Creature.transform.position, towards - (Vector2)Creature.transform.position, results, range, layerMask);
 
         var creatures = new List<Creature>();
         
-        foreach (var hit in hits)
+        foreach (var hit in results)
         {
             var creature = hit.collider.GetComponent<CreatureCollider>()?.Creature;
             

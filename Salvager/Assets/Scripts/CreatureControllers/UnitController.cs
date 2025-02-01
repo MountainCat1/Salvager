@@ -11,7 +11,6 @@ namespace CreatureControllers
         private IInteractable _interactionTarget;
         private Interaction _interaction;
 
-
         private const bool MoveOnAttackCooldown = false; // TODO: This should be a configurable property of the weapon
 
         // Public Methods
@@ -156,16 +155,19 @@ namespace CreatureControllers
                     PerformMovementTowardsTarget(_target);
                     return;
                 }
-                
-                // Stay still if there are friendly creatures in the line of sight
-                var creaturesInLineOfFire = GetCreatureInLine(_target.transform.position, Creature.Weapon.Range);
-                if (creaturesInLineOfFire.Any(x => x.GetAttitudeTowards(Creature) == Attitude.Friendly))
+
+                if (!Creature.Weapon.ShootThroughAllies)
                 {
-                    Creature.SetMovement(Vector2.zero);
-                    return;
+                    // Stay still if there are friendly creatures in the line of sight
+                    var creaturesInLineOfFire = GetCreatureInLine(_target.transform.position, Creature.Weapon.Range);
+                    if (creaturesInLineOfFire.Any(x => x.GetAttitudeTowards(Creature) == Attitude.Friendly))
+                    {
+                        Creature.SetMovement(Vector2.zero);
+                        return;
+                    }
                 }
             }
-            
+
 
             if (Vector2.Distance(Creature.transform.position, _target.transform.position) < Creature.Weapon.Range)
             {

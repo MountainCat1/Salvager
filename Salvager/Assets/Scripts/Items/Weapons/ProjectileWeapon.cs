@@ -12,6 +12,8 @@ namespace Items.Weapons
         [SerializeField] private Projectile projectilePrefab;
         [SerializeField] private float projectileSpeed;
 
+        public override bool NeedsLineOfSight => true;
+
         protected override void Attack(AttackContext ctx)
         {
             var direction = ctx.Direction;
