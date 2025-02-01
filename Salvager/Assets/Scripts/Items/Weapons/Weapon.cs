@@ -23,7 +23,7 @@ public abstract class Weapon : ItemBehaviour
     [field: SerializeField] public AudioClip AttackSound { get; set; }
 
     public virtual bool AllowToMoveOnCooldown => false;
-    public virtual bool NeedsLineOfSight => false;
+    public virtual bool NeedsLineOfSight => true;
     public bool IsOnCooldown => GetOnCooldown(new AttackContext());
 
     private float _lastAttackTime = -1;

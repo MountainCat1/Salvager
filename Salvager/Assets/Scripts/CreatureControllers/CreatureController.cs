@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using Markers;
+using UnityEngine;
 using Zenject;
 
 [RequireComponent(typeof(Creature))]
@@ -30,4 +32,34 @@ public class CreatureController : MonoBehaviour
         );
         return !hit;
     }
+
+
+    public ICollection<Creature> GetCreatureInLine(Vector2 towards, float range)
+    {
+        var layerMask = LayerMask.GetMask("CreatureHit");
+        
+        var hits = Physics2D.RaycastAll(
+            Creature.transform.position, towards - (Vector2)Creature.transform.position,
+            range,
+            layerMask
+        );
+
+        var creatures = new List<Creature>();
+        
+        foreach (var hit in hits)
+        {
+            var creature = hit.collider.GetComponent<CreatureCollider>()?.Creature;
+            
+            if (creature == null)
+                continue;
+            
+            if (creature == Creature)
+                continue;
+            
+            creatures.Add(creature);
+        }
+        
+        return creatures;
+    }
+    
 }

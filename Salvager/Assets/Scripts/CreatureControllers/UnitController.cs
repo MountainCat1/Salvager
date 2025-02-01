@@ -1,4 +1,5 @@
 using System.Linq;
+using UI;
 using UnityEngine;
 
 namespace CreatureControllers
@@ -147,11 +148,24 @@ namespace CreatureControllers
                 return;
             }
 
-            if (Creature.Weapon.NeedsLineOfSight && !CanSee(_target))
+            if (Creature.Weapon.NeedsLineOfSight)
             {
-                PerformMovementTowardsTarget(_target);
-                return;
+                // Move towards the target if it is not in line of sight
+                if (!CanSee(_target))
+                {
+                    PerformMovementTowardsTarget(_target);
+                    return;
+                }
+                
+                // Stay still if there are friendly creatures in the line of sight
+                var creaturesInLineOfFire = GetCreatureInLine(_target.transform.position, Creature.Weapon.Range);
+                if (creaturesInLineOfFire.Any(x => x.GetAttitudeTowards(Creature) == Attitude.Friendly))
+                {
+                    Creature.SetMovement(Vector2.zero);
+                    return;
+                }
             }
+            
 
             if (Vector2.Distance(Creature.transform.position, _target.transform.position) < Creature.Weapon.Range)
             {

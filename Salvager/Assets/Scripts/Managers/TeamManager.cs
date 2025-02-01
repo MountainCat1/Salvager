@@ -57,6 +57,12 @@ namespace Managers
                     _relations[team1][team2] = Attitude.Neutral;
                 }
             }
+
+            // Then set all relations to friendly
+            foreach (Teams team in System.Enum.GetValues(typeof(Teams)))
+            {
+                _relations[team][team] = Attitude.Friendly;
+            }
             
             // Player
             // Base
