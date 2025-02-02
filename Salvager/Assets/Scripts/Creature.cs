@@ -142,13 +142,10 @@ public class Creature : Entity
 
         return _teamManager.GetAttitude(Team, other.Team);
     }
-
-
     public void StartUsingWeapon(Weapon weaponItem)
     {
         Weapon = weaponItem;
     }
-
     public void UseItem(ItemBehaviour item)
     {
         item.Use(new ItemUseContext()
@@ -156,10 +153,19 @@ public class Creature : Entity
             Creature = this
         });
     }
-
     public void AwardXp(int amount)
     {
         _levelSystem.AddXp(amount);
+    }
+    public void Initialize(CreatureData data)
+    {
+        name = data.Name;
+        State = data.State;
+        XpAmount = data.XpAmount;
+        SightRange = data.SightRange;
+        Team = data.Team;
+        InteractionRange = data.InteractionRange;
+        Inventory.Initialize(data.Inventory);
     }
 
     public Interaction Interact(IInteractable interactionTarget)

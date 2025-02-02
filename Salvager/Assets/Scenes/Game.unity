@@ -339,7 +339,7 @@ GameObject:
   - component: {fileID: 279398655}
   - component: {fileID: 279398654}
   - component: {fileID: 279398653}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1276,6 +1276,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerPrefab: {fileID: 6919997015472372386, guid: cf47858963ef3c04eb95686c0b10702b, type: 3}
   enemyPrefab: {fileID: 8620425100322646659, guid: 0ca65a409582d9446950d7d4bddbaabd, type: 3}
+  startingItems:
+  - {fileID: 6320578954216408902, guid: a7c47da4057de1843b5abca702ac1eff, type: 3}
+  - {fileID: 6320578954216408902, guid: bb563baabd1ccdf4da87975099668eec, type: 3}
+  loadDataFromSave: 1
 --- !u!1 &769271791
 GameObject:
   m_ObjectHideFlags: 0

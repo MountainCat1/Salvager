@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using Items;
+using Managers;
+using UI;
 using UnityEngine;
 using Zenject;
 using Object = UnityEngine.Object;
@@ -11,6 +13,7 @@ public class Inventory
     public event Action<ItemBehaviour> ItemUsed;
 
     [Inject] private DiContainer _diContainer;
+    [Inject] private IItemManager _itemManager;
 
     public IReadOnlyList<ItemBehaviour> Items => _items;
 
@@ -160,5 +163,15 @@ public class Inventory
     private void HandleItemUsed(ItemBehaviour item)
     {
         ItemUsed?.Invoke(item);
+    }
+
+    public void Initialize(InventoryData dataInventory)
+    {
+        foreach (var itemData in dataInventory.Items)
+        {
+            var itemPrefab = _itemManager.GetItemPrefab(itemData.Identifier);
+            var item = AddItemFromPrefab(itemPrefab);
+            item.Count = itemData.Count;
+        }
     }
 }

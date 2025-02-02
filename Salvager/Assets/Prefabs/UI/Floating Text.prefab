@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8896802107697850420}
   - component: {fileID: 8830328758564643202}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Floating Text
   m_TagString: InWorldUI
   m_Icon: {fileID: 0}
@@ -63,7 +63,7 @@ GameObject:
   - component: {fileID: 8029701126683714495}
   - component: {fileID: 2736422468857772090}
   - component: {fileID: 3244465146150894936}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Text (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
