@@ -14,7 +14,7 @@ namespace DefaultNamespace
         {
             foreach (var itemPrefab in items)
             {
-                var itemInInventory = creature.Inventory.AddItem(itemPrefab);
+                var itemInInventory = creature.Inventory.AddItemFromPrefab(itemPrefab);
                 itemInInventory.Use(new ItemUseContext()
                 {
                     Creature = creature

@@ -1,3 +1,4 @@
+using System.Linq;
 using Items;
 using UnityEngine;
 using Zenject;
@@ -26,8 +27,9 @@ namespace Managers
         {
             var items = creature.Inventory.Items;
 
-            foreach (var item in items)
+            foreach (var item in items.ToArray())
             {
+                creature.Inventory.RemoveItem(item);
                 SpawnPickup(item, creature.transform.position);
             }
         }

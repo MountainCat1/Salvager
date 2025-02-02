@@ -38,7 +38,7 @@ public class RandomContainerObject : InteractableObject
             return;
         }
         
-        creature.Inventory.AddItem(_itemBehaviour);
+        creature.Inventory.AddItemFromPrefab(_itemBehaviour);
         _floatingTextManager.SpawnFloatingText(transform.position, _itemBehaviour.Name, FloatingTextType.InteractionCompleted);
     }
 }

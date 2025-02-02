@@ -25,7 +25,8 @@ public abstract class Weapon : ItemBehaviour
     public virtual bool AllowToMoveOnCooldown => false;
     public virtual bool NeedsLineOfSight => false;
     public virtual bool ShootThroughAllies => false;
-    
+    public override bool Stackable => false;
+
     public bool IsOnCooldown => GetOnCooldown(new AttackContext());
 
     private float _lastAttackTime = -1;

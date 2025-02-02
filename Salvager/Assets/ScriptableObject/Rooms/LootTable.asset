@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: LootTable
   m_EditorClassIdentifier: 
   entries:
-  - item: {fileID: 352487764999285703, guid: dbe43bd481165264bbe8bbef6f56baf6, type: 3}
+  - item: {fileID: 6945220326266969423, guid: dbe43bd481165264bbe8bbef6f56baf6, type: 3}
     weight: 75
   - item: {fileID: 0}
     weight: 25

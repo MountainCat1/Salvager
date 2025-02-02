@@ -11,19 +11,22 @@ public class ItemPickup : InteractableObject
     public Rigidbody2D Rigidbody2D => _rigidbody2D;
 
     private Rigidbody2D _rigidbody2D;
+    private Inventory _inventory;
 
     protected override void Awake()
     {
         base.Awake();
 
         _rigidbody2D = GetComponent<Rigidbody2D>();
+        
+        _inventory = new Inventory(transform);
     }
 
     protected override void OnInteractionComplete(Interaction interaction)
     {
         base.OnInteractionComplete(interaction);
 
-        interaction.Creature.Inventory.AddItem(itemBehaviour);
+        interaction.Creature.Inventory.TransferItem(_inventory, itemBehaviour);
 
         Destroy(gameObject);
     }
@@ -35,8 +38,9 @@ public class ItemPickup : InteractableObject
         
         if(item.Original == null)
             throw new Exception("ItemBehaviour.Original is not set in ItemPickup");
-        
-        itemBehaviour = item.Original;
+
+        itemBehaviour = item;
+        _inventory.AddInstantiatedItem(item);
 
         var spriteRenderer = GetComponent<SpriteRenderer>();
         spriteRenderer.sprite = itemBehaviour.Icon;

@@ -11,6 +11,6 @@ public class ContainerObject : InteractableObject
         
         var creature = interaction.Creature;
         
-        creature.Inventory.AddItem(itemBehaviour);
+        creature.Inventory.AddItemFromPrefab(itemBehaviour);
     }
 }

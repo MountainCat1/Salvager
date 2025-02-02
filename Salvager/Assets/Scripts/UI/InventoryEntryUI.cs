@@ -9,6 +9,7 @@ namespace UI
     public class InventoryEntryUI : MonoBehaviour
     {
         [SerializeField] private TextMeshProUGUI itemNameText;
+        [SerializeField] private TextMeshProUGUI itemCountText;
         [SerializeField] private Image itemImage;
         
         private ItemBehaviour _item;
@@ -21,6 +22,8 @@ namespace UI
             
             _item = item;
             _creature = creature;
+            
+            itemCountText.text = item.Stackable ? item.Count.ToString() : "";
         }
         
         public void UseItem()

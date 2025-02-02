@@ -11,8 +11,13 @@ namespace Items
         [field: SerializeField] public string Name { get; set; }
         [field: SerializeField] public float Weight { get; set; } = 1f;
 
-        public ItemBehaviour Original { get; set; }
+        public virtual bool Stackable => true;
         
+        public ItemBehaviour Original { get; set; }
+        public int Count { get; set; } = 1;
+
+        public Inventory Inventory { get; set; } = null;
+
         public string GetIdentifier()
         {
             return $"{Name}";

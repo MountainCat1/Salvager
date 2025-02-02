@@ -24,7 +24,9 @@ namespace VictoryConditions
             
             foreach (var creature in creatures)
             {
-                itemCount += creature.Inventory.Items.Count(x => x.GetIdentifier() == item.GetIdentifier());
+                itemCount += creature.Inventory.Items
+                    .Where(x => x.GetIdentifier() == item.GetIdentifier())
+                    .Sum(x => x.Count);
             }
             
             return description
@@ -41,7 +43,9 @@ namespace VictoryConditions
 
             foreach (var creature in creatures)
             {
-                itemCount += creature.Inventory.Items.Count(x => x.GetIdentifier() == item.GetIdentifier());
+                itemCount += creature.Inventory.Items
+                    .Where(x => x.GetIdentifier() == item.GetIdentifier())
+                    .Sum(x => x.Count);
             }
 
             return itemCount >= count;
