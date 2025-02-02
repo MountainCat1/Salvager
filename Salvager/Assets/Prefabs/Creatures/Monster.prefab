@@ -622,7 +622,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Drag>k__BackingField: 400
-  <BaseSpeed>k__BackingField: 5
+  <BaseSpeed>k__BackingField: 2.5
 --- !u!114 &4779776167358946602
 MonoBehaviour:
   m_ObjectHideFlags: 0

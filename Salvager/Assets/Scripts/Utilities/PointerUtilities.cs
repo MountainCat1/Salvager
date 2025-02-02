@@ -26,9 +26,9 @@ namespace Utilities
                     continue;
                 }
                 
-                if(result.gameObject.CompareTag("InWorldUI"))
+                if(result.gameObject.layer == LayerMask.NameToLayer("In World UI"))
                 {
-                    // Ignore the in-world UI
+                    // Ignore the UI
                     continue;
                 }
                 

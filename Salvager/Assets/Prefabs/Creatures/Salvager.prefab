@@ -130,7 +130,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Drag>k__BackingField: 300
-  <BaseSpeed>k__BackingField: 6
+  <BaseSpeed>k__BackingField: 3
 --- !u!114 &4828727458972711647
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -985,6 +985,18 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2165098909805817795, guid: e0ffc408e1ec1c8419a243c4d38665f4, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 2664470818918618775, guid: e0ffc408e1ec1c8419a243c4d38665f4, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 2944620269674014139, guid: e0ffc408e1ec1c8419a243c4d38665f4, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 3276771169803649811, guid: e0ffc408e1ec1c8419a243c4d38665f4, type: 3}
       propertyPath: creature
       value: 
@@ -992,6 +1004,14 @@ PrefabInstance:
     - target: {fileID: 3315698359702657311, guid: e0ffc408e1ec1c8419a243c4d38665f4, type: 3}
       propertyPath: m_PresetInfoIsWorld
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3391923886534550141, guid: e0ffc408e1ec1c8419a243c4d38665f4, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 4024888743135282957, guid: e0ffc408e1ec1c8419a243c4d38665f4, type: 3}
+      propertyPath: m_Layer
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 4467958510051124449, guid: e0ffc408e1ec1c8419a243c4d38665f4, type: 3}
       propertyPath: m_AnchorMax.x
@@ -1044,6 +1064,10 @@ PrefabInstance:
     - target: {fileID: 4656350790819723909, guid: e0ffc408e1ec1c8419a243c4d38665f4, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -13.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 5576664964468509171, guid: e0ffc408e1ec1c8419a243c4d38665f4, type: 3}
+      propertyPath: m_Layer
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 6476911904965713775, guid: e0ffc408e1ec1c8419a243c4d38665f4, type: 3}
       propertyPath: m_Pivot.x
@@ -1125,6 +1149,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7833129467524566020, guid: e0ffc408e1ec1c8419a243c4d38665f4, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 8461966753144813876, guid: e0ffc408e1ec1c8419a243c4d38665f4, type: 3}
       propertyPath: creature
       value: 
@@ -1132,6 +1160,10 @@ PrefabInstance:
     - target: {fileID: 8759334926277450740, guid: e0ffc408e1ec1c8419a243c4d38665f4, type: 3}
       propertyPath: m_Name
       value: Creature UI
+      objectReference: {fileID: 0}
+    - target: {fileID: 9196930362831474936, guid: e0ffc408e1ec1c8419a243c4d38665f4, type: 3}
+      propertyPath: m_Layer
+      value: 10
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

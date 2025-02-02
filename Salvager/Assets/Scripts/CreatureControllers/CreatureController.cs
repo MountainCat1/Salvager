@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Markers;
 using UnityEngine;
+using UnityEngine.Experimental.Playables;
 using Zenject;
 
 [RequireComponent(typeof(Creature))]
@@ -45,6 +46,9 @@ public class CreatureController : MonoBehaviour
         
         foreach (var hit in results)
         {
+            if (hit.collider == null)
+                break;
+            
             var creature = hit.collider.GetComponent<CreatureCollider>()?.Creature;
             
             if (creature == null)
