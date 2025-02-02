@@ -3,6 +3,7 @@ using Items.Weapons;
 using Managers;
 using TMPro;
 using UnityEngine;
+using Utilities;
 using Zenject;
 
 namespace UI
@@ -70,6 +71,8 @@ namespace UI
 
         public void SpawnFloatingText(Vector3 position, string text, FloatingTextType type)
         {
+            position = position.RoundToNearest(1f / 16f);
+            
             Debug.Log($"Spawned floating text at {position} with text: {text}");
 
             var popup = _poolingManager.SpawnObject<FloatingTextUI>(floatingTextPrefab, position, parent: popupParent);
