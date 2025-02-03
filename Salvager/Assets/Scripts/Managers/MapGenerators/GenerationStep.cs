@@ -5,6 +5,16 @@ using Random = System.Random;
 
 namespace Services.MapGenerators
 {
+    [Serializable]
+    public class GenerateMapSettings
+    {
+        [SerializeField] public int roomCount = 5;
+        [SerializeField] public Vector2Int roomMinSize = default;
+        [SerializeField] public Vector2Int roomMaxSize = default;
+        [SerializeField] public Vector2Int gridSize = default;
+        [SerializeField] public float tileSize = 1f;
+    }
+    
     public enum MapLayer
     {
         Wall,
@@ -62,15 +72,5 @@ namespace Services.MapGenerators
     public abstract class GenerationStep : MonoBehaviour
     {
         public abstract void Generate(GenerateMapData data, GenerateMapSettings settings, Random random);
-    }
-
-    [Serializable]
-    public class GenerateMapSettings
-    {
-        [SerializeField] public int roomCount;
-        [SerializeField] public Vector2Int roomMinSize = default;
-        [SerializeField] public Vector2Int roomMaxSize = default;
-        [SerializeField] public Vector2Int gridSize = default;
-        [SerializeField] public float tileSize;
     }
 }

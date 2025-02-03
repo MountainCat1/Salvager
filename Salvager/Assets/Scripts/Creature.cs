@@ -16,6 +16,8 @@ public enum CreatureState
 [RequireComponent(typeof(Rigidbody2D))]
 public class Creature : Entity
 {
+    public static float ColliderSize => 0.5f;
+    
     // Events
     public event Action WeaponChanged;
     public event Action<CreatureState> StateChanged;

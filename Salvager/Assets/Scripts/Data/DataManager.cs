@@ -5,16 +5,18 @@ using System.IO;
 
 namespace Data
 {
+    
     public interface IDataManager
     {
         void SaveData();
+        void SaveData(GameData gameData);
         ICollection<CreatureData> LoadData();
     }
 
     public class DataManager : IDataManager
     {
         private static readonly string SaveFilePath = Path.Combine(Application.persistentDataPath, "saveData.json");
-
+        
         public void SaveData()
         {
             Debug.Log("Saving data...");
@@ -29,8 +31,13 @@ namespace Data
                 Debug.LogWarning("No player units found to save.");
                 return;
             }
+            
+            SaveData(new GameData() { Creatures = playerUnits });
+        }
 
-            string json = JsonUtility.ToJson(new CreatureDataList(playerUnits), prettyPrint: true);
+        public void SaveData(GameData gameData)
+        {
+            string json = JsonUtility.ToJson(gameData, prettyPrint: true);
             Debug.Log($"Saving game data to: {SaveFilePath}\n{json}");
 
             try
@@ -55,7 +62,7 @@ namespace Data
             try
             {
                 string json = File.ReadAllText(SaveFilePath);
-                var creatureListWrapper = JsonUtility.FromJson<CreatureDataList>(json);
+                var creatureListWrapper = JsonUtility.FromJson<GameData>(json);
 
                 if (creatureListWrapper?.Creatures == null || creatureListWrapper.Creatures.Count == 0)
                 {

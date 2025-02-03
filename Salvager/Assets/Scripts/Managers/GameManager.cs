@@ -11,8 +11,18 @@ using Zenject;
 
 namespace Managers
 {
+    public class GameSettings
+    {
+        public GenerateMapSettings Settings { get; set; }
+        public RoomBlueprint[] RoomBlueprints { get; set; }
+        public string Name { get; set; }
+
+    }
+    
     public class GameManager : MonoBehaviour
     {
+        public static GameSettings GameSettings { get; set; }
+        
         [Inject] private IMapGenerator _mapGenerator;
         [Inject] private DiContainer _container;
         [Inject] private ISpawnerManager _spawnerManager;
@@ -37,7 +47,18 @@ namespace Managers
         
         private IEnumerator WaitToCreateGrid()
         {
-            // TODO: HACK
+            // TODO: HACK, i mean the loading after 1 second, should be done in a better way
+
+            if (GameSettings?.Settings is not null)
+            {
+                Debug.Log($"Using settings from level selector for map {GameSettings.Name}...");
+                _mapGenerator.Settings = GameSettings.Settings;
+            }
+            else
+            {
+                Debug.Log("Using settings set in the inspector...");
+            }
+            
             _mapGenerator.GenerateMap();
             _map = _mapGenerator.MapData;
             

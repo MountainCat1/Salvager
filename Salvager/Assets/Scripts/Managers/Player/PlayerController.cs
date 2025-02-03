@@ -22,6 +22,19 @@ public class PlayerController : MonoBehaviour
     {
         _inputMapper.OnWorldPressed2 += OnMoveCommand;
         _inputManager.GoBackToMenu += OnGoBackToMenu;
+        _inputManager.Halt += OnHalt;
+    }
+
+    private void OnHalt()
+    {
+        foreach (var creature in GetSelectedCreatures())
+        {
+            var controller = creature.Controller as UnitController;
+            if (controller)
+            {
+                controller.SetMoveTarget(creature.transform.position); // TODO: This is a hack, should be a stop command
+            }
+        }
     }
 
     private void OnDestroy()
@@ -32,7 +45,7 @@ public class PlayerController : MonoBehaviour
 
     private void OnGoBackToMenu()
     {
-        SceneManager.LoadScene("Scenes/Menu");
+        SceneManager.LoadScene("Scenes/Level Select");
     }
 
     private void OnMoveCommand(Vector2 position)

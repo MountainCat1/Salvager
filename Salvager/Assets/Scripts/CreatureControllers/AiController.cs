@@ -108,6 +108,26 @@ namespace CreatureControllers
                 Debug.DrawLine(p.vectorPath[i], p.vectorPath[i + 1], Color.green);
             }
             
+            // Check collision with the next node
+            // TODO: Performance optimization needed
+            // This is here so that if we click off the map the pathfinding want to go at the edge of walkable area
+            // on which if creature will stand it would be overlapping with the wall collider
+            // Which ends up in it walking into a wall indefinitely
+            // Alternatively we could check it more rarely,
+            // or make the path update less often
+            // or check for like 0.3s if the creature is not moving and then just make it stop
+            if(Vector2.Distance(Creature.transform.position, nextNode) < Creature.ColliderSize)
+            {
+                if (Physics2D.OverlapCircle(nextNode, Creature.Movement.Collider.radius, LayerMask.GetMask("Walls")))
+                {
+                    Creature.SetMovement(Vector2.zero);
+                    PathChanged?.Invoke(Array.Empty<Vector3>());
+                    return;
+                }
+            }
+            
+            
+            
             PathChanged?.Invoke(p.vectorPath);
         }
         

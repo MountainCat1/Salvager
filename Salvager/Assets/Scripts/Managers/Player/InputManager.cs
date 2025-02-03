@@ -7,6 +7,7 @@ public interface IInputManager
     event Action<Vector2> CameraMovement;
     event Action<Vector2> Pointer1Pressed;
     event Action<Vector2> Pointer2Pressed;
+    event Action Halt;
     public event Action<Vector2> Pointer1Hold;
     event Action OnConfirm;
     event Action OnSpeedUpDialog;
@@ -18,6 +19,7 @@ public interface IInputManager
     event Action Pause;
     event Action GoBackToMenu;
     IUIEvents UI { get; }
+
 }
 
 public interface IUIEvents
@@ -40,6 +42,7 @@ public class InputManager : MonoBehaviour, IInputManager
     public event Action<Vector2> CameraMovement;
     public event Action<Vector2> Pointer1Pressed;
     public event Action<Vector2> Pointer2Pressed;
+    public event Action Halt;
     public event Action<Vector2> Pointer1Hold;
     public event Action OnConfirm;
     public event Action OnSpeedUpDialog;
@@ -63,6 +66,7 @@ public class InputManager : MonoBehaviour, IInputManager
 
         _inputActions.CharacterControl.Pointer1.performed += Pointer1OnPerformed;
         _inputActions.CharacterControl.Pointer2.performed += Pointer2OnPerformed;
+        _inputActions.CharacterControl.Halt.performed += _ => Halt?.Invoke();
 
         _inputActions.Misc.TimeSpeedDown.performed += _ => SpeedDown?.Invoke();
         _inputActions.Misc.TimeSpeedUp.performed += _ => SpeedUp?.Invoke();

@@ -17,6 +17,10 @@ namespace Services.MapGenerators
         public event Action MapGenerated;
         public event Action MapGeneratedLate;
         public MapData MapData { get; private set; }
+        public GenerateMapSettings Settings {
+            get => throw new NotImplementedException();
+            set => throw new NotImplementedException();
+        }
 
         [SerializeField] private int seed = 696969;
 

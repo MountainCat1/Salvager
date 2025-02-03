@@ -44,6 +44,15 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Halt"",
+                    ""type"": ""Button"",
+                    ""id"": ""1d6c173a-1d38-4cd4-a53a-63ba5fd2e14e"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -66,6 +75,17 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Pointer2"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""77370b6c-6a89-4f11-bb76-5a68fb469f6f"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Halt"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -351,7 +371,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""2ab5bbb9-d055-4862-adec-3e6194b4bcca"",
-                    ""path"": ""<Keyboard>/space"",
+                    ""path"": ""<Keyboard>/backquote"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -391,6 +411,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         m_CharacterControl = asset.FindActionMap("CharacterControl", throwIfNotFound: true);
         m_CharacterControl_Pointer1 = m_CharacterControl.FindAction("Pointer1", throwIfNotFound: true);
         m_CharacterControl_Pointer2 = m_CharacterControl.FindAction("Pointer2", throwIfNotFound: true);
+        m_CharacterControl_Halt = m_CharacterControl.FindAction("Halt", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Confirm = m_UI.FindAction("Confirm", throwIfNotFound: true);
@@ -478,12 +499,14 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
     private List<ICharacterControlActions> m_CharacterControlActionsCallbackInterfaces = new List<ICharacterControlActions>();
     private readonly InputAction m_CharacterControl_Pointer1;
     private readonly InputAction m_CharacterControl_Pointer2;
+    private readonly InputAction m_CharacterControl_Halt;
     public struct CharacterControlActions
     {
         private @InputActions m_Wrapper;
         public CharacterControlActions(@InputActions wrapper) { m_Wrapper = wrapper; }
         public InputAction @Pointer1 => m_Wrapper.m_CharacterControl_Pointer1;
         public InputAction @Pointer2 => m_Wrapper.m_CharacterControl_Pointer2;
+        public InputAction @Halt => m_Wrapper.m_CharacterControl_Halt;
         public InputActionMap Get() { return m_Wrapper.m_CharacterControl; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -499,6 +522,9 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @Pointer2.started += instance.OnPointer2;
             @Pointer2.performed += instance.OnPointer2;
             @Pointer2.canceled += instance.OnPointer2;
+            @Halt.started += instance.OnHalt;
+            @Halt.performed += instance.OnHalt;
+            @Halt.canceled += instance.OnHalt;
         }
 
         private void UnregisterCallbacks(ICharacterControlActions instance)
@@ -509,6 +535,9 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @Pointer2.started -= instance.OnPointer2;
             @Pointer2.performed -= instance.OnPointer2;
             @Pointer2.canceled -= instance.OnPointer2;
+            @Halt.started -= instance.OnHalt;
+            @Halt.performed -= instance.OnHalt;
+            @Halt.canceled -= instance.OnHalt;
         }
 
         public void RemoveCallbacks(ICharacterControlActions instance)
@@ -733,6 +762,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
     {
         void OnPointer1(InputAction.CallbackContext context);
         void OnPointer2(InputAction.CallbackContext context);
+        void OnHalt(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {

@@ -22,6 +22,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Halt",
+                    "type": "Button",
+                    "id": "1d6c173a-1d38-4cd4-a53a-63ba5fd2e14e",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -44,6 +53,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Pointer2",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "77370b6c-6a89-4f11-bb76-5a68fb469f6f",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Halt",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
@@ -329,7 +349,7 @@
                 {
                     "name": "",
                     "id": "2ab5bbb9-d055-4862-adec-3e6194b4bcca",
-                    "path": "<Keyboard>/space",
+                    "path": "<Keyboard>/backquote",
                     "interactions": "",
                     "processors": "",
                     "groups": "",

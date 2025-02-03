@@ -3,14 +3,9 @@ using System.Collections.Generic;
 // ReSharper disable InconsistentNaming
 
 [Serializable]
-public class CreatureDataList
+public class GameData
 {
     public List<CreatureData> Creatures;
-
-    public CreatureDataList(List<CreatureData> creatures)
-    {
-        Creatures = creatures;
-    }
 }
 
 

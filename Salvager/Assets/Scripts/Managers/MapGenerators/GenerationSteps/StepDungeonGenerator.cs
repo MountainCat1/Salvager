@@ -20,7 +20,9 @@ namespace Services.MapGenerators.GenerationSteps
         public event Action MapGeneratedLate;
         
         public MapData MapData { get; private set; }
-        
+        public GenerateMapSettings Settings { get => settings; set => settings = value; }
+
+
         public void GenerateMap()
         {
             var data = new GenerateMapData(settings);

@@ -34,7 +34,7 @@ namespace CreatureControllers
                 return;
 
 
-            if (IsInRange(_target, Creature.Weapon.Range) && PathClear(_target, 0.5f)) // TODO: Magic number, its the radius of the creature of a size of a human
+            if (IsInRange(_target, Creature.Weapon.Range) && PathClear(_target, Creature.ColliderSize)) // TODO: Magic number, its the radius of the creature of a size of a human
             {
                 PerformAttack(attackContext);
                 return;
