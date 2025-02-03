@@ -149,13 +149,10 @@ namespace CreatureControllers
 
             if (Creature.Weapon.NeedsLineOfSight)
             {
-                // Move towards the target if it is not in line of sight
-                if (!CanSee(_target))
-                {
-                    PerformMovementTowardsTarget(_target);
-                    return;
-                }
-
+                // TODO: we replaced those two cases aka "not shooting through allies", and "moving when cannot see", to avoid a weird behaviour
+                // when creatures get closer when in a line and the enemy gets pushed so even though they wont attack they come closer
+                // and break the formation
+                
                 if (!Creature.Weapon.ShootThroughAllies)
                 {
                     // Stay still if there are friendly creatures in the line of sight
@@ -165,6 +162,13 @@ namespace CreatureControllers
                         Creature.SetMovement(Vector2.zero);
                         return;
                     }
+                }
+                
+                // Move towards the target if it is not in line of sight
+                if (!CanSee(_target))
+                {
+                    PerformMovementTowardsTarget(_target);
+                    return;
                 }
             }
 
