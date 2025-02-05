@@ -46,11 +46,9 @@ public class RegionData
             Name = region.Name,
             Levels = region.Levels.Select(x =>
             {
-                var data = LevelData.FromLevel(x.Value);
-                data.Position = x.Key;
+                var data = LevelData.FromLevel(x);
                 return data;
             }).ToList(),
-            Connections = region.Connections.Select(x => ConnectionData.FromConnection(x.Key, x.Value)).ToList()
         };
     }
 
@@ -61,15 +59,18 @@ public class RegionData
             Name = dataRegion.Name
         };
 
+        // Load levels
         foreach (var levelData in dataRegion.Levels)
         {
             var level = LevelData.ToLevel(levelData);
-            region.AddLevel(level, levelData.Position);
+            region.AddLevel(level);
         }
-        
-        foreach (var connectionData in dataRegion.Connections)
+
+        // Connect levels
+        foreach (var level in region.Levels)
         {
-            region.AddConnection(connectionData.From, connectionData.To);
+            var levelData = dataRegion.Levels.First(x => x.Id == level.Id.ToString());
+            level.Neighbours = levelData.Neighbours.Select(x => region.Levels.First(l => l.Id.ToString() == x)).ToList();
         }
 
         return region;
@@ -79,20 +80,25 @@ public class RegionData
 [Serializable]
 public class LevelData
 {
+    public string Id;
     public string Name;
     public Vector2 Position;
     public GenerateMapSettingsData MapSettings;
     public RoomBlueprint[] Blueprints;
     public LevelType Type;
+    public string[] Neighbours;
     
     public static LevelData FromLevel(Level level)
     {
         return new LevelData
         {
+            Id = level.Id.ToString(),
             Name = level.Name,
             MapSettings = GenerateMapSettingsData.FromSettings(level.Settings),
             Blueprints = level.RoomBlueprints,
-            Type = level.Type
+            Type = level.Type,
+            Position = level.Position,
+            Neighbours = level.Neighbours.Select(x => x.Id.ToString()).ToArray(),
         };
     }
 
@@ -100,8 +106,11 @@ public class LevelData
     public static Level ToLevel(LevelData levelData)
     {
         var settings = GenerateMapSettingsData.ToSettings(levelData.MapSettings);
-        var level = new Level(settings, levelData.Blueprints, levelData.Name);
+        
+        var level = new Level(settings, levelData.Blueprints, levelData.Name, Guid.Parse(levelData.Id));
+        
         level.Type = levelData.Type;
+        level.Position = levelData.Position;
 
         return level;
     }
@@ -197,3 +206,4 @@ public class ItemData
     public string Identifier;
     public int Count;
 }
+

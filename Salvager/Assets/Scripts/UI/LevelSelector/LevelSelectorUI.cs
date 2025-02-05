@@ -44,10 +44,9 @@ namespace UI
 
             foreach (var level in levels)
             {
-                var uiComponent = Array.Find(levelUIComponents, x => x.Level == level.Value);
-                foreach (var connection in _regionManager.Region.Connections[level.Key])
+                var uiComponent = Array.Find(levelUIComponents, x => x.Level == level);
+                foreach (var connectionLevel in _regionManager.Region.Levels)
                 {
-                    var connectionLevel = levels[connection];
                     var connectionUIComponent = Array.Find(levelUIComponents, x => x.Level == connectionLevel);
                     
                     Debug.DrawLine(uiComponent.transform.position, connectionUIComponent.transform.position, Color.green);
@@ -65,12 +64,12 @@ namespace UI
             foreach (var level in _regionManager.Region.Levels)
             {
                 var levelEntry = Instantiate(levelEntryPrefab, levelsParent);
-                levelEntry.Initialize(level.Value, SelectLevel);
+                levelEntry.Initialize(level, SelectLevel);
 
                 var rectTransform = levelEntry.GetComponent<RectTransform>();
 
                 // Extract X and Y percentages from the Vector2 key
-                Vector2 positionPercent = level.Key;
+                Vector2 positionPercent = level.Position;
                 float xPercentage = positionPercent.x; // 0 = left, 1 = right
                 float yPercentage = positionPercent.y; // 0 = bottom, 1 = top
 
@@ -85,16 +84,15 @@ namespace UI
             
             var levelUIComponents = levelsParent.GetComponentsInChildren<LevelEntryUI>();
 
-            var createdConnections = new List<(Vector2, Vector2)>();
+            var createdConnections = new List<(Level, Level)>();
             foreach (var level in _regionManager.Region.Levels)
             {
-                var uiComponent = Array.Find(levelUIComponents, x => x.Level == level.Value);
-                foreach (var connection in _regionManager.Region.Connections[level.Key])
+                var uiComponent = Array.Find(levelUIComponents, x => x.Level == level);
+                foreach (var connectionLevel in level.Neighbours)
                 {
-                    if (createdConnections.Contains((connection, level.Key)))
+                    if (createdConnections.Contains((connectionLevel, level)))
                         continue;
                     
-                    var connectionLevel = _regionManager.Region.Levels[connection];
                     var connectionUIComponent = Array.Find(levelUIComponents, x => x.Level == connectionLevel);
                     
                     var lineRendererInstance = Instantiate(lineRenderer, lineParent);
@@ -106,7 +104,7 @@ namespace UI
                         (Vector2)connectionUIComponent.transform.position
                     };
                     
-                    createdConnections.Add((level.Key, connection));
+                    createdConnections.Add((level, connectionLevel));
                 }
             }
         }

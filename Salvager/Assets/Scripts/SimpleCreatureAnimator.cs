@@ -5,7 +5,7 @@ public class SimpleCreatureAnimator : CreatureAnimator
 {
     [Header("Animation Clips to Override")] [SerializeField]
     private AnimationClip idle;
-
+    
     [SerializeField] private AnimationClip walk;
     [SerializeField] private AnimationClip attack;
 

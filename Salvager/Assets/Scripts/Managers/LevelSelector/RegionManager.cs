@@ -19,8 +19,8 @@ namespace Managers.LevelSelector
         [Inject] private IDataManager _dataManager;
         [Inject] private IRegionGenerator _regionGenerator;
         
-        [SerializeField] private bool skipLoad = false;
-
+        [SerializeField] private bool skipLoad = false; 
+        
         public Region Region { get; private set; }
 
         private void Start()
@@ -29,6 +29,8 @@ namespace Managers.LevelSelector
             
             if (skipLoad || data.Region == null)
             {
+                data = new GameData();
+                
                 var region = _regionGenerator.Generate();
 
                 var regionData = RegionData.FromRegion(region);

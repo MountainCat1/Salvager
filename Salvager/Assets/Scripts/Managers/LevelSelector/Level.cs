@@ -1,6 +1,9 @@
 using System;
+using System.Collections.Generic;
+using Constants;
 using Services.MapGenerators;
 using UnityEngine;
+using Utilities;
 
 public enum LevelType
 {
@@ -13,10 +16,13 @@ public enum LevelType
 public class Level
 {
     // Accessors
+    public Guid Id { get; set; }
     public GenerateMapSettings Settings => settings;
     public RoomBlueprint[] RoomBlueprints => roomBlueprints;
     public string Name => name;
     public LevelType Type { get; set; } = LevelType.Default;
+    public List<Level> Neighbours { get; set; } = new List<Level>();
+    public Vector2 Position { get; set; }
 
     // Serialized fields
     [SerializeField] private GenerateMapSettings settings;
@@ -26,13 +32,15 @@ public class Level
 
     public Level()
     {
+        Id = Guid.NewGuid();
     }
     
-    public Level(GenerateMapSettings settings, RoomBlueprint[] roomBlueprints, string name)
+    public Level(GenerateMapSettings settings, RoomBlueprint[] roomBlueprints, string name, Guid levelDataId)
     {
         this.settings = settings;
         this.roomBlueprints = roomBlueprints;
         this.name = name;
+        Id = levelDataId;
     }
     
     public static Level GenerateRandom(RoomBlueprint[] roomBlueprints)
@@ -45,31 +53,11 @@ public class Level
             gridSize = new Vector2Int(UnityEngine.Random.Range(50, 100), UnityEngine.Random.Range(50, 100))
         };
 
-        var spaceStationNames = new string[]
-        {
-            "Alpha Station",
-            "Ice Breaker",
-            "The Ark",
-            "The Forge",
-            "The Nexus",
-            "The Outpost",
-            "The Spire",
-            "The Vault",
-            "The Watchtower",
-            "The Workshop",
-            "Tranquility",
-            "Unity Station",
-            "Vanguard",
-            "Voyager",
-            "Wayfarer",
-            "Zenith"
-        };
-
         return new Level
         {
             settings = settings,
             roomBlueprints = roomBlueprints,
-            name = spaceStationNames[UnityEngine.Random.Range(0, spaceStationNames.Length)]
+            name = Names.SpaceStations.RandomElement()
         };
     }
 }

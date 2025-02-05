@@ -63,5 +63,35 @@ namespace Constants
             "Psi",
             "Omega"
         };
+
+        public static List<string> SpaceStations = new List<string>()
+        {
+            "Aegis",
+            "Bastion",
+            "Citadel",
+            "Defiance",
+            "Endeavour",
+            "Fortitude",
+            "Guardian",
+            "Haven",
+            "Intrepid",
+            "Jubilee",
+            "Kestrel",
+            "Liberty",
+            "Majesty",
+            "Nemesis",
+            "Oblivion",
+            "Patriot",
+            "Quasar",
+            "Redemption",
+            "Sentinel",
+            "Tranquility",
+            "Unity",
+            "Vanguard",
+            "Warden",
+            "Xanadu",
+            "Yggdrasil",
+            "Zenith"
+        };
     }
 }

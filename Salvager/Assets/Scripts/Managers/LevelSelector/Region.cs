@@ -8,26 +8,25 @@ namespace Managers.LevelSelector
 {
     public class Region
     {
-        public IReadOnlyDictionary<Vector2, Level> Levels => _levels;
-        public IReadOnlyDictionary<Vector2, List<Vector2>> Connections => _connections;
+        public IReadOnlyList<Level> Levels => _levels;
         public string Name { get; set; }
 
-        private Dictionary<Vector2, Level> _levels = new();
-        private List<Vector2> _nodePositions = new();
-        private Dictionary<Vector2, List<Vector2>> _connections = new();
+        private List<Level> _levels = new();
 
-        public void GenerateLevels(RoomBlueprint[] blueprints, int count, int minJumps, float maxJumpDistance,
+        public void GenerateLevels(
+            RoomBlueprint[] blueprints, 
+            int count, 
+            int minJumps,
+            float maxJumpDistance,
             float minDistance = 0.1f)
         {
             Name = Names.Regions.RandomElement();
-            
-            _levels = new Dictionary<Vector2, Level>();
-            _connections = new Dictionary<Vector2, List<Vector2>>();
-            _nodePositions = new List<Vector2>();
+            _levels = new List<Level>();
 
-            int maxAttempts = 100; // Prevent infinite loops
+            List<Vector2> positions = new();
+            int maxAttempts = 100; 
 
-            // 1. Generate random positions for levels
+            // 1. Generate levels with unique positions
             for (int i = 0; i < count; i++)
             {
                 Vector2 randomPosition;
@@ -37,7 +36,7 @@ namespace Managers.LevelSelector
                 {
                     randomPosition = new Vector2(UnityEngine.Random.value, UnityEngine.Random.value);
                     attempts++;
-                } while (_nodePositions.Any(pos => Vector2.Distance(pos, randomPosition) < minDistance) &&
+                } while (positions.Any(pos => Vector2.Distance(pos, randomPosition) < minDistance) &&
                          attempts < maxAttempts);
 
                 if (attempts >= maxAttempts)
@@ -46,67 +45,60 @@ namespace Managers.LevelSelector
                     continue;
                 }
 
-                _nodePositions.Add(randomPosition);
-                _levels[randomPosition] = Level.GenerateRandom(blueprints);
+                Level level = Level.GenerateRandom(blueprints);
+                level.Position = randomPosition;
+                
+                _levels.Add(level);
+                positions.Add(randomPosition);
             }
 
-            // 2. Select start and end nodes ensuring minJumps
-            Vector2 startNode = _nodePositions[UnityEngine.Random.Range(0, _nodePositions.Count)];
-            Vector2 endNode = GetFarthestNode(startNode, minJumps);
+            // 2. Select start and end levels ensuring minJumps
+            Level startLevel = _levels[UnityEngine.Random.Range(0, _levels.Count)];
+            Level endLevel = GetFarthestLevel(startLevel, positions, minJumps);
 
-            _levels[startNode].Type = LevelType.StartNode;
-            _levels[endNode].Type = LevelType.EndNode;
+            startLevel.Type = LevelType.StartNode;
+            endLevel.Type = LevelType.EndNode;
 
             // 3. Generate initial connections with maxJumpDistance
-            GenerateConnections(maxJumpDistance);
+            GenerateConnections(positions, maxJumpDistance);
 
             // 4. Ensure the graph is fully connected
             EnsureGraphConnectivity();
 
-            Debug.Log($"Generated {count} levels with minDistance: {minDistance}. Start: {startNode}, End: {endNode}");
+            Debug.Log($"Generated {count} levels with minDistance: {minDistance}. Start: {startLevel}, End: {endLevel}");
         }
 
-
-        private void GenerateConnections(float maxJumpDistance)
+        private void GenerateConnections(List<Vector2> positions, float maxJumpDistance)
         {
-            foreach (var node in _nodePositions)
+            for (int i = 0; i < _levels.Count; i++)
             {
-                _connections[node] = new List<Vector2>();
+                Level currentLevel = _levels[i];
+                Vector2 currentPosition = positions[i];
 
-                // Connect to nearest nodes within maxJumpDistance
-                var validNeighbors = _nodePositions
-                    .Where(n => n != node && Vector2.Distance(node, n) <= maxJumpDistance)
-                    .OrderBy(n => Vector2.Distance(node, n))
-                    .Take(4) // Try to create 3-4 connections per node
+                var validNeighbors = _levels.Select((level, index) => (level, pos: positions[index]))
+                    .Where(t => t.level != currentLevel && Vector2.Distance(currentPosition, t.pos) <= maxJumpDistance)
+                    .OrderBy(t => Vector2.Distance(currentPosition, t.pos))
+                    .Take(4)
+                    .Select(t => t.level)
                     .ToList();
 
-                foreach (var neighbor in validNeighbors)
-                {
-                    if (!_connections[node].Contains(neighbor))
-                    {
-                        _connections[node].Add(neighbor);
-                        if (!_connections.ContainsKey(neighbor))
-                            _connections[neighbor] = new List<Vector2>();
-                        _connections[neighbor].Add(node);
-                    }
-                }
+                currentLevel.Neighbours.AddRange(validNeighbors);
             }
         }
 
         private void EnsureGraphConnectivity()
         {
-            // Perform a flood fill (DFS or BFS) to ensure all nodes are reachable
-            HashSet<Vector2> visited = new HashSet<Vector2>();
-            Stack<Vector2> stack = new Stack<Vector2>();
-            stack.Push(_nodePositions[0]);
+            HashSet<Level> visited = new HashSet<Level>();
+            Stack<Level> stack = new Stack<Level>();
+            stack.Push(_levels[0]);
 
             while (stack.Count > 0)
             {
-                Vector2 current = stack.Pop();
+                Level current = stack.Pop();
                 if (!visited.Contains(current))
                 {
                     visited.Add(current);
-                    foreach (var neighbor in _connections[current])
+                    foreach (var neighbor in current.Neighbours)
                     {
                         if (!visited.Contains(neighbor))
                             stack.Push(neighbor);
@@ -114,42 +106,42 @@ namespace Managers.LevelSelector
                 }
             }
 
-            // If not all nodes are visited, forcefully connect them within maxJumpDistance
-            foreach (var node in _nodePositions)
+            foreach (var level in _levels)
             {
-                if (!visited.Contains(node))
+                if (!visited.Contains(level))
                 {
-                    Vector2 closestConnectedNode = visited
-                        .Where(n => Vector2.Distance(n, node) <= 0.7f)
-                        .OrderBy(n => Vector2.Distance(n, node))
+                    Level closestConnectedLevel = visited
+                        .OrderBy(l => Vector2.Distance(GetPosition(l), GetPosition(level)))
                         .FirstOrDefault();
-
-                    if (closestConnectedNode != default)
+                    
+                    if (closestConnectedLevel != null)
                     {
-                        _connections[closestConnectedNode].Add(node);
-                        _connections[node] = new List<Vector2> { closestConnectedNode };
-                        visited.Add(node);
+                        level.Neighbours.Add(closestConnectedLevel);
+                        closestConnectedLevel.Neighbours.Add(level);
+                        visited.Add(level);
                     }
                 }
             }
         }
 
-        private Vector2 GetFarthestNode(Vector2 startNode, int minJumps)
+        private Level GetFarthestLevel(Level startLevel, List<Vector2> positions, int minJumps)
         {
-            return _nodePositions
-                .OrderByDescending(n => Vector2.Distance(startNode, n))
-                .FirstOrDefault();
+            int startIndex = _levels.IndexOf(startLevel);
+            return _levels
+                .Select((level, index) => (level, pos: positions[index]))
+                .OrderByDescending(t => Vector2.Distance(positions[startIndex], t.pos))
+                .FirstOrDefault().level;
         }
 
-        public void AddLevel(Level level, Vector2 levelDataPosition)
+        private Vector2 GetPosition(Level level)
         {
-            _levels[levelDataPosition] = level;
+            int index = _levels.IndexOf(level);
+            return index >= 0 ? new Vector2(index / 10f, index % 10f) : Vector2.zero; // Dummy mapping if needed
         }
-
-
-        public void AddConnection(Vector2 from, List<Vector2> to)
+        
+        public void AddLevel(Level level)
         {
-            _connections[from] = to;
+            _levels.Add(level);
         }
     }
 }
