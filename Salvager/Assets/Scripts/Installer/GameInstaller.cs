@@ -15,7 +15,6 @@ public class GameInstaller : MonoInstaller<GameInstaller>
         Container.Bind<IPoolingManager>().To<PoolingManager>().FromComponentsInHierarchy().AsSingle();
         Container.Bind<IItemManager>().To<ItemManager>().FromComponentsInHierarchy().AsSingle();
         Container.Bind<IProjectileManager>().To<ProjectileManager>().FromNew().AsSingle().NonLazy();
-        Container.Bind<IGameDataManager>().To<GameDataManager>().FromNew().AsSingle();
         // Container.Bind<IInputManager>().To<InputManager>().FromComponentsInHierarchy().AsSingle();
         Container.Bind<IInputMapper>().To<InputMapper>().FromComponentsInHierarchy().AsSingle();
         Container.Bind<ITimeManager>().To<TimeManager>().FromComponentsInHierarchy().AsSingle();

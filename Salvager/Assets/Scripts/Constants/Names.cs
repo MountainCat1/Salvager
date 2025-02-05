@@ -35,5 +35,33 @@ namespace Constants
             "Yara",
             "Zara"
         };
+        
+        public static List<string> Regions = new List<string>()
+        {
+            "Alpha",
+            "Beta",
+            "Gamma",
+            "Delta",
+            "Epsilon",
+            "Zeta",
+            "Eta",
+            "Theta",
+            "Iota",
+            "Kappa",
+            "Lambda",
+            "Mu",
+            "Nu",
+            "Xi",
+            "Omicron",
+            "Pi",
+            "Rho",
+            "Sigma",
+            "Tau",
+            "Upsilon",
+            "Phi",
+            "Chi",
+            "Psi",
+            "Omega"
+        };
     }
 }

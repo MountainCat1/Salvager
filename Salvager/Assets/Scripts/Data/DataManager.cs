@@ -1,7 +1,9 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using System.IO;
+using Object = UnityEngine.Object;
 
 namespace Data
 {
@@ -10,7 +12,7 @@ namespace Data
     {
         void SaveData();
         void SaveData(GameData gameData);
-        ICollection<CreatureData> LoadData();
+        GameData LoadData();
     }
 
     public class DataManager : IDataManager
@@ -19,6 +21,8 @@ namespace Data
         
         public void SaveData()
         {
+            throw new NotImplementedException("This method is not to be used please use SaveData(GameData gameData) instead.");
+            
             Debug.Log("Saving data...");
 
             var playerUnits = Object.FindObjectsOfType<Creature>()
@@ -51,7 +55,7 @@ namespace Data
             }
         }
 
-        public ICollection<CreatureData> LoadData()
+        public GameData LoadData()
         {
             if (!File.Exists(SaveFilePath))
             {
@@ -62,17 +66,11 @@ namespace Data
             try
             {
                 string json = File.ReadAllText(SaveFilePath);
-                var creatureListWrapper = JsonUtility.FromJson<GameData>(json);
-
-                if (creatureListWrapper?.Creatures == null || creatureListWrapper.Creatures.Count == 0)
-                {
-                    Debug.LogWarning("No saved data found.");
-                    return null;
-                }
+                var gameData = JsonUtility.FromJson<GameData>(json);
                 
                 Debug.Log("Game data loaded successfully.");
                 
-                return creatureListWrapper.Creatures;
+                return gameData;
             }
             catch (IOException e)
             {

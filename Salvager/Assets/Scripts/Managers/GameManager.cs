@@ -6,6 +6,7 @@ using Data;
 using Items;
 using Services.MapGenerators;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using Utilities;
 using Zenject;
 
@@ -29,12 +30,15 @@ namespace Managers
         [Inject] private ICameraController _cameraController;
         [Inject] private ICreatureManager _creatureManager;
         [Inject] private IDataManager _dataManager;
+        [Inject] private IVictoryConditionManager _victoryConditionManager;
 
         [SerializeField] private Creature playerPrefab;
         [SerializeField] private Creature enemyPrefab;
 
         [SerializeField] private List<ItemBehaviour> startingItems;
         [SerializeField] private bool loadDataFromSave = true;
+        
+        [SerializeField] private SceneReference levelSelectorScene;
         
         private MapData _map;
         
@@ -81,7 +85,7 @@ namespace Managers
             
             if (data is not null)
             {
-                foreach (var creatureData in data)
+                foreach (var creatureData in data.Creatures)
                 {
                     var creature = _creatureManager.SpawnCreature(playerPrefab, (Vector2)startingRoom.Positions.RandomElement() * _map.TileSize);
                 
@@ -132,6 +136,12 @@ namespace Managers
             }
             
             _cameraController.MoveTo(playerUnits.First().transform.position);
+            
+            _victoryConditionManager.VictoryAchieved += () =>
+            {
+                Debug.Log("Victory Achieved!");
+                SceneManager.LoadScene(levelSelectorScene);
+            };
         }
     }
     

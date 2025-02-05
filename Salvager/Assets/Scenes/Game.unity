@@ -1280,6 +1280,9 @@ MonoBehaviour:
   - {fileID: 6320578954216408902, guid: a7c47da4057de1843b5abca702ac1eff, type: 3}
   - {fileID: 6320578954216408902, guid: bb563baabd1ccdf4da87975099668eec, type: 3}
   loadDataFromSave: 1
+  levelSelectorScene:
+    sceneAsset: {fileID: 102900000, guid: 41aa961e06241644d89eaac9d2a4bb7a, type: 3}
+    scenePath: Assets/Scenes/Level Select.unity
 --- !u!1 &769271791
 GameObject:
   m_ObjectHideFlags: 0
