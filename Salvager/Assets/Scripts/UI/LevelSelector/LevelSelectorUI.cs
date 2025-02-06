@@ -16,7 +16,7 @@ namespace UI
 {
     public class LevelSelectorUI : MonoBehaviour
     {
-        public event Action<Location> LocationSelected;
+        public event Action LocationSelected;
         
         [Inject] private IRegionGenerator _regionGenerator;
         [Inject] private IRegionManager _regionManager;
@@ -31,6 +31,8 @@ namespace UI
         [SerializeField] private TextMeshProUGUI selectedLevelDescriptionText;
 
         [SerializeField] private Transform levelsParent;
+
+        public Location SelectedLocation { get; private set; }
 
         // Unity Methods
         private void Start()
@@ -63,7 +65,8 @@ namespace UI
         {
             //
 
-            LocationSelected?.Invoke(location);
+            SelectedLocation = location;
+            LocationSelected?.Invoke();
         }
         
         private void OnRegionGenerated()

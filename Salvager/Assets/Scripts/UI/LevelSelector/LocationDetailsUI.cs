@@ -4,7 +4,6 @@ using Managers.LevelSelector;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.Serialization;
 using Utilities;
 using Zenject;
 
@@ -19,25 +18,45 @@ namespace UI
         [SerializeField] private TextMeshProUGUI descriptionText;
         
         [SerializeField] private SceneReference levelScene;
+
+        [SerializeField] private GameObject currentLocationUI;
+        [SerializeField] private GameObject notCurrentLocationUI; 
         
         private Location _selectedLocation;
 
         private void Start()
         {
-            levelSelectorUI.LocationSelected += OnLevelSelected;
+            levelSelectorUI.LocationSelected += UpdateDetails;
+            _regionManager.RegionChanged += UpdateDetails;
         }
 
-        private void OnLevelSelected(Location location)
+        private void UpdateDetails()
         {
-            _selectedLocation = location;
+            _selectedLocation = levelSelectorUI.SelectedLocation;
             
-            Debug.Log($"Selected level: {location.Name}");
+            Debug.Log($"Selected level: {_selectedLocation.Name}");
             
             // Update UI
-            nameText.text = location.Name;
-            descriptionText.text = $"Room count: {location.Settings.roomCount}\n" +
-                                                $"Room size: {location.Settings.roomMaxSize}\n" +
-                                                $"Room count: {location.Settings.roomCount}";
+            nameText.text = _selectedLocation.Name;
+            descriptionText.text = $"Room count: {_selectedLocation.Settings.roomCount}\n" +
+                                                $"Room size: {_selectedLocation.Settings.roomMaxSize}\n" +
+                                                $"Room count: {_selectedLocation.Settings.roomCount}";
+            
+            if(_selectedLocation.DistanceToCurrent == 0)
+            {
+                currentLocationUI.SetActive(true);
+                notCurrentLocationUI.SetActive(false);
+            }
+            else if(_selectedLocation.DistanceToCurrent == 1)
+            {
+                currentLocationUI.SetActive(false);
+                notCurrentLocationUI.SetActive(true);
+            }
+            else
+            {
+                currentLocationUI.SetActive(false);
+                notCurrentLocationUI.SetActive(false);
+            }
         }
 
         // Button Callbacks
