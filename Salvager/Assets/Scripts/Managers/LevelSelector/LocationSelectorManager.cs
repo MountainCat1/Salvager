@@ -22,25 +22,23 @@ namespace Managers.LevelSelector
             if(skipLoad || data.Region == null)
             {
                 var region = _regionGenerator.Generate();
-                _regionManager.SetRegion(region, region.Locations.First(x => x.Type == LevelType.StartNode).Id);
+
+                var currentNodeId = region.Locations.First(x => x.Type == LevelType.StartNode).Id;
+                _regionManager.SetRegion(region, currentNodeId);
 
                 _crewManager.ReRollCrew();
                 
-                SaveData();
+                data = new GameData
+                {
+                    Region = RegionData.FromRegion(_regionManager.Region),
+                    Creatures = _crewManager.Crew.ToList(),
+                    CurrentLocationId = _regionManager.CurrentLocationId.ToString()
+                };
+            
+                _dataManager.SaveData(data);
             }
             
             LoadData();
-        }
-        private void SaveData()
-        {
-            var data = new GameData
-            {
-                Region = RegionData.FromRegion(_regionManager.Region),
-                Creatures = _crewManager.Crew.ToList(),
-                CurrentLocationId = _regionManager.CurrentLocationId.ToString()
-            };
-            
-            _dataManager.SaveData(data);
         }
 
         private void LoadData()
@@ -49,7 +47,7 @@ namespace Managers.LevelSelector
             
             _regionManager.SetRegion(RegionData.ToRegion(data.Region), Guid.Parse(data.CurrentLocationId));
             
-            _crewManager.SetCrew(data.Creatures);
+            _crewManager.SetCrew(data);
         }
     }
 }

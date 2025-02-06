@@ -19,24 +19,13 @@ namespace Data
     {
         private static readonly string SaveFilePath = Path.Combine(Application.persistentDataPath, "saveData.json");
         
+        private GameData _gameData;
+        
         public void SaveData()
         {
-            throw new NotImplementedException("This method is not to be used please use SaveData(GameData gameData) instead.");
-            
             Debug.Log("Saving data...");
-
-            var playerUnits = Object.FindObjectsOfType<Creature>()
-                .Where(c => c.Team == Teams.Player)
-                .Select(CreatureData.FromCreature)
-                .ToList();
-
-            if (playerUnits.Count == 0)
-            {
-                Debug.LogWarning("No player units found to save.");
-                return;
-            }
             
-            SaveData(new GameData() { Creatures = playerUnits });
+            SaveData(_gameData);
         }
 
         public void SaveData(GameData gameData)
@@ -53,10 +42,14 @@ namespace Data
             {
                 Debug.LogError($"Failed to save data: {e.Message}");
             }
+            
+            _gameData = gameData;
         }
 
         public GameData LoadData()
         {
+            _gameData = null;
+            
             if (!File.Exists(SaveFilePath))
             {
                 Debug.LogWarning("Save file not found! Skipping load.");
@@ -69,6 +62,8 @@ namespace Data
                 var gameData = JsonUtility.FromJson<GameData>(json);
                 
                 Debug.Log("Game data loaded successfully.");
+                
+                _gameData = gameData;
                 
                 return gameData;
             }

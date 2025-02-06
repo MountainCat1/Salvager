@@ -45,8 +45,6 @@ namespace Managers
         private void Start()
         {
             StartCoroutine(WaitToCreateGrid());
-            
-            Application.quitting += () => _dataManager.SaveData();
         }
         
         private IEnumerator WaitToCreateGrid()

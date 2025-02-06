@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Items;
 using Managers.LevelSelector;
 using Services.MapGenerators;
 using UnityEngine;
@@ -14,6 +15,7 @@ public class GameData
     public List<CreatureData> Creatures;
     public RegionData Region;
     public string CurrentLocationId;
+    public InventoryData Inventory;
 }
 
 
@@ -197,6 +199,8 @@ public class InventoryData
             {
                 Identifier = item.GetIdentifier(),
                 Count = item.Count,
+                Icon = item.Icon,
+                Name = item.Name
             });
         }
 
@@ -209,5 +213,18 @@ public class ItemData
 {
     public string Identifier;
     public int Count;
+    public string Name;
+    public Sprite Icon;
+
+    public static ItemData FromItem(ItemBehaviour item)
+    {
+        return new ItemData
+        {
+            Identifier = item.GetIdentifier(),
+            Count = item.Count,
+            Icon = item.Icon,
+            Name = item.Name
+        };
+    }
 }
 

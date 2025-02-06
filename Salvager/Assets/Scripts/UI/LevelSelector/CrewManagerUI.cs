@@ -11,15 +11,15 @@ public class CrewManagerUI : MonoBehaviour
     [Inject] private ICrewManager _crewManager;
 
     [SerializeField] private CrewEntryUI crewEntryUI;
-
     [SerializeField] private Transform crewListParent;
 
     private void Start()
     {
         _crewManager.Changed += RefreshList;
-        RefreshList();
+        if (_crewManager.Crew is not null)
+            RefreshList();
     }
-    
+
     public void ReRollCrew()
     {
         _crewManager.ReRollCrew();
@@ -32,13 +32,17 @@ public class CrewManagerUI : MonoBehaviour
             Destroy(child.gameObject);
         }
 
-        var gameData = _dataManager.LoadData();
+        var crew = _crewManager.Crew;
 
-        foreach (var crewMember in gameData.Creatures)
+        foreach (var crewMember in crew)
         {
             var crewMemberUI = _diContainer.InstantiatePrefab(crewEntryUI, crewListParent).GetComponent<CrewEntryUI>();
-            crewMemberUI.GetComponentInChildren<TextMeshProUGUI>().text = crewMember.Name;
+            crewMemberUI.Initialize(crewMember, OnSelect);
         }
     }
 
+    private void OnSelect(CreatureData creature)
+    {
+        _crewManager.SelectCreature(creature);
+    }
 }
