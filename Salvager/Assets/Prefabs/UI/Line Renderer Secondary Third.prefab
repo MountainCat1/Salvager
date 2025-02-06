@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 8298034032648358240}
   - component: {fileID: 3998147307997470981}
   m_Layer: 0
-  m_Name: Line Renderer
+  m_Name: Line Renderer Secondary Third
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -58,20 +58,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.2}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.1882353}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 4151739512132307222, guid: a84c0a97b6c64a74fbaa7b283bf63d46, type: 3}
+  m_Sprite: {fileID: -3575942757386923158, guid: 22f9df417d3fe5443bc0a13bbb1d909b, type: 3}
   m_improveResolution: 1
   m_Resolution: 79
   m_useNativeSize: 1
   m_points:
   - {x: 0, y: 0}
-  lineThickness: 6
+  lineThickness: 3
   relativeSize: 0
   lineList: 0
   lineCaps: 0

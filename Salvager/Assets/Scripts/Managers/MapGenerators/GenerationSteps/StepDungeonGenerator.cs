@@ -10,7 +10,6 @@ namespace Services.MapGenerators.GenerationSteps
     public class StepDungeonGenerator : MonoBehaviour, IMapGenerator
     {
         [SerializeField] private List<GenerationStep> generationSteps = new();
-        [SerializeField] private int seed = 0;
         [SerializeField] private GenerateMapSettings settings = null!;
         
         [Inject] private IRoomDecorator _roomDecorator = null!;
@@ -26,7 +25,7 @@ namespace Services.MapGenerators.GenerationSteps
         public void GenerateMap()
         {
             var data = new GenerateMapData(settings);
-            var random = seed == 0 ? new Random() : new Random(seed);
+            var random = settings.seed == 0 ? new Random() : new Random(settings.seed);
             
             foreach (var step in generationSteps)
             {

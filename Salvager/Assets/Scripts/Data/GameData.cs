@@ -13,6 +13,7 @@ public class GameData
 {
     public List<CreatureData> Creatures;
     public RegionData Region;
+    public string CurrentLocationId;
 }
 
 
@@ -36,7 +37,7 @@ public class RegionData
     }
     
     public string Name;
-    public List<LevelData> Levels;
+    [FormerlySerializedAs("Levels")] public List<LocationData> Locations;
     public List<ConnectionData> Connections;
 
     public static RegionData FromRegion(Region region)
@@ -44,9 +45,9 @@ public class RegionData
         return new RegionData
         {
             Name = region.Name,
-            Levels = region.Levels.Select(x =>
+            Locations = region.Locations.Select(x =>
             {
-                var data = LevelData.FromLevel(x);
+                var data = LocationData.FromLocation(x);
                 return data;
             }).ToList(),
         };
@@ -60,17 +61,17 @@ public class RegionData
         };
 
         // Load levels
-        foreach (var levelData in dataRegion.Levels)
+        foreach (var levelData in dataRegion.Locations)
         {
-            var level = LevelData.ToLevel(levelData);
-            region.AddLevel(level);
+            var level = LocationData.ToLocation(levelData);
+            region.AddLocation(level);
         }
 
         // Connect levels
-        foreach (var level in region.Levels)
+        foreach (var level in region.Locations)
         {
-            var levelData = dataRegion.Levels.First(x => x.Id == level.Id.ToString());
-            level.Neighbours = levelData.Neighbours.Select(x => region.Levels.First(l => l.Id.ToString() == x)).ToList();
+            var levelData = dataRegion.Locations.First(x => x.Id == level.Id.ToString());
+            level.Neighbours = levelData.Neighbours.Select(x => region.Locations.First(l => l.Id.ToString() == x)).ToList();
         }
 
         return region;
@@ -78,7 +79,7 @@ public class RegionData
 }
 
 [Serializable]
-public class LevelData
+public class LocationData
 {
     public string Id;
     public string Name;
@@ -88,29 +89,29 @@ public class LevelData
     public LevelType Type;
     public string[] Neighbours;
     
-    public static LevelData FromLevel(Level level)
+    public static LocationData FromLocation(Location location)
     {
-        return new LevelData
+        return new LocationData
         {
-            Id = level.Id.ToString(),
-            Name = level.Name,
-            MapSettings = GenerateMapSettingsData.FromSettings(level.Settings),
-            Blueprints = level.RoomBlueprints,
-            Type = level.Type,
-            Position = level.Position,
-            Neighbours = level.Neighbours.Select(x => x.Id.ToString()).ToArray(),
+            Id = location.Id.ToString(),
+            Name = location.Name,
+            MapSettings = GenerateMapSettingsData.FromSettings(location.Settings),
+            Blueprints = location.RoomBlueprints,
+            Type = location.Type,
+            Position = location.Position,
+            Neighbours = location.Neighbours.Select(x => x.Id.ToString()).ToArray(),
         };
     }
 
 
-    public static Level ToLevel(LevelData levelData)
+    public static Location ToLocation(LocationData locationData)
     {
-        var settings = GenerateMapSettingsData.ToSettings(levelData.MapSettings);
+        var settings = GenerateMapSettingsData.ToSettings(locationData.MapSettings);
         
-        var level = new Level(settings, levelData.Blueprints, levelData.Name, Guid.Parse(levelData.Id));
+        var level = new Location(settings, locationData.Blueprints, locationData.Name, Guid.Parse(locationData.Id));
         
-        level.Type = levelData.Type;
-        level.Position = levelData.Position;
+        level.Type = locationData.Type;
+        level.Position = locationData.Position;
 
         return level;
     }
@@ -124,6 +125,7 @@ public class GenerateMapSettingsData
     public Vector2Int roomMaxSize;
     public Vector2Int gridSize;
     public float tileSize;
+    public int seed;
 
     public static GenerateMapSettingsData FromSettings(GenerateMapSettings settings)
     {
@@ -133,7 +135,8 @@ public class GenerateMapSettingsData
             roomMinSize = settings.roomMinSize,
             roomMaxSize = settings.roomMaxSize,
             gridSize = settings.gridSize,
-            tileSize = settings.tileSize
+            tileSize = settings.tileSize,
+            seed = settings.seed
         };
     }
 
@@ -145,7 +148,8 @@ public class GenerateMapSettingsData
             roomMinSize = levelDataMapSettings.roomMinSize,
             roomMaxSize = levelDataMapSettings.roomMaxSize,
             gridSize = levelDataMapSettings.gridSize,
-            tileSize = levelDataMapSettings.tileSize
+            tileSize = levelDataMapSettings.tileSize,
+            seed = levelDataMapSettings.seed
         };
     }
 }

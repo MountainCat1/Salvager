@@ -13,6 +13,7 @@ namespace Services.MapGenerators
         [SerializeField] public Vector2Int roomMaxSize = default;
         [SerializeField] public Vector2Int gridSize = default;
         [SerializeField] public float tileSize = 1f;
+        [SerializeField] public int seed;
     }
     
     public enum MapLayer

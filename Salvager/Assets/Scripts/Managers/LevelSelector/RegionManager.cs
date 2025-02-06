@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using Data;
 using UnityEngine;
 using Zenject;
@@ -9,6 +11,11 @@ namespace Managers.LevelSelector
     {
         public event Action RegionChanged;
         public Region Region { get; }
+        public void SetRegion(Region region, Guid currentLocationId);
+        public Guid CurrentLocationId { get; }
+        public int GetDistance(Guid fromGuid, Guid toGuid);
+        public int GetDistance(Location from, Location to);
+        void ChangeCurrentLocation(Location selectedLocation);
     }
 
 
@@ -18,30 +25,79 @@ namespace Managers.LevelSelector
 
         [Inject] private IDataManager _dataManager;
         [Inject] private IRegionGenerator _regionGenerator;
-        
-        [SerializeField] private bool skipLoad = false; 
-        
+
         public Region Region { get; private set; }
+        public Guid CurrentLocationId { get; set; }
+        public Location CurrentLocation { get; set; }
 
-        private void Start()
+        public int GetDistance(Guid fromGuid, Guid toGuid)
         {
-            var data = _dataManager.LoadData();
-            
-            if (skipLoad || data.Region == null)
-            {
-                data = new GameData();
-                
-                var region = _regionGenerator.Generate();
+            return GetDistance(
+                Region.Locations.First(l => l.Id == fromGuid),
+                Region.Locations.First(l => l.Id == toGuid)
+            );
+        }
 
-                var regionData = RegionData.FromRegion(region);
-                
-                data.Region = regionData;
-                
-                _dataManager.SaveData(data);
+        public int GetDistance(Location from, Location to)
+        {
+            if (from == to)
+                return 0;
+
+            Queue<(Location location, int distance)> queue = new();
+            HashSet<Location> visited = new();
+
+            queue.Enqueue((from, 0));
+            visited.Add(from);
+
+            while (queue.Count > 0)
+            {
+                var (current, distance) = queue.Dequeue();
+
+                foreach (var neighbour in current.Neighbours)
+                {
+                    if (!visited.Contains(neighbour))
+                    {
+                        if (neighbour == to)
+                        {
+                            return distance + 1; // Found shortest path
+                        }
+
+                        queue.Enqueue((neighbour, distance + 1));
+                        visited.Add(neighbour);
+                    }
+                }
             }
 
-            Region = RegionData.ToRegion(data.Region);
-            
+            return -1; // No path found
+        }
+
+        public void ChangeCurrentLocation(Location selectedLocation)
+        {
+            CurrentLocation = selectedLocation;
+            CurrentLocationId = selectedLocation.Id;
+
+            foreach (var location in Region.Locations)
+            {
+                location.DistanceToCurrent = GetDistance(location, CurrentLocation);
+            }
+
+            RegionChanged?.Invoke();
+        }
+
+
+        public void SetRegion(Region region, Guid currentLocationId)
+        {
+            Region = region;
+
+            CurrentLocationId = currentLocationId;
+
+            CurrentLocation = region.Locations.First(l => l.Id == currentLocationId);
+
+            foreach (var location in region.Locations)
+            {
+                location.DistanceToCurrent = GetDistance(location, CurrentLocation);
+            }
+
             RegionChanged?.Invoke();
         }
     }

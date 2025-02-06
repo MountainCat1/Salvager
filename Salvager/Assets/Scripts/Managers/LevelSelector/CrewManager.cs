@@ -13,6 +13,7 @@ namespace Managers
         event Action Changed;
         void ReRollCrew();
         public ICollection<CreatureData> Crew { get; }
+        void SetCrew(List<CreatureData> dataCreatures);
     }
 
     public class CrewManager : MonoBehaviour, ICrewManager
@@ -23,6 +24,12 @@ namespace Managers
         [Inject] private DiContainer _diContainer;
 
         public ICollection<CreatureData> Crew { get; private set; }
+        
+        public void SetCrew(List<CreatureData> dataCreatures)
+        {
+            Crew = dataCreatures;
+            Changed?.Invoke();
+        }
 
         public void ReRollCrew()
         {
@@ -37,6 +44,8 @@ namespace Managers
             {
                 Creatures = crew
             });
+            
+            Crew = crew;
             
             Changed?.Invoke();
         }

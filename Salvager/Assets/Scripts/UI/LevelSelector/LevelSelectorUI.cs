@@ -1,11 +1,13 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Managers;
 using Managers.LevelSelector;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 using UnityEngine.UI.Extensions;
 using Utilities;
 using Zenject;
@@ -14,21 +16,23 @@ namespace UI
 {
     public class LevelSelectorUI : MonoBehaviour
     {
+        public event Action<Location> LocationSelected;
+        
         [Inject] private IRegionGenerator _regionGenerator;
         [Inject] private IRegionManager _regionManager;
         
-        [SerializeField] private SceneReference levelScene;
         [SerializeField] private LevelEntryUI levelEntryPrefab;
-        [SerializeField] private UILineRenderer lineRenderer;
+        [SerializeField] private UILineRenderer linePrefab;
+        [SerializeField] private UILineRenderer secondaryLinePrefab;
+        
         [SerializeField] private Transform lineParent;
         
         [SerializeField] private TextMeshProUGUI selectedLevelNameText;
         [SerializeField] private TextMeshProUGUI selectedLevelDescriptionText;
 
         [SerializeField] private Transform levelsParent;
-        
-        private Level _selectedLevel;
-        
+
+        // Unity Methods
         private void Start()
         {
             _regionManager.RegionChanged += OnRegionGenerated;
@@ -38,22 +42,30 @@ namespace UI
 
         private void Update()
         {
-            var levels = _regionManager.Region.Levels;
+            var levels = _regionManager.Region.Locations;
             
             var levelUIComponents = levelsParent.GetComponentsInChildren<LevelEntryUI>();
 
             foreach (var level in levels)
             {
-                var uiComponent = Array.Find(levelUIComponents, x => x.Level == level);
-                foreach (var connectionLevel in _regionManager.Region.Levels)
+                var uiComponent = Array.Find(levelUIComponents, x => x.Location == level);
+                foreach (var connectionLevel in _regionManager.Region.Locations)
                 {
-                    var connectionUIComponent = Array.Find(levelUIComponents, x => x.Level == connectionLevel);
+                    var connectionUIComponent = Array.Find(levelUIComponents, x => x.Location == connectionLevel);
                     
                     Debug.DrawLine(uiComponent.transform.position, connectionUIComponent.transform.position, Color.green);
                 }
             }
         }
+        
+        // Callbacks
+        private void SelectLevel(Location location)
+        {
+            //
 
+            LocationSelected?.Invoke(location);
+        }
+        
         private void OnRegionGenerated()
         {
             foreach (Transform child in levelsParent)
@@ -61,10 +73,11 @@ namespace UI
                 Destroy(child.gameObject);
             }
 
-            foreach (var level in _regionManager.Region.Levels)
+            foreach (var level in _regionManager.Region.Locations)
             {
                 var levelEntry = Instantiate(levelEntryPrefab, levelsParent);
-                levelEntry.Initialize(level, SelectLevel);
+                var distance = _regionManager.GetDistance(_regionManager.CurrentLocationId, level.Id);
+                levelEntry.Initialize(level, SelectLevel, distance);
 
                 var rectTransform = levelEntry.GetComponent<RectTransform>();
 
@@ -82,21 +95,38 @@ namespace UI
                 rectTransform.anchoredPosition = Vector2.zero;
             }
             
+            
+            foreach (Transform child in lineParent)
+            {
+                Destroy(child.gameObject);
+            }
+            
             var levelUIComponents = levelsParent.GetComponentsInChildren<LevelEntryUI>();
 
-            var createdConnections = new List<(Level, Level)>();
-            foreach (var level in _regionManager.Region.Levels)
+            var createdConnections = new List<(Location, Location)>();
+            foreach (var level in _regionManager.Region.Locations.OrderBy(x => x.DistanceToCurrent))
             {
-                var uiComponent = Array.Find(levelUIComponents, x => x.Level == level);
+                UILineRenderer prefab = null;
+                
+                var distanceToCurrent = level.DistanceToCurrent;
+
+                if (distanceToCurrent == 0)
+                    prefab = linePrefab;
+                if (distanceToCurrent == 1)
+                    prefab = secondaryLinePrefab;
+                if(distanceToCurrent > 1)
+                    continue;
+                
+                var uiComponent = Array.Find(levelUIComponents, x => x.Location == level);
                 foreach (var connectionLevel in level.Neighbours)
                 {
                     if (createdConnections.Contains((connectionLevel, level)))
                         continue;
                     
-                    var connectionUIComponent = Array.Find(levelUIComponents, x => x.Level == connectionLevel);
+                    var connectionUIComponent = Array.Find(levelUIComponents, x => x.Location == connectionLevel);
                     
-                    var lineRendererInstance = Instantiate(lineRenderer, lineParent);
-                    lineRenderer.transform.position = Vector3.zero;
+                    var lineRendererInstance = Instantiate(prefab, lineParent);
+                    lineRendererInstance.transform.position = Vector3.zero;
                     
                     lineRendererInstance.Points = new []
                     {
@@ -108,46 +138,6 @@ namespace UI
                 }
             }
         }
-
-
-
-        public void SelectLevel(Level level)
-        {
-            Debug.Log($"Selected level: {level.Name}");
-            
-            // Update UI
-            selectedLevelNameText.text = level.Name;
-            selectedLevelDescriptionText.text = $"Room count: {level.Settings.roomCount}\n" +
-                                                $"Room size: {level.Settings.roomMaxSize}\n" +
-                                                $"Room count: {level.Settings.roomCount}";
-            //
-            _selectedLevel = level;
-        }
-
-        public void Embark()
-        {
-            
-        }
-
-        public void LoadLevel()
-        {
-            if (_selectedLevel == null)
-            {
-                Debug.LogError("No level selected!");
-                return;
-            }
-            
-            Debug.Log($"Loading level: {_selectedLevel.Name}");
-            
-            GameManager.GameSettings = new GameSettings
-            {
-                Settings = _selectedLevel.Settings,
-                RoomBlueprints = _selectedLevel.RoomBlueprints,
-                Name = _selectedLevel.Name
-            };
-            
-            // Load level scene
-            SceneManager.LoadScene(levelScene);
-        }
+        
     }
 }

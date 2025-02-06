@@ -13,7 +13,7 @@ public enum LevelType
 }
 
 [Serializable]
-public class Level
+public class Location
 {
     // Accessors
     public Guid Id { get; set; }
@@ -21,8 +21,9 @@ public class Level
     public RoomBlueprint[] RoomBlueprints => roomBlueprints;
     public string Name => name;
     public LevelType Type { get; set; } = LevelType.Default;
-    public List<Level> Neighbours { get; set; } = new List<Level>();
+    public List<Location> Neighbours { get; set; } = new List<Location>();
     public Vector2 Position { get; set; }
+    public int DistanceToCurrent { get; set; }
 
     // Serialized fields
     [SerializeField] private GenerateMapSettings settings;
@@ -30,12 +31,12 @@ public class Level
     [SerializeField] private string name;
 
 
-    public Level()
+    public Location()
     {
         Id = Guid.NewGuid();
     }
     
-    public Level(GenerateMapSettings settings, RoomBlueprint[] roomBlueprints, string name, Guid levelDataId)
+    public Location(GenerateMapSettings settings, RoomBlueprint[] roomBlueprints, string name, Guid levelDataId)
     {
         this.settings = settings;
         this.roomBlueprints = roomBlueprints;
@@ -43,21 +44,23 @@ public class Level
         Id = levelDataId;
     }
     
-    public static Level GenerateRandom(RoomBlueprint[] roomBlueprints)
+    public static Location GenerateRandom(RoomBlueprint[] roomBlueprints)
     {
         var settings = new GenerateMapSettings
         {
             roomCount = UnityEngine.Random.Range(10, 20),
             roomMaxSize = new Vector2Int(UnityEngine.Random.Range(5, 10), UnityEngine.Random.Range(5, 10)),
             roomMinSize = new Vector2Int(UnityEngine.Random.Range(3, 4), UnityEngine.Random.Range(3, 4)),
-            gridSize = new Vector2Int(UnityEngine.Random.Range(50, 100), UnityEngine.Random.Range(50, 100))
+            gridSize = new Vector2Int(UnityEngine.Random.Range(50, 100), UnityEngine.Random.Range(50, 100)),
+            seed = UnityEngine.Random.Range(0, 1000000),
+            tileSize = 1f
         };
 
-        return new Level
+        return new Location
         {
             settings = settings,
             roomBlueprints = roomBlueprints,
-            name = Names.SpaceStations.RandomElement()
+            name = Names.SpaceStations.RandomElement(),
         };
     }
 }

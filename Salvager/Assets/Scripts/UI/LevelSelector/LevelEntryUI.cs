@@ -1,34 +1,54 @@
 using System;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace UI
 {
     public class LevelEntryUI : MonoBehaviour
     {
         [SerializeField] private TextMeshProUGUI levelNameText;
+        [SerializeField] private GameObject selectionMarker;
 
-        public Level Level => _level;
-        
-        private Level _level;
-        private Action<Level> _selectLevel;
-        
-        public void Initialize(Level level, Action<Level> selectLevel)
+        public Location Location => _location;
+
+        private Location _location;
+        private Action<Location> _selectLevel;
+
+        public void Initialize(Location location, Action<Location> selectLevel, int distanceToCurrent)
         {
-            levelNameText.text = level.Name;
-            
-            _level = level;
+            levelNameText.text = location.Name;
+
+            _location = location;
             _selectLevel = selectLevel;
-            
-            if(level.Type == LevelType.EndNode)
+
+            if (location.Type == LevelType.EndNode)
                 levelNameText.color = Color.red;
-            else if (level.Type == LevelType.StartNode)
+            else if (location.Type == LevelType.StartNode)
                 levelNameText.color = Color.green;
+
+            if (distanceToCurrent == 0)
+            {
+                levelNameText.fontStyle = FontStyles.Bold | FontStyles.Underline | FontStyles.UpperCase;
+                selectionMarker.SetActive(true);
+            }
+            else if(distanceToCurrent == 1)
+            {
+                levelNameText.fontStyle = FontStyles.Bold;
+                selectionMarker.SetActive(false);
+            }
+            else
+            {
+                levelNameText.fontStyle = FontStyles.Normal;
+                GetComponentInChildren<Image>().color = new Color(1f, 1f, 1f, 0.5f);
+                selectionMarker.SetActive(false);
+            }
+            levelNameText.text = location.Name + $" ({distanceToCurrent})";
         }
 
         public void SelectLevel()
         {
-            _selectLevel?.Invoke(_level);
+            _selectLevel?.Invoke(_location);
         }
     }
 }
