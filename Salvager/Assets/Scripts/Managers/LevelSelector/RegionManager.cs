@@ -13,6 +13,7 @@ namespace Managers.LevelSelector
         public Region Region { get; }
         public void SetRegion(Region region, Guid currentLocationId);
         public Guid CurrentLocationId { get; }
+        public Location CurrentLocation { get; }
         public int GetDistance(Guid fromGuid, Guid toGuid);
         public int GetDistance(Location from, Location to);
         void ChangeCurrentLocation(Location selectedLocation);

@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using Managers;
 using Managers.LevelSelector;
 using TMPro;
@@ -28,11 +29,17 @@ namespace UI
         {
             levelSelectorUI.LocationSelected += UpdateDetails;
             _regionManager.RegionChanged += UpdateDetails;
+
+            if (_regionManager.Region != null)
+            {
+                _selectedLocation = _regionManager.CurrentLocation;
+                UpdateDetails();
+            }
         }
 
         private void UpdateDetails()
         {
-            _selectedLocation = levelSelectorUI.SelectedLocation;
+            _selectedLocation = levelSelectorUI.SelectedLocation ?? _regionManager.CurrentLocation;
             
             Debug.Log($"Selected level: {_selectedLocation.Name}");
             

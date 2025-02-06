@@ -17,20 +17,22 @@ namespace UI
     public class LevelSelectorUI : MonoBehaviour
     {
         public event Action LocationSelected;
-        
+
         [Inject] private IRegionGenerator _regionGenerator;
         [Inject] private IRegionManager _regionManager;
-        
+
         [SerializeField] private LevelEntryUI levelEntryPrefab;
         [SerializeField] private UILineRenderer linePrefab;
         [SerializeField] private UILineRenderer secondaryLinePrefab;
-        
+
         [SerializeField] private Transform lineParent;
-        
+
         [SerializeField] private TextMeshProUGUI selectedLevelNameText;
         [SerializeField] private TextMeshProUGUI selectedLevelDescriptionText;
 
         [SerializeField] private Transform levelsParent;
+
+        private Vector2 _lastScreenSize;
 
         public Location SelectedLocation { get; private set; }
 
@@ -38,28 +40,21 @@ namespace UI
         private void Start()
         {
             _regionManager.RegionChanged += OnRegionGenerated;
-            if(_regionManager.Region != null)
+            if (_regionManager.Region != null)
                 OnRegionGenerated();
         }
 
         private void Update()
         {
-            var levels = _regionManager.Region.Locations;
-            
-            var levelUIComponents = levelsParent.GetComponentsInChildren<LevelEntryUI>();
+            Vector2 screenSize = new Vector2(Screen.width, Screen.height);
 
-            foreach (var level in levels)
+            if (this._lastScreenSize != screenSize)
             {
-                var uiComponent = Array.Find(levelUIComponents, x => x.Location == level);
-                foreach (var connectionLevel in _regionManager.Region.Locations)
-                {
-                    var connectionUIComponent = Array.Find(levelUIComponents, x => x.Location == connectionLevel);
-                    
-                    Debug.DrawLine(uiComponent.transform.position, connectionUIComponent.transform.position, Color.green);
-                }
+                this._lastScreenSize = screenSize;
+                OnRegionGenerated();
             }
         }
-        
+
         // Callbacks
         private void SelectLevel(Location location)
         {
@@ -68,7 +63,7 @@ namespace UI
             SelectedLocation = location;
             LocationSelected?.Invoke();
         }
-        
+
         private void OnRegionGenerated()
         {
             foreach (Transform child in levelsParent)
@@ -97,50 +92,50 @@ namespace UI
                 // Reset position offset
                 rectTransform.anchoredPosition = Vector2.zero;
             }
-            
-            
+
+
             foreach (Transform child in lineParent)
             {
                 Destroy(child.gameObject);
             }
-            
+
             var levelUIComponents = levelsParent.GetComponentsInChildren<LevelEntryUI>();
 
             var createdConnections = new List<(Location, Location)>();
             foreach (var level in _regionManager.Region.Locations.OrderBy(x => x.DistanceToCurrent))
             {
                 UILineRenderer prefab = null;
-                
+
                 var distanceToCurrent = level.DistanceToCurrent;
 
                 if (distanceToCurrent == 0)
                     prefab = linePrefab;
                 if (distanceToCurrent == 1)
                     prefab = secondaryLinePrefab;
-                if(distanceToCurrent > 1)
+                if (distanceToCurrent > 1)
                     continue;
-                
+
                 var uiComponent = Array.Find(levelUIComponents, x => x.Location == level);
                 foreach (var connectionLevel in level.Neighbours)
                 {
                     if (createdConnections.Contains((connectionLevel, level)))
                         continue;
-                    
+
                     var connectionUIComponent = Array.Find(levelUIComponents, x => x.Location == connectionLevel);
-                    
+
                     var lineRendererInstance = Instantiate(prefab, lineParent);
                     lineRendererInstance.transform.position = Vector3.zero;
-                    
-                    lineRendererInstance.Points = new []
+
+                    lineRendererInstance.Points = new[]
                     {
-                        (Vector2)uiComponent.transform.position,
-                        (Vector2)connectionUIComponent.transform.position
+                        (Vector2)lineParent.InverseTransformPoint(uiComponent.transform.position),
+                        (Vector2)lineParent.InverseTransformPoint(connectionUIComponent.transform.position)
                     };
-                    
+
+
                     createdConnections.Add((level, connectionLevel));
                 }
             }
         }
-        
     }
 }
