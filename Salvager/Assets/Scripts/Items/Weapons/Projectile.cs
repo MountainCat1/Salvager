@@ -63,6 +63,16 @@ namespace Items.Weapons
 
         private void OnProjectileCollision(Collider2D other)
         {
+            if(CollisionUtility.IsWall(other.gameObject))
+            {
+                if (hitSound)
+                    _soundPlayer.PlaySound(hitSound, transform.position, SoundType.Sfx);
+                
+                Hit?.Invoke(null, _attackContext);
+                Destroy(gameObject);
+                return;
+            }
+            
             if (CollisionUtility.IsObstacle(other.gameObject))
             {
                 if(TryMiss(_settings.MissChanceForObstacle, other.GetComponent<Entity>()))

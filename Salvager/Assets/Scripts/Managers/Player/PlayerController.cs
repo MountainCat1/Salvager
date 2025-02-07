@@ -23,7 +23,6 @@ public class PlayerController : MonoBehaviour
     private void Start()
     {
         _inputMapper.OnWorldPressed2 += OnMoveCommand;
-        _inputManager.GoBackToMenu += OnGoBackToMenu;
         _inputManager.Halt += OnHalt;
     }
 
@@ -42,22 +41,6 @@ public class PlayerController : MonoBehaviour
     private void OnDestroy()
     {
         _inputMapper.OnWorldPressed2 -= OnMoveCommand;
-        _inputManager.GoBackToMenu -= OnGoBackToMenu;
-    }
-
-    private void OnGoBackToMenu()
-    {
-        var currentGameData = _dataManager.LoadData();
-        
-        // Save the current level progress
-        currentGameData.Creatures = FindObjectsOfType<Creature>()
-            .Where(x => x.Team == Teams.Player)
-            .Select(CreatureData.FromCreature)
-            .ToList();
-        
-        _dataManager.SaveData(currentGameData);
-        
-        SceneManager.LoadScene("Scenes/Level Select");
     }
 
     private void OnMoveCommand(Vector2 position)

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Constants;
@@ -31,6 +32,7 @@ namespace Managers
         [Inject] private ICreatureManager _creatureManager;
         [Inject] private IDataManager _dataManager;
         [Inject] private IVictoryConditionManager _victoryConditionManager;
+        [Inject] private IInputManager _inputManager;
 
         [SerializeField] private Creature playerPrefab;
         [SerializeField] private Creature enemyPrefab;
@@ -45,6 +47,28 @@ namespace Managers
         private void Start()
         {
             StartCoroutine(WaitToCreateGrid());
+            
+            _inputManager.GoBackToMenu += GoBackToLevelSelector;
+        }
+
+        private void OnDestroy()
+        {
+            _inputManager.GoBackToMenu -= GoBackToLevelSelector;
+        }
+
+        private void GoBackToLevelSelector()
+        {
+            var currentGameData = _dataManager.LoadData();
+        
+            // Save the current level progress
+            currentGameData.Creatures = FindObjectsOfType<Creature>()
+                .Where(x => x.Team == Teams.Player)
+                .Select(CreatureData.FromCreature)
+                .ToList();
+        
+            _dataManager.SaveData(currentGameData);
+        
+            SceneManager.LoadScene("Scenes/Level Select");
         }
         
         private IEnumerator WaitToCreateGrid()
@@ -139,7 +163,14 @@ namespace Managers
             {
                 Debug.Log("Victory Achieved!");
                 SceneManager.LoadScene(levelSelectorScene);
+                StartCoroutine(WaitToGoBackToLevelSelector());
             };
+        }
+        
+        IEnumerator WaitToGoBackToLevelSelector()
+        {
+            yield return new WaitForSeconds(1);
+            SceneManager.LoadScene(levelSelectorScene);
         }
     }
     

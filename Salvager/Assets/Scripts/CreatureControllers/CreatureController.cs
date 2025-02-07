@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Markers;
 using UnityEngine;
+using Utilities;
 using Zenject;
 
 [RequireComponent(typeof(Creature))]
@@ -25,7 +26,7 @@ public class CreatureController : MonoBehaviour
         if (distance > Creature.SightRange)
             return false;
 
-        var layerMask = LayerMask.GetMask("Walls");
+        var layerMask = CollisionUtility.BlockingVisionLayerMask;
         var hit = Physics2D.Raycast(
             Creature.transform.position, target.transform.position - Creature.transform.position,
             distance,

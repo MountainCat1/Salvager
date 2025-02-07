@@ -33,7 +33,6 @@ namespace Managers
         public InventoryData Inventory { get; private set; }
 
         [SerializeField] private List<ItemBehaviour> startingItems;
-        [SerializeField] private List<ItemBehaviour> oneTimeItems;
         
         public void SetCrew(GameData gameData)
         {
@@ -51,19 +50,19 @@ namespace Managers
                 crew.Add(GenerateCrew());
             }
             
-            crew.RandomElement().Inventory.Items.AddRange(oneTimeItems.Select(ItemData.FromItem));
-
-            _dataManager.SaveData(new GameData()
-            {
-                Creatures = crew
-            });
-            
-            Crew = crew;
-            
-            Inventory = new InventoryData()
+            InventoryData startingInventory = new InventoryData()
             {
                 Items = startingItems.Select(ItemData.FromItem).ToList(),
             };
+            
+            _dataManager.SaveData(new GameData()
+            {
+                Creatures = crew,
+                Inventory = startingInventory
+            });
+            
+            Crew = crew;
+            Inventory = startingInventory;
             
             Changed?.Invoke();
         }
@@ -89,7 +88,6 @@ namespace Managers
                 SightRange = 5f,
                 Inventory = new InventoryData()
                 {
-                    Items = startingItems.Select(ItemData.FromItem).ToList(),
                 },
                 Team = Teams.Player,
                 State = CreatureState.Idle,

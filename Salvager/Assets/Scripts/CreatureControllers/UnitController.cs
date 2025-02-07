@@ -58,7 +58,7 @@ namespace CreatureControllers
                 return;
             }
 
-            if (Creature.Weapon)
+            if (Creature.Weapon is null)
             {
                 Creature.SetMovement(Vector2.zero);
                 return;

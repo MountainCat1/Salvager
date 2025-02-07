@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 8434795054408768836}
   - component: {fileID: 665196628695834125}
   - component: {fileID: 3598583511185669220}
-  m_Layer: 6
+  m_Layer: 11
   m_Name: Sprite Renderer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -125,7 +125,7 @@ GameObject:
   - component: {fileID: 1620334314628338296}
   - component: {fileID: 5788253491434673039}
   - component: {fileID: 2417749354656705784}
-  m_Layer: 6
+  m_Layer: 11
   m_Name: Random Misc Prop
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -212,6 +212,7 @@ MonoBehaviour:
   interactionSound: {fileID: 8300000, guid: f55c4d302f66c1f4ba3a397272742d15, type: 3}
   useOnce: 1
   message: Searching...
+  requiredItems: []
   lootTable: {fileID: 11400000, guid: 0b197bd77f965364ab91ad811a8e0dfa, type: 2}
 --- !u!1001 &556012255856125039
 PrefabInstance:
@@ -283,7 +284,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7992810781542510211, guid: 3b2548b084eb1424b956495bddd8447c, type: 3}
       propertyPath: m_Layer
-      value: 6
+      value: 11
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
