@@ -1,5 +1,3 @@
-using System;
-using System.Linq;
 using Managers;
 using Managers.LevelSelector;
 using TMPro;

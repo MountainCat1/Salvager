@@ -1,6 +1,5 @@
 using Data;
 using Managers;
-using TMPro;
 using UnityEngine;
 using Zenject;
 

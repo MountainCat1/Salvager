@@ -1,15 +1,12 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using System.IO;
 using Managers;
 using Zenject;
-using Object = UnityEngine.Object;
 
 namespace Data
 {
-    
     public interface IDataManager
     {
         void SaveData();
@@ -82,9 +79,6 @@ namespace Data
                         item.Icon = itemPrefab.Icon;
                     }
                 }
-                
-                
-                
                 
                 Debug.Log("Game data loaded successfully.");
                 

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using Items;
 using Managers;
-using UI;
 using UnityEngine;
 using Zenject;
 using Object = UnityEngine.Object;
