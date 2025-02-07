@@ -59,6 +59,12 @@ namespace CreatureControllers
                 return;
             }
 
+            if (Creature.Weapon)
+            {
+                Creature.SetMovement(Vector2.zero);
+                return;
+            }
+
             if (_target == null)
             {
                 _target = GetNewTarget();

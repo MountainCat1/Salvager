@@ -216,8 +216,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c423eab7dc4841feb04e8249db6db2d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemPickupPrefab: {fileID: 6762243407045948687, guid: 79e3c4b45912517489e8e2d7abdb9936, type: 3}
-  forceOffset: 50
 --- !u!1 &36719768
 GameObject:
   m_ObjectHideFlags: 0
@@ -741,6 +739,52 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b2c3f8edbef89b41a48338a04d44bb4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &483060524
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 483060525}
+  - component: {fileID: 483060526}
+  m_Layer: 0
+  m_Name: Loot Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &483060525
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 483060524}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1268461046}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &483060526
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 483060524}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 49c79f9760f74ce19fd789a51763b3f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemPickupPrefab: {fileID: 6762243407045948687, guid: 79e3c4b45912517489e8e2d7abdb9936, type: 3}
+  forceOffset: 50
 --- !u!1 &488103613
 GameObject:
   m_ObjectHideFlags: 0
@@ -2363,13 +2407,13 @@ MonoBehaviour:
   - {fileID: 1141345844}
   - {fileID: 1141345848}
   - {fileID: 1141345843}
-  seed: 0
   settings:
     roomCount: 12
     roomMinSize: {x: 3, y: 3}
     roomMaxSize: {x: 10, y: 10}
     gridSize: {x: 75, y: 75}
     tileSize: 1
+    seed: 0
 --- !u!114 &1141345848
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2518,6 +2562,7 @@ Transform:
   - {fileID: 995061535}
   - {fileID: 259407446}
   - {fileID: 28084389}
+  - {fileID: 483060525}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1399455038

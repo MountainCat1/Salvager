@@ -1,3 +1,4 @@
+using Managers;
 using Zenject;
 
 namespace Installer
@@ -7,6 +8,7 @@ namespace Installer
         public override void InstallBindings()
         {
             Container.Bind<IInputManager>().To<InputManager>().FromComponentsInHierarchy().AsSingle();
+            Container.Bind<IItemManager>().To<ItemManager>().FromComponentsInHierarchy().AsSingle();
         }
     }
 }

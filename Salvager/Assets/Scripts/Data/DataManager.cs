@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using System.IO;
+using Managers;
+using Zenject;
 using Object = UnityEngine.Object;
 
 namespace Data
@@ -17,6 +19,8 @@ namespace Data
 
     public class DataManager : IDataManager
     {
+        [Inject] private IItemManager _itemManager;
+        
         private static readonly string SaveFilePath = Path.Combine(Application.persistentDataPath, "saveData.json");
         
         private GameData _gameData;
@@ -60,6 +64,27 @@ namespace Data
             {
                 string json = File.ReadAllText(SaveFilePath);
                 var gameData = JsonUtility.FromJson<GameData>(json);
+                
+                // Load sprites for items
+                var inventories = new List<InventoryData> {gameData.Inventory};
+                inventories.AddRange(gameData.Creatures.Select(c => c.Inventory));
+                foreach (var inventory in inventories)
+                {
+                    foreach (var item in inventory.Items)
+                    {
+                        var itemPrefab = _itemManager.GetItemPrefab(item.Identifier);
+                        if (itemPrefab == null)
+                        {
+                            Debug.LogError($"Item prefab not found for {item.Identifier}");
+                            continue;
+                        }
+                        
+                        item.Icon = itemPrefab.Icon;
+                    }
+                }
+                
+                
+                
                 
                 Debug.Log("Game data loaded successfully.");
                 

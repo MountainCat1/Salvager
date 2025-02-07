@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using CreatureControllers;
+using Data;
 using DefaultNamespace.Pathfinding;
 using Managers;
 using UnityEngine;
@@ -16,6 +17,7 @@ public class PlayerController : MonoBehaviour
     [Inject] IInputManager _inputManager;
     [Inject] ISelectionManager _selectionManager;
     [Inject] IPathfinding _pathfinding;
+    [Inject] IDataManager _dataManager;
 
 
     private void Start()
@@ -45,6 +47,16 @@ public class PlayerController : MonoBehaviour
 
     private void OnGoBackToMenu()
     {
+        var currentGameData = _dataManager.LoadData();
+        
+        // Save the current level progress
+        currentGameData.Creatures = FindObjectsOfType<Creature>()
+            .Where(x => x.Team == Teams.Player)
+            .Select(CreatureData.FromCreature)
+            .ToList();
+        
+        _dataManager.SaveData(currentGameData);
+        
         SceneManager.LoadScene("Scenes/Level Select");
     }
 

@@ -57,6 +57,11 @@ namespace Managers
             
             Crew = crew;
             
+            Inventory = new InventoryData()
+            {
+                Items = items.Select(ItemData.FromItem).ToList(),
+            };
+            
             Changed?.Invoke();
         }
         

@@ -2,12 +2,12 @@ using System.Collections.Generic;
 using Data;
 using Managers;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using Zenject;
 
 namespace UI
 {
+    [RequireComponent(typeof(UISlide))]
     public class CrewInventoryUI : MonoBehaviour
     {
         [Inject] private ICrewManager _crewManager;
@@ -22,10 +22,13 @@ namespace UI
         [SerializeField] private TextMeshProUGUI crewNameText;
         
         private CreatureData _selectedCreature;
+        private UISlide  _uiSlide;
 
         private void Start()
         {
             _crewManager.SelectedCreature+= SetSelectedCreature;
+            _crewManager.Changed += UpdateCreatureInventory;
+            _uiSlide = GetComponent<UISlide>();
         }
 
         public void Set(ICollection<CreatureData> crew, InventoryData inventory)
@@ -44,13 +47,13 @@ namespace UI
 
             if (_selectedCreature.Inventory.Items.Contains(item))
             {
-                _selectedCreature.Inventory.Items.Remove(item);
-                _crewManager.Inventory.Items.Add(item);
+                _selectedCreature.Inventory.RemoveItem(item);
+                _crewManager.Inventory.AddItem(item);
             }
             else
             {
-                _selectedCreature.Inventory.HasDescriptor();
-                _crewManager.Inventory.Items.Remove(item);
+                _selectedCreature.Inventory.AddItem(item);
+                _crewManager.Inventory.RemoveItem(item);
             }
             
             UpdateCreatureInventory();
@@ -63,6 +66,8 @@ namespace UI
             _selectedCreature = creature;
             
             crewNameText.text = creature.Name;
+            
+            _uiSlide.ShowPanel();
             
             UpdateCreatureInventory();
         }

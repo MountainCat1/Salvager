@@ -124,7 +124,7 @@ public class Creature : Entity
     {
         base.Update();
 
-        if (weapon.IsOnCooldown)
+        if (weapon is null || weapon.IsOnCooldown)
             State = CreatureState.Attacking;
         else if (Movement.MoveDirection.magnitude > 0)
             State = CreatureState.Moving;

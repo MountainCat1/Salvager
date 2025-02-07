@@ -206,13 +206,31 @@ public class InventoryData
 
         return data;
     }
+
+    public void AddItem(ItemData itemData)
+    {
+        var item = Items.FirstOrDefault(x => x.Identifier == itemData.Identifier);
+        if (item == null)
+        {
+            Items.Add(itemData);
+        }
+        else
+        {
+            item.Count += itemData.Count;
+        }
+    }
+    
+    public void RemoveItem(ItemData itemData)
+    {
+        Items.Remove(itemData);
+    }
 }
 
 [Serializable]
 public class ItemData
 {
     public string Identifier;
-    public int Count;
+    public int Count = 1;
     public string Name;
     public Sprite Icon;
 
