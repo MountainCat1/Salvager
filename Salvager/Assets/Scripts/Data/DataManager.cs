@@ -34,7 +34,7 @@ namespace Data
 
         public void SaveData(GameData gameData)
         {
-            string json = JsonUtility.ToJson(gameData);
+            string json = JsonUtility.ToJson(gameData, true);
             Debug.Log($"Saving game data to: {SaveFilePath}\n{json}");
 
             try

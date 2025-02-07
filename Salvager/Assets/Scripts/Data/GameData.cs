@@ -22,25 +22,8 @@ public class GameData
 [Serializable]
 public class RegionData
 {
-    [Serializable]
-    public class ConnectionData
-    {
-        public Vector2 From;
-        public List<Vector2> To;
-        
-        public static ConnectionData FromConnection(Vector2 from, List<Vector2> to)
-        {
-            return new ConnectionData
-            {
-                From = from,
-                To = to
-            };
-        }
-    }
-    
     public string Name;
     [FormerlySerializedAs("Levels")] public List<LocationData> Locations;
-    public List<ConnectionData> Connections;
 
     public static RegionData FromRegion(Region region)
     {
@@ -209,6 +192,12 @@ public class InventoryData
 
     public void AddItem(ItemData itemData)
     {
+        if(itemData.Stackable == false)
+        {
+            Items.Add(itemData);
+            return;
+        }
+        
         var item = Items.FirstOrDefault(x => x.Identifier == itemData.Identifier);
         if (item == null)
         {
@@ -233,6 +222,7 @@ public class ItemData
     public int Count = 1;
     public string Name;
     public Sprite Icon;
+    public bool Stackable;
 
     public static ItemData FromItem(ItemBehaviour item)
     {
@@ -241,7 +231,8 @@ public class ItemData
             Identifier = item.GetIdentifier(),
             Count = item.Count,
             Icon = item.Icon,
-            Name = item.Name
+            Name = item.Name,
+            Stackable = item.Stackable
         };
     }
 }
