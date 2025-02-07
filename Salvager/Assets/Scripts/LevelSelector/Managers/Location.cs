@@ -12,23 +12,22 @@ public enum LevelType
     StartNode
 }
 
-[Serializable]
 public class Location
 {
     // Accessors
     public Guid Id { get; set; }
-    public GenerateMapSettings Settings => settings;
-    public RoomBlueprint[] RoomBlueprints => roomBlueprints;
-    public string Name => name;
+    public GenerateMapSettings Settings => _settings;
+    public RoomBlueprint[] RoomBlueprints => _roomBlueprints;
+    public string Name => _name;
     public LevelType Type { get; set; } = LevelType.Default;
     public List<Location> Neighbours { get; set; } = new List<Location>();
     public Vector2 Position { get; set; }
     public int DistanceToCurrent { get; set; }
 
     // Serialized fields
-    [SerializeField] private GenerateMapSettings settings;
-    [SerializeField] private RoomBlueprint[] roomBlueprints;
-    [SerializeField] private string name;
+    private GenerateMapSettings _settings;
+    private RoomBlueprint[] _roomBlueprints;
+    private string _name;
 
 
     public Location()
@@ -38,9 +37,9 @@ public class Location
     
     public Location(GenerateMapSettings settings, RoomBlueprint[] roomBlueprints, string name, Guid levelDataId)
     {
-        this.settings = settings;
-        this.roomBlueprints = roomBlueprints;
-        this.name = name;
+        _settings = settings;
+        _roomBlueprints = roomBlueprints;
+        _name = name;
         Id = levelDataId;
     }
     
@@ -58,9 +57,9 @@ public class Location
 
         return new Location
         {
-            settings = settings,
-            roomBlueprints = roomBlueprints,
-            name = Names.SpaceStations.RandomElement(),
+            _settings = settings,
+            _roomBlueprints = roomBlueprints,
+            _name = Names.SpaceStations.RandomElement(),
         };
     }
 }
