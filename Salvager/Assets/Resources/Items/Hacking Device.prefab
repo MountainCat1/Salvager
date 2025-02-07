@@ -9,9 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 526324897113737661}
-  - component: {fileID: 6945220326266969423}
+  - component: {fileID: 8149439460056631794}
   m_Layer: 0
-  m_Name: Scrap
+  m_Name: Hacking Device
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -32,7 +32,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6945220326266969423
+--- !u!114 &8149439460056631794
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -41,9 +41,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 8686760519416550088}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ec8dd860ca984fccaa994873328f5954, type: 3}
+  m_Script: {fileID: 11500000, guid: 40e6bab0fd314251bc892c16c9315ca5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <Icon>k__BackingField: {fileID: 7376418482318229138, guid: 8f817dad87e29304d8e1861257d4baf0, type: 3}
-  <Name>k__BackingField: Scrap
+  <Icon>k__BackingField: {fileID: 3776945832144811415, guid: 8f817dad87e29304d8e1861257d4baf0, type: 3}
+  <Name>k__BackingField: Hacking Device
   <Weight>k__BackingField: 1

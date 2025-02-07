@@ -44,7 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca397cf322654a1ab3b77d020f528931, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <Icon>k__BackingField: {fileID: 2090925739102771643, guid: 8f817dad87e29304d8e1861257d4baf0, type: 3}
+  <Icon>k__BackingField: {fileID: -4266644674179461008, guid: 8f817dad87e29304d8e1861257d4baf0, type: 3}
   <Name>k__BackingField: Sniper Rifle
   <Weight>k__BackingField: 1
   <Range>k__BackingField: 5

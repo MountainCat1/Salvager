@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using Items;
 using JetBrains.Annotations;
 using Managers;
 using UnityEngine;
@@ -13,6 +15,7 @@ public class InteractableObject : Entity, IInteractable
     [SerializeField] private AudioClip interactionSound;
     [SerializeField] private bool useOnce = true;
     [SerializeField] private string message = "Interacting...";
+    [SerializeField] public List<ItemBehaviour> requiredItems;
     
     // Accessors
     public bool IsInteractable => GetIsInteractable();
@@ -36,6 +39,15 @@ public class InteractableObject : Entity, IInteractable
     {
         if(IsInteractable == false)
             return false;
+        
+        if(requiredItems != null)
+        {
+            foreach (var requiredItem in requiredItems)
+            {
+                if(creature.Inventory.HasItem(requiredItem.GetIdentifier()) == false)
+                    return false;
+            }
+        }
         
         if(Occupied && _interaction!.Creature != creature)
             return false;

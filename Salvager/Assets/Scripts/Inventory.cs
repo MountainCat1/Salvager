@@ -173,4 +173,9 @@ public class Inventory
             item.Count = itemData.Count;
         }
     }
+
+    public bool HasItem(string getIdentifier)
+    {
+        return GetItem(getIdentifier) is not null;
+    }
 }
