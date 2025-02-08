@@ -12,6 +12,7 @@ namespace UI
     {
         [Inject] private ICrewManager _crewManager;
         [Inject] private IDataManager _dataManager;
+        [Inject] private DiContainer _diContainer;
         
         [SerializeField] private ItemEntryUI itemEntryUIPrefab;
         
@@ -83,8 +84,8 @@ namespace UI
             {
                 foreach (var item in _selectedCreature.Inventory.Items)
                 {
-                    var itemEntry = Instantiate(itemEntryUIPrefab, creatureInventoryContainer);
-                    itemEntry.Set(item, TransferItem);
+                    var itemEntry = _diContainer.InstantiatePrefab(itemEntryUIPrefab, creatureInventoryContainer);
+                    itemEntry.GetComponent<ItemEntryUI>().Set(item, TransferItem);
                 }
             }
             
@@ -95,8 +96,8 @@ namespace UI
 
             foreach (var item in _crewManager.Inventory.Items)
             {
-                var itemEntry = Instantiate(itemEntryUIPrefab, crewInventoryContainer);
-                itemEntry.Set(item, TransferItem);
+                var itemEntry = _diContainer.InstantiatePrefab(itemEntryUIPrefab, crewInventoryContainer);
+                itemEntry.GetComponent<ItemEntryUI>().Set(item, TransferItem);
             }
         }
     }

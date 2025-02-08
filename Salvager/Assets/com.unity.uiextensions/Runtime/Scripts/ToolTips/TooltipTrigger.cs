@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 ///Credit Martin Nerurkar // www.martin.nerurkar.de // www.sharkbombs.com
 ///Sourced from - http://www.sharkbombs.com/2015/02/10/tooltips-with-the-new-unity-ui-ugui/
 using UnityEngine.EventSystems;
@@ -19,7 +20,7 @@ namespace UnityEngine.UI.Extensions
         }
 
         [Tooltip("Defines where the tooltip will be placed and how that placement will occur. Transform position will always be used if this element wasn't selected via mouse")]
-        public TooltipPositioningType tooltipPositioningType = TooltipPositioningType.mousePosition;
+        public TooltipPositioningType tooltipPositioningType = TooltipPositioningType.mousePositionAndFollow;
 
         /// <summary>
         /// This info is needed to make sure we make the necessary translations if the tooltip and this trigger are children of different space canvases
@@ -103,6 +104,14 @@ namespace UnityEngine.UI.Extensions
         {
             hovered = false;
             ToolTip.Instance.HideTooltip();
+        }
+
+        private void OnDestroy()
+        {
+            if (ToolTip.Instance is not null && hovered)
+            {
+                StopHover();
+            }
         }
     }
 }
