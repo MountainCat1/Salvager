@@ -15,7 +15,7 @@ public class Entity : MonoBehaviour
     public MovementComponent Movement { get; private set; }
     public HealthComponent Health { get; private set; }
 
-    protected Transform RootTransform;
+    public Transform RootTransform { get; protected set; }
 
     protected virtual void Awake()
     {

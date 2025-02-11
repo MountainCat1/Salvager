@@ -15,12 +15,12 @@ namespace CreatureControllers
         public event Action<IEnumerable<Vector3>> PathChanged;
 
         protected Seeker Seeker { get; private set; }
-        
+
         // Private Variables
         private const float MemoryUpdateInterval = 1.0f; // Base interval in seconds
 
         // Events
-        
+
         // Injected Dependencies (using Zenject)
         [Inject] protected IPathfinding Pathfinding;
         [Inject] protected ICreatureManager CreatureManager;
@@ -62,20 +62,10 @@ namespace CreatureControllers
                 .Select(x => x.Key)
                 .Where(x => x);
         }
-        
+
         protected void PerformMovementTowardsTarget(Creature target)
         {
-            float radius = Creature.Movement.Collider.radius;
-
-            if (PathClear(target, radius))
-            {
-                Debug.DrawLine(Creature.transform.position, target.transform.position, Color.yellow);
-                MoveStraightToTarget(target.transform.position);
-            }
-            else
-            {
-                MoveViaPathfinding(target.transform.position);
-            }
+            PerformMovementTowardsPosition(target.transform.position);
         }
 
         // Private Methods
@@ -107,9 +97,9 @@ namespace CreatureControllers
             if (Vector2.Distance(Creature.transform.position, nextNode) < 0.1f)
             {
                 Creature.SetMovement(Vector2.zero);
-                
+
                 PathChanged?.Invoke(Enumerable.Empty<Vector3>());
-                
+
                 return;
             }
 
@@ -122,7 +112,7 @@ namespace CreatureControllers
             {
                 Debug.DrawLine(p.vectorPath[i], p.vectorPath[i + 1], Color.green);
             }
-            
+
             // Check collision with the next node
             // TODO: Performance optimization needed
             // This is here so that if we click off the map the pathfinding want to go at the edge of walkable area
@@ -131,7 +121,7 @@ namespace CreatureControllers
             // Alternatively we could check it more rarely,
             // or make the path update less often
             // or check for like 0.3s if the creature is not moving and then just make it stop
-            if(Vector2.Distance(Creature.transform.position, nextNode) < Creature.ColliderSize)
+            if (Vector2.Distance(Creature.transform.position, nextNode) < Creature.ColliderSize)
             {
                 if (Physics2D.OverlapCircle(nextNode, Creature.Movement.Collider.radius, LayerMask.GetMask("Walls")))
                 {
@@ -140,12 +130,10 @@ namespace CreatureControllers
                     return;
                 }
             }
-            
-            
-            
+
             PathChanged?.Invoke(p.vectorPath);
         }
-        
+
         private void MoveStraightToTarget(Vector2 targetPosition)
         {
             var direction = (targetPosition - (Vector2)Creature.transform.position).normalized;
@@ -156,7 +144,7 @@ namespace CreatureControllers
                 Creature.SetMovement(Vector2.zero);
                 return;
             }
-            
+
             // Check collision with the next node
             // TODO: Performance optimization needed
             // This is here so that if we click off the map the pathfinding want to go at the edge of walkable area
@@ -165,9 +153,10 @@ namespace CreatureControllers
             // Alternatively we could check it more rarely,
             // or make the path update less often
             // or check for like 0.3s if the creature is not moving and then just make it stop
-            if(Vector2.Distance(Creature.transform.position, targetPosition) < Creature.ColliderSize)
+            if (Vector2.Distance(Creature.transform.position, targetPosition) < Creature.ColliderSize)
             {
-                if (Physics2D.OverlapCircle(targetPosition, Creature.Movement.Collider.radius, LayerMask.GetMask("Walls")))
+                if (Physics2D.OverlapCircle(targetPosition, Creature.Movement.Collider.radius,
+                        LayerMask.GetMask("Walls")))
                 {
                     Creature.SetMovement(Vector2.zero);
                     PathChanged?.Invoke(Array.Empty<Vector3>());
@@ -175,7 +164,7 @@ namespace CreatureControllers
                 }
             }
             
-            PathChanged?.Invoke(new Vector3[]{ transform.position, targetPosition });
+            PathChanged?.Invoke(new Vector3[] { transform.position, targetPosition });
 
             Creature.SetMovement(direction);
             Debug.DrawLine(Creature.transform.position, targetPosition, Color.green);
@@ -256,8 +245,6 @@ namespace CreatureControllers
             {
                 if (!Pathfinding.IsClearPath(corner, targetPosition))
                     pathClear = false;
-
-                Debug.DrawLine(corner, targetPosition, Color.blue);
             }
 
             return pathClear;
@@ -274,7 +261,11 @@ namespace CreatureControllers
 
             if (PathClear(position, radius))
             {
-                Debug.DrawLine(Creature.transform.position, position, Color.yellow);
+                foreach (Vector3 corner in GetCornerPoints(Creature.transform.position, radius))
+                {
+                    Debug.DrawLine(corner, position, Color.blue);
+                }
+
                 MoveStraightToTarget(position);
             }
             else
@@ -297,7 +288,7 @@ namespace CreatureControllers
         {
             return Vector2.Distance(Creature.transform.position, creature.transform.position) < range;
         }
-        
+
         protected void InvokePathChanged(IEnumerable<Vector2> path)
         {
             PathChanged?.Invoke(path.Select(x => (Vector3)x));

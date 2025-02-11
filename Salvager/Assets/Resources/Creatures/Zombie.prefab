@@ -301,7 +301,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 0.2
+  m_Radius: 0.3
 --- !u!114 &3115733397569104942
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -638,13 +638,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   deathSounds:
-  - {fileID: 8300000, guid: 2ca4b582bccdd5745a527b8c44b5b6ed, type: 3}
-  - {fileID: 8300000, guid: b05199c9919440d47a88a7d5fcb8e68f, type: 3}
-  - {fileID: 8300000, guid: d2a67a787843275449908ecad46b0af1, type: 3}
+  - {fileID: 8300000, guid: f1cad82250166aa42be4878bbdc4bf0f, type: 3}
+  - {fileID: 8300000, guid: ed21f6c0fb32425469c4fb30d8ec438f, type: 3}
   hitSounds:
-  - {fileID: 8300000, guid: f9f0bb04fc65d9e42bce251890ecd5e0, type: 3}
-  - {fileID: 8300000, guid: 5fc2f9d3727fae7458681942dbf508df, type: 3}
-  - {fileID: 8300000, guid: 35f6618118471f54ea23a3d22977a83b, type: 3}
+  - {fileID: 8300000, guid: 623bd352a18c8fe49a460db2e919abbb, type: 3}
+  - {fileID: 8300000, guid: 5589a6621e00a7841b6b2994bf207e70, type: 3}
+  - {fileID: 8300000, guid: fa90477caa72814438c17ee52daa5b68, type: 3}
   chanceToPlayHitSound: 0.5
   randomPitch: 0.3
 --- !u!114 &4149144107216106995

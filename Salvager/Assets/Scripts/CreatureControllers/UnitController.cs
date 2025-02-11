@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using UnityEngine;
 
@@ -64,6 +65,11 @@ namespace CreatureControllers
                 return;
             }
 
+            if(_target && _target.gameObject.activeInHierarchy == false)
+            {
+                _target = null;
+            }
+            
             if (_target == null)
             {
                 _target = GetNewTarget();
@@ -78,6 +84,15 @@ namespace CreatureControllers
             Creature.SetMovement(Vector2.zero);
         }
 
+        protected override void Start()
+        {
+            base.Start();
+            PathChanged += (path) =>
+            {
+                if(!path.Any())
+                    _moveCommandTarget = null;
+            };
+        }
 
         // Private Methods
         private void HandleInteraction()
@@ -115,11 +130,6 @@ namespace CreatureControllers
 
         private void HandleAttack()
         {
-            if (_target == null)
-            {
-                _target = GetNewTarget();
-            }
-
             if (_target != null)
             {
                 HandleAttackOrMovementToTarget();

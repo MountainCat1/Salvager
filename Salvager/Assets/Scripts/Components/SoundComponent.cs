@@ -27,7 +27,7 @@ namespace Components
 
         private void OnHit(HitContext ctx)
         {
-            if(Random.value < chanceToPlayHitSound)
+            if(Random.value > chanceToPlayHitSound)
                 return;
             
             PlayRandomSound(hitSounds);
@@ -44,7 +44,6 @@ namespace Components
                 return;
             
             var clip = clips[Random.Range(0, clips.Count)];
-            var pitch = Random.Range(1 - randomPitch, 1 + randomPitch);
             _soundPlayer.PlaySound(clip, transform.position, SoundType.Sfx, pitchRandomness: randomPitch);
         }
     }

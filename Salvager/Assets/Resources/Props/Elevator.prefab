@@ -157,7 +157,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   interactionTime: 3
-  interactionSound: {fileID: 8300000, guid: f55c4d302f66c1f4ba3a397272742d15, type: 3}
+  interactionSound: {fileID: 8300000, guid: 87d0629ab24955a45ad02e5824e759cb, type: 3}
   useOnce: 0
   message: Entering...
   requiredItems: []

@@ -2498,10 +2498,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3438dcd27aab4a48be76d664d24acb0b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  count: 10
-  minJumps: 3
-  maxJumpDistance: 0.4
-  minDistance: 0.25
+  _count: 10
+  _minJumps: 3
+  _maxJumpDistance: 0.4
+  _minDistance: 0.2
 --- !u!1001 &1187392185
 PrefabInstance:
   m_ObjectHideFlags: 0
