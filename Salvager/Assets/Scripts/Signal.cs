@@ -2,7 +2,8 @@
 
 public enum Signal
 {
-    TerminalHacked
+    TerminalHacked,
+    CreatureExited
 }
 
 public static class SignalExtensions

@@ -19,7 +19,7 @@ namespace VictoryConditions
         
         public override string GetDescription()
         {
-            var creatures = _creatureManager.GetCreatures();
+            var creatures = _creatureManager.GetAliveCreatures();
             var itemCount = 0;
             
             foreach (var creature in creatures)
@@ -37,7 +37,7 @@ namespace VictoryConditions
 
         public override bool Check()
         {
-            var creatures = _creatureManager.GetCreatures();
+            var creatures = _creatureManager.GetAliveCreatures();
 
             var itemCount = 0;
 

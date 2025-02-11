@@ -279,8 +279,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   victoryConditions:
-  - {fileID: 11400000, guid: 74334752e7f20a1448558f0ea236a25a, type: 2}
-  - {fileID: 11400000, guid: 32858f2df80e03f489efaefbaeee7cee, type: 2}
+  - {fileID: 11400000, guid: 0cc818dd58617d4428f971d715268efe, type: 2}
 --- !u!1 &279398651
 GameObject:
   m_ObjectHideFlags: 0
@@ -4220,13 +4219,13 @@ Camera:
     serializedVersion: 2
     x: 0
     y: 0
-    width: 0.48541668
-    height: 0.5185185
+    width: 1
+    height: 1
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 34
   orthographic: 1
-  orthographic size: 11.25
+  orthographic size: 6.75
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2

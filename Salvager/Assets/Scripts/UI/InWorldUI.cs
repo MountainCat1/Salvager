@@ -22,7 +22,7 @@ namespace UI
         private void Update()
         {
             // TODO: optimize this
-            var playerUnits = _creatureManager.GetCreatures().Where(x => x.Team == Teams.Player).ToList();
+            var playerUnits = _creatureManager.GetCreaturesAliveActive().Where(x => x.Team == Teams.Player).ToList();
             
             if(playerUnits.Any(x => x.Controller.CanSee(hostCreature)))
             {

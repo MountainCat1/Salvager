@@ -18,7 +18,7 @@ namespace Components
         public float CurrentValue => _rangeValue.CurrentValue;
         public float MinValue => _rangeValue.MinValue;
         public float MaxValue => _rangeValue.MaxValue;
-
+        public bool Alive => _rangeValue.CurrentValue > _rangeValue.MinValue;
         // Fields
         private RangedValue _rangeValue;
 

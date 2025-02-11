@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1537128874834053102}
   - component: {fileID: 9141754217765262000}
   - component: {fileID: 6832043767885695631}
-  - component: {fileID: -6730975168039837459}
+  - component: {fileID: 7021054436024638889}
   m_Layer: 11
   m_Name: Elevator
   m_TagString: Untagged
@@ -144,7 +144,7 @@ CircleCollider2D:
   m_Offset: {x: 0.09375, y: 0.34375}
   serializedVersion: 2
   m_Radius: 0.40625
---- !u!114 &-6730975168039837459
+--- !u!114 &7021054436024638889
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -153,15 +153,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 8667083905584706207}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ba3344102780433c8c77b03927435f94, type: 3}
+  m_Script: {fileID: 11500000, guid: 056648355c5b4c61b6f082597f1c56e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   interactionTime: 3
   interactionSound: {fileID: 8300000, guid: f55c4d302f66c1f4ba3a397272742d15, type: 3}
   useOnce: 0
-  message: Entering
+  message: Entering...
   requiredItems: []
-  signal: 0
 --- !u!1001 &556012255856125039
 PrefabInstance:
   m_ObjectHideFlags: 0

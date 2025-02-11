@@ -12,6 +12,7 @@ namespace Managers
         event Action VictoryConditionsChanged;
         event Action VictoryAchieved;
         public IEnumerable<KeyValuePair<VictoryCondition, bool>>  VictoryConditions { get; }
+        void Check();
     }
 
     public class VictoryConditionManager : MonoBehaviour, IVictoryConditionManager
@@ -58,7 +59,7 @@ namespace Managers
             }
         }
 
-        private void UpdateWinConditions(bool force = false)
+        private void UpdateWinConditions()
         {
             foreach (var condition in victoryConditions)
             {
@@ -72,6 +73,11 @@ namespace Managers
             {
                 VictoryAchieved?.Invoke();
             }
+        }
+        
+        public void Check()
+        {
+            UpdateWinConditions();
         }
     }
 }

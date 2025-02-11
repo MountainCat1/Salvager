@@ -9,6 +9,8 @@ namespace Managers
     {
         event Action<Creature> CreatureSpawned;
         ICollection<Creature> GetCreatures();
+        IEnumerable<Creature> GetCreaturesAliveActive();
+        IEnumerable<Creature> GetAliveCreatures();
         public Creature SpawnCreature(Creature creaturePrefab, Vector3 position, Transform parent = null);
 
         public Creature SpawnCreature(Creature creaturePrefab, Vector2Int position, Transform parent = null)
@@ -33,6 +35,16 @@ namespace Managers
 
                 HandleNewCreature(creature);
             }
+        }
+
+        public IEnumerable<Creature> GetCreaturesAliveActive()
+        {
+            return _creatures.FindAll(x => x.Health.Alive && x.gameObject.activeInHierarchy);
+        }
+
+        public IEnumerable<Creature> GetAliveCreatures()
+        {
+            return _creatures.FindAll(x => x.Health.Alive && x.gameObject.activeInHierarchy);
         }
 
         public Creature SpawnCreature(Creature creaturePrefab, Vector3 position, Transform parent = null)

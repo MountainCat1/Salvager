@@ -10,161 +10,115 @@ namespace Managers.LevelSelector
 {
     public interface IRegionGenerator
     {
-        public Region Generate();
+        Region Generate();
     }
 
     public class RegionGenerator : MonoBehaviour, IRegionGenerator
     {
-        // Dependencies
         [Inject] private ILocationGenerator _locationGenerator;
         
-        // Serialized Fields
-        [SerializeField] int count = 10;
-        [SerializeField] int minJumps = 3;
-        [SerializeField] float maxJumpDistance = 0.4f;
-        [SerializeField] float minDistance = 0.2f;
+        [SerializeField] private int _count = 10;
+        [SerializeField] private int _minJumps = 3;
+        [SerializeField] private float _maxJumpDistance = 0.4f;
+        [SerializeField] private float _minDistance = 0.2f;
 
         public Region Generate()
         {
-            var region = GenerateLevels(count, minJumps, maxJumpDistance, minDistance);
+            return GenerateLevels(_count, _minJumps, _maxJumpDistance, _minDistance);
+        }
 
+        private Region GenerateLevels(int count, int minJumps, float maxJumpDistance, float minDistance)
+        {
+            var region = new Region { Name = Names.Regions.RandomElement() };
+            var locations = GenerateLocations(count, minDistance);
+
+            if (locations.Count == 0) return region;
+
+            AssignStartAndEnd(locations);
+            GenerateConnections(locations, maxJumpDistance);
+            EnsureGraphConnectivity(locations);
+            locations.ForEach(region.AddLocation);
+            
+            Debug.Log($"Generated {count} levels with minDistance: {minDistance}.");
             return region;
         }
 
-        public Region GenerateLevels(
-            int count,
-            int minJumps,
-            float maxJumpDistance,
-            float minDistance = 0.1f)
+        private List<Location> GenerateLocations(int count, float minDistance)
         {
-            var region = new Region();
-            region.Name = Names.Regions.RandomElement();
-            
-            List<Location> locations = new();
+            var locations = new List<Location>();
+            var positions = new List<Vector2>();
+            const int maxAttempts = 100;
 
-            List<Vector2> positions = new();
-            int maxAttempts = 100;
-
-            // 1. Generate levels with unique positions
             for (int i = 0; i < count; i++)
             {
-                Vector2 randomPosition;
-                int attempts = 0;
+                Vector2 position = GenerateUniquePosition(positions, minDistance, maxAttempts);
+                if (position == Vector2.negativeInfinity) continue;
 
-                do
-                {
-                    randomPosition = new Vector2(UnityEngine.Random.value, UnityEngine.Random.value);
-                    attempts++;
-                } while (positions.Any(pos => Vector2.Distance(pos, randomPosition) < minDistance) &&
-                         attempts < maxAttempts);
-
-                if (attempts >= maxAttempts)
-                {
-                    Debug.LogWarning($"Failed to place level {i} with min distance {minDistance}");
-                    continue;
-                }
-
-                Location location = _locationGenerator.GenerateLocation();
-                location.Position = randomPosition;
-
+                var location = _locationGenerator.GenerateLocation();
+                location.Position = position;
                 locations.Add(location);
-                positions.Add(randomPosition);
+                positions.Add(position);
             }
-
-            // 2. Select start and end levels ensuring minJumps
-            Location startLocation = locations[UnityEngine.Random.Range(0, locations.Count)];
-            Location endLocation = GetFarthestLevel(startLocation, positions, locations);
-
-            startLocation.Type = LevelType.StartNode;
-            endLocation.Type = LevelType.EndNode;
-
-            // 3. Generate initial connections with maxJumpDistance
-            GenerateConnections(positions, maxJumpDistance, locations);
-
-            // 4. Ensure the graph is fully connected
-            EnsureGraphConnectivity(locations);
-
-            Debug.Log(
-                $"Generated {count} levels with minDistance: {minDistance}. Start: {startLocation.Id}, End: {endLocation.Id}");
-
-            foreach (var location in locations)
-            {
-                region.AddLocation(location);
-            }
-            
-            return region;
+            return locations;
         }
 
-        private void GenerateConnections(List<Vector2> positions, float maxJumpDistance, List<Location> locations)
+        private Vector2 GenerateUniquePosition(List<Vector2> positions, float minDistance, int maxAttempts)
         {
-            for (int i = 0; i < locations.Count; i++)
+            int attempts = 0;
+            Vector2 randomPosition;
+
+            do
             {
-                Location currentLocation = locations[i];
-                Vector2 currentPosition = positions[i];
+                randomPosition = new Vector2(Random.value, Random.value);
+                attempts++;
+            } while (positions.Any(pos => Vector2.Distance(pos, randomPosition) < minDistance) && attempts < maxAttempts);
 
-                var validNeighbors = locations.Select((level, index) => (level, pos: positions[index]))
-                    .Where(t => t.level != currentLocation &&
-                                Vector2.Distance(currentPosition, t.pos) <= maxJumpDistance)
-                    .OrderBy(t => Vector2.Distance(currentPosition, t.pos))
+            return attempts >= maxAttempts ? Vector2.negativeInfinity : randomPosition;
+        }
+
+        private void AssignStartAndEnd(List<Location> locations)
+        {
+            var startLocation = locations[Random.Range(0, locations.Count)];
+            var endLocation = locations.OrderByDescending(l => Vector2.Distance(startLocation.Position, l.Position)).First();
+            startLocation.Type = LevelType.StartNode;
+            endLocation.Type = LevelType.EndNode;
+        }
+
+        private void GenerateConnections(List<Location> locations, float maxJumpDistance)
+        {
+            foreach (var location in locations)
+            {
+                location.Neighbours = locations
+                    .Where(l => l != location && Vector2.Distance(location.Position, l.Position) <= maxJumpDistance)
+                    .OrderBy(l => Vector2.Distance(location.Position, l.Position))
                     .Take(4)
-                    .Select(t => t.level)
                     .ToList();
-
-                currentLocation.Neighbours.AddRange(validNeighbors);
             }
         }
 
         private void EnsureGraphConnectivity(List<Location> locations)
         {
-            HashSet<Location> visited = new HashSet<Location>();
-            Stack<Location> stack = new Stack<Location>();
+            var visited = new HashSet<Location>();
+            var stack = new Stack<Location>();
             stack.Push(locations[0]);
 
             while (stack.Count > 0)
             {
-                Location current = stack.Pop();
-                if (!visited.Contains(current))
-                {
-                    visited.Add(current);
-                    foreach (var neighbor in current.Neighbours)
-                    {
-                        if (!visited.Contains(neighbor))
-                            stack.Push(neighbor);
-                    }
-                }
+                var current = stack.Pop();
+                if (!visited.Add(current)) continue;
+                current.Neighbours.ForEach(neighbor => stack.Push(neighbor));
             }
 
-            foreach (var level in locations)
+            foreach (var location in locations.Where(location => !visited.Contains(location)))
             {
-                if (!visited.Contains(level))
+                var closest = visited.OrderBy(l => Vector2.Distance(l.Position, location.Position)).FirstOrDefault();
+                if (closest != null)
                 {
-                    Location closestConnectedLocation = visited
-                        .OrderBy(l => Vector2.Distance(GetPosition(l, locations), GetPosition(level, locations)))
-                        .FirstOrDefault();
-
-                    if (closestConnectedLocation != null)
-                    {
-                        level.Neighbours.Add(closestConnectedLocation);
-                        closestConnectedLocation.Neighbours.Add(level);
-                        visited.Add(level);
-                    }
+                    location.Neighbours.Add(closest);
+                    closest.Neighbours.Add(location);
+                    visited.Add(location);
                 }
             }
-        }
-
-        private Location GetFarthestLevel(Location startLocation, List<Vector2> positions, List<Location> locations)
-        {
-            int startIndex = locations.IndexOf(startLocation);
-            return locations
-                .Select((level, index) => (level, pos: positions[index]))
-                .OrderByDescending(t => Vector2.Distance(positions[startIndex], t.pos))
-                .FirstOrDefault().level;
-        }
-
-        private Vector2 GetPosition(Location location, List<Location> locations)
-        {
-            int index = locations.IndexOf(location);
-            return index >= 0 ? new Vector2(index / 10f, index % 10f) : Vector2.zero; // Dummy mapping if needed
         }
     }
 }

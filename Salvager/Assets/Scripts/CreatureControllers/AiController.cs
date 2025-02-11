@@ -211,7 +211,7 @@ namespace CreatureControllers
                 _memorizedCreatures.Remove(key);
             }
 
-            foreach (var creature in CreatureManager.GetCreatures())
+            foreach (var creature in CreatureManager.GetCreaturesAliveActive())
             {
                 if (CanSee(creature))
                 {
