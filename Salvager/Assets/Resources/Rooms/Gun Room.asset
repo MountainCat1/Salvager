@@ -14,7 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Name>k__BackingField: Misc Room
   <Props>k__BackingField:
-  - {fileID: 11400000, guid: 16401998db8f2d54dba93f2af7dfb1f8, type: 2}
+  - prefab: {fileID: 8667083905584706207, guid: 64923f5b43707624b9a71836ce417d75, type: 3}
+    position: 0
+    offset: {x: 0, y: 0}
+    count: 2
   <StartingRoom>k__BackingField: 1
   <Count>k__BackingField: 1
   <Enemies>k__BackingField:

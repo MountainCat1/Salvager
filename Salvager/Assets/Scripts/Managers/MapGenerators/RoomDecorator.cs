@@ -17,6 +17,8 @@ public partial class RoomDecorator : MonoBehaviour, IRoomDecorator
 {
     [Inject] private DiContainer _context = null!;
     [Inject] private IDataManager _dataManager = null!;
+
+    [SerializeField] private GameObject roomMarker;
     
     private List<Vector2> _occupiedPositions = new();
 
@@ -55,6 +57,12 @@ public partial class RoomDecorator : MonoBehaviour, IRoomDecorator
     private void DecorateRoom(RoomData roomData, RoomBlueprint blueprint, float tileSize)
     {
         Debug.Log($"Decorating room {roomData.RoomID} with blueprint {blueprint.Name}");
+        
+        var roomCenterX = (float)roomData.Positions.Average(i => i.x);
+        var roomCenterY = (float)roomData.Positions.Average(i => i.y);
+        var roomCenter = new Vector2(roomCenterX, roomCenterY) * tileSize;
+        var marker = Instantiate(roomMarker, roomCenter, Quaternion.identity);
+        marker.name = $"{blueprint.name} ({roomData.RoomID})";
         
         // Spawn props
         foreach (var prop in blueprint.Props)

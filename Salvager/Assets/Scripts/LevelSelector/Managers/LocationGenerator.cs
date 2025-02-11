@@ -1,6 +1,5 @@
 using Services.MapGenerators;
 using UnityEngine;
-using UnityEngine.Serialization;
 using Utilities;
 
 namespace LevelSelector.Managers
@@ -13,6 +12,9 @@ namespace LevelSelector.Managers
     public class LocationGenerator : MonoBehaviour, ILocationGenerator
     {
         [SerializeField] private WeightedLocationFeature weightedLocationFeatures;
+        [SerializeField] private WeightedLocationFeature weightedSecondaryLocationFeatures;
+        [SerializeField] private int maxSecondaryFeatures = 3;
+        [SerializeField] private int minSecondaryFeatures = 1;
         
         public Location GenerateLocation()
         {
@@ -25,6 +27,14 @@ namespace LevelSelector.Managers
             var mainFeature = weightedLocationFeatures.GetRandomItem().ToData();
             
             location.Features.Add(mainFeature);
+            
+            var secondaryFeatures = weightedSecondaryLocationFeatures
+                .GetRandomItems(Random.Range(minSecondaryFeatures, maxSecondaryFeatures));
+
+            foreach (var secondaryFeature in secondaryFeatures)
+            {
+                location.Features.Add(secondaryFeature.ToData());
+            }
 
             return location;
         }

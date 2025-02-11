@@ -19,8 +19,6 @@ namespace Managers.LevelSelector
         [Inject] private ILocationGenerator _locationGenerator;
         
         // Serialized Fields
-        [SerializeField] private RoomBlueprint[] rooms;
-
         [SerializeField] int count = 10;
         [SerializeField] int minJumps = 3;
         [SerializeField] float maxJumpDistance = 0.4f;
@@ -28,13 +26,12 @@ namespace Managers.LevelSelector
 
         public Region Generate()
         {
-            var region = GenerateLevels(rooms, count, minJumps, maxJumpDistance, minDistance);
+            var region = GenerateLevels(count, minJumps, maxJumpDistance, minDistance);
 
             return region;
         }
 
         public Region GenerateLevels(
-            RoomBlueprint[] blueprints,
             int count,
             int minJumps,
             float maxJumpDistance,

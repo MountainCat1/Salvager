@@ -1626,7 +1626,7 @@ MonoBehaviour:
     dataString: UEsDBBQAAAgIAAAIIey5rnztvQIAAPcFAAALACQAZ3JhcGgwLmpzb24KACAAAAAAAAEAGAAAgD7V3rGdAQCAPtXesZ0BAIA+1d6xnQF1VE1v4jAQ/SvI52WVUOi2e9sFSvfQFpWuelh6MPGEWBg78keBVvz3nXESElitVAl35s34veeZfDKpXQmZN3ZmpXgwAtj3HqMz+9Jrk/ew52ujF/IDGsyrFL4gEI+YZ+6lwXhKZc5swVuZ/dBrReAEg0HL3NjtVKxhbJx3GM65coApazxVawx99tgef/q3VHLA0+AbnT7wdJv0jnjMQHuwLXTUIEcNsMIFnSm+LUEQ6RaeJg0eTxGoUVCNIfKZUUq6mg3zhzKqXZQFWCC5QnIUFxkkX4cYKECuC09Uu9VPee7A19otP0ykRZeqtuynqazbcrepqL1zFeiiQZoOIquq68M/gH4a07k12/vm4kqTL2S2eeaHjDvfMbcbnrTc02jRjqsNXyl4LUA/mpk1QQtMehuoNDgYTNp/T9rGBWSbNl5RvQiGsvW8cbzzQMeofr/wUJ5kVHbW0d8O3EKZ6H7dkjJ1JI4HWHy5XygnDo+rL8AoccT6F77uTlmduJPWeUzVHtRRws7xhUCAzqC2vU8ATfRWJljqxaaRK5kR/NhYDbZ7RQmaK3+YY0t/OQMXuf9X3XHauJpenWsW6aIkhlt8klyk5mZ3emwbFLg4083pzxu9givM7gFc8RS8krpjNyUe0eGx0boa3a7UpmwRbM6zTpmHvQ8WJtzzeBvSwQET3VI0M1booBTNchQQGaEA+nsjgwuO96oYZo9Gx+U7+43010GK8w1hydUqy5Ob0fA6GQ1vRrd9GF7B6hpgeJPmKb/KWFwhqdFuruaVX/Ur4XjpVovGdWm+h72Z5WXcWmH5biY/tsa1SKlzs8gsgH6qOpzEgsVL8PMipkKizAV4L3UcTPa5ZMpkGxDLU6NlNHa695Yv2y5LVsp34ymyZOP4AVwyCp9WEmf3XcKOLj9rBgqfDsSLVLDlJaUGR3b8C1BLAwQUAAAICAAACCHs0peTuGsAAAB3AAAACQAkAG1ldGEuanNvbgoAIAAAAAAAAQAYAACAPtXesZ0BAIA+1d6xnQEAgD7V3rGdAatWKkstKs7Mz1OyUjDVM9Yz1FFQSi9KLMgoBgqAOaWZKSB2tJKBcVJymoGFqYmZgamJhamlbqqJcWqSWWqqiYVhmmGicbJSLFB9SWVBql9ibipET0BiSUZaZl5KZl66nntRZoo7yGil2FoAUEsBAi0AFAAACAgAAAgh7LmufO29AgAA9wUAAAsAJAAAAAAAAAAAAAAAAAAAAGdyYXBoMC5qc29uCgAgAAAAAAABABgAAIA+1d6xnQEAgD7V3rGdAQCAPtXesZ0BUEsBAi0AFAAACAgAAAgh7NKXk7hrAAAAdwAAAAkAJAAAAAAAAAAAAAAACgMAAG1ldGEuanNvbgoAIAAAAAAAAQAYAACAPtXesZ0BAIA+1d6xnQEAgD7V3rGdAVBLBQYAAAAAAgACALgAAADAAwAAAAA=
     file_cachedStartup: {fileID: 0}
     cacheStartup: 0
-  showNavGraphs: 1
+  showNavGraphs: 0
   showUnwalkableNodes: 1
   debugMode: 0
   debugFloor: 0
@@ -2239,7 +2239,7 @@ MonoBehaviour:
   floorTilemap: {fileID: 1993583554}
   shadowCasterPrefab: {fileID: 2128814770938447571, guid: fac3fcbdfd01d9a4983c80674dc3da84, type: 3}
   margin: -0.4
-  debugClusters: 1
+  debugClusters: 0
 --- !u!4 &1057624905
 Transform:
   m_ObjectHideFlags: 0
@@ -3237,9 +3237,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15a8929fa5816c542b087511ac0ed116, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  roomBlueprints:
-  - {fileID: 11400000, guid: 80862af2aa3895742bea4433fa660e76, type: 2}
-  - {fileID: 11400000, guid: b642ae5ba71064c4fb9f9ba3c0bbd51e, type: 2}
+  roomMarker: {fileID: 8769861987330484471, guid: e6b4f46f5c7c93e45a6e540d53595276, type: 3}
 --- !u!1 &1719529162
 GameObject:
   m_ObjectHideFlags: 0
@@ -4221,8 +4219,8 @@ Camera:
     serializedVersion: 2
     x: 0
     y: 0
-    width: 1
-    height: 1
+    width: 0.48541668
+    height: 0.5185185
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 34

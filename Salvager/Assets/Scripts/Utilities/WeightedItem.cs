@@ -62,6 +62,17 @@ public abstract class WeightedBag<T> : WeightedBagBase
         return default; // Should never reach this point
     }
 
+    public ICollection<T> GetRandomItems(int count)
+    {
+        List<T> result = new();
+        for (int i = 0; i < count; i++)
+        {
+            result.Add(GetRandomItem());
+        }
+        return result;
+    }
+
+
     // Needed to satisfy the base class, so it can return a generic item
     public override object GetRandomItemObject() => GetRandomItem();
 }

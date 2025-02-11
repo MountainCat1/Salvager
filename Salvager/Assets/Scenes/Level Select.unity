@@ -2498,9 +2498,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3438dcd27aab4a48be76d664d24acb0b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rooms:
-  - {fileID: 11400000, guid: 80862af2aa3895742bea4433fa660e76, type: 2}
-  - {fileID: 11400000, guid: b642ae5ba71064c4fb9f9ba3c0bbd51e, type: 2}
   count: 10
   minJumps: 3
   maxJumpDistance: 0.4
@@ -2689,6 +2686,14 @@ MonoBehaviour:
       weight: 50
     - item: {fileID: 11400000, guid: 3df27d19bf5e60542923584fcfc4bfa2, type: 2}
       weight: 50
+  weightedSecondaryLocationFeatures:
+    items:
+    - item: {fileID: 11400000, guid: a0909348ec61c05408cfd0d400597ff5, type: 2}
+      weight: 50
+    - item: {fileID: 11400000, guid: b83a3908a9e95474abf3120d09b9b896, type: 2}
+      weight: 100
+  maxSecondaryFeatures: 3
+  minSecondaryFeatures: 1
 --- !u!1 &1323185433
 GameObject:
   m_ObjectHideFlags: 0

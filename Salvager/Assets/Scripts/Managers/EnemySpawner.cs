@@ -32,10 +32,12 @@ namespace Managers
             _mapData = mapData;
             
             var location = GameManager.GameSettings.Location;
-            int roomsWithEnemies = Random.Range(_minRoomsWithEnemies, _maxRoomsWithEnemies);
+            int roomsWithEnemiesCount = Random.Range(_minRoomsWithEnemies, _maxRoomsWithEnemies);
 
-            SpawnRoomBasedEnemies(roomsWithEnemies);
-            SpawnFeatureBasedEnemies(new Queue<LocationFeatureData>(location.Features));
+            SpawnRoomBasedEnemies(roomsWithEnemiesCount);
+            
+            var featuresWithEnemies = location.Features.Where(x => x.Enemies.Any());
+            SpawnFeatureBasedEnemies(new Queue<LocationFeatureData>(featuresWithEnemies));
         }
 
         private void SpawnRoomBasedEnemies(int roomsWithEnemies)
@@ -54,19 +56,25 @@ namespace Managers
                 }
             }
         }
-
+        
         private void SpawnFeatureBasedEnemies(Queue<LocationFeatureData> featuresQueue)
         {
             foreach (var room in _mapData.GetAllRooms().Where(x => !x.Occupied).OrderBy(_ => Random.value))
             {
                 if (featuresQueue.Count == 0) break;
 
-                var feature = featuresQueue.Dequeue();
+                LocationFeatureData feature = featuresQueue.Dequeue();
                 room.Occupied = true;
+
+                if (feature.Enemies == null || feature.Enemies.Count == 0)
+                {
+                    // If the feature has no enemies, just continue to the next room
+                    continue;
+                }
+
                 int enemiesInRoom = Random.Range(_minEnemiesPerRoom, _maxEnemiesPerRoom);
 
                 var enemy = feature.Enemies.RandomElement().CreatureData;
-                
                 var enemyPrefab = _dataResolver.ResolveCreaturePrefab(enemy);
 
                 for (int i = 0; i < enemiesInRoom; i++)
@@ -79,7 +87,6 @@ namespace Managers
                 }
             }
         }
-        
 
         private Vector2Int? GetRandomFloorPosition(RoomData room)
         {
