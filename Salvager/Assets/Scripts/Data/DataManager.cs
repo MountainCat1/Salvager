@@ -15,6 +15,7 @@ namespace Data
         void SaveData(GameData gameData);
         GameData LoadData();
         GameData GetData();
+        void DeleteData();
     }
 
     public class Vector2Converter : JsonConverter<Vector2>
@@ -58,8 +59,6 @@ namespace Data
 
     public class DataManager : IDataManager
     {
-        [Inject] private IItemManager _itemManager;
-
         private static readonly string SaveFilePath = Path.Combine(Application.persistentDataPath, "saveData.json");
         private GameData _gameData;
 
@@ -143,6 +142,19 @@ namespace Data
         public GameData GetData()
         {
             return _gameData ?? throw new Exception("No game data loaded!");
+        }
+
+        public void DeleteData()
+        {
+            if (File.Exists(SaveFilePath))
+            {
+                File.Delete(SaveFilePath);
+                Debug.Log("Save file deleted.");
+            }
+            else
+            {
+                Debug.LogWarning("Save file not found! Skipping delete.");
+            }
         }
     }
 }

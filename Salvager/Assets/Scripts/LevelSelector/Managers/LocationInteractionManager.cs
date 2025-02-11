@@ -45,17 +45,6 @@ namespace LevelSelector.Managers
         {
             _interactions.Add(new LocationInteraction
             {
-                Message = "Inventory",
-                IsDisplayed = _ => true,
-                IsEnabled = _ => true,
-                OnClick = _ =>
-                {
-                    inventorySlide.TogglePanel();
-                }
-            });   
-            
-            _interactions.Add(new LocationInteraction
-            {
                 Message = "Embark",
                 IsDisplayed = location => _regionManager.GetDistance(Guid.Parse(location.Id), _regionManager.CurrentLocationId) == 1,
                 IsEnabled = _ => true,
@@ -81,6 +70,17 @@ namespace LevelSelector.Managers
                 IsEnabled = _ => false,
                 OnClick = _ => throw new NotImplementedException()
             });
+            
+            _interactions.Add(new LocationInteraction
+            {
+                Message = "Inventory",
+                IsDisplayed = _ => true,
+                IsEnabled = _ => true,
+                OnClick = _ =>
+                {
+                    inventorySlide.TogglePanel();
+                }
+            });   
         }
 
         private void SaveData()

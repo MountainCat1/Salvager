@@ -26,8 +26,9 @@ namespace UI
             {
                 levelNameText.color = Color.red;
             }
-            else if (location.Type == LevelType.StartNode)
+            else if (location.Visited)
             {
+                levelNameText.color = Color.gray;
             }
 
             if (distanceToCurrent == 0)
@@ -46,6 +47,7 @@ namespace UI
                 GetComponentInChildren<Image>().color = new Color(1f, 1f, 1f, 0.5f);
                 selectionMarker.SetActive(false);
             }
+            
             levelNameText.text = location.Name + $" ({distanceToCurrent})";
         }
 

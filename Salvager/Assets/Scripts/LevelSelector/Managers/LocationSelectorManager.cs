@@ -21,7 +21,7 @@ namespace Managers.LevelSelector
         {
             var data = _dataManager.LoadData();
             
-            if(skipLoad || data.Region == null)
+            if(skipLoad || data?.Region == null)
             {
                 var region = _regionGenerator.Generate();
 
