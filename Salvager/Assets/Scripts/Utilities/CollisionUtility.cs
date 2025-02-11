@@ -15,5 +15,6 @@ namespace Utilities
         }
 
         public static int BlockingVisionLayerMask => LayerMask.GetMask("Obstacles", "Walls");
+        public static int UnwalkableLayerMask => LayerMask.GetMask("Obstacles", "Walls");
     }
 }

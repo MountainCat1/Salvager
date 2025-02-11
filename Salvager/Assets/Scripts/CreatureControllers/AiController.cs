@@ -62,6 +62,21 @@ namespace CreatureControllers
                 .Select(x => x.Key)
                 .Where(x => x);
         }
+        
+        protected void PerformMovementTowardsTarget(Creature target)
+        {
+            float radius = Creature.Movement.Collider.radius;
+
+            if (PathClear(target, radius))
+            {
+                Debug.DrawLine(Creature.transform.position, target.transform.position, Color.yellow);
+                MoveStraightToTarget(target.transform.position);
+            }
+            else
+            {
+                MoveViaPathfinding(target.transform.position);
+            }
+        }
 
         // Private Methods
         private void MoveViaPathfinding(Vector2 targetPosition)
@@ -141,6 +156,25 @@ namespace CreatureControllers
                 Creature.SetMovement(Vector2.zero);
                 return;
             }
+            
+            // Check collision with the next node
+            // TODO: Performance optimization needed
+            // This is here so that if we click off the map the pathfinding want to go at the edge of walkable area
+            // on which if creature will stand it would be overlapping with the wall collider
+            // Which ends up in it walking into a wall indefinitely
+            // Alternatively we could check it more rarely,
+            // or make the path update less often
+            // or check for like 0.3s if the creature is not moving and then just make it stop
+            if(Vector2.Distance(Creature.transform.position, targetPosition) < Creature.ColliderSize)
+            {
+                if (Physics2D.OverlapCircle(targetPosition, Creature.Movement.Collider.radius, LayerMask.GetMask("Walls")))
+                {
+                    Creature.SetMovement(Vector2.zero);
+                    PathChanged?.Invoke(Array.Empty<Vector3>());
+                    return;
+                }
+            }
+            
             PathChanged?.Invoke(new Vector3[]{ transform.position, targetPosition });
 
             Creature.SetMovement(direction);
@@ -232,21 +266,6 @@ namespace CreatureControllers
         private void Memorize(Creature creature)
         {
             _memorizedCreatures[creature] = Environment.TickCount;
-        }
-
-        protected void PerformMovementTowardsTarget(Creature target)
-        {
-            float radius = Creature.Movement.Collider.radius;
-
-            if (PathClear(target, radius))
-            {
-                Debug.DrawLine(Creature.transform.position, target.transform.position, Color.yellow);
-                MoveStraightToTarget(target.transform.position);
-            }
-            else
-            {
-                MoveViaPathfinding(target.transform.position);
-            }
         }
 
         protected void PerformMovementTowardsPosition(Vector2 position)

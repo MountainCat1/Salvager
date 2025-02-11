@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Utilities;
 
 public interface IPathfinding
 {
@@ -148,7 +149,7 @@ public class OldPathfinding : MonoBehaviour, IPathfinding
         float distance = direction.magnitude;
 
         // Perform the Raycast
-        RaycastHit2D hit = Physics2D.Raycast(a, direction, distance, _grid.unwalkableMask);
+        RaycastHit2D hit = Physics2D.Raycast(a, direction, distance, CollisionUtility.UnwalkableLayerMask);
         if (hit.collider != null)
         {
             // If a collider is hit on the specified layer, return false
