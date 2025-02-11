@@ -18,6 +18,6 @@ MonoBehaviour:
     position: 0
     offset: {x: 0, y: 0}
     count: 5
-  <StartingRoom>k__BackingField: 1
+  <StartingRoom>k__BackingField: 0
   <Count>k__BackingField: 5
   <Enemies>k__BackingField: []

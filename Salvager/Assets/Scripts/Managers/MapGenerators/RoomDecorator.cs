@@ -20,12 +20,19 @@ public partial class RoomDecorator : MonoBehaviour, IRoomDecorator
 
     [SerializeField] private GameObject roomMarker;
     
+    [SerializeField] private RoomBlueprint startingRoomBlueprint;
+    
     private List<Vector2> _occupiedPositions = new();
 
     public void DecorateRooms(ICollection<RoomData> roomData, float tileSize)
     {
         var roomQueue = new Queue<RoomData>(roomData);
+
+        // Decorate starting room
+        var startingRoom = roomQueue.Dequeue();
+        DecorateRoom(startingRoom, startingRoomBlueprint, tileSize);
         
+        // Decorate other rooms
         var features = GameManager.GameSettings.Location.Features;
 
         foreach (var feature in features)

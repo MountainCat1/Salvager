@@ -23,9 +23,12 @@ namespace UI
             _selectLevel = selectLevel;
 
             if (location.Type == LevelType.EndNode)
+            {
                 levelNameText.color = Color.red;
+            }
             else if (location.Type == LevelType.StartNode)
-                levelNameText.color = Color.green;
+            {
+            }
 
             if (distanceToCurrent == 0)
             {

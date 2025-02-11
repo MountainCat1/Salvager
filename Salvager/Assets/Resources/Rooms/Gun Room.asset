@@ -18,7 +18,7 @@ MonoBehaviour:
     position: 0
     offset: {x: 0, y: 0}
     count: 2
-  <StartingRoom>k__BackingField: 1
+  <StartingRoom>k__BackingField: 0
   <Count>k__BackingField: 1
   <Enemies>k__BackingField:
   - {fileID: 8620425100322646659, guid: d998bd7f561ef9148953be269700cbf9, type: 3}
