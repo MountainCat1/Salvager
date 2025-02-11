@@ -92,6 +92,20 @@ namespace CreatureControllers
                 if(!path.Any())
                     _moveCommandTarget = null;
             };
+
+            MemoryUpdated += () =>
+            {
+                if (_target is not null)
+                {
+                    // If there is a closer target, switch to it
+                    var newTarget = GetNewTarget();
+                    
+                    if (newTarget != _target)
+                    {
+                        SetTarget(newTarget);
+                    }
+                }
+            };
         }
 
         // Private Methods

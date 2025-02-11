@@ -13,6 +13,7 @@ namespace CreatureControllers
     public class AiController : CreatureController
     {
         public event Action<IEnumerable<Vector3>> PathChanged;
+        public event Action MemoryUpdated;
 
         protected Seeker Seeker { get; private set; }
 
@@ -207,6 +208,8 @@ namespace CreatureControllers
                     Memorize(creature);
                 }
             }
+            
+            MemoryUpdated?.Invoke();
         }
 
         private IEnumerator UpdateMemoryPeriodically(float randomOffset)
