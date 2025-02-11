@@ -12,6 +12,7 @@ namespace Installer
         {
             Container.Bind<IDataManager>().To<DataManager>().FromNew().AsSingle().NonLazy();
             Container.Bind<IDataResolver>().To<DataResolver>().FromComponentsInHierarchy().AsSingle().NonLazy();
+            Container.Bind<IItemManager>().To<ItemManager>().FromComponentsInHierarchy().AsSingle();
             Container.Bind<ICrewManager>().To<CrewManager>().FromComponentsInHierarchy().AsSingle().NonLazy();
             Container.Bind<ILocationGenerator>().To<LocationGenerator>().FromComponentsInHierarchy().AsSingle().NonLazy();
             Container.Bind<IRegionGenerator>().To<RegionGenerator>().FromComponentsInHierarchy().AsSingle().NonLazy();

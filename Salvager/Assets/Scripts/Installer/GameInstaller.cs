@@ -10,6 +10,8 @@ public class GameInstaller : MonoInstaller<GameInstaller>
     public override void InstallBindings()
     {
         Container.Bind<IDataManager>().To<DataManager>().FromNew().AsSingle().NonLazy();
+        
+        Container.Bind<IItemManager>().To<ItemManager>().FromComponentsInHierarchy().AsSingle();
         Container.Bind<ISignalManager>().To<SignalManager>().FromNew().AsSingle().NonLazy();
         Container.Bind<ISpawnerManager>().To<SpawnerManager>().FromComponentsInHierarchy().AsSingle();
         Container.Bind<IPoolingManager>().To<PoolingManager>().FromComponentsInHierarchy().AsSingle();

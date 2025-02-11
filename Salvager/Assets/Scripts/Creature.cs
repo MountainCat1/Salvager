@@ -167,7 +167,7 @@ public class Creature : Entity
         SightRange = data.SightRange;
         Team = data.Team;
         InteractionRange = data.InteractionRange;
-        Inventory.Initialize(data.Inventory);
+        Inventory.SetData(data.Inventory);
     }
 
     public Interaction Interact(IInteractable interactionTarget)

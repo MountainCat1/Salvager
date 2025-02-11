@@ -217,13 +217,7 @@ public class InventoryData
         var data = new InventoryData { Items = new List<ItemData>() };
         foreach (var item in inventory.Items)
         {
-            data.Items.Add(new ItemData
-            {
-                Identifier = item.GetIdentifier(),
-                Count = item.Count,
-                Icon = item.Icon.name,
-                Name = item.Name
-            });
+            data.Items.Add(ItemData.FromItem(item));
         }
 
         return data;

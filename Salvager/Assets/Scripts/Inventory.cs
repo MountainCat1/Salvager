@@ -164,11 +164,11 @@ public class Inventory
         ItemUsed?.Invoke(item);
     }
 
-    public void Initialize(InventoryData dataInventory)
+    public void SetData(InventoryData dataInventory)
     {
         foreach (var itemData in dataInventory.Items)
         {
-            var itemPrefab = _itemManager.GetItemPrefab(itemData.Identifier);
+            var itemPrefab = _itemManager.InstantiateItem(itemData);
             var item = AddItemFromPrefab(itemPrefab);
             item.Count = itemData.Count;
         }

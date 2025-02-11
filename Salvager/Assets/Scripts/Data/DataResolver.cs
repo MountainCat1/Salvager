@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Items;
 using UnityEngine;
 using UnityEngine.Serialization;
 using Zenject;
@@ -15,6 +16,8 @@ namespace Data
     
     public class DataResolver : MonoBehaviour, IDataResolver
     {
+        [Inject] private DiContainer _diContainer;
+        
         [SerializeField] private Creature creaturePrefab; 
 
         private Sprite[] _itemIcons = Array.Empty<Sprite>();

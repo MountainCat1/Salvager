@@ -50,5 +50,11 @@ namespace Items
          
             Debug.Log($"{creature} picked up item " + Name);
         }
+
+        public void SetData(ItemData itemData)
+        {
+            Name = itemData.Name;
+            Count = itemData.Count;
+        }
     }
 }

@@ -46,7 +46,7 @@ namespace UI
 
         private string GetDescription(ItemData data)
         {
-            var item = _itemManager.GetItemPrefab(data.Identifier);
+            var item = _itemManager.GetItemPrefab(data.Identifier); // TODO: we should not rely on prefab i think but not sure
 
             switch (item)
             {
