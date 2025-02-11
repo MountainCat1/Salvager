@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6f327af661d9bc94abe3f843bc3401fe, type: 3}
-  m_Name: Misc Room
+  m_Name: Storage Room
   m_EditorClassIdentifier: 
   <Name>k__BackingField: Misc Room
   <Props>k__BackingField:
-  - prefab: {fileID: 8667083905584706207, guid: f9e1f66f5041e35459eb55d4d1b4423f, type: 3}
+  - prefab: {fileID: 8667083905584706207, guid: 63111e478a9f1fb4db996dd4ad9dd66a, type: 3}
     position: 0
     offset: {x: 0, y: 0}
-    count: 5
+    count: 7
   <StartingRoom>k__BackingField: 1
-  <Count>k__BackingField: 5
+  <Count>k__BackingField: 2
   <Enemies>k__BackingField: []

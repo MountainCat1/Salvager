@@ -68,7 +68,7 @@ namespace UI
 
             foreach (var feature in selectedLocation.Features)
             {
-                description += $"{feature.Description}\n";
+                description += $"* {feature.Description}\n";
             }
             
             return description;

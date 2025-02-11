@@ -2692,6 +2692,8 @@ MonoBehaviour:
       weight: 50
     - item: {fileID: 11400000, guid: b83a3908a9e95474abf3120d09b9b896, type: 2}
       weight: 100
+    - item: {fileID: 11400000, guid: 5d38bbf8b38b28d479dc544a35dcc03d, type: 2}
+      weight: 150
   maxSecondaryFeatures: 3
   minSecondaryFeatures: 1
 --- !u!1 &1323185433
