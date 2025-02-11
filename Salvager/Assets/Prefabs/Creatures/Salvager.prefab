@@ -173,7 +173,7 @@ MonoBehaviour:
   deathSounds: []
   hitSounds:
   - {fileID: 8300000, guid: 0f8ca611ef760ea4d9b0d6b1e7c9bfbf, type: 3}
-  chanceToPlayHitSound: 1
+  chanceToPlayHitSound: 0.5
   randomPitch: 0.3
 --- !u!1 &1469204519407353337
 GameObject:

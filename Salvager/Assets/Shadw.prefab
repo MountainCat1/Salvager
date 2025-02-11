@@ -36,6 +36,10 @@ PrefabInstance:
       propertyPath: m_DrawMode
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3626916397498700004, guid: 4c99aedf8da91454eb6650970445a28f, type: 3}
+      propertyPath: m_SortingOrder
+      value: -6
+      objectReference: {fileID: 0}
     - target: {fileID: 7878350319992209165, guid: 4c99aedf8da91454eb6650970445a28f, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
