@@ -97,11 +97,12 @@ namespace UI
             var levelUIComponents = levelsParent.GetComponentsInChildren<LevelEntryUI>();
 
             var createdConnections = new List<(Location, Location)>();
-            foreach (var level in _regionManager.Region.Locations.OrderBy(x => x.DistanceToCurrent))
+            foreach (var level in _regionManager.Region.Locations
+                         .OrderBy(x => _regionManager.GetDistance(_regionManager.CurrentLocationId, x.Id)))
             {
                 UILineRenderer prefab = null;
 
-                var distanceToCurrent = level.DistanceToCurrent;
+                var distanceToCurrent = _regionManager.GetDistance(_regionManager.CurrentLocationId, level.Id);
 
                 if (distanceToCurrent == 0)
                     prefab = linePrefab;

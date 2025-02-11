@@ -17,7 +17,6 @@ namespace Managers
     {
         public LocationData Location { get; set; }
         public GenerateMapSettings Settings { get; set; }
-        public RoomBlueprint[] RoomBlueprints { get; set; }
         public string Name { get; set; }
 
     }

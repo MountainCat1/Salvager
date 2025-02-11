@@ -14,6 +14,7 @@ namespace Data
         void SaveData();
         void SaveData(GameData gameData);
         GameData LoadData();
+        GameData GetData();
     }
 
     public class Vector2Converter : JsonConverter<Vector2>
@@ -137,6 +138,11 @@ namespace Data
             }
 
             return null;
+        }
+
+        public GameData GetData()
+        {
+            return _gameData ?? throw new Exception("No game data loaded!");
         }
     }
 }

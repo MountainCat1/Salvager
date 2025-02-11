@@ -17,6 +17,7 @@ namespace Installer
             Container.Bind<ILocationGenerator>().To<LocationGenerator>().FromComponentsInHierarchy().AsSingle().NonLazy();
             Container.Bind<IRegionGenerator>().To<RegionGenerator>().FromComponentsInHierarchy().AsSingle().NonLazy();
             Container.Bind<IRegionManager>().To<RegionManager>().FromComponentsInHierarchy().AsSingle().NonLazy();
+            Container.Bind<ILocationInteractionManager>().To<LocationInteractionManager>().FromComponentsInHierarchy().AsSingle().NonLazy();
         }        
     }
 }

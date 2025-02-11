@@ -77,10 +77,6 @@ namespace Managers.LevelSelector
             CurrentLocation = selectedLocation;
             CurrentLocationId = selectedLocation.Id;
 
-            foreach (var location in Region.Locations)
-            {
-                location.DistanceToCurrent = GetDistance(location, CurrentLocation);
-            }
 
             RegionChanged?.Invoke();
         }
@@ -93,11 +89,6 @@ namespace Managers.LevelSelector
             CurrentLocationId = currentLocationId;
 
             CurrentLocation = region.Locations.First(l => l.Id == currentLocationId);
-
-            foreach (var location in region.Locations)
-            {
-                location.DistanceToCurrent = GetDistance(location, CurrentLocation);
-            }
 
             RegionChanged?.Invoke();
         }

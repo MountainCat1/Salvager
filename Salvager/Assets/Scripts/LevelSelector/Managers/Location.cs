@@ -25,7 +25,7 @@ public class Location
     public LevelType Type { get; set; } = LevelType.Default;
     public List<Location> Neighbours { get; set; } = new List<Location>();
     public Vector2 Position { get; set; }
-    public int DistanceToCurrent { get; set; }
+    public bool Visited { get; set; } = false;
     public List<LocationFeatureData> Features { get; set;  } = new();
 
     // Serialized fields

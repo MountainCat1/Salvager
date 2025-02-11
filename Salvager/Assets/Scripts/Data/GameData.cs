@@ -103,6 +103,7 @@ public class LocationData
     public string Id;
     public string Name;
     public Vector2 Position;
+    public bool Visited;
     public GenerateMapSettingsData MapSettings;
     public RoomBlueprint[] Blueprints;
     public LevelType Type;
@@ -120,7 +121,8 @@ public class LocationData
             Type = location.Type,
             Position = location.Position,
             Neighbours = location.Neighbours.Select(x => x.Id.ToString()).ToArray(),
-            Features = location.Features.ToArray()
+            Features = location.Features.ToArray(),
+            Visited = location.Visited
         };
     }
 
@@ -134,6 +136,7 @@ public class LocationData
         level.Type = locationData.Type;
         level.Position = locationData.Position;
         level.Features = locationData.Features.ToList();
+        level.Visited = locationData.Visited;
 
         return level;
     }

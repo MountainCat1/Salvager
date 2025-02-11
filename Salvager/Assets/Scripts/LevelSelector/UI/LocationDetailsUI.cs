@@ -1,8 +1,13 @@
+using System.Linq;
+using Data;
+using LevelSelector.Managers;
 using Managers;
 using Managers.LevelSelector;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
+using UnityEngine.UI;
 using Utilities;
 using Zenject;
 
@@ -11,6 +16,8 @@ namespace UI
     public class LocationDetailsUI : MonoBehaviour
     {
         [Inject] private IRegionManager _regionManager;
+        [Inject] private IDataManager _dataManager;
+        [Inject] private ILocationInteractionManager _locationInteractionManager;
         
         [SerializeField] private LevelSelectorUI levelSelectorUI;
         [SerializeField] private TextMeshProUGUI nameText;
@@ -18,8 +25,8 @@ namespace UI
         
         [SerializeField] private SceneReference levelScene;
 
-        [SerializeField] private GameObject currentLocationUI;
-        [SerializeField] private GameObject notCurrentLocationUI; 
+        [SerializeField] private Transform locationInteractionsParent;
+        [SerializeField] private Button buttonPrefab;
         
         private Location _selectedLocation;
 
@@ -44,21 +51,26 @@ namespace UI
             // Update UI
             nameText.text = _selectedLocation.Name;
             descriptionText.text = ConstructDescription(_selectedLocation);
+
+            var locationData = _dataManager
+                .GetData().Region.Locations
+                .First(x => x.Id == _selectedLocation.Id.ToString());
+
+            foreach (Transform child in locationInteractionsParent)
+            {
+                Destroy(child.gameObject);
+            }
             
-            if(_selectedLocation.DistanceToCurrent == 0)
+            foreach (var locationInteraction in _locationInteractionManager.Interactions)
             {
-                currentLocationUI.SetActive(true);
-                notCurrentLocationUI.SetActive(false);
-            }
-            else if(_selectedLocation.DistanceToCurrent == 1)
-            {
-                currentLocationUI.SetActive(false);
-                notCurrentLocationUI.SetActive(true);
-            }
-            else
-            {
-                currentLocationUI.SetActive(false);
-                notCurrentLocationUI.SetActive(false);
+                if(!locationInteraction.IsDisplayed(locationData))
+                    continue;
+                
+                var button = Instantiate(buttonPrefab, locationInteractionsParent);
+                button.onClick.AddListener(() => locationInteraction.OnClick(locationData));
+                
+                button.GetComponentInChildren<TextMeshProUGUI>().text = locationInteraction.Message;
+                button.interactable = locationInteraction.IsEnabled(locationData);
             }
         }
 
@@ -72,42 +84,6 @@ namespace UI
             }
             
             return description;
-        }
-
-        // Button Callbacks
-        public void Embark()
-        {
-            if (_selectedLocation == null)
-            {
-                Debug.LogError("No level selected!");
-                return;
-            }
-            
-            Debug.Log($"Embarking on level: {_selectedLocation.Name}");
-            
-            _regionManager.ChangeCurrentLocation(_selectedLocation);
-        }
-
-        public void LoadLevel()
-        {
-            if (_selectedLocation == null)
-            {
-                Debug.LogError("No level selected!");
-                return;
-            }
-            
-            Debug.Log($"Loading level: {_selectedLocation.Name}");
-            
-            GameManager.GameSettings = new GameSettings
-            {
-                Settings = _selectedLocation.Settings,
-                RoomBlueprints = _selectedLocation.RoomBlueprints,
-                Name = _selectedLocation.Name,
-                Location = LocationData.FromLocation(_selectedLocation)
-            };
-            
-            // Load level scene
-            SceneManager.LoadScene(levelScene);
         }
     }
 }
