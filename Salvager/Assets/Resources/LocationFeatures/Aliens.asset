@@ -15,3 +15,6 @@ MonoBehaviour:
   description: We detect non-human activity
   enemies:
   - Creature: {fileID: 8620425100322646659, guid: 0ca65a409582d9446950d7d4bddbaabd, type: 3}
+  roomBlueprints:
+  - {fileID: 11400000, guid: b642ae5ba71064c4fb9f9ba3c0bbd51e, type: 2}
+  - {fileID: 11400000, guid: 4f1afa5f78a98d540824db7cfd609504, type: 2}

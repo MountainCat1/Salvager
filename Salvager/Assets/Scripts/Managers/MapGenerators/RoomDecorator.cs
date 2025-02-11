@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
+using Data;
+using Managers;
 using Services.MapGenerators;
 using UnityEngine;
 using Utilities;
@@ -14,19 +16,38 @@ public interface IRoomDecorator
 public partial class RoomDecorator : MonoBehaviour, IRoomDecorator
 {
     [Inject] private DiContainer _context = null!;
-    [SerializeField] private List<RoomBlueprint> roomBlueprints = new();
+    [Inject] private IDataManager _dataManager = null!;
     
     private List<Vector2> _occupiedPositions = new();
 
     public void DecorateRooms(ICollection<RoomData> roomData, float tileSize)
     {
-        // TODO: Implement room decoration blueprint selection
         var roomQueue = new Queue<RoomData>(roomData);
-        foreach (var blueprint in roomBlueprints)
+        
+        var features = GameManager.GameSettings.Location.Features;
+
+        foreach (var feature in features)
         {
-            for (int i = 0; i < blueprint.Count; i++)
+            foreach (var blueprint in feature.RoomBlueprints)
             {
-                DecorateRoom(roomQueue.Dequeue(), blueprint, tileSize);
+                var roomBlueprint = Resources.Load($"Rooms/{blueprint}") as RoomBlueprint;
+                
+                if(roomBlueprint is null)
+                {
+                    Debug.LogError($"Room blueprint {blueprint} not found");
+                    continue;
+                }
+                
+                for (int i = 0; i < roomBlueprint.Count; i++)
+                {
+                    if(roomQueue.Count == 0)
+                    {
+                        Debug.LogError("Not enough rooms to decorate");
+                        break;
+                    }
+                    
+                    DecorateRoom(roomQueue.Dequeue(), roomBlueprint, tileSize);
+                }
             }
         }
     }

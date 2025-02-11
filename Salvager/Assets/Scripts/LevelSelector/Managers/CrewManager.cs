@@ -84,15 +84,11 @@ namespace Managers
             return new CreatureData()
             {
                 Name = $"{Names.Human.RandomElement()} {Surnames.Human.RandomElement()}",
-                InteractionRange = 1.5f,
                 SightRange = 5f,
                 Inventory = new InventoryData()
                 {
                 },
-                Team = Teams.Player,
-                State = CreatureState.Idle,
                 CreatureID = Guid.NewGuid().ToString(),
-                XpAmount = 0
             };
         }
     }

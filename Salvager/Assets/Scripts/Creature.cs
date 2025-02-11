@@ -162,11 +162,7 @@ public class Creature : Entity
     public void Initialize(CreatureData data)
     {
         name = data.Name;
-        State = data.State;
-        XpAmount = data.XpAmount;
         SightRange = data.SightRange;
-        Team = data.Team;
-        InteractionRange = data.InteractionRange;
         Inventory.SetData(data.Inventory);
     }
 

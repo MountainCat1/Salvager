@@ -16,6 +16,7 @@ namespace LevelSelector.Managers
     public class LocationFeature : ScriptableObject {
         public string description = string.Empty;
         public List<FeatureEnemies> enemies = new();
+        public List<RoomBlueprint> roomBlueprints = new();
         
         public LocationFeatureData ToData()
         {
@@ -24,6 +25,7 @@ namespace LevelSelector.Managers
                 Description = description,
                 Enemies = enemies.Select(LocationFeatureData.FeatureEnemyData.FromFeatureEnemy).ToList(),
                 Name = name,
+                RoomBlueprints = roomBlueprints.Select(x => x.name).ToArray()
             };
         }
     }

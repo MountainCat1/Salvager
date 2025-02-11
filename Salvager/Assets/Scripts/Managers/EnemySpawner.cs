@@ -16,10 +16,10 @@ namespace Managers
     public class EnemySpawner : MonoBehaviour, IEnemySpawner
     {
         [SerializeField] private float spawnRate = 0.05f;
-        private int minEnemiesPerRoom = 3; // TODO: Make this configurable
-        private int maxEnemiesPerRoom = 9;// TODO: Make this configurable
-        private int minRoomsWithEnemies = 3;// TODO: Make this configurable
-        private int maxRoomsWithEnemies = 3;// TODO: Make this configurable
+        private readonly int _minEnemiesPerRoom = 3; // TODO: Make this configurable
+        private readonly int _maxEnemiesPerRoom = 9;// TODO: Make this configurable
+        private readonly int _minRoomsWithEnemies = 3;// TODO: Make this configurable
+        private readonly int _maxRoomsWithEnemies = 3;// TODO: Make this configurable
 
         [Inject] private ISpawnerManager _spawnerManager;
         [Inject] private ICreatureManager _creatureManager;
@@ -32,7 +32,7 @@ namespace Managers
             _mapData = mapData;
             
             var location = GameManager.GameSettings.Location;
-            int roomsWithEnemies = Random.Range(minRoomsWithEnemies, maxRoomsWithEnemies);
+            int roomsWithEnemies = Random.Range(_minRoomsWithEnemies, _maxRoomsWithEnemies);
 
             SpawnRoomBasedEnemies(roomsWithEnemies);
             SpawnFeatureBasedEnemies(new Queue<LocationFeatureData>(location.Features));
@@ -57,14 +57,13 @@ namespace Managers
 
         private void SpawnFeatureBasedEnemies(Queue<LocationFeatureData> featuresQueue)
         {
-            
             foreach (var room in _mapData.GetAllRooms().Where(x => !x.Occupied).OrderBy(_ => Random.value))
             {
                 if (featuresQueue.Count == 0) break;
 
                 var feature = featuresQueue.Dequeue();
                 room.Occupied = true;
-                int enemiesInRoom = Random.Range(minEnemiesPerRoom, maxEnemiesPerRoom);
+                int enemiesInRoom = Random.Range(_minEnemiesPerRoom, _maxEnemiesPerRoom);
 
                 var enemy = feature.Enemies.RandomElement().CreatureData;
                 

@@ -84,6 +84,8 @@ public class LocationFeatureData
     public string Description = string.Empty;
     
     public List<FeatureEnemyData> Enemies = new();
+    public string[] RoomBlueprints;
+
     public static LocationFeatureData FromLocationFeature(LocationFeature feature)
     {
         return new LocationFeatureData
@@ -180,11 +182,7 @@ public class CreatureData
 {
     public string CreatureID;
     public string Name;
-    public CreatureState State;
-    public int XpAmount;
     public float SightRange;
-    public Teams Team;
-    public float InteractionRange;
     public InventoryData Inventory;
 
     public static CreatureData FromCreature(Creature creature)
@@ -197,11 +195,7 @@ public class CreatureData
         {
             CreatureID = creature.GetIdentifier(),
             Name = creature.name,
-            State = creature.State,
-            XpAmount = creature.XpAmount,
             SightRange = creature.SightRange,
-            Team = creature.Team,
-            InteractionRange = creature.InteractionRange,
             Inventory = InventoryData.FromInventory(inventory)
         };
     }
