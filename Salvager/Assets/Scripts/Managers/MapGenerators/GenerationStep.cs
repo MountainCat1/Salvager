@@ -14,6 +14,19 @@ namespace Services.MapGenerators
         [SerializeField] public Vector2Int gridSize = default;
         [SerializeField] public float tileSize = 1f;
         [SerializeField] public int seed;
+
+        public static GenerateMapSettings GenerateRandom()
+        {
+            return new GenerateMapSettings
+            {
+                roomCount = UnityEngine.Random.Range(10, 20),
+                roomMaxSize = new Vector2Int(UnityEngine.Random.Range(5, 10), UnityEngine.Random.Range(5, 10)),
+                roomMinSize = new Vector2Int(UnityEngine.Random.Range(3, 4), UnityEngine.Random.Range(3, 4)),
+                gridSize = new Vector2Int(UnityEngine.Random.Range(50, 100), UnityEngine.Random.Range(50, 100)),
+                seed = UnityEngine.Random.Range(0, 1000000),
+                tileSize = 1f
+            };
+        }
     }
     
     public enum MapLayer

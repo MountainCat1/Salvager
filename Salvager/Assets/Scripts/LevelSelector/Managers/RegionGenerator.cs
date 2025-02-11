@@ -1,8 +1,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using Constants;
+using LevelSelector.Managers;
 using UnityEngine;
 using Utilities;
+using Zenject;
 
 namespace Managers.LevelSelector
 {
@@ -13,6 +15,9 @@ namespace Managers.LevelSelector
 
     public class RegionGenerator : MonoBehaviour, IRegionGenerator
     {
+        // Dependencies
+        [Inject] private ILocationGenerator _locationGenerator;
+        
         // Serialized Fields
         [SerializeField] private RoomBlueprint[] rooms;
 
@@ -62,7 +67,7 @@ namespace Managers.LevelSelector
                     continue;
                 }
 
-                Location location = Location.GenerateRandom(blueprints);
+                Location location = _locationGenerator.GenerateLocation();
                 location.Position = randomPosition;
 
                 locations.Add(location);

@@ -10,6 +10,9 @@ namespace Managers
         event Action<Creature> CreatureSpawned;
         ICollection<Creature> GetCreatures();
         public Creature SpawnCreature(Creature creaturePrefab, Vector3 position, Transform parent = null);
+
+        public Creature SpawnCreature(Creature creaturePrefab, Vector2Int position, Transform parent = null)
+            => SpawnCreature(creaturePrefab, (Vector2)position, parent);
     }
 
     public class CreatureManager : MonoBehaviour, ICreatureManager
@@ -18,7 +21,7 @@ namespace Managers
 
         [Inject] private DiContainer _diContainer;
         [Inject] private ISpawnerManager _spawnerManager;
-        
+
         private List<Creature> _creatures = new List<Creature>();
 
         private void Start()
@@ -27,7 +30,7 @@ namespace Managers
             foreach (var creature in preSpawnedCreatures)
             {
                 _diContainer.Inject(creature.gameObject);
-                
+
                 HandleNewCreature(creature);
             }
         }
@@ -40,20 +43,17 @@ namespace Managers
             );
 
             HandleNewCreature(creature);
-            
+
             return creature;
         }
 
         private void HandleNewCreature(Creature creature)
         {
             CreatureSpawned?.Invoke(creature);
-            
+
             _creatures.Add(creature);
 
-            creature.Health.Death += (DeathContext ctx) =>
-            {
-                _creatures.Remove(creature);
-            };
+            creature.Health.Death += (DeathContext ctx) => { _creatures.Remove(creature); };
         }
 
         public ICollection<Creature> GetCreatures()

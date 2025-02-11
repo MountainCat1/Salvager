@@ -15,6 +15,7 @@ namespace Managers
 {
     public class GameSettings
     {
+        public LocationData Location { get; set; }
         public GenerateMapSettings Settings { get; set; }
         public RoomBlueprint[] RoomBlueprints { get; set; }
         public string Name { get; set; }
@@ -33,6 +34,7 @@ namespace Managers
         [Inject] private IDataManager _dataManager;
         [Inject] private IVictoryConditionManager _victoryConditionManager;
         [Inject] private IInputManager _inputManager;
+        [Inject] private IEnemySpawner _enemySpawner;
 
         [SerializeField] private Creature playerPrefab;
         [SerializeField] private Creature enemyPrefab;
@@ -93,12 +95,12 @@ namespace Managers
 
             yield return new WaitForSeconds(0.5f);
 
-            SpawnUnits();
+            SpawnUnits(mapData: _map);
             
             yield return new WaitForSeconds(0.5f);
         }
 
-        private void SpawnUnits()
+        private void SpawnUnits(MapData mapData)
         {
             var startingRoom = _map.GetAllRooms().First(x => x.IsEntrance);
 
@@ -145,17 +147,19 @@ namespace Managers
                 }
             }
             
-            void SpawnEnemyInNonStartingRoom()
-            {
-                var room = _map.GetAllRooms().Where(x => !x.IsEntrance).RandomElement();
-                
-                _creatureManager.SpawnCreature(enemyPrefab, (Vector2)room.Positions.RandomElement() * _map.TileSize);
-            }
+            // void SpawnEnemyInNonStartingRoom()
+            // {
+            //     var room = _map.GetAllRooms().Where(x => !x.IsEntrance).RandomElement();
+            //     
+            //     _creatureManager.SpawnCreature(enemyPrefab, (Vector2)room.Positions.RandomElement() * _map.TileSize);
+            // }
+            
+            _enemySpawner.Initialize(mapData: mapData);
 
-            for (int i = 0; i < 15; i++)
-            {
-                SpawnEnemyInNonStartingRoom();
-            }
+            // for (int i = 0; i < 15; i++)
+            // {
+            //     SpawnEnemyInNonStartingRoom();
+            // }
             
             _cameraController.MoveTo(playerUnits.First().transform.position);
             

@@ -43,9 +43,7 @@ namespace UI
             
             // Update UI
             nameText.text = _selectedLocation.Name;
-            descriptionText.text = $"Room count: {_selectedLocation.Settings.roomCount}\n" +
-                                                $"Room size: {_selectedLocation.Settings.roomMaxSize}\n" +
-                                                $"Room count: {_selectedLocation.Settings.roomCount}";
+            descriptionText.text = ConstructDescription(_selectedLocation);
             
             if(_selectedLocation.DistanceToCurrent == 0)
             {
@@ -62,6 +60,18 @@ namespace UI
                 currentLocationUI.SetActive(false);
                 notCurrentLocationUI.SetActive(false);
             }
+        }
+
+        private string ConstructDescription(Location selectedLocation)
+        {
+            var description = string.Empty;
+
+            foreach (var feature in selectedLocation.Features)
+            {
+                description += $"{feature.Description}\n";
+            }
+            
+            return description;
         }
 
         // Button Callbacks
@@ -92,7 +102,8 @@ namespace UI
             {
                 Settings = _selectedLocation.Settings,
                 RoomBlueprints = _selectedLocation.RoomBlueprints,
-                Name = _selectedLocation.Name
+                Name = _selectedLocation.Name,
+                Location = LocationData.FromLocation(_selectedLocation)
             };
             
             // Load level scene

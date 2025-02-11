@@ -1,4 +1,5 @@
 using Data;
+using LevelSelector.Managers;
 using Managers;
 using Managers.LevelSelector;
 using Zenject;
@@ -11,6 +12,7 @@ namespace Installer
         {
             Container.Bind<IDataManager>().To<DataManager>().FromNew().AsSingle().NonLazy();
             Container.Bind<ICrewManager>().To<CrewManager>().FromComponentsInHierarchy().AsSingle().NonLazy();
+            Container.Bind<ILocationGenerator>().To<LocationGenerator>().FromComponentsInHierarchy().AsSingle().NonLazy();
             Container.Bind<IRegionGenerator>().To<RegionGenerator>().FromComponentsInHierarchy().AsSingle().NonLazy();
             Container.Bind<IRegionManager>().To<RegionManager>().FromComponentsInHierarchy().AsSingle().NonLazy();
         }        

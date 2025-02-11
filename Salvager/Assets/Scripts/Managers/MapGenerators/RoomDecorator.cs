@@ -34,6 +34,8 @@ public partial class RoomDecorator : MonoBehaviour, IRoomDecorator
     private void DecorateRoom(RoomData roomData, RoomBlueprint blueprint, float tileSize)
     {
         Debug.Log($"Decorating room {roomData.RoomID} with blueprint {blueprint.Name}");
+        
+        // Spawn props
         foreach (var prop in blueprint.Props)
         {
             for (int i = 0; i < prop.count; i++)
@@ -47,7 +49,12 @@ public partial class RoomDecorator : MonoBehaviour, IRoomDecorator
             }
         }
 
+        // Set Enemies
+        roomData.Enemies = blueprint.Enemies;
+        
+        // Set Variables
         roomData.IsEntrance = blueprint.StartingRoom;
+        
     }
 
     private bool ValidatePosition(Vector2Int position)

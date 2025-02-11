@@ -4,6 +4,11 @@ using UnityEngine;
 
 public class Entity : MonoBehaviour
 {
+    public string GetIdentifier()
+    {
+        return gameObject.name;
+    }
+    
     public event Action<Vector2> Moved;
 
     // Components

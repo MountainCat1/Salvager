@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Items;
+using LevelSelector.Managers;
 using Managers.LevelSelector;
 using Services.MapGenerators;
 using UnityEngine;
@@ -63,6 +64,37 @@ public class RegionData
     }
 }
 
+[System.Serializable]
+public class LocationFeatureData
+{
+    [System.Serializable] public class FeatureEnemyData
+    {
+        public CreatureData CreatureData;
+        
+        public static FeatureEnemyData FromFeatureEnemy(FeatureEnemies data)
+        {
+            return new FeatureEnemyData
+            {
+                CreatureData = CreatureData.FromCreature(data.Creature),
+            };
+        }
+    }
+    
+    public string Name = string.Empty;
+    public string Description = string.Empty;
+    
+    public List<FeatureEnemyData> Enemies = new();
+    public static LocationFeatureData FromLocationFeature(LocationFeature feature)
+    {
+        return new LocationFeatureData
+        {
+            Name = feature.name,
+            Description = feature.description,
+            Enemies = feature.enemies.Select(FeatureEnemyData.FromFeatureEnemy).ToList()
+        };
+    }
+}
+
 [Serializable]
 public class LocationData
 {
@@ -73,6 +105,7 @@ public class LocationData
     public RoomBlueprint[] Blueprints;
     public LevelType Type;
     public string[] Neighbours;
+    public LocationFeatureData[] Features;
     
     public static LocationData FromLocation(Location location)
     {
@@ -85,6 +118,7 @@ public class LocationData
             Type = location.Type,
             Position = location.Position,
             Neighbours = location.Neighbours.Select(x => x.Id.ToString()).ToArray(),
+            Features = location.Features.ToArray()
         };
     }
 
@@ -97,6 +131,7 @@ public class LocationData
         
         level.Type = locationData.Type;
         level.Position = locationData.Position;
+        level.Features = locationData.Features.ToList();
 
         return level;
     }
@@ -154,16 +189,20 @@ public class CreatureData
 
     public static CreatureData FromCreature(Creature creature)
     {
+        Inventory inventory = creature.Inventory;
+        if(inventory is null)
+            inventory = new Inventory(creature.transform.Find("Inventory")); // TODO: make this a const "Inventory"
+        
         return new CreatureData
         {
-            CreatureID = creature.GetInstanceID().ToString(),
+            CreatureID = creature.GetIdentifier(),
             Name = creature.name,
             State = creature.State,
             XpAmount = creature.XpAmount,
             SightRange = creature.SightRange,
             Team = creature.Team,
             InteractionRange = creature.InteractionRange,
-            Inventory = InventoryData.FromInventory(creature.Inventory)
+            Inventory = InventoryData.FromInventory(inventory)
         };
     }
 }

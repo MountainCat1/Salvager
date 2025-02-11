@@ -109,5 +109,7 @@ namespace Services.MapGenerators
         public List<Vector2Int> Positions { get; set; } = new List<Vector2Int>();
         public List<int> ConnectedRoomIDs { get; set; } = new List<int>();
         public bool IsEntrance { get; set; }
+        public Creature[] Enemies { get; set; }
+        public bool Occupied { get; set; } = false;
     }
 }

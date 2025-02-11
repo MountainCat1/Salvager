@@ -14,6 +14,7 @@ public class GameInstaller : MonoInstaller<GameInstaller>
         Container.Bind<ISpawnerManager>().To<SpawnerManager>().FromComponentsInHierarchy().AsSingle();
         Container.Bind<IPoolingManager>().To<PoolingManager>().FromComponentsInHierarchy().AsSingle();
         Container.Bind<IProjectileManager>().To<ProjectileManager>().FromNew().AsSingle().NonLazy();
+        Container.Bind<IDataResolver>().To<DataResolver>().FromComponentsInHierarchy().AsSingle();
         // Container.Bind<IInputManager>().To<InputManager>().FromComponentsInHierarchy().AsSingle();
         Container.Bind<IInputMapper>().To<InputMapper>().FromComponentsInHierarchy().AsSingle();
         Container.Bind<ITimeManager>().To<TimeManager>().FromComponentsInHierarchy().AsSingle();
@@ -30,6 +31,7 @@ public class GameInstaller : MonoInstaller<GameInstaller>
         Container.Bind<ICameraController>().To<CameraController>().FromComponentsInHierarchy().AsSingle();
         Container.Bind<ICameraShakeService>().To<CameraShakeService>().FromComponentsInHierarchy().AsSingle();
         Container.Bind<IVictoryConditionManager>().To<VictoryConditionManager>().FromComponentsInHierarchy().AsSingle();
+        Container.Bind<IEnemySpawner>().To<EnemySpawner>().FromComponentsInHierarchy().AsSingle();
 
         Container.Bind<IFloatingTextManager>().To<FloatingTextManager>()
             .FromInstance(FindObjectOfType<FloatingTextManager>());

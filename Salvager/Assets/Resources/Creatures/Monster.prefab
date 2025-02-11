@@ -226,6 +226,7 @@ MonoBehaviour:
   <Icon>k__BackingField: {fileID: 0}
   <Name>k__BackingField: Claw
   <Weight>k__BackingField: 1
+  <Description>k__BackingField: 
   <Range>k__BackingField: 1
   <BaseAttackSpeed>k__BackingField: 1
   <BaseDamage>k__BackingField: 1
@@ -537,6 +538,7 @@ Transform:
   - {fileID: 4151756206802557577}
   - {fileID: 4452462336923812607}
   - {fileID: 8257170215639613654}
+  - {fileID: 1774102744558891694}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!50 &5125440617428366146
@@ -622,7 +624,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Drag>k__BackingField: 400
-  <BaseSpeed>k__BackingField: 2.5
+  <BaseSpeed>k__BackingField: 3
 --- !u!114 &4779776167358946602
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -748,6 +750,37 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!1 &5430236899110574354
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1774102744558891694}
+  m_Layer: 0
+  m_Name: Inventory
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1774102744558891694
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5430236899110574354}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2861165738869774013}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5653753563796422398
 GameObject:
   m_ObjectHideFlags: 0
@@ -923,6 +956,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2861165738869774013}
     m_Modifications:
+    - target: {fileID: 4323791413848058127, guid: 3b2548b084eb1424b956495bddd8447c, type: 3}
+      propertyPath: m_Size.x
+      value: 1.01
+      objectReference: {fileID: 0}
     - target: {fileID: 4323791413848058127, guid: 3b2548b084eb1424b956495bddd8447c, type: 3}
       propertyPath: m_Size.y
       value: 0.1875
