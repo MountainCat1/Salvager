@@ -11,6 +11,7 @@ namespace Installer
         public override void InstallBindings()
         {
             Container.Bind<IDataManager>().To<DataManager>().FromNew().AsSingle().NonLazy();
+            Container.Bind<IDataResolver>().To<DataResolver>().FromComponentsInHierarchy().AsSingle().NonLazy();
             Container.Bind<ICrewManager>().To<CrewManager>().FromComponentsInHierarchy().AsSingle().NonLazy();
             Container.Bind<ILocationGenerator>().To<LocationGenerator>().FromComponentsInHierarchy().AsSingle().NonLazy();
             Container.Bind<IRegionGenerator>().To<RegionGenerator>().FromComponentsInHierarchy().AsSingle().NonLazy();

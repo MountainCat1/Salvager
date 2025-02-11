@@ -1,4 +1,5 @@
 using System;
+using Data;
 using Items;
 using Managers;
 using TMPro;
@@ -13,6 +14,7 @@ namespace UI
     public class ItemEntryUI : MonoBehaviour
     {
         [Inject] private IItemManager _itemManager;
+        [Inject] private IDataResolver _dataResolver;
         
         [SerializeField] private Image iconDisplay;
         [SerializeField] private TextMeshProUGUI nameDisplay;
@@ -31,7 +33,7 @@ namespace UI
 
         public void Set(ItemData item, Action<ItemData> transferCallback)
         {
-            iconDisplay.sprite = item.Icon;
+            iconDisplay.sprite = _dataResolver.ResolveItemIcon(item.Icon);
             nameDisplay.text = item.Name;
             amountDisplay.text = item.Count == 1 ? string.Empty : item.Count.ToString();
             // descriptionDisplay.text = item.Description;

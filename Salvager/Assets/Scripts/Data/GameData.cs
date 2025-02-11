@@ -210,7 +210,7 @@ public class CreatureData
 [Serializable]
 public class InventoryData
 {
-    public List<ItemData> Items;
+    public List<ItemData> Items = new();
 
     public static InventoryData FromInventory(Inventory inventory)
     {
@@ -221,7 +221,7 @@ public class InventoryData
             {
                 Identifier = item.GetIdentifier(),
                 Count = item.Count,
-                Icon = item.Icon,
+                Icon = item.Icon.name,
                 Name = item.Name
             });
         }
@@ -260,7 +260,7 @@ public class ItemData
     public string Identifier;
     public int Count = 1;
     public string Name;
-    public Sprite Icon;
+    public string Icon;
     public bool Stackable;
 
     public static ItemData FromItem(ItemBehaviour item)
@@ -269,7 +269,7 @@ public class ItemData
         {
             Identifier = item.GetIdentifier(),
             Count = item.Count,
-            Icon = item.Icon,
+            Icon = item.Icon.name,
             Name = item.Name,
             Stackable = item.Stackable
         };
