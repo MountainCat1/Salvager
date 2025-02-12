@@ -17,6 +17,7 @@ namespace LevelSelector.Managers
         public string description = string.Empty;
         public List<FeatureEnemies> enemies = new();
         public List<RoomBlueprint> roomBlueprints = new();
+        public List<RoomBlueprint> genericRoomBlueprints = new();
         
         public LocationFeatureData ToData()
         {
@@ -25,7 +26,8 @@ namespace LevelSelector.Managers
                 Description = description,
                 Enemies = enemies.Select(LocationFeatureData.FeatureEnemyData.FromFeatureEnemy).ToList(),
                 Name = name,
-                RoomBlueprints = roomBlueprints.Select(x => x.name).ToArray()
+                RoomBlueprints = roomBlueprints.Select(x => x.name).ToArray(),
+                GenericRoomBlueprints = genericRoomBlueprints.Select(x => x.name).ToArray(),
             };
         }
     }

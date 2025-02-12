@@ -2052,6 +2052,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c25176733af4ab48437f26f48827922, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  originLocationFeatures:
+    items:
+    - item: {fileID: 11400000, guid: eb9151ffc5af0734db15126de721b1d0, type: 2}
+      weight: 100
   weightedLocationFeatures:
     items:
     - item: {fileID: 11400000, guid: c97f959e8064ef44982f9252b0b6aa5e, type: 2}
@@ -2323,7 +2327,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f9e03be01f8d4ae8ac69ae4b35dfb7c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skipLoad: 0
+  skipLoad: 1
 --- !u!1 &1388601830
 GameObject:
   m_ObjectHideFlags: 0

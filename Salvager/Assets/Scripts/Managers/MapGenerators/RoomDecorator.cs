@@ -7,101 +7,179 @@ using UnityEngine;
 using Utilities;
 using Zenject;
 
-
 public interface IRoomDecorator
 {
-    public void DecorateRooms(ICollection<RoomData> roomData, float tileSize);
+    void DecorateRooms(ICollection<RoomData> roomData, float tileSize);
 }
 
 public partial class RoomDecorator : MonoBehaviour, IRoomDecorator
 {
     [Inject] private DiContainer _context = null!;
+
     [Inject] private IDataManager _dataManager = null!;
 
     [SerializeField] private GameObject roomMarker;
-    
+
     [SerializeField] private RoomBlueprint startingRoomBlueprint;
-    
+
     private List<Vector2> _occupiedPositions = new();
 
     public void DecorateRooms(ICollection<RoomData> roomData, float tileSize)
     {
         var roomQueue = new Queue<RoomData>(roomData);
 
-        // Decorate starting room
+        DecorateStartingRoom(roomQueue, tileSize);
+        DecorateRoomsFromFeatures(roomQueue, tileSize);
+        DecorateRemainingRoomsWithGenericBlueprints(roomQueue, tileSize);
+    }
+
+    private void DecorateStartingRoom(Queue<RoomData> roomQueue, float tileSize)
+    {
+        if (roomQueue.Count == 0)
+        {
+            Debug.LogError("No rooms to decorate.");
+            return;
+        }
+
         var startingRoom = roomQueue.Dequeue();
         DecorateRoom(startingRoom, startingRoomBlueprint, tileSize);
-        
-        // Decorate other rooms
+    }
+
+    private void DecorateRoomsFromFeatures(Queue<RoomData> roomQueue, float tileSize)
+    {
         var features = GameManager.GameSettings.Location.Features;
 
         foreach (var feature in features)
         {
-            foreach (var blueprint in feature.RoomBlueprints)
+            foreach (var blueprintName in feature.RoomBlueprints)
             {
-                var roomBlueprint = Resources.Load($"Rooms/{blueprint}") as RoomBlueprint;
-                
-                if(roomBlueprint is null)
-                {
-                    Debug.LogError($"Room blueprint {blueprint} not found");
+                var roomBlueprint = LoadRoomBlueprint(blueprintName);
+                if (roomBlueprint == null)
                     continue;
-                }
-                
-                for (int i = 0; i < roomBlueprint.Count; i++)
-                {
-                    if(roomQueue.Count == 0)
-                    {
-                        Debug.LogError("Not enough rooms to decorate");
-                        break;
-                    }
-                    
-                    DecorateRoom(roomQueue.Dequeue(), roomBlueprint, tileSize);
-                }
+
+                DecorateRooms(roomQueue, roomBlueprint, tileSize);
             }
         }
+    }
+
+    private void DecorateRemainingRoomsWithGenericBlueprints(
+        Queue<RoomData> roomQueue,
+        float tileSize
+    )
+    {
+        var genericRooms = GameManager.GameSettings.Location.Features
+            .SelectMany(x => x.GenericRoomBlueprints)
+            .ToList();
+
+        if (!genericRooms.Any())
+        {
+            Debug.LogError("No generic room blueprints found.");
+            return;
+        }
+
+        while (roomQueue.Any())
+        {
+            var blueprintName = genericRooms.RandomElement();
+            var roomBlueprint = LoadRoomBlueprint(blueprintName);
+            if (roomBlueprint == null)
+                continue;
+
+            DecorateRooms(roomQueue, roomBlueprint, tileSize);
+        }
+    }
+
+    private void DecorateRooms(
+        Queue<RoomData> roomQueue,
+        RoomBlueprint roomBlueprint,
+        float tileSize
+    )
+    {
+        int roomsDecorated = 0;
+        for (int i = 0; i < roomBlueprint.Count; i++)
+        {
+            if (roomQueue.Count == 0)
+            {
+                Debug.LogError(
+                    "Not enough rooms to decorate all blueprints. Decorated " +
+                    roomsDecorated +
+                    " rooms with this blueprint."
+                );
+                break;
+            }
+
+            DecorateRoom(roomQueue.Dequeue(), roomBlueprint, tileSize);
+            roomsDecorated++;
+        }
+    }
+
+    private RoomBlueprint LoadRoomBlueprint(string blueprintName)
+    {
+        var roomBlueprint = Resources.Load($"Rooms/{blueprintName}") as RoomBlueprint;
+
+        if (roomBlueprint == null)
+        {
+            Debug.LogError($"Room blueprint {blueprintName} not found");
+        }
+
+        return roomBlueprint;
     }
 
     private void DecorateRoom(RoomData roomData, RoomBlueprint blueprint, float tileSize)
     {
         Debug.Log($"Decorating room {roomData.RoomID} with blueprint {blueprint.Name}");
-        
-        var roomCenterX = (float)roomData.Positions.Average(i => i.x);
-        var roomCenterY = (float)roomData.Positions.Average(i => i.y);
-        var roomCenter = new Vector2(roomCenterX, roomCenterY) * tileSize;
+
+        PlaceRoomMarker(roomData, blueprint, tileSize);
+        SpawnProps(roomData, blueprint, tileSize);
+
+        roomData.Enemies = blueprint.Enemies;
+        roomData.IsEntrance = blueprint.StartingRoom;
+    }
+
+    private void PlaceRoomMarker(
+        RoomData roomData,
+        RoomBlueprint blueprint,
+        float tileSize
+    )
+    {
+        var roomCenter = GetRoomCenter(roomData, tileSize);
         var marker = Instantiate(roomMarker, roomCenter, Quaternion.identity);
         marker.name = $"{blueprint.name} ({roomData.RoomID})";
-        
-        // Spawn props
+    }
+
+    private Vector2 GetRoomCenter(RoomData roomData, float tileSize)
+    {
+        var roomCenterX = (float)roomData.Positions.Average(i => i.x);
+        var roomCenterY = (float)roomData.Positions.Average(i => i.y);
+        return new Vector2(roomCenterX, roomCenterY) * tileSize;
+    }
+
+    private void SpawnProps(RoomData roomData, RoomBlueprint blueprint, float tileSize)
+    {
         foreach (var prop in blueprint.Props)
         {
             for (int i = 0; i < prop.count; i++)
             {
-                var randomPosition = roomData.Positions
-                    .Where(ValidatePosition)
-                    .RandomElement();
-                
-                InstantiatePrefab(prop.prefab, (Vector2)randomPosition * tileSize + new Vector2(tileSize, tileSize) / 2);
-                _occupiedPositions.Add(randomPosition);
+                var randomPosition = GetRandomAvailablePosition(roomData);
+                if (randomPosition != null)
+                {
+                    var spawnPosition = (Vector2)randomPosition * tileSize +
+                                        new Vector2(tileSize, tileSize) / 2;
+                    InstantiatePrefab(prop.prefab, spawnPosition);
+                    _occupiedPositions.Add(randomPosition.Value);
+                }
             }
         }
+    }
 
-        // Set Enemies
-        roomData.Enemies = blueprint.Enemies;
-        
-        // Set Variables
-        roomData.IsEntrance = blueprint.StartingRoom;
-        
+    private Vector2Int? GetRandomAvailablePosition(RoomData roomData)
+    {
+        var availablePositions = roomData.Positions.Where(ValidatePosition).ToList();
+        return availablePositions.Any() ? availablePositions.RandomElement() : null;
     }
 
     private bool ValidatePosition(Vector2Int position)
     {
-        if(_occupiedPositions.Contains(position))
-        {
-            return false;
-        }
-
-
-        return true;
+        return !_occupiedPositions.Contains(position);
     }
 
     private void InstantiatePrefab(GameObject prefab, Vector2 position)

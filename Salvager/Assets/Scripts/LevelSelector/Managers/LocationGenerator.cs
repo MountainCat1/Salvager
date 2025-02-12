@@ -11,6 +11,7 @@ namespace LevelSelector.Managers
     
     public class LocationGenerator : MonoBehaviour, ILocationGenerator
     {
+        [SerializeField] private WeightedLocationFeature originLocationFeatures;
         [SerializeField] private WeightedLocationFeature weightedLocationFeatures;
         [SerializeField] private WeightedLocationFeature weightedSecondaryLocationFeatures;
         [SerializeField] private int maxSecondaryFeatures = 3;
@@ -24,8 +25,10 @@ namespace LevelSelector.Managers
                 Name = Constants.Names.SpaceStations.RandomElement()
             };
             
-            var mainFeature = weightedLocationFeatures.GetRandomItem().ToData();
+            var originFeature = originLocationFeatures.GetRandomItem().ToData();
+            location.Features.Add(originFeature);
             
+            var mainFeature = weightedLocationFeatures.GetRandomItem().ToData();
             location.Features.Add(mainFeature);
             
             var secondaryFeatures = weightedSecondaryLocationFeatures

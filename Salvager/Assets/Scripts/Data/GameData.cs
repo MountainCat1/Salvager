@@ -84,17 +84,8 @@ public class LocationFeatureData
     public string Description = string.Empty;
     
     public List<FeatureEnemyData> Enemies = new();
-    public string[] RoomBlueprints;
-
-    public static LocationFeatureData FromLocationFeature(LocationFeature feature)
-    {
-        return new LocationFeatureData
-        {
-            Name = feature.name,
-            Description = feature.description,
-            Enemies = feature.enemies.Select(FeatureEnemyData.FromFeatureEnemy).ToList()
-        };
-    }
+    public string[] RoomBlueprints = Array.Empty<string>();
+    public string[] GenericRoomBlueprints = Array.Empty<string>();
 }
 
 [Serializable]
