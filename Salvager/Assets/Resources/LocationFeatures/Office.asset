@@ -15,4 +15,5 @@ MonoBehaviour:
   description: A section of this station is designated as an office.
   enemies: []
   roomBlueprints:
-  - {fileID: 11400000, guid: 4f1afa5f78a98d540824db7cfd609504, type: 2}
+  - {fileID: 11400000, guid: 60d31c7fcecaf094cb1e59ba265f7fab, type: 2}
+  genericRoomBlueprints: []

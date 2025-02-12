@@ -16,4 +16,4 @@ MonoBehaviour:
   enemies: []
   roomBlueprints: []
   genericRoomBlueprints:
-  - {fileID: 11400000, guid: 4f1afa5f78a98d540824db7cfd609504, type: 2}
+  - {fileID: 11400000, guid: b642ae5ba71064c4fb9f9ba3c0bbd51e, type: 2}
