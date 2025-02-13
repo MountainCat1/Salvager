@@ -1,9 +1,6 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using Items;
 using UnityEngine;
-using UnityEngine.Serialization;
 using Zenject;
 
 namespace Data

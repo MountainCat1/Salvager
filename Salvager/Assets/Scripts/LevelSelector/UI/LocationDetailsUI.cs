@@ -5,8 +5,6 @@ using Managers;
 using Managers.LevelSelector;
 using TMPro;
 using UnityEngine;
-using UnityEngine.SceneManagement;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 using Utilities;
 using Zenject;

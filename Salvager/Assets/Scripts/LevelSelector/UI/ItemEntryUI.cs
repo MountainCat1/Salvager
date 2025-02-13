@@ -1,6 +1,5 @@
 using System;
 using Data;
-using Items;
 using Managers;
 using TMPro;
 using UnityEngine;

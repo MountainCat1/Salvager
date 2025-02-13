@@ -1,4 +1,3 @@
-using Managers;
 using Zenject;
 
 namespace Installer

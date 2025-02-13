@@ -6,7 +6,6 @@ using Data;
 using DefaultNamespace.Pathfinding;
 using Managers;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using Utilities;
 using Zenject;
 using Random = UnityEngine.Random;
