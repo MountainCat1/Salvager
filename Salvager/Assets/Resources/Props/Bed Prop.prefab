@@ -75,7 +75,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -7803298647667860534, guid: 159c5cd67d94c8843ad98e048fe98f95, type: 3}
+  m_Sprite: {fileID: 4910452588211182325, guid: 159c5cd67d94c8843ad98e048fe98f95, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -99,20 +99,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sprites:
-  - {fileID: -7803298647667860534, guid: 159c5cd67d94c8843ad98e048fe98f95, type: 3}
-  - {fileID: 5514185152407867754, guid: 159c5cd67d94c8843ad98e048fe98f95, type: 3}
-  - {fileID: -2411639516138889637, guid: 159c5cd67d94c8843ad98e048fe98f95, type: 3}
-  - {fileID: 300008973595331220, guid: 159c5cd67d94c8843ad98e048fe98f95, type: 3}
-  - {fileID: 7081912243806064112, guid: 159c5cd67d94c8843ad98e048fe98f95, type: 3}
-  - {fileID: 4211980020660111709, guid: 159c5cd67d94c8843ad98e048fe98f95, type: 3}
-  - {fileID: 7442633176104406557, guid: 159c5cd67d94c8843ad98e048fe98f95, type: 3}
-  - {fileID: -7089720647792233277, guid: 159c5cd67d94c8843ad98e048fe98f95, type: 3}
-  - {fileID: 7805955946982822873, guid: 159c5cd67d94c8843ad98e048fe98f95, type: 3}
-  - {fileID: 3114623597567356604, guid: 159c5cd67d94c8843ad98e048fe98f95, type: 3}
-  - {fileID: -5804786444609398202, guid: 159c5cd67d94c8843ad98e048fe98f95, type: 3}
-  - {fileID: 2499379763998159695, guid: 159c5cd67d94c8843ad98e048fe98f95, type: 3}
-  - {fileID: 4016457325390738586, guid: 159c5cd67d94c8843ad98e048fe98f95, type: 3}
-  - {fileID: -1083204244482060168, guid: 159c5cd67d94c8843ad98e048fe98f95, type: 3}
+  - {fileID: 4910452588211182325, guid: 159c5cd67d94c8843ad98e048fe98f95, type: 3}
+  - {fileID: 8346310616802577428, guid: 159c5cd67d94c8843ad98e048fe98f95, type: 3}
+  - {fileID: 4910452588211182325, guid: 159c5cd67d94c8843ad98e048fe98f95, type: 3}
+  - {fileID: 8346310616802577428, guid: 159c5cd67d94c8843ad98e048fe98f95, type: 3}
   - {fileID: -8025685368683222782, guid: 159c5cd67d94c8843ad98e048fe98f95, type: 3}
   - {fileID: 4468554480710105295, guid: 159c5cd67d94c8843ad98e048fe98f95, type: 3}
   - {fileID: 4910452588211182325, guid: 159c5cd67d94c8843ad98e048fe98f95, type: 3}
@@ -130,7 +120,7 @@ GameObject:
   - component: {fileID: 5788253491434673039}
   - component: {fileID: 2417749354656705784}
   m_Layer: 11
-  m_Name: Random Misc Prop
+  m_Name: Bed Prop
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

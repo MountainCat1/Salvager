@@ -168,8 +168,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
+  m_AnchoredPosition: {x: 0, y: 36.7}
+  m_SizeDelta: {x: 25, y: 25}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1062176473361136872
 CanvasRenderer:
@@ -192,15 +192,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0.9211237, b: 0.19433957, a: 0.08627451}
+  m_Color: {r: 1, g: 0.9211237, b: 0.19433957, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 3055455593956129714, guid: cc4bc55be23638a4f94f99538bd0a965, type: 3}
-  m_Type: 1
+  m_Sprite: {fileID: 5681352813544306206, guid: cc4bc55be23638a4f94f99538bd0a965, type: 3}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -255,11 +255,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4123322486497649620, guid: eb810b525b5695a4ca5d6a2fe8bb308a, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 50
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 4123322486497649620, guid: eb810b525b5695a4ca5d6a2fe8bb308a, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 50
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 4123322486497649620, guid: eb810b525b5695a4ca5d6a2fe8bb308a, type: 3}
       propertyPath: m_LocalPosition.x
@@ -320,7 +320,7 @@ PrefabInstance:
     - target: {fileID: 5635106098037718322, guid: eb810b525b5695a4ca5d6a2fe8bb308a, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 2067560687255536837, guid: cc4bc55be23638a4f94f99538bd0a965, type: 3}
+      objectReference: {fileID: 5415117555171231067, guid: cc4bc55be23638a4f94f99538bd0a965, type: 3}
     - target: {fileID: 8321839015586816812, guid: eb810b525b5695a4ca5d6a2fe8bb308a, type: 3}
       propertyPath: m_Name
       value: Button
@@ -459,7 +459,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: Level Entry UI Variant
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 6502654788315382286, guid: 650fe264b7f575e4ebd2556ffa8a92ae, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 5952680493000442109, guid: 650fe264b7f575e4ebd2556ffa8a92ae, type: 3}

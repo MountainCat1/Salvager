@@ -94,22 +94,14 @@ public partial class RoomDecorator : MonoBehaviour, IRoomDecorator
         float tileSize
     )
     {
-        int roomsDecorated = 0;
-        for (int i = 0; i < roomBlueprint.Count; i++)
+        if (roomQueue.Count == 0)
         {
-            if (roomQueue.Count == 0)
-            {
-                Debug.LogError(
-                    "Not enough rooms to decorate all blueprints. Decorated " +
-                    roomsDecorated +
-                    " rooms with this blueprint."
-                );
-                break;
-            }
-
-            DecorateRoom(roomQueue.Dequeue(), roomBlueprint, tileSize);
-            roomsDecorated++;
+            Debug.LogError(
+                "Not enough rooms to decorate all blueprints. Decorated rooms with this blueprint."
+            );
         }
+
+        DecorateRoom(roomQueue.Dequeue(), roomBlueprint, tileSize);
     }
 
     private RoomBlueprint LoadRoomBlueprint(string blueprintName)

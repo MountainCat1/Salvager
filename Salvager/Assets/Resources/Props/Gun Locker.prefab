@@ -185,7 +185,7 @@ MonoBehaviour:
   useOnce: 1
   message: Searching...
   requiredItems: []
-  lootTable: {fileID: 11400000, guid: 0b197bd77f965364ab91ad811a8e0dfa, type: 2}
+  lootTable: {fileID: 11400000, guid: 29f38552374b76242a137605261d486f, type: 2}
 --- !u!1001 &556012255856125039
 PrefabInstance:
   m_ObjectHideFlags: 0

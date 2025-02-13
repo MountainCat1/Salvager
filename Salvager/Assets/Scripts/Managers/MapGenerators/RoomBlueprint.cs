@@ -18,6 +18,5 @@ public class RoomBlueprint : ScriptableObject
     [field: SerializeField] public string Name { get; set; } = null!;
     [field: SerializeField] public List<RoomBlueprintProp> Props { get; set; } = new();
     [field: SerializeField] public bool StartingRoom { get; set; } = false;
-    [field: SerializeField] public int Count { get; set; } = 1;
     [field: SerializeField] public Creature[] Enemies { get; set; }
 }

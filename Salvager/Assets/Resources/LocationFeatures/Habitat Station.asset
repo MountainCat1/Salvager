@@ -17,3 +17,4 @@ MonoBehaviour:
   roomBlueprints: []
   genericRoomBlueprints:
   - {fileID: 11400000, guid: b642ae5ba71064c4fb9f9ba3c0bbd51e, type: 2}
+  - {fileID: 11400000, guid: c83d846a4eba5184e8e981df8610eca9, type: 2}
