@@ -8,18 +8,22 @@ namespace UI
         public RectTransform panel;
         public float slideDuration = 0.5f;
 
-        private Vector2 hiddenPos;
-        private Vector2 visiblePos;
+        [SerializeField]
+        private SlideDirection slideDirection = SlideDirection.Horizontal;
 
-        [SerializeField] private Ease showEase = Ease.InExpo;
-        [SerializeField] private Ease hideEase = Ease.InExpo;
+        [SerializeField]
+        private Ease showEase = Ease.InExpo;
 
+        [SerializeField]
+        private Ease hideEase = Ease.InExpo;
+
+        private Vector2 _hiddenPos;
+        private Vector2 _visiblePos;
         private bool _shown = false;
 
         private void Start()
         {
-            hiddenPos = panel.anchoredPosition;
-            visiblePos = new Vector2(0, panel.anchoredPosition.y); // Adjust X for left/right sliding
+            CachePositions();
         }
 
         public void TogglePanel()
@@ -37,13 +41,43 @@ namespace UI
         public void ShowPanel()
         {
             _shown = true;
-            panel.DOAnchorPos(visiblePos, slideDuration).SetEase(showEase);
+            panel.DOAnchorPos(_visiblePos, slideDuration).SetEase(showEase);
         }
 
         public void HidePanel()
         {
             _shown = false;
-            panel.DOAnchorPos(hiddenPos, slideDuration).SetEase(hideEase);
+            panel.DOAnchorPos(_hiddenPos, slideDuration).SetEase(hideEase);
+        }
+
+        private void CachePositions()
+        {
+            _hiddenPos = panel.anchoredPosition;
+
+            switch (slideDirection)
+            {
+                case SlideDirection.Horizontal:
+                    _visiblePos = new Vector2(
+                        0,
+                        panel.anchoredPosition.y
+                    ); // Adjust X for left/right sliding
+                    break;
+                case SlideDirection.Vertical:
+                    _visiblePos = new Vector2(
+                        panel.anchoredPosition.x,
+                        0
+                    ); // Adjust Y for up/down sliding
+                    break;
+                default:
+                    _visiblePos = panel.anchoredPosition;
+                    break;
+            }
+        }
+
+        public enum SlideDirection
+        {
+            Horizontal,
+            Vertical,
         }
     }
 }
