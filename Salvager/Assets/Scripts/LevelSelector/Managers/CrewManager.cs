@@ -22,7 +22,7 @@ namespace Managers
         void SelectCreature(CreatureData creature);
         InGameResources Resources { get; }
         public Guid CurrentLocationId { get; }
-        void ChangeCurrentLocation(Location toLocation);
+        void ChangeCurrentLocation(LocationData toLocation);
         bool CanTravel();
     }
 
@@ -39,7 +39,7 @@ namespace Managers
         public InventoryData Inventory { get; private set; }
         public InGameResources Resources { get; private set; }
         public Guid CurrentLocationId { private set; get; }
-        public Location CurrentLocation { get; private set; }
+        public LocationData CurrentLocation { get; private set; }
 
         [SerializeField] private List<ItemBehaviour> startingItems;
         [SerializeField] private float startingMoney = 50;
@@ -109,7 +109,7 @@ namespace Managers
             SelectedCreature?.Invoke(creature);
         }
         
-        public void ChangeCurrentLocation(Location selectedLocation)
+        public void ChangeCurrentLocation(LocationData selectedLocation)
         {
             if(Resources.Fuel < 1)
             {

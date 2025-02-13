@@ -31,7 +31,7 @@ namespace UI
 
         private Vector2 _lastScreenSize;
 
-        public Location SelectedLocation { get; private set; }
+        public LocationData SelectedLocation { get; private set; }
 
         // Unity Methods
         private void Start()
@@ -54,7 +54,7 @@ namespace UI
         }
 
         // Callbacks
-        private void SelectLevel(Location location)
+        private void SelectLevel(LocationData location)
         {
             //
 
@@ -99,7 +99,7 @@ namespace UI
 
             var levelUIComponents = levelsParent.GetComponentsInChildren<LevelEntryUI>();
 
-            var createdConnections = new List<(Location, Location)>();
+            var createdConnections = new List<(LocationData, LocationData)>();
             foreach (var level in _regionManager.Region.Locations
                          .OrderBy(x => _regionManager.GetDistance(_crewManager.CurrentLocationId, x.Id)))
             {

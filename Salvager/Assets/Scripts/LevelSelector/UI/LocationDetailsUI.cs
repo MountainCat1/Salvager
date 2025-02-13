@@ -29,7 +29,7 @@ namespace UI
         [SerializeField] private Transform locationInteractionsParent;
         [SerializeField] private Button buttonPrefab;
 
-        private Location _selectedLocation;
+        private LocationData _selectedLocation;
 
         private void Start()
         {
@@ -58,7 +58,7 @@ namespace UI
 
             var locationData = _dataManager
                 .GetData().Region.Locations
-                .First(x => x.Id == _selectedLocation.Id.ToString());
+                .First(x => x.Id == _selectedLocation.Id);
 
             foreach (Transform child in locationInteractionsParent)
             {
@@ -78,7 +78,7 @@ namespace UI
             }
         }
 
-        private string ConstructDescription(Location selectedLocation)
+        private string ConstructDescription(LocationData selectedLocation)
         {
             var description = string.Empty;
 

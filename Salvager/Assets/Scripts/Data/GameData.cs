@@ -41,11 +41,7 @@ public class RegionData
         return new RegionData
         {
             Name = region.Name,
-            Locations = region.Locations.Select(x =>
-            {
-                var data = LocationData.FromLocation(x);
-                return data;
-            }).ToList(),
+            Locations = region.Locations.ToList(),
         };
     }
 
@@ -59,15 +55,16 @@ public class RegionData
         // Load levels
         foreach (var levelData in dataRegion.Locations)
         {
-            var level = LocationData.ToLocation(levelData);
-            region.AddLocation(level);
+            region.AddLocation(levelData);
         }
 
         // Connect levels
         foreach (var level in region.Locations)
         {
-            var levelData = dataRegion.Locations.First(x => x.Id == level.Id.ToString());
-            level.Neighbours = levelData.Neighbours.Select(x => region.Locations.First(l => l.Id.ToString() == x))
+            var levelData = dataRegion.Locations.First(x => x.Id == level.Id);
+            levelData.Neighbours = levelData.NeighbourIds
+                .Select(x => region.Locations.First(l => l.Id.ToString() == x))
+                .Select(x => region.Locations.First(l => l.Id == x.Id))
                 .ToList();
         }
 
@@ -103,46 +100,19 @@ public class LocationFeatureData
 [Serializable]
 public class LocationData
 {
-    public string Id;
+    public Guid Id;
     public string Name;
     public Vector2 Position;
     public bool Visited;
     public GenerateMapSettingsData MapSettings;
     public RoomBlueprint[] Blueprints;
     public LevelType Type;
-    public string[] Neighbours;
-    public LocationFeatureData[] Features;
-
-    public static LocationData FromLocation(Location location)
-    {
-        return new LocationData
-        {
-            Id = location.Id.ToString(),
-            Name = location.Name,
-            MapSettings = GenerateMapSettingsData.FromSettings(location.Settings),
-            Blueprints = location.RoomBlueprints,
-            Type = location.Type,
-            Position = location.Position,
-            Neighbours = location.Neighbours.Select(x => x.Id.ToString()).ToArray(),
-            Features = location.Features.ToArray(),
-            Visited = location.Visited
-        };
-    }
-
-
-    public static Location ToLocation(LocationData locationData)
-    {
-        var settings = GenerateMapSettingsData.ToSettings(locationData.MapSettings);
-
-        var level = new Location(settings, locationData.Blueprints, locationData.Name, Guid.Parse(locationData.Id));
-
-        level.Type = locationData.Type;
-        level.Position = locationData.Position;
-        level.Features = locationData.Features.ToList();
-        level.Visited = locationData.Visited;
-
-        return level;
-    }
+    public string[] NeighbourIds;
+    public ICollection<LocationFeatureData> Features = new List<LocationFeatureData>();
+    
+    
+    [NonSerialized]
+    public List<LocationData> Neighbours = new();
 }
 
 [Serializable]

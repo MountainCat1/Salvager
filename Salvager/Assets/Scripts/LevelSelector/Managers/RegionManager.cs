@@ -13,7 +13,7 @@ namespace Managers.LevelSelector
         public Region Region { get; }
         public void SetRegion(Region region, Guid currentLocationId);
         public int GetDistance(Guid fromGuid, Guid toGuid);
-        public int GetDistance(Location from, Location to);
+        public int GetDistance(LocationData from, LocationData to);
     }
 
 
@@ -34,13 +34,13 @@ namespace Managers.LevelSelector
             );
         }
 
-        public int GetDistance(Location from, Location to)
+        public int GetDistance(LocationData from, LocationData to)
         {
             if (from == to)
                 return 0;
 
-            Queue<(Location location, int distance)> queue = new();
-            HashSet<Location> visited = new();
+            Queue<(LocationData location, int distance)> queue = new();
+            HashSet<LocationData> visited = new();
 
             queue.Enqueue((from, 0));
             visited.Add(from);

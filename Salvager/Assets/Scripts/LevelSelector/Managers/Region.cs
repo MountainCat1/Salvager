@@ -5,17 +5,17 @@ namespace Managers.LevelSelector
 {
     public class Region
     {
-        public IReadOnlyList<Location> Locations => _locations;
+        public IReadOnlyList<LocationData> Locations => _locations;
         public string Name { get; set; }
 
-        private List<Location> _locations = new();
+        private List<LocationData> _locations = new();
         
-        public void AddLocation(Location location)
+        public void AddLocation(LocationData location)
         {
             _locations.Add(location);
         }
 
-        public Location GetLocation(Guid locationId)
+        public LocationData GetLocation(Guid locationId)
         {
             return _locations.Find(l => l.Id == locationId);
         }

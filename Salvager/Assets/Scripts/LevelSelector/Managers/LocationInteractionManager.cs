@@ -46,11 +46,11 @@ namespace LevelSelector.Managers
             _interactions.Add(new LocationInteraction
             {
                 Message = "Embark",
-                IsDisplayed = location => _regionManager.GetDistance(Guid.Parse(location.Id), _crewManager.CurrentLocationId) == 1,
+                IsDisplayed = location => _regionManager.GetDistance(location.Id, _crewManager.CurrentLocationId) == 1,
                 IsEnabled = _ => _crewManager.CanTravel(),
                 OnClick = location =>
                 {
-                    _crewManager.ChangeCurrentLocation(LocationData.ToLocation(location));
+                    _crewManager.ChangeCurrentLocation(location);
                     SaveData();
                 }
             });
@@ -58,7 +58,7 @@ namespace LevelSelector.Managers
             _interactions.Add(new LocationInteraction
             {
                 Message = "Land",
-                IsDisplayed = location => _crewManager.CurrentLocationId.ToString() == location.Id,
+                IsDisplayed = location => _crewManager.CurrentLocationId == location.Id,
                 IsEnabled = location => !location.Visited,
                 OnClick = LoadLevel
             });
@@ -66,7 +66,7 @@ namespace LevelSelector.Managers
             _interactions.Add(new LocationInteraction
             {
                 Message = "Probe",
-                IsDisplayed = location => _crewManager.CurrentLocationId.ToString() == location.Id,
+                IsDisplayed = location => _crewManager.CurrentLocationId == location.Id,
                 IsEnabled = _ => false,
                 OnClick = _ => throw new NotImplementedException()
             });
@@ -100,7 +100,7 @@ namespace LevelSelector.Managers
             Debug.Log($"Loading level: {locationData.Name}");
             
             locationData.Visited = true;
-            _regionManager.Region.Locations.First(l => l.Id == Guid.Parse(locationData.Id)).Visited = true;
+            _regionManager.Region.Locations.First(l => l.Id == locationData.Id).Visited = true;
             
             SaveData();
             

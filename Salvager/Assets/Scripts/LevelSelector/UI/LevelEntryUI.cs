@@ -10,12 +10,12 @@ namespace UI
         [SerializeField] private TextMeshProUGUI levelNameText;
         [SerializeField] private GameObject selectionMarker;
 
-        public Location Location => _location;
+        public LocationData Location => _location;
 
-        private Location _location;
-        private Action<Location> _selectLevel;
+        private LocationData _location;
+        private Action<LocationData> _selectLevel;
 
-        public void Initialize(Location location, Action<Location> selectLevel, int distanceToCurrent)
+        public void Initialize(LocationData location, Action<LocationData> selectLevel, int distanceToCurrent)
         {
             levelNameText.text = location.Name;
 

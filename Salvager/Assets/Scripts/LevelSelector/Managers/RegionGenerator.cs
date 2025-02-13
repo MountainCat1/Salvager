@@ -16,7 +16,7 @@ namespace Managers.LevelSelector
     public class RegionGenerator : MonoBehaviour, IRegionGenerator
     {
         [Inject] private ILocationGenerator _locationGenerator;
-        
+
         [SerializeField] private int _count = 10;
         [SerializeField] private int _minJumps = 3;
         [SerializeField] private float _maxJumpDistance = 0.4f;
@@ -38,14 +38,14 @@ namespace Managers.LevelSelector
             GenerateConnections(locations, maxJumpDistance);
             EnsureGraphConnectivity(locations);
             locations.ForEach(region.AddLocation);
-            
+
             Debug.Log($"Generated {count} levels with minDistance: {minDistance}.");
             return region;
         }
 
-        private List<Location> GenerateLocations(int count, float minDistance)
+        private List<LocationData> GenerateLocations(int count, float minDistance)
         {
-            var locations = new List<Location>();
+            var locations = new List<LocationData>();
             var positions = new List<Vector2>();
             const int maxAttempts = 100;
 
@@ -59,6 +59,7 @@ namespace Managers.LevelSelector
                 locations.Add(location);
                 positions.Add(position);
             }
+
             return locations;
         }
 
@@ -71,20 +72,22 @@ namespace Managers.LevelSelector
             {
                 randomPosition = new Vector2(Random.value, Random.value);
                 attempts++;
-            } while (positions.Any(pos => Vector2.Distance(pos, randomPosition) < minDistance) && attempts < maxAttempts);
+            } while (positions.Any(pos => Vector2.Distance(pos, randomPosition) < minDistance) &&
+                     attempts < maxAttempts);
 
             return attempts >= maxAttempts ? Vector2.negativeInfinity : randomPosition;
         }
 
-        private void AssignStartAndEnd(List<Location> locations)
+        private void AssignStartAndEnd(List<LocationData> locations)
         {
             var startLocation = locations[Random.Range(0, locations.Count)];
-            var endLocation = locations.OrderByDescending(l => Vector2.Distance(startLocation.Position, l.Position)).First();
+            var endLocation = locations.OrderByDescending(l => Vector2.Distance(startLocation.Position, l.Position))
+                .First();
             startLocation.Type = LevelType.StartNode;
             endLocation.Type = LevelType.EndNode;
         }
 
-        private void GenerateConnections(List<Location> locations, float maxJumpDistance)
+        private void GenerateConnections(List<LocationData> locations, float maxJumpDistance)
         {
             foreach (var location in locations)
             {
@@ -93,30 +96,71 @@ namespace Managers.LevelSelector
                     .OrderBy(l => Vector2.Distance(location.Position, l.Position))
                     .Take(4)
                     .ToList();
+
+                location.NeighbourIds = location.Neighbours.Select(l => l.Id.ToString()).ToArray();
             }
         }
 
-        private void EnsureGraphConnectivity(List<Location> locations)
-        {
-            var visited = new HashSet<Location>();
-            var stack = new Stack<Location>();
-            stack.Push(locations[0]);
 
-            while (stack.Count > 0)
+        private void EnsureGraphConnectivity(List<LocationData> locations)
+        {
+            var visited = new HashSet<LocationData>();
+            var components = new List<List<LocationData>>();
+
+            // 1. Find all connected components
+            foreach (var location in locations)
             {
-                var current = stack.Pop();
-                if (!visited.Add(current)) continue;
-                current.Neighbours.ForEach(neighbor => stack.Push(neighbor));
+                if (visited.Contains(location)) continue;
+
+                var component = new List<LocationData>();
+                var stack = new Stack<LocationData>();
+                stack.Push(location);
+
+                while (stack.Count > 0)
+                {
+                    var current = stack.Pop();
+                    if (!visited.Add(current)) continue;
+
+                    component.Add(current);
+                    foreach (var neighbor in current.Neighbours)
+                    {
+                        if (!visited.Contains(neighbor))
+                        {
+                            stack.Push(neighbor);
+                        }
+                    }
+                }
+
+                components.Add(component);
             }
 
-            foreach (var location in locations.Where(location => !visited.Contains(location)))
+            // 2. Find the largest component
+            var largestComponent = components.OrderByDescending(c => c.Count).FirstOrDefault();
+            if (largestComponent == null) return; // Handle the case where there are no locations
+
+            // 3. Connect each disconnected component to the closest node in the largest component
+            foreach (var component in components)
             {
-                var closest = visited.OrderBy(l => Vector2.Distance(l.Position, location.Position)).FirstOrDefault();
-                if (closest != null)
+                if (component == largestComponent) continue; // Skip the largest component
+
+                // Find the closest node in the largest component to this component
+                var closestA = component
+                    .OrderBy(l => largestComponent.Min(l2 => Vector2.Distance(l.Position, l2.Position)))
+                    .FirstOrDefault();
+                var closestB = largestComponent.OrderBy(l => Vector2.Distance(closestA.Position, l.Position))
+                    .FirstOrDefault();
+
+                // Ensure the connection is bidirectional and update NeighbourIds
+                if (closestA != null && closestB != null && !closestA.Neighbours.Contains(closestB))
                 {
-                    location.Neighbours.Add(closest);
-                    closest.Neighbours.Add(location);
-                    visited.Add(location);
+                    closestA.Neighbours.Add(closestB);
+                    closestA.NeighbourIds = closestA.Neighbours.Select(l => l.Id.ToString()).ToArray();
+                }
+
+                if (closestB != null && closestA != null && !closestB.Neighbours.Contains(closestA))
+                {
+                    closestB.Neighbours.Add(closestA);
+                    closestB.NeighbourIds = closestB.Neighbours.Select(l => l.Id.ToString()).ToArray();
                 }
             }
         }

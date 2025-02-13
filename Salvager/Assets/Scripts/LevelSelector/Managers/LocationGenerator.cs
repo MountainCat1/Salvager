@@ -1,4 +1,5 @@
 using Services.MapGenerators;
+using UnityEditor;
 using UnityEngine;
 using Utilities;
 
@@ -6,7 +7,7 @@ namespace LevelSelector.Managers
 {
     public interface ILocationGenerator
     {
-        Location GenerateLocation();
+        LocationData GenerateLocation();
     }
     
     public class LocationGenerator : MonoBehaviour, ILocationGenerator
@@ -17,11 +18,12 @@ namespace LevelSelector.Managers
         [SerializeField] private int maxSecondaryFeatures = 3;
         [SerializeField] private int minSecondaryFeatures = 1;
         
-        public Location GenerateLocation()
+        public LocationData GenerateLocation()
         {
-            var location = new Location()
+            var location = new LocationData()
             {
-                Settings = GenerateMapSettings.GenerateRandom(),
+                Id = System.Guid.NewGuid(),
+                MapSettings = GenerateMapSettingsData.FromSettings(GenerateMapSettings.GenerateRandom()),
                 Name = Constants.Names.SpaceStations.RandomElement()
             };
             
