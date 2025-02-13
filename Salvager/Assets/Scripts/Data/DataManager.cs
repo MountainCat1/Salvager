@@ -1,18 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using Newtonsoft.Json;
 using UnityEngine;
-using Managers;
-using Zenject;
 
 namespace Data
 {
     public interface IDataManager
     {
         void SaveData();
-        void SaveData(GameData gameData);
         GameData LoadData();
         GameData GetData();
         void DeleteData();

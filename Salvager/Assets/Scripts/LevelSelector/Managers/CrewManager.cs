@@ -85,7 +85,7 @@ namespace Managers
             };
             gameData.CurrentLocationId = _regionManager.Region.Locations.First(l => l.Type == LevelType.StartNode).Id.ToString();
 
-            _dataManager.SaveData(gameData);
+            _dataManager.SaveData();
 
             Crew = crew;
             Inventory = startingInventory;

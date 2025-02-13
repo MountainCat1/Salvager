@@ -92,7 +92,7 @@ namespace LevelSelector.Managers
             gameData.CurrentLocationId = _crewManager.CurrentLocationId.ToString();
             gameData.Region = RegionData.FromRegion(_regionManager.Region);
             
-            _dataManager.SaveData(gameData);
+            _dataManager.SaveData();
         }
 
         public void LoadLevel(LocationData locationData)

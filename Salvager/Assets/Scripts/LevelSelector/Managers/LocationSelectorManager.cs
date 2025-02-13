@@ -14,14 +14,14 @@ namespace Managers.LevelSelector
         [Inject] private IRegionManager _regionManager;
         [Inject] private IDataManager _dataManager;
         [Inject] private ICrewManager _crewManager;
-        
+
         [SerializeField] private bool skipLoad = false;
-        
+
         private void Start()
         {
             var data = _dataManager.LoadData();
-            
-            if(skipLoad || data?.Region == null)
+
+            if (skipLoad || data?.Region == null)
             {
                 var region = _regionGenerator.Generate();
 
@@ -29,28 +29,27 @@ namespace Managers.LevelSelector
                 _regionManager.SetRegion(region, currentNodeId);
 
                 _crewManager.ReRollCrew();
-                
-                data = new GameData
-                {
-                    Region = RegionData.FromRegion(_regionManager.Region),
-                    Creatures = _crewManager.Crew.ToList(),
-                    Inventory = _crewManager.Inventory,
-                    CurrentLocationId = currentNodeId.ToString(),
-                    Resources = _crewManager.Resources
-                };
-            
-                _dataManager.SaveData(data);
+
+                var gameData = _dataManager.GetData();
+
+                gameData.Region = RegionData.FromRegion(_regionManager.Region);
+                gameData.Creatures = _crewManager.Crew.ToList();
+                gameData.Inventory = _crewManager.Inventory;
+                gameData.CurrentLocationId = currentNodeId.ToString();
+                gameData.Resources = _crewManager.Resources;
+
+                _dataManager.SaveData();
             }
-            
+
             LoadData();
         }
 
         private void LoadData()
         {
             var data = _dataManager.LoadData();
-            
+
             _regionManager.SetRegion(RegionData.ToRegion(data.Region), Guid.Parse(data.CurrentLocationId));
-            
+
             _crewManager.SetCrew(data);
         }
     }

@@ -172,7 +172,7 @@ namespace Managers
         
         private void SaveCurrentData()
         {
-            var currentGameData = _dataManager.LoadData();
+            var currentGameData = _dataManager.GetData();
         
             // Save the current level progress
             currentGameData.Creatures = FindObjectsOfType<Creature>(true)
@@ -180,7 +180,7 @@ namespace Managers
                 .Select(CreatureData.FromCreature)
                 .ToList();
         
-            _dataManager.SaveData(currentGameData);
+            _dataManager.SaveData();
         }
     }
     
