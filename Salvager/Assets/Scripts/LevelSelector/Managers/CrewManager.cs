@@ -17,8 +17,9 @@ namespace Managers
         void ReRollCrew();
         public ICollection<CreatureData> Crew { get; }
         InventoryData Inventory { get; }
-         void SetCrew(GameData gameData);
+        void SetCrew(GameData gameData);
         void SelectCreature(CreatureData creature);
+        InGameResources Resources { get; }
     }
 
     public class CrewManager : MonoBehaviour, ICrewManager
@@ -28,16 +29,23 @@ namespace Managers
 
         [Inject] private IDataManager _dataManager;
         [Inject] private DiContainer _diContainer;
-        
+
         public ICollection<CreatureData> Crew { get; private set; }
         public InventoryData Inventory { get; private set; }
+        public InGameResources Resources { get; private set; }
 
         [SerializeField] private List<ItemBehaviour> startingItems;
+        [SerializeField] private float startingMoney = 50;
+        [SerializeField] private float startingFuel = 5;
+        [SerializeField] private float startingJuice = 200;
         
+
         public void SetCrew(GameData gameData)
         {
             Crew = gameData.Creatures;
             Inventory = gameData.Inventory;
+            Resources = gameData.Resources;
+            
             Changed?.Invoke();
         }
 
@@ -49,24 +57,36 @@ namespace Managers
             {
                 crew.Add(GenerateCrew());
             }
-            
+
             InventoryData startingInventory = new InventoryData()
             {
                 Items = startingItems.Select(ItemData.FromItem).ToList(),
             };
-            
+
             _dataManager.SaveData(new GameData()
             {
                 Creatures = crew,
-                Inventory = startingInventory
+                Inventory = startingInventory,
+                Resources = new InGameResources()
+                {
+                    Money = (decimal)startingMoney,
+                    Fuel = (decimal)startingFuel,
+                    Juice = (decimal)startingJuice,
+                }
             });
-            
+
             Crew = crew;
             Inventory = startingInventory;
-            
+            Resources = new InGameResources()
+            {
+                Money = (decimal)startingMoney,
+                Fuel = (decimal)startingFuel,
+                Juice = (decimal)startingJuice,
+            };
+
             Changed?.Invoke();
         }
-        
+
 
         public void SelectCreature(CreatureData creature)
         {
@@ -75,7 +95,7 @@ namespace Managers
                 Debug.LogError("Creature not in crew");
                 return;
             }
-            
+
             SelectedCreature?.Invoke(creature);
         }
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Items;
 using LevelSelector.Managers;
+using Managers;
 using Managers.LevelSelector;
 using Services.MapGenerators;
 using UnityEngine;
@@ -17,6 +18,15 @@ public class GameData
     public RegionData Region;
     public string CurrentLocationId;
     public InventoryData Inventory;
+    public InGameResources Resources;
+}
+
+[Serializable]
+public class InGameResources
+{
+    public decimal Money = 0;
+    public decimal Fuel = 0;
+    public decimal Juice = 0;
 }
 
 
@@ -57,7 +67,8 @@ public class RegionData
         foreach (var level in region.Locations)
         {
             var levelData = dataRegion.Locations.First(x => x.Id == level.Id.ToString());
-            level.Neighbours = levelData.Neighbours.Select(x => region.Locations.First(l => l.Id.ToString() == x)).ToList();
+            level.Neighbours = levelData.Neighbours.Select(x => region.Locations.First(l => l.Id.ToString() == x))
+                .ToList();
         }
 
         return region;
@@ -67,10 +78,11 @@ public class RegionData
 [System.Serializable]
 public class LocationFeatureData
 {
-    [System.Serializable] public class FeatureEnemyData
+    [System.Serializable]
+    public class FeatureEnemyData
     {
         public CreatureData CreatureData;
-        
+
         public static FeatureEnemyData FromFeatureEnemy(FeatureEnemies data)
         {
             return new FeatureEnemyData
@@ -79,10 +91,10 @@ public class LocationFeatureData
             };
         }
     }
-    
+
     public string Name = string.Empty;
     public string Description = string.Empty;
-    
+
     public List<FeatureEnemyData> Enemies = new();
     public string[] RoomBlueprints = Array.Empty<string>();
     public string[] GenericRoomBlueprints = Array.Empty<string>();
@@ -100,7 +112,7 @@ public class LocationData
     public LevelType Type;
     public string[] Neighbours;
     public LocationFeatureData[] Features;
-    
+
     public static LocationData FromLocation(Location location)
     {
         return new LocationData
@@ -121,9 +133,9 @@ public class LocationData
     public static Location ToLocation(LocationData locationData)
     {
         var settings = GenerateMapSettingsData.ToSettings(locationData.MapSettings);
-        
+
         var level = new Location(settings, locationData.Blueprints, locationData.Name, Guid.Parse(locationData.Id));
-        
+
         level.Type = locationData.Type;
         level.Position = locationData.Position;
         level.Features = locationData.Features.ToList();
@@ -182,9 +194,9 @@ public class CreatureData
     public static CreatureData FromCreature(Creature creature)
     {
         Inventory inventory = creature.Inventory;
-        if(inventory is null)
+        if (inventory is null)
             inventory = new Inventory(creature.transform.Find("Inventory")); // TODO: make this a const "Inventory"
-        
+
         return new CreatureData
         {
             CreatureID = creature.GetIdentifier(),
@@ -213,12 +225,12 @@ public class InventoryData
 
     public void AddItem(ItemData itemData)
     {
-        if(itemData.Stackable == false)
+        if (itemData.Stackable == false)
         {
             Items.Add(itemData);
             return;
         }
-        
+
         var item = Items.FirstOrDefault(x => x.Identifier == itemData.Identifier);
         if (item == null)
         {
@@ -229,7 +241,7 @@ public class InventoryData
             item.Count += itemData.Count;
         }
     }
-    
+
     public void RemoveItem(ItemData itemData)
     {
         Items.Remove(itemData);
@@ -257,4 +269,3 @@ public class ItemData
         };
     }
 }
-
