@@ -12,11 +12,8 @@ namespace Managers.LevelSelector
         public event Action RegionChanged;
         public Region Region { get; }
         public void SetRegion(Region region, Guid currentLocationId);
-        public Guid CurrentLocationId { get; }
-        public Location CurrentLocation { get; }
         public int GetDistance(Guid fromGuid, Guid toGuid);
         public int GetDistance(Location from, Location to);
-        void ChangeCurrentLocation(Location selectedLocation);
     }
 
 
@@ -28,8 +25,6 @@ namespace Managers.LevelSelector
         [Inject] private IRegionGenerator _regionGenerator;
 
         public Region Region { get; private set; }
-        public Guid CurrentLocationId { get; set; }
-        public Location CurrentLocation { get; set; }
 
         public int GetDistance(Guid fromGuid, Guid toGuid)
         {
@@ -71,24 +66,12 @@ namespace Managers.LevelSelector
 
             return -1; // No path found
         }
-
-        public void ChangeCurrentLocation(Location selectedLocation)
-        {
-            CurrentLocation = selectedLocation;
-            CurrentLocationId = selectedLocation.Id;
-
-
-            RegionChanged?.Invoke();
-        }
+        
 
 
         public void SetRegion(Region region, Guid currentLocationId)
         {
             Region = region;
-
-            CurrentLocationId = currentLocationId;
-
-            CurrentLocation = region.Locations.First(l => l.Id == currentLocationId);
 
             RegionChanged?.Invoke();
         }

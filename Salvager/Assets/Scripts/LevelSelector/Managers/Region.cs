@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace Managers.LevelSelector
@@ -12,6 +13,11 @@ namespace Managers.LevelSelector
         public void AddLocation(Location location)
         {
             _locations.Add(location);
+        }
+
+        public Location GetLocation(Guid locationId)
+        {
+            return _locations.Find(l => l.Id == locationId);
         }
     }
 }

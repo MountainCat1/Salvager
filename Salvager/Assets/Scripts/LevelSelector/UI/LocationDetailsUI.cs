@@ -17,37 +17,41 @@ namespace UI
     {
         [Inject] private IRegionManager _regionManager;
         [Inject] private IDataManager _dataManager;
+        [Inject] private ICrewManager _crewManager;
         [Inject] private ILocationInteractionManager _locationInteractionManager;
-        
+
         [SerializeField] private LevelSelectorUI levelSelectorUI;
         [SerializeField] private TextMeshProUGUI nameText;
         [SerializeField] private TextMeshProUGUI descriptionText;
-        
+
         [SerializeField] private SceneReference levelScene;
 
         [SerializeField] private Transform locationInteractionsParent;
         [SerializeField] private Button buttonPrefab;
-        
+
         private Location _selectedLocation;
 
         private void Start()
         {
             levelSelectorUI.LocationSelected += UpdateDetails;
             _regionManager.RegionChanged += UpdateDetails;
+            _crewManager.Changed += UpdateDetails;
 
+            _selectedLocation = _regionManager.Region.Locations.First(l => l.Id == _crewManager.CurrentLocationId);
+            
             if (_regionManager.Region != null)
             {
-                _selectedLocation = _regionManager.CurrentLocation;
                 UpdateDetails();
             }
         }
 
         private void UpdateDetails()
         {
-            _selectedLocation = levelSelectorUI.SelectedLocation ?? _regionManager.CurrentLocation;
-            
+            _selectedLocation = levelSelectorUI.SelectedLocation ??
+                                _regionManager.Region.GetLocation(_crewManager.CurrentLocationId);
+
             Debug.Log($"Selected level: {_selectedLocation.Name}");
-            
+
             // Update UI
             nameText.text = _selectedLocation.Name;
             descriptionText.text = ConstructDescription(_selectedLocation);
@@ -60,15 +64,15 @@ namespace UI
             {
                 Destroy(child.gameObject);
             }
-            
+
             foreach (var locationInteraction in _locationInteractionManager.Interactions)
             {
-                if(!locationInteraction.IsDisplayed(locationData))
+                if (!locationInteraction.IsDisplayed(locationData))
                     continue;
-                
+
                 var button = Instantiate(buttonPrefab, locationInteractionsParent);
                 button.onClick.AddListener(() => locationInteraction.OnClick(locationData));
-                
+
                 button.GetComponentInChildren<TextMeshProUGUI>().text = locationInteraction.Message;
                 button.interactable = locationInteraction.IsEnabled(locationData);
             }
@@ -82,7 +86,7 @@ namespace UI
             {
                 description += $"* {feature.Description}\n";
             }
-            
+
             return description;
         }
     }

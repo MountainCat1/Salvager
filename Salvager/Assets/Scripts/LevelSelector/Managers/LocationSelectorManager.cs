@@ -35,7 +35,7 @@ namespace Managers.LevelSelector
                     Region = RegionData.FromRegion(_regionManager.Region),
                     Creatures = _crewManager.Crew.ToList(),
                     Inventory = _crewManager.Inventory,
-                    CurrentLocationId = _regionManager.CurrentLocationId.ToString(),
+                    CurrentLocationId = currentNodeId.ToString(),
                     Resources = _crewManager.Resources
                 };
             

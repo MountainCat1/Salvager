@@ -46,11 +46,11 @@ namespace LevelSelector.Managers
             _interactions.Add(new LocationInteraction
             {
                 Message = "Embark",
-                IsDisplayed = location => _regionManager.GetDistance(Guid.Parse(location.Id), _regionManager.CurrentLocationId) == 1,
-                IsEnabled = _ => true,
+                IsDisplayed = location => _regionManager.GetDistance(Guid.Parse(location.Id), _crewManager.CurrentLocationId) == 1,
+                IsEnabled = _ => _crewManager.CanTravel(),
                 OnClick = location =>
                 {
-                    _regionManager.ChangeCurrentLocation(LocationData.ToLocation(location));
+                    _crewManager.ChangeCurrentLocation(LocationData.ToLocation(location));
                     SaveData();
                 }
             });
@@ -58,7 +58,7 @@ namespace LevelSelector.Managers
             _interactions.Add(new LocationInteraction
             {
                 Message = "Land",
-                IsDisplayed = location => _regionManager.CurrentLocationId.ToString() == location.Id,
+                IsDisplayed = location => _crewManager.CurrentLocationId.ToString() == location.Id,
                 IsEnabled = location => !location.Visited,
                 OnClick = LoadLevel
             });
@@ -66,7 +66,7 @@ namespace LevelSelector.Managers
             _interactions.Add(new LocationInteraction
             {
                 Message = "Probe",
-                IsDisplayed = location => _regionManager.CurrentLocationId.ToString() == location.Id,
+                IsDisplayed = location => _crewManager.CurrentLocationId.ToString() == location.Id,
                 IsEnabled = _ => false,
                 OnClick = _ => throw new NotImplementedException()
             });
@@ -89,7 +89,7 @@ namespace LevelSelector.Managers
             
             gameData.Inventory = _crewManager.Inventory;
             gameData.Creatures = _crewManager.Crew.ToList();
-            gameData.CurrentLocationId = _regionManager.CurrentLocationId.ToString();
+            gameData.CurrentLocationId = _crewManager.CurrentLocationId.ToString();
             gameData.Region = RegionData.FromRegion(_regionManager.Region);
             
             _dataManager.SaveData(gameData);

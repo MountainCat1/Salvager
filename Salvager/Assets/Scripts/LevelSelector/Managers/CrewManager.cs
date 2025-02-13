@@ -4,6 +4,7 @@ using System.Linq;
 using Constants;
 using Data;
 using Items;
+using Managers.LevelSelector;
 using UnityEngine;
 using Utilities;
 using Zenject;
@@ -20,6 +21,9 @@ namespace Managers
         void SetCrew(GameData gameData);
         void SelectCreature(CreatureData creature);
         InGameResources Resources { get; }
+        public Guid CurrentLocationId { get; }
+        void ChangeCurrentLocation(Location toLocation);
+        bool CanTravel();
     }
 
     public class CrewManager : MonoBehaviour, ICrewManager
@@ -28,11 +32,14 @@ namespace Managers
         public event Action<CreatureData> SelectedCreature;
 
         [Inject] private IDataManager _dataManager;
+        [Inject] private IRegionManager _regionManager;
         [Inject] private DiContainer _diContainer;
 
         public ICollection<CreatureData> Crew { get; private set; }
         public InventoryData Inventory { get; private set; }
         public InGameResources Resources { get; private set; }
+        public Guid CurrentLocationId { private set; get; }
+        public Location CurrentLocation { get; private set; }
 
         [SerializeField] private List<ItemBehaviour> startingItems;
         [SerializeField] private float startingMoney = 50;
@@ -45,6 +52,9 @@ namespace Managers
             Crew = gameData.Creatures;
             Inventory = gameData.Inventory;
             Resources = gameData.Resources;
+            CurrentLocationId = Guid.Parse(gameData.CurrentLocationId);
+            
+            CurrentLocation = _regionManager.Region.Locations.First(l => l.Id == CurrentLocationId);
             
             Changed?.Invoke();
         }
@@ -97,6 +107,27 @@ namespace Managers
             }
 
             SelectedCreature?.Invoke(creature);
+        }
+        
+        public void ChangeCurrentLocation(Location selectedLocation)
+        {
+            if(Resources.Fuel < 1)
+            {
+                Debug.LogError("Tried to travel while not enough fuel to travel");
+                return;
+            }
+            
+            Resources.Fuel -= 1;
+            
+            CurrentLocation = selectedLocation;
+            CurrentLocationId = selectedLocation.Id;
+
+            Changed?.Invoke();
+        }
+
+        public bool CanTravel()
+        {
+            return Resources.Fuel > 0;
         }
 
         private CreatureData GenerateCrew()

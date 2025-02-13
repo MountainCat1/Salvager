@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Managers;
 using Managers.LevelSelector;
 using TMPro;
 using UnityEngine;
@@ -15,6 +16,7 @@ namespace UI
 
         [Inject] private IRegionGenerator _regionGenerator;
         [Inject] private IRegionManager _regionManager;
+        [Inject] private ICrewManager _crewManager;
 
         [SerializeField] private LevelEntryUI levelEntryPrefab;
         [SerializeField] private UILineRenderer linePrefab;
@@ -35,6 +37,7 @@ namespace UI
         private void Start()
         {
             _regionManager.RegionChanged += OnRegionGenerated;
+            _crewManager.Changed += OnRegionGenerated;
             if (_regionManager.Region != null)
                 OnRegionGenerated();
         }
@@ -69,7 +72,7 @@ namespace UI
             foreach (var level in _regionManager.Region.Locations)
             {
                 var levelEntry = Instantiate(levelEntryPrefab, levelsParent);
-                var distance = _regionManager.GetDistance(_regionManager.CurrentLocationId, level.Id);
+                var distance = _regionManager.GetDistance(_crewManager.CurrentLocationId, level.Id);
                 levelEntry.Initialize(level, SelectLevel, distance);
 
                 var rectTransform = levelEntry.GetComponent<RectTransform>();
@@ -98,11 +101,11 @@ namespace UI
 
             var createdConnections = new List<(Location, Location)>();
             foreach (var level in _regionManager.Region.Locations
-                         .OrderBy(x => _regionManager.GetDistance(_regionManager.CurrentLocationId, x.Id)))
+                         .OrderBy(x => _regionManager.GetDistance(_crewManager.CurrentLocationId, x.Id)))
             {
                 UILineRenderer prefab = null;
 
-                var distanceToCurrent = _regionManager.GetDistance(_regionManager.CurrentLocationId, level.Id);
+                var distanceToCurrent = _regionManager.GetDistance(_crewManager.CurrentLocationId, level.Id);
 
                 if (distanceToCurrent == 0)
                     prefab = linePrefab;
