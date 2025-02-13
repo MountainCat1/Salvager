@@ -73,17 +73,19 @@ namespace Managers
                 Items = startingItems.Select(ItemData.FromItem).ToList(),
             };
 
-            _dataManager.SaveData(new GameData()
+            var gameData = _dataManager.GetData();
+            
+            gameData.Creatures = crew;
+            gameData.Inventory = startingInventory;
+            gameData.Resources = new InGameResources()
             {
-                Creatures = crew,
-                Inventory = startingInventory,
-                Resources = new InGameResources()
-                {
-                    Money = (decimal)startingMoney,
-                    Fuel = (decimal)startingFuel,
-                    Juice = (decimal)startingJuice,
-                }
-            });
+                Money = (decimal)startingMoney,
+                Fuel = (decimal)startingFuel,
+                Juice = (decimal)startingJuice,
+            };
+            gameData.CurrentLocationId = _regionManager.Region.Locations.First(l => l.Type == LevelType.StartNode).Id.ToString();
+
+            _dataManager.SaveData(gameData);
 
             Crew = crew;
             Inventory = startingInventory;
