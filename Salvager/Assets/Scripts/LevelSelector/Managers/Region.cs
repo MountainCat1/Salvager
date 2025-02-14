@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Managers.LevelSelector
 {
@@ -17,7 +18,7 @@ namespace Managers.LevelSelector
 
         public LocationData GetLocation(Guid locationId)
         {
-            return _locations.Find(l => l.Id == locationId);
+            return _locations.First(l => l.Id == locationId);
         }
     }
 }

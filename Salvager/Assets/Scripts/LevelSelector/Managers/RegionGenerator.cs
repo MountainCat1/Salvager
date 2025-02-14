@@ -16,11 +16,13 @@ namespace Managers.LevelSelector
     public class RegionGenerator : MonoBehaviour, IRegionGenerator
     {
         [Inject] private ILocationGenerator _locationGenerator;
+        [Inject] private IShopGenerator _shopGenerator;
 
         [SerializeField] private int _count = 10;
         [SerializeField] private int _minJumps = 3;
         [SerializeField] private float _maxJumpDistance = 0.4f;
         [SerializeField] private float _minDistance = 0.2f;
+        [SerializeField] private int _shopCount = 2;
 
         public Region Generate()
         {
@@ -37,10 +39,30 @@ namespace Managers.LevelSelector
             AssignStartAndEnd(locations);
             GenerateConnections(locations, maxJumpDistance);
             EnsureGraphConnectivity(locations);
+            GenerateShops(locations, _shopCount);
             locations.ForEach(region.AddLocation);
 
             Debug.Log($"Generated {count} levels with minDistance: {minDistance}.");
             return region;
+        }
+
+        private void GenerateShops(ICollection<LocationData> locations, int shopCount)
+        {
+            for (int i = 0; i < shopCount; i++)
+            {
+                var location = locations
+                    .Where(x => x.Type != LevelType.StartNode && x.Type != LevelType.EndNode)
+                    .Where(x => x.ShopData is null)
+                    .RandomElement();
+
+                if (location == null)
+                {
+                    Debug.LogWarning("No more locations to add shops to.");
+                    break;
+                }
+                
+                location.ShopData = _shopGenerator.GenerateShop();
+            }
         }
 
         private List<LocationData> GenerateLocations(int count, float minDistance)

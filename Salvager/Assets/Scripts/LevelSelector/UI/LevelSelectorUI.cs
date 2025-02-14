@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using JetBrains.Annotations;
 using Managers;
 using Managers.LevelSelector;
 using TMPro;
@@ -31,7 +32,8 @@ namespace UI
 
         private Vector2 _lastScreenSize;
 
-        public LocationData SelectedLocation { get; private set; }
+        [field: NonSerialized] 
+        [CanBeNull] public LocationData SelectedLocation { get; private set; }
 
         // Unity Methods
         private void Start()

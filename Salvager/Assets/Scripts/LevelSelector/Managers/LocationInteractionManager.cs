@@ -33,6 +33,7 @@ namespace LevelSelector.Managers
         [Inject] ICrewManager _crewManager;
         
         [SerializeField] private UISlide inventorySlide;
+        [SerializeField] private UISlide shopSlide;
         
         [SerializeField] private SceneReference levelScene;
         
@@ -65,7 +66,7 @@ namespace LevelSelector.Managers
             _interactions.Add(new LocationInteraction
             {
                 Message = "Probe",
-                IsDisplayed = location => _crewManager.CurrentLocationId == location.Id,
+                IsDisplayed = IsCurrentLocation,
                 IsEnabled = _ => false,
                 OnClick = _ => throw new NotImplementedException()
             });
@@ -80,6 +81,17 @@ namespace LevelSelector.Managers
                     inventorySlide.TogglePanel();
                 }
             });   
+            
+            _interactions.Add(new LocationInteraction
+            {
+                Message = "Trade",
+                IsDisplayed = location => IsCurrentLocation(location) && location.ShopData is not null,
+                IsEnabled = _ => true,
+                OnClick = _ =>
+                {
+                    shopSlide.TogglePanel();
+                }
+            }); 
         }
 
         private void SaveData()
@@ -112,6 +124,11 @@ namespace LevelSelector.Managers
             
             // Load level scene
             SceneManager.LoadScene(levelScene);
+        }
+        
+        private bool IsCurrentLocation(LocationData locationData)
+        {
+            return _crewManager.CurrentLocationId == locationData.Id;
         }
     }
 }

@@ -35,8 +35,6 @@ namespace UI
             _regionManager.RegionChanged += UpdateDetails;
             _crewManager.Changed += UpdateDetails;
 
-            _selectedLocation = _regionManager.Region.Locations.First(l => l.Id == _crewManager.CurrentLocationId);
-            
             if (_regionManager.Region != null)
             {
                 UpdateDetails();
@@ -83,6 +81,11 @@ namespace UI
             foreach (var feature in selectedLocation.Features)
             {
                 description += $"* {feature.Description}\n";
+            }
+
+            if (selectedLocation.ShopData != null)
+            {
+                description += "* <color=green>There is a trade ship orbiting this station</color>\n";
             }
 
             return description;

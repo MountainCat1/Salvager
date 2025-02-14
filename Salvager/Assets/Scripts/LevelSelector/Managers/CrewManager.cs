@@ -5,6 +5,7 @@ using Constants;
 using Data;
 using Items;
 using Managers.LevelSelector;
+using Newtonsoft.Json;
 using UnityEngine;
 using Utilities;
 using Zenject;
@@ -18,7 +19,13 @@ namespace Managers
         void ReRollCrew();
         public ICollection<CreatureData> Crew { get; }
         InventoryData Inventory { get; }
-        void SetCrew(GameData gameData);
+
+        public void SetCrew(
+            ICollection<CreatureData> creature,
+            InventoryData inventory,
+            InGameResources resources,
+            Guid currentLocationId
+        );
         void SelectCreature(CreatureData creature);
         InGameResources Resources { get; }
         public Guid CurrentLocationId { get; }
@@ -45,60 +52,38 @@ namespace Managers
         [SerializeField] private float startingMoney = 50;
         [SerializeField] private float startingFuel = 5;
         [SerializeField] private float startingJuice = 200;
-        
 
-        public void SetCrew(GameData gameData)
+        public void SetCrew(
+            ICollection<CreatureData> creature,
+            InventoryData inventory,
+            InGameResources resources,
+            Guid currentLocationId
+        )
         {
-            Crew = gameData.Creatures;
-            Inventory = gameData.Inventory;
-            Resources = gameData.Resources;
-            CurrentLocationId = Guid.Parse(gameData.CurrentLocationId);
-            
+            Crew = creature;
+            Inventory = inventory;
+
+            Resources = resources;
+            Resources.Changed += OnResourcesChanged;
+
+            CurrentLocationId = currentLocationId;
+
             CurrentLocation = _regionManager.Region.Locations.First(l => l.Id == CurrentLocationId);
-            
+
+            Changed?.Invoke();
+        }
+
+        private void OnResourcesChanged()
+        {
+            Debug.Log("Resources changed:\n" + JsonConvert.SerializeObject(Resources));
+
             Changed?.Invoke();
         }
 
         public void ReRollCrew()
         {
-            const int crewCount = 5;
-            var crew = new List<CreatureData>();
-            for (int i = 0; i < crewCount; i++)
-            {
-                crew.Add(GenerateCrew());
-            }
-
-            InventoryData startingInventory = new InventoryData()
-            {
-                Items = startingItems.Select(ItemData.FromItem).ToList(),
-            };
-
-            var gameData = _dataManager.GetData();
-            
-            gameData.Creatures = crew;
-            gameData.Inventory = startingInventory;
-            gameData.Resources = new InGameResources()
-            {
-                Money = (decimal)startingMoney,
-                Fuel = (decimal)startingFuel,
-                Juice = (decimal)startingJuice,
-            };
-            gameData.CurrentLocationId = _regionManager.Region.Locations.First(l => l.Type == LevelType.StartNode).Id.ToString();
-
-            _dataManager.SaveData();
-
-            Crew = crew;
-            Inventory = startingInventory;
-            Resources = new InGameResources()
-            {
-                Money = (decimal)startingMoney,
-                Fuel = (decimal)startingFuel,
-                Juice = (decimal)startingJuice,
-            };
-
-            Changed?.Invoke();
+            throw new NotImplementedException();
         }
-
 
         public void SelectCreature(CreatureData creature)
         {
@@ -110,17 +95,17 @@ namespace Managers
 
             SelectedCreature?.Invoke(creature);
         }
-        
+
         public void ChangeCurrentLocation(LocationData selectedLocation)
         {
-            if(Resources.Fuel < 1)
+            if (Resources.Fuel < 1)
             {
                 Debug.LogError("Tried to travel while not enough fuel to travel");
                 return;
             }
-            
+
             Resources.Fuel -= 1;
-            
+
             CurrentLocation = selectedLocation;
             CurrentLocationId = selectedLocation.Id;
 
@@ -130,19 +115,6 @@ namespace Managers
         public bool CanTravel()
         {
             return Resources.Fuel > 0;
-        }
-
-        private CreatureData GenerateCrew()
-        {
-            return new CreatureData()
-            {
-                Name = $"{Names.Human.RandomElement()} {Surnames.Human.RandomElement()}",
-                SightRange = 5f,
-                Inventory = new InventoryData()
-                {
-                },
-                CreatureID = Guid.NewGuid().ToString(),
-            };
         }
     }
 }

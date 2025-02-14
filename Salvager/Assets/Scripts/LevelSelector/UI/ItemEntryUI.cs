@@ -50,9 +50,9 @@ namespace UI
             switch (item)
             {
                 case Weapon weapon:
-                    return $"Damage: {weapon.BaseDamage}\nRange: {weapon.Range}\nAttack Speed: {weapon.BaseAttackSpeed}";
+                    return $"Damage: {weapon.BaseDamage}\nRange: {weapon.Range}\nAttack Speed: {weapon.BaseAttackSpeed}\nValue {data.Value}$";
                 default:
-                    return item.Description;
+                    return $"{item.Description}\nValue {data.Value}$";
             }
         }
 

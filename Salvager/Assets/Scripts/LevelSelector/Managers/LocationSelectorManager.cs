@@ -1,7 +1,11 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using Constants;
 using Data;
+using Items;
 using UnityEngine;
+using Utilities;
 using Zenject;
 
 namespace Managers.LevelSelector
@@ -15,6 +19,13 @@ namespace Managers.LevelSelector
 
         [SerializeField] private bool skipLoad = false;
 
+        [SerializeField] private int startingCrewSize = 3;
+        [SerializeField] private List<ItemBehaviour> startingItems;
+        [SerializeField] private float startingMoney = 50;
+        [SerializeField] private float startingFuel = 5;
+        [SerializeField] private float startingJuice = 200;
+
+        
         private void Start()
         {
             var data = _dataManager.LoadData();
@@ -22,11 +33,27 @@ namespace Managers.LevelSelector
             if (skipLoad || data?.Region == null)
             {
                 var region = _regionGenerator.Generate();
-
                 var currentNodeId = region.Locations.First(x => x.Type == LevelType.StartNode).Id;
                 _regionManager.SetRegion(region, currentNodeId);
 
-                _crewManager.ReRollCrew();
+                
+                var startingInventory = new InventoryData()
+                {
+                    Items = startingItems.Select(ItemData.FromItem).ToList(),
+                };
+                var startingCreatures = new List<CreatureData>();
+                for (int i = 0; i < startingCrewSize; i++)
+                {
+                    startingCreatures.Add(GenerateCrew());
+                }
+                var startingResources = new InGameResources()
+                {
+                    Money = (decimal)startingMoney,
+                    Fuel = (decimal)startingFuel,
+                    Juice = (decimal)startingJuice,
+                };
+                
+                _crewManager.SetCrew(startingCreatures, startingInventory, startingResources, currentNodeId);
 
                 var gameData = _dataManager.GetData();
 
@@ -48,7 +75,20 @@ namespace Managers.LevelSelector
 
             _regionManager.SetRegion(RegionData.ToRegion(data.Region), Guid.Parse(data.CurrentLocationId));
 
-            _crewManager.SetCrew(data);
+            _crewManager.SetCrew(data.Creatures, data.Inventory, data.Resources, Guid.Parse(data.CurrentLocationId));
+        }
+        
+        private CreatureData GenerateCrew()
+        {
+            return new CreatureData()
+            {
+                Name = $"{Names.Human.RandomElement()} {Surnames.Human.RandomElement()}",
+                SightRange = 5f,
+                Inventory = new InventoryData()
+                {
+                },
+                CreatureID = Guid.NewGuid().ToString(),
+            };
         }
     }
 }

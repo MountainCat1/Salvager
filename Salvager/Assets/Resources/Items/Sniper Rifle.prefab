@@ -47,6 +47,8 @@ MonoBehaviour:
   <Icon>k__BackingField: {fileID: -4266644674179461008, guid: 8f817dad87e29304d8e1861257d4baf0, type: 3}
   <Name>k__BackingField: Sniper Rifle
   <Weight>k__BackingField: 1
+  <Description>k__BackingField: 
+  <BaseCost>k__BackingField: 50
   <Range>k__BackingField: 5
   <BaseAttackSpeed>k__BackingField: 0.5
   <BaseDamage>k__BackingField: 2.5

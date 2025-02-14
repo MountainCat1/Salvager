@@ -11,6 +11,8 @@ namespace Managers
     {
         // public ItemBehaviour GetItemPrefab(string itemDataIdentifier);
         public ItemBehaviour InstantiateItem(ItemData itemData, Transform parent = null);
+        
+        public ICollection<ItemBehaviour> GetItems();
 
         [Obsolete("Use InstantiateItem instead")]
         ItemBehaviour GetItemPrefab(string dataIdentifier);
@@ -21,6 +23,8 @@ namespace Managers
         [Inject] private DiContainer _diContainer;
 
         private ICollection<ItemBehaviour> _items;
+        
+        public ICollection<ItemBehaviour> GetItems() => _items; 
 
         private void Awake()
         {

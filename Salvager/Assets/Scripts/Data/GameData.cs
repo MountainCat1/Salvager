@@ -26,6 +26,26 @@ public class InGameResources
     public decimal Money = 0;
     public decimal Fuel = 0;
     public decimal Juice = 0;
+    
+    public event Action Changed;
+    
+    public void AddMoney(decimal amount)
+    {
+        Money += amount;
+        Changed?.Invoke();
+    }
+    
+    public void AddFuel(decimal amount)
+    {
+        Fuel += amount;
+        Changed?.Invoke();
+    }
+    
+    public void AddJuice(decimal amount)
+    {
+        Juice += amount;
+        Changed?.Invoke();
+    }
 }
 
 
@@ -101,24 +121,6 @@ public enum LevelType
     Default,
     EndNode,
     StartNode
-}
-
-[Serializable]
-public class LocationData
-{
-    public Guid Id;
-    public string Name;
-    public Vector2 Position;
-    public bool Visited;
-    public GenerateMapSettingsData MapSettings;
-    public RoomBlueprint[] Blueprints;
-    public LevelType Type;
-    public string[] NeighbourIds;
-    public ICollection<LocationFeatureData> Features = new List<LocationFeatureData>();
-    
-    
-    [NonSerialized]
-    public List<LocationData> Neighbours = new();
 }
 
 [Serializable]
@@ -232,6 +234,7 @@ public class ItemData
     public string Name;
     public string Icon;
     public bool Stackable;
+    public decimal Value;
 
     public static ItemData FromItem(ItemBehaviour item)
     {
@@ -241,7 +244,8 @@ public class ItemData
             Count = item.Count,
             Icon = item.Icon.name,
             Name = item.Name,
-            Stackable = item.Stackable
+            Stackable = item.Stackable,
+            Value = (decimal)item.BaseCost
         };
     }
 }

@@ -137,7 +137,13 @@ namespace Data
 
         public GameData GetData()
         {
-            return _gameData ?? throw new Exception("No game data loaded!");
+            if(_gameData is not null) return _gameData;
+
+            Debug.Log("Creating new game data...");
+
+            _gameData = new GameData();
+            
+            return _gameData;
         }
 
         public void DeleteData()

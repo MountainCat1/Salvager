@@ -4,6 +4,7 @@ using UnityEngine;
 
 namespace ScriptableObjects
 {
+    [Serializable]
     [CreateAssetMenu(fileName = "LootTable", menuName = "Custom/LootTable", order = 1)]
     public class LootTable : ScriptableObject
     {

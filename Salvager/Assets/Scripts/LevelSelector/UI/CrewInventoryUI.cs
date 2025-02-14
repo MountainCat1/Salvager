@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Data;
 using Managers;
 using TMPro;
@@ -18,8 +19,7 @@ namespace UI
         
         [SerializeField] private Transform creatureInventoryContainer;
         [SerializeField] private Transform crewInventoryContainer;
-        
-        
+       
         [SerializeField] private TextMeshProUGUI crewNameText;
         
         private CreatureData _selectedCreature;
@@ -66,8 +66,6 @@ namespace UI
         {
             _selectedCreature = creature;
             
-            crewNameText.text = creature.Name;
-            
             _uiSlide.ShowPanel();
             
             UpdateCreatureInventory();
@@ -80,15 +78,6 @@ namespace UI
                 Destroy(child.gameObject);
             }
 
-            if (_selectedCreature != null)
-            {
-                foreach (var item in _selectedCreature.Inventory.Items)
-                {
-                    var itemEntry = _diContainer.InstantiatePrefab(itemEntryUIPrefab, creatureInventoryContainer);
-                    itemEntry.GetComponent<ItemEntryUI>().Set(item, TransferItem);
-                }
-            }
-            
             foreach (Transform child in crewInventoryContainer)
             {
                 Destroy(child.gameObject);
@@ -98,6 +87,23 @@ namespace UI
             {
                 var itemEntry = _diContainer.InstantiatePrefab(itemEntryUIPrefab, crewInventoryContainer);
                 itemEntry.GetComponent<ItemEntryUI>().Set(item, TransferItem);
+            }
+            
+            _selectedCreature ??= _crewManager.Crew.FirstOrDefault();
+            
+            if (_selectedCreature != null)
+            {
+                foreach (var item in _selectedCreature.Inventory.Items)
+                {
+                    var itemEntry = _diContainer.InstantiatePrefab(itemEntryUIPrefab, creatureInventoryContainer);
+                    itemEntry.GetComponent<ItemEntryUI>().Set(item, TransferItem);
+                }
+                
+                crewNameText.text = _selectedCreature.Name;
+            }
+            else
+            {
+                crewNameText.text = "NO CREATURE SELECTED";
             }
         }
     }

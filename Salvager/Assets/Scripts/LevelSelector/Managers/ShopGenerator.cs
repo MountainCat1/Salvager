@@ -1,0 +1,52 @@
+using System.Collections.Generic;
+using System.Linq;
+using Items;
+using Managers;
+using ScriptableObjects;
+using UnityEngine;
+using Zenject;
+
+namespace LevelSelector.Managers
+{
+    public interface IShopGenerator
+    {
+        public ShopData GenerateShop();
+    }
+
+    public class ShopGenerator : MonoBehaviour, IShopGenerator
+    {
+        [Inject] private IItemManager _itemManager;
+        
+        [SerializeField] private LootTable lootTable;
+
+        private const int MinItems = 3;
+        private const int MaxItems = 6;
+        
+        private const float MinPriceMultiplier = 0.7f;
+        private const float MaxPriceMultiplier = 1.3f;
+        
+        public ShopData GenerateShop()
+        {
+            var shopData = new ShopData();
+            
+            var itemCount = Random.Range(MinItems, MaxItems);
+            
+            shopData.itemCount = itemCount;
+
+            var items = new List<ItemBehaviour>();
+            for (int i = 0; i < itemCount; i++)
+            {
+                var item = lootTable.GetRandomItem();
+                items.Add(item);
+            }
+
+            shopData.inventory = new InventoryData()
+            {
+                Items = items.Select(ItemData.FromItem).ToList()
+            };
+            shopData.priceMultiplier = Random.Range(MinPriceMultiplier, MaxPriceMultiplier);
+
+            return shopData;
+        }
+    }
+}
