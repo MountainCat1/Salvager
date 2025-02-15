@@ -20,8 +20,9 @@ namespace UI
         [SerializeField] private TextMeshProUGUI descriptionDisplay;
         [SerializeField] private TextMeshProUGUI amountDisplay;
 
-        private ItemData _itemData;
-        private Action<ItemData> _transferCallback;
+        protected ItemData ItemData;
+        
+        private Action<ItemData> _buttonClickCallback;
 
         private TooltipTrigger _toolTip;
 
@@ -34,11 +35,11 @@ namespace UI
         {
             iconDisplay.sprite = _dataResolver.ResolveItemIcon(item.Icon);
             nameDisplay.text = item.Name;
-            amountDisplay.text = item.Count == 1 ? string.Empty : item.Count.ToString();
+            amountDisplay.text = item.Count == 1 ? string.Empty : $"x{item.Count}";
             // descriptionDisplay.text = item.Description;
 
-            _itemData = item;
-            _transferCallback = transferCallback;
+            ItemData = item;
+            _buttonClickCallback = transferCallback;
 
             _toolTip.text = $"<b>{item.Name}</b>\n-----\n{GetDescription(item)}";
         }
@@ -56,9 +57,9 @@ namespace UI
             }
         }
 
-        public void Transfer()
+        public void RunCallback()
         {
-            _transferCallback?.Invoke(_itemData);
+            _buttonClickCallback?.Invoke(ItemData);
         }
     }
 }

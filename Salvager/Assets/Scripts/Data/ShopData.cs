@@ -1,4 +1,3 @@
-
 using System;
 using System.Collections.Generic;
 
@@ -8,4 +7,16 @@ public class ShopData
     public int itemCount;
     public InventoryData inventory;
     public float priceMultiplier;
+
+    public decimal GetBuyPrice(ItemData itemData)
+    {
+        decimal price = itemData.Value * (decimal)priceMultiplier;
+        return Math.Ceiling(price);
+    }
+
+    public decimal GetSellPrice(ItemData itemData)
+    {
+        decimal price = itemData.Value * (decimal)priceMultiplier * 0.5m;
+        return Math.Floor(price);
+    }
 }

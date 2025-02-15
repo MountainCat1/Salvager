@@ -4,6 +4,7 @@ using Managers.LevelSelector;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using Utilities;
 using Zenject;
 
 namespace UI
@@ -15,10 +16,13 @@ namespace UI
         [Inject] private IRegionManager _regionManager;
         [Inject] private DiContainer _diContainer;
 
-        [SerializeField] private ItemEntryUI itemEntryUIPrefab;
+        [SerializeField] private ItemShopEntryUI itemEntryUIPrefab;
 
         [SerializeField] private Transform shopInventoryContainer;
         [SerializeField] private Transform crewInventoryContainer;
+        
+        [SerializeField] private AudioClip buySound;
+        [SerializeField] private AudioClip sellSound;
 
         private UISlide _uiSlide;
         private ShopData _shopData;
@@ -48,17 +52,25 @@ namespace UI
 
             foreach (var item in _shopData.inventory.Items)
             {
-                var itemEntry = _diContainer.InstantiatePrefab(itemEntryUIPrefab, shopInventoryContainer);
-                itemEntry.GetComponent<ItemEntryUI>().Set(item, BuyItem);
+                var itemEntryGo = _diContainer.InstantiatePrefab(itemEntryUIPrefab, shopInventoryContainer);
+                var itemEntry = itemEntryGo.GetComponent<ItemShopEntryUI>();
+                itemEntry.Set(item, BuyItem);
+                itemEntry.SetShopData(_shopData);
 
-                var button = itemEntry.GetComponent<Button>();
-                button.interactable = _crewManager.Resources.Money >= item.Value;
+                var button = itemEntryGo.GetComponent<Button>();
+                button.interactable = _crewManager.Resources.Money >= _shopData.GetBuyPrice(item);
+                
+                itemEntryGo.GetComponent<ButtonSoundUI>().audioClip = buySound;
             }
 
             foreach (var item in _crewManager.Inventory.Items)
             {
-                var itemEntry = _diContainer.InstantiatePrefab(itemEntryUIPrefab, crewInventoryContainer);
-                itemEntry.GetComponent<ItemEntryUI>().Set(item, SellItem);
+                var itemEntryGo = _diContainer.InstantiatePrefab(itemEntryUIPrefab, crewInventoryContainer);
+                var itemEntry = itemEntryGo.GetComponent<ItemShopEntryUI>();
+                itemEntry.Set(item, SellItem);
+                itemEntry.SetShopData(_shopData);
+                
+                itemEntry.GetComponent<ButtonSoundUI>().audioClip = sellSound;
             }
         }
 
@@ -67,7 +79,7 @@ namespace UI
             _crewManager.Inventory.RemoveItem(item);
             _shopData.inventory.AddItem(item);
 
-            _crewManager.Resources.AddMoney(item.Value);
+            _crewManager.Resources.AddMoney(_shopData.GetSellPrice(item));
 
             UpdateUI();
 
@@ -79,7 +91,7 @@ namespace UI
             _crewManager.Inventory.AddItem(item);
             _shopData.inventory.RemoveItem(item);
 
-            _crewManager.Resources.AddMoney(-item.Value);
+            _crewManager.Resources.AddMoney(-1 * _shopData.GetBuyPrice(item));
 
             UpdateUI();
 
