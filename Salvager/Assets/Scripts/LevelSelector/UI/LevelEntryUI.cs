@@ -8,7 +8,7 @@ namespace UI
     public class LevelEntryUI : MonoBehaviour
     {
         [SerializeField] private TextMeshProUGUI levelNameText;
-        [SerializeField] private GameObject selectionMarker;
+        [SerializeField] private GameObject presenceMarker;
 
         public LocationData Location => _location;
 
@@ -34,18 +34,18 @@ namespace UI
             if (distanceToCurrent == 0)
             {
                 levelNameText.fontStyle = FontStyles.Bold | FontStyles.Underline | FontStyles.UpperCase;
-                selectionMarker.SetActive(true);
+                presenceMarker.SetActive(true);
             }
             else if(distanceToCurrent == 1)
             {
                 levelNameText.fontStyle = FontStyles.Bold;
-                selectionMarker.SetActive(false);
+                presenceMarker.SetActive(false);
             }
             else
             {
                 levelNameText.fontStyle = FontStyles.Normal;
-                GetComponentInChildren<Image>().color = new Color(1f, 1f, 1f, 0.5f);
-                selectionMarker.SetActive(false);
+                GetComponentInChildren<Button>().targetGraphic.color = new Color(1f, 1f, 1f, 0.5f);
+                presenceMarker.SetActive(false);
             }
             
             levelNameText.text = location.Name + $" ({distanceToCurrent})";

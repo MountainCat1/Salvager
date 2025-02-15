@@ -1,4 +1,3 @@
-using Managers;
 using Zenject;
 
 namespace UI
@@ -11,7 +10,6 @@ namespace UI
             
             Container.Bind<SelectionDisplayEntryUI>().FromComponentInHierarchy().AsSingle();
             Container.Bind<InventoryUI>().FromComponentInHierarchy().AsSingle();
-            Container.Bind<ISoundPlayer>().To<SoundPlayer>().FromNew().AsSingle();
         }
     }
 }

@@ -48,13 +48,11 @@ namespace UI
 
             if (_selectedCreature.Inventory.Items.Contains(item))
             {
-                _selectedCreature.Inventory.RemoveItem(item);
-                _crewManager.Inventory.AddItem(item);
+                _selectedCreature.Inventory.TransferItem(item, _crewManager.Inventory);
             }
             else
             {
-                _selectedCreature.Inventory.AddItem(item);
-                _crewManager.Inventory.RemoveItem(item);
+                _crewManager.Inventory.TransferItem(item, _selectedCreature.Inventory);
             }
             
             UpdateCreatureInventory();

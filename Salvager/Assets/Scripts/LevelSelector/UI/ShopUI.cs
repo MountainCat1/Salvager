@@ -1,10 +1,8 @@
 using Data;
 using Managers;
 using Managers.LevelSelector;
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using Utilities;
 using Zenject;
 
 namespace UI
@@ -30,6 +28,7 @@ namespace UI
         private void Start()
         {
             _crewManager.Changed += UpdateUI;
+            _crewManager.SelectedCreature += _ => _uiSlide.HidePanel();
             _uiSlide = GetComponent<UISlide>();
         }
 
@@ -76,8 +75,7 @@ namespace UI
 
         private void SellItem(ItemData item)
         {
-            _crewManager.Inventory.RemoveItem(item);
-            _shopData.inventory.AddItem(item);
+            _crewManager.Inventory.TransferItem(item, _shopData.inventory);
 
             _crewManager.Resources.AddMoney(_shopData.GetSellPrice(item));
 
@@ -88,8 +86,7 @@ namespace UI
 
         private void BuyItem(ItemData item)
         {
-            _crewManager.Inventory.AddItem(item);
-            _shopData.inventory.RemoveItem(item);
+            _shopData.inventory.TransferItem(item, _crewManager.Inventory);
 
             _crewManager.Resources.AddMoney(-1 * _shopData.GetBuyPrice(item));
 

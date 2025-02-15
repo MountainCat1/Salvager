@@ -186,51 +186,6 @@ public class CreatureData
 }
 
 [Serializable]
-public class InventoryData
-{
-    public List<ItemData> Items = new();
-    public bool ContainsItem(ItemData itemData)
-    {
-        return Items.Contains(itemData);
-    }
-
-    public static InventoryData FromInventory(Inventory inventory)
-    {
-        var data = new InventoryData { Items = new List<ItemData>() };
-        foreach (var item in inventory.Items)
-        {
-            data.Items.Add(ItemData.FromItem(item));
-        }
-
-        return data;
-    }
-
-    public void AddItem(ItemData itemData)
-    {
-        if (itemData.Stackable == false)
-        {
-            Items.Add(itemData);
-            return;
-        }
-
-        var item = Items.FirstOrDefault(x => x.Identifier == itemData.Identifier);
-        if (item == null)
-        {
-            Items.Add(itemData);
-        }
-        else
-        {
-            item.Count += itemData.Count;
-        }
-    }
-
-    public void RemoveItem(ItemData itemData)
-    {
-        Items.Remove(itemData);
-    }
-}
-
-[Serializable]
 public class ItemData
 {
     public string Identifier;
