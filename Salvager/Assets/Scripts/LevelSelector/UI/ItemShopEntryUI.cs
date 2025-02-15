@@ -2,9 +2,8 @@ using System;
 using Data;
 using Managers;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.UI.Extensions;
 using Zenject;
 
 namespace UI
@@ -19,7 +18,11 @@ namespace UI
 
         public void SetShopData(ShopData shopData)
         {
-            priceDisplay.text = $"{shopData.GetBuyPrice(ItemData)}$";
+            var price = shopData.inventory.ContainsItem(ItemData) // we check if the item is in the shop inventory
+                ? shopData.GetBuyPrice(ItemData) // if it is, we get the sell price
+                : shopData.GetSellPrice(ItemData); // if it is not, we get the buy price
+            
+            priceDisplay.text = $"{price}$";
         }
     }
 }

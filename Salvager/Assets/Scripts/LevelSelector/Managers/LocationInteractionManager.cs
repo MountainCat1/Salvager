@@ -78,6 +78,7 @@ namespace LevelSelector.Managers
                 IsEnabled = _ => true,
                 OnClick = _ =>
                 {
+                    shopSlide.HidePanel();
                     inventorySlide.TogglePanel();
                 }
             });   
@@ -89,6 +90,7 @@ namespace LevelSelector.Managers
                 IsEnabled = _ => true,
                 OnClick = _ =>
                 {
+                    inventorySlide.HidePanel();
                     shopSlide.TogglePanel();
                 }
             }); 

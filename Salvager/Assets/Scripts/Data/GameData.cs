@@ -189,6 +189,10 @@ public class CreatureData
 public class InventoryData
 {
     public List<ItemData> Items = new();
+    public bool ContainsItem(ItemData itemData)
+    {
+        return Items.Contains(itemData);
+    }
 
     public static InventoryData FromInventory(Inventory inventory)
     {

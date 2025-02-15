@@ -14,7 +14,7 @@ namespace UI
         
         private void Start()
         {
-            if(audioClip is null)
+            if(!audioClip)
                 return;
             
             var button = GetComponent<Button>();
