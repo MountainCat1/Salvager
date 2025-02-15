@@ -1,5 +1,4 @@
-
-
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -18,5 +17,14 @@ public class RoomBlueprint : ScriptableObject
     [field: SerializeField] public string Name { get; set; } = null!;
     [field: SerializeField] public List<RoomBlueprintProp> Props { get; set; } = new();
     [field: SerializeField] public bool StartingRoom { get; set; } = false;
-    [field: SerializeField] public Creature[] Enemies { get; set; }
+    [field: SerializeField] public RoomEnemy[] Enemies { get; set; }
+}
+
+
+[Serializable]
+public class RoomEnemy
+{
+    public Creature enemy;
+    public int minAmount = 1;
+    public int maxAmount = 1;
 }

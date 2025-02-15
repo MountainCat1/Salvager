@@ -3,6 +3,7 @@ using System.Linq;
 using Constants;
 using LevelSelector.Managers;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Utilities;
 using Zenject;
 
@@ -15,30 +16,23 @@ namespace Managers.LevelSelector
 
     public class RegionGenerator : MonoBehaviour, IRegionGenerator
     {
-        [Inject]
-        private ILocationGenerator _locationGenerator;
+        [Inject] private ILocationGenerator _locationGenerator;
 
-        [Inject]
-        private IShopGenerator _shopGenerator;
+        [Inject] private IShopGenerator _shopGenerator;
 
-        [SerializeField]
-        private int _count = 10;
+        [SerializeField] private int count = 10;
 
-        [SerializeField]
-        private int _minJumps = 3;
+        [SerializeField] private int minJumps = 3;
 
-        [SerializeField]
-        private float _maxJumpDistance = 0.4f;
+        [SerializeField] private float maxJumpDistance = 0.4f;
 
-        [SerializeField]
-        private float _minDistance = 0.2f;
+        [SerializeField] private float minDistance = 0.2f;
 
-        [SerializeField]
-        private int _shopCount = 2;
+        [SerializeField] private int shopCount = 2;
 
         public Region Generate()
         {
-            return GenerateLevels(_count, _minJumps, _maxJumpDistance, _minDistance);
+            return GenerateLevels(count, minJumps, maxJumpDistance, minDistance);
         }
 
         private Region GenerateLevels(
@@ -55,13 +49,30 @@ namespace Managers.LevelSelector
                 return region;
 
             AssignStartAndEnd(locations);
+            AddFeatures(locations);
+            AddEndNodeFeature(locations);
             GenerateConnections(locations, maxJumpDistance);
             EnsureGraphConnectivity(locations);
-            GenerateShops(locations, _shopCount);
+            GenerateShops(locations, shopCount);
             locations.ForEach(region.AddLocation);
 
             Debug.Log($"Generated {count} levels with minDistance: {minDistance}.");
             return region;
+        }
+
+        private void AddEndNodeFeature(List<LocationData> locations)
+        {
+            var endNode = locations.Single(l => l.Type == LocationType.EndNode);
+            
+            _locationGenerator.AddEndFeature(endNode);
+        }
+
+        private void AddFeatures(List<LocationData> locations)
+        {
+            foreach (var location in locations)
+            {
+                _locationGenerator.AddFeatures(location);
+            }
         }
 
         private void GenerateShops(ICollection<LocationData> locations, int shopCount)
@@ -71,8 +82,8 @@ namespace Managers.LevelSelector
                 var location = locations
                     .Where(
                         x =>
-                            x.Type != LevelType.StartNode && x.Type != LevelType.EndNode
-                            && x.ShopData is null
+                            x.Type != LocationType.StartNode && x.Type != LocationType.EndNode
+                                                             && x.ShopData is null
                     )
                     .RandomElement();
 
@@ -138,8 +149,8 @@ namespace Managers.LevelSelector
             var endLocation = locations
                 .OrderByDescending(l => Vector2.Distance(startLocation.Position, l.Position))
                 .First();
-            startLocation.Type = LevelType.StartNode;
-            endLocation.Type = LevelType.EndNode;
+            startLocation.Type = LocationType.StartNode;
+            endLocation.Type = LocationType.EndNode;
         }
 
         private void GenerateConnections(List<LocationData> locations, float maxJumpDistance)
@@ -151,7 +162,7 @@ namespace Managers.LevelSelector
                         l =>
                             l != location
                             && Vector2.Distance(location.Position, l.Position)
-                                <= maxJumpDistance
+                            <= maxJumpDistance
                     )
                     .OrderBy(l => Vector2.Distance(location.Position, l.Position))
                     .Take(4)

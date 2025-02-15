@@ -116,7 +116,7 @@ public class LocationFeatureData
     public string[] GenericRoomBlueprints = Array.Empty<string>();
 }
 
-public enum LevelType
+public enum LocationType
 {
     Default,
     EndNode,

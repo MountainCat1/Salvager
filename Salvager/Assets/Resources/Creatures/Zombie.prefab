@@ -585,7 +585,7 @@ MonoBehaviour:
   weapon: {fileID: 838743690902828222}
   <SightRange>k__BackingField: 11
   <XpAmount>k__BackingField: 0
-  <Team>k__BackingField: 4
+  <Team>k__BackingField: 2
   <InteractionRange>k__BackingField: 1.5
 --- !u!114 &7748546943704470895
 MonoBehaviour:

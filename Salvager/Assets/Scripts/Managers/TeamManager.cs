@@ -5,11 +5,10 @@ public enum Teams
 {
     Passive,
     Player,
-    Kingdom,
-    Villagers,
-    Kobolds,
+    Undead,
+    Aliens,
+    Ai,
     Bandits,
-    Cultists
 }
 
 public enum Attitude
@@ -65,29 +64,25 @@ namespace Managers
             }
             
             // Player
-            // Base
+            AddRelation(Teams.Player, Teams.Ai, Attitude.Hostile);
+            AddRelation(Teams.Player, Teams.Bandits, Attitude.Hostile);
+            AddRelation(Teams.Player, Teams.Undead, Attitude.Hostile);
+            AddRelation(Teams.Player, Teams.Aliens, Attitude.Hostile);
             
-            // Villagers
-            AddRelation(Teams.Villagers, Teams.Player, Attitude.Friendly);
-            AddRelation(Teams.Villagers, Teams.Kingdom, Attitude.Friendly);
+            // Ai
+            AddRelation(Teams.Ai, Teams.Bandits, Attitude.Hostile);
+            AddRelation(Teams.Ai, Teams.Undead, Attitude.Hostile);
+            AddRelation(Teams.Ai, Teams.Aliens, Attitude.Hostile);
             
             // Bandits
-            AddRelation(Teams.Bandits, Teams.Player, Attitude.Hostile);
-            AddRelation(Teams.Bandits, Teams.Kingdom, Attitude.Hostile);
-            AddRelation(Teams.Bandits, Teams.Villagers, Attitude.Hostile);
+            AddRelation(Teams.Bandits, Teams.Undead, Attitude.Hostile);
+            AddRelation(Teams.Bandits, Teams.Aliens, Attitude.Hostile);
             
-            // Kobolds
-            AddRelation(Teams.Kobolds, Teams.Player, Attitude.Hostile);
-            AddRelation(Teams.Kobolds, Teams.Kingdom, Attitude.Hostile);
-            AddRelation(Teams.Kobolds, Teams.Villagers, Attitude.Hostile);
-            AddRelation(Teams.Kobolds, Teams.Bandits, Attitude.Hostile);
+            // Undead
+            AddRelation(Teams.Undead, Teams.Aliens, Attitude.Hostile);
             
-            // Cultists
-            AddRelation(Teams.Cultists, Teams.Player, Attitude.Hostile);
-            AddRelation(Teams.Cultists, Teams.Kingdom, Attitude.Hostile);
-            AddRelation(Teams.Cultists, Teams.Villagers, Attitude.Hostile);
-            AddRelation(Teams.Cultists, Teams.Bandits, Attitude.Hostile);
-            AddRelation(Teams.Cultists, Teams.Kobolds, Attitude.Hostile);
+            // Aliens
+            
         }
 
 

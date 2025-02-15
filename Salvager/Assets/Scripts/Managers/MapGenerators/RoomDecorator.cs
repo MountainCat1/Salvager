@@ -123,7 +123,17 @@ public partial class RoomDecorator : MonoBehaviour, IRoomDecorator
         PlaceRoomMarker(roomData, blueprint, tileSize);
         SpawnProps(roomData, blueprint, tileSize);
 
-        roomData.Enemies = blueprint.Enemies;
+        var enemies = new List<Creature>();
+
+        foreach (var roomEnemy in blueprint.Enemies)
+        {
+            for (int i = 0; i < Random.Range(roomEnemy.minAmount, roomEnemy.maxAmount); i++)
+            {
+                enemies.Add(roomEnemy.enemy);
+            }
+        }
+        
+        roomData.Enemies = enemies.ToArray();
         roomData.IsEntrance = blueprint.StartingRoom;
     }
 

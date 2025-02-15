@@ -22,7 +22,7 @@ namespace UI
             _location = location;
             _selectLevel = selectLevel;
 
-            if (location.Type == LevelType.EndNode)
+            if (location.Type == LocationType.EndNode)
             {
                 levelNameText.color = Color.red;
             }

@@ -2812,11 +2812,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3438dcd27aab4a48be76d664d24acb0b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _count: 10
-  _minJumps: 3
-  _maxJumpDistance: 0.4
-  _minDistance: 0.2
-  _shopCount: 2
+  count: 10
+  minJumps: 3
+  maxJumpDistance: 0.4
+  minDistance: 0.2
+  shopCount: 2
 --- !u!1 &1204106685
 GameObject:
   m_ObjectHideFlags: 0
@@ -2914,6 +2914,10 @@ MonoBehaviour:
     items:
     - item: {fileID: 11400000, guid: eb9151ffc5af0734db15126de721b1d0, type: 2}
       weight: 100
+  endLocationFeatures:
+    items:
+    - item: {fileID: 11400000, guid: 9fbde98348bdbfb45923283b48fa4c0a, type: 2}
+      weight: 1
   weightedLocationFeatures:
     items:
     - item: {fileID: 11400000, guid: c97f959e8064ef44982f9252b0b6aa5e, type: 2}

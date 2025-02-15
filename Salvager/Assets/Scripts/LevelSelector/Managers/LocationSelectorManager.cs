@@ -33,7 +33,7 @@ namespace Managers.LevelSelector
             if (skipLoad || data?.Region == null)
             {
                 var region = _regionGenerator.Generate();
-                var currentNodeId = region.Locations.First(x => x.Type == LevelType.StartNode).Id;
+                var currentNodeId = region.Locations.First(x => x.Type == LocationType.StartNode).Id;
                 _regionManager.SetRegion(region, currentNodeId);
 
                 

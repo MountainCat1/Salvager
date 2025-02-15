@@ -26,5 +26,5 @@ public class LocationData
     public ShopData ShopData = null;
     
     // Misc 
-    public LevelType Type;
+    public LocationType Type;
 }

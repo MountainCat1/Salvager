@@ -48,9 +48,7 @@ namespace Managers
             locationData = location;
             this.mapData = mapData;
 
-            SpawnRoomBasedEnemies(
-                Random.Range(minRoomsWithEnemies, maxRoomsWithEnemies)
-            );
+            SpawnRoomBasedEnemies();
 
             SpawnFeatureBasedEnemies(
                 new Queue<LocationFeatureData>(
@@ -68,7 +66,7 @@ namespace Managers
             );
         }
 
-        private void SpawnRoomBasedEnemies(int roomsWithEnemies)
+        private void SpawnRoomBasedEnemies()
         {
             foreach (
                 var room in mapData
@@ -76,10 +74,12 @@ namespace Managers
                     .Where(room => room.Enemies?.Any() == true)
             )
             {
+                if(room.Occupied)
+                    continue;
+                
                 room.Occupied = true;
-                for (int i = 0; i < roomsWithEnemies; i++)
+                foreach (var enemy in room.Enemies)
                 {
-                    var enemy = room.Enemies.RandomElement();
                     var position = GetRandomFloorPosition(room);
                     if (position != null)
                     {

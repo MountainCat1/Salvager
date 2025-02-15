@@ -7,11 +7,14 @@ namespace LevelSelector.Managers
     public interface ILocationGenerator
     {
         LocationData GenerateLocation();
+        void AddFeatures(LocationData location);
+        void AddEndFeature(LocationData location);
     }
     
     public class LocationGenerator : MonoBehaviour, ILocationGenerator
     {
         [SerializeField] private WeightedLocationFeature originLocationFeatures;
+        [SerializeField] private WeightedLocationFeature endLocationFeatures;
         [SerializeField] private WeightedLocationFeature weightedLocationFeatures;
         [SerializeField] private WeightedLocationFeature weightedSecondaryLocationFeatures;
         [SerializeField] private int maxSecondaryFeatures = 3;
@@ -25,7 +28,12 @@ namespace LevelSelector.Managers
                 MapSettings = GenerateMapSettingsData.FromSettings(GenerateMapSettings.GenerateRandom()),
                 Name = Constants.Names.SpaceStations.RandomElement()
             };
-            
+
+            return location;
+        }
+        
+        public void AddFeatures(LocationData location)
+        {
             var originFeature = originLocationFeatures.GetRandomItem().ToData();
             location.Features.Add(originFeature);
             
@@ -39,8 +47,12 @@ namespace LevelSelector.Managers
             {
                 location.Features.Add(secondaryFeature.ToData());
             }
-
-            return location;
+        }
+        
+        public void AddEndFeature(LocationData location)
+        {
+            var endFeature = endLocationFeatures.GetRandomItem().ToData();
+            location.Features.Add(endFeature);
         }
     }
     
