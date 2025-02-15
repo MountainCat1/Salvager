@@ -27,6 +27,10 @@ namespace CreatureControllers
 
             switch (target)
             {
+                case null:
+                    _target = null;
+                    _interactionTarget = null;
+                    break;
                 case Creature creature:
                     _target = creature;
                     break;

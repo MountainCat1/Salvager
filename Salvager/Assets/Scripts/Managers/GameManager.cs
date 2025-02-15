@@ -144,7 +144,7 @@ namespace Managers
             //     _creatureManager.SpawnCreature(enemyPrefab, (Vector2)room.Positions.RandomElement() * _map.TileSize);
             // }
             
-            _enemySpawner.Initialize(mapData: mapData);
+            _enemySpawner.Initialize(mapData: mapData, location: GameSettings.Location);
 
             // for (int i = 0; i < 15; i++)
             // {

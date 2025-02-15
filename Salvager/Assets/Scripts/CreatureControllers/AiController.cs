@@ -253,7 +253,7 @@ namespace CreatureControllers
             return pathClear;
         }
 
-        private void Memorize(Creature creature)
+        public void Memorize(Creature creature)
         {
             _memorizedCreatures[creature] = Environment.TickCount;
         }
