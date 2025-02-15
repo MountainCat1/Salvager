@@ -27,6 +27,8 @@ namespace UI
         [SerializeField] private Transform locationInteractionsParent;
         [SerializeField] private Button buttonPrefab;
 
+        [SerializeField] private Color shopDescriptionColor;
+
         private LocationData _selectedLocation;
 
         private void Start()
@@ -85,7 +87,8 @@ namespace UI
 
             if (selectedLocation.ShopData != null)
             {
-                description += "* <color=green>There is a trade ship orbiting this station</color>\n";
+                string hexColor = ColorUtility.ToHtmlStringRGBA(shopDescriptionColor); 
+                description += $"* <color=#{hexColor}>There is a trade ship orbiting this station</color>\n";
             }
 
             return description;

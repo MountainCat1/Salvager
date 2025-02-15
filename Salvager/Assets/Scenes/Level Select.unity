@@ -406,8 +406,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 822148921
-  m_fontColor: {r: 0.22370076, g: 1, b: 0, a: 0.19215687}
+    rgba: 822144255
+  m_fontColor: {r: 1, g: 0.92475164, b: 0, a: 0.19215687}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -540,15 +540,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3880060644728034082, guid: daa65dae405ce574fbc46c12ba1c30f7, type: 3}
       propertyPath: m_Color.b
-      value: 0.5469348
+      value: 0.54509807
       objectReference: {fileID: 0}
     - target: {fileID: 3880060644728034082, guid: daa65dae405ce574fbc46c12ba1c30f7, type: 3}
       propertyPath: m_Color.g
-      value: 0.93207544
+      value: 0.92721665
       objectReference: {fileID: 0}
     - target: {fileID: 3880060644728034082, guid: daa65dae405ce574fbc46c12ba1c30f7, type: 3}
       propertyPath: m_Color.r
-      value: 0.6247415
+      value: 0.93333334
       objectReference: {fileID: 0}
     - target: {fileID: 7112894582904505412, guid: daa65dae405ce574fbc46c12ba1c30f7, type: 3}
       propertyPath: m_Name
@@ -3307,8 +3307,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4278255364
-  m_fontColor: {r: 0.017173052, g: 1, b: 0, a: 1}
+    rgba: 4278251007
+  m_fontColor: {r: 1, g: 0.92790663, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -4634,6 +4634,7 @@ MonoBehaviour:
     scenePath: Assets/Scenes/Game.unity
   locationInteractionsParent: {fileID: 655861996}
   buttonPrefab: {fileID: 9120946971514809520, guid: eb810b525b5695a4ca5d6a2fe8bb308a, type: 3}
+  shopDescriptionColor: {r: 0.9960785, g: 0.9294118, b: 0, a: 1}
 --- !u!1 &1702945928
 GameObject:
   m_ObjectHideFlags: 0

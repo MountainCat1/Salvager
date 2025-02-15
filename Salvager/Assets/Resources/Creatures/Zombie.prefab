@@ -227,6 +227,7 @@ MonoBehaviour:
   <Name>k__BackingField: Claw
   <Weight>k__BackingField: 1
   <Description>k__BackingField: 
+  <BaseCost>k__BackingField: 0
   <Range>k__BackingField: 1
   <BaseAttackSpeed>k__BackingField: 1
   <BaseDamage>k__BackingField: 1
@@ -962,10 +963,6 @@ PrefabInstance:
     - target: {fileID: 4323791413848058127, guid: 3b2548b084eb1424b956495bddd8447c, type: 3}
       propertyPath: m_Size.y
       value: 0.1875
-      objectReference: {fileID: 0}
-    - target: {fileID: 4323791413848058127, guid: 3b2548b084eb1424b956495bddd8447c, type: 3}
-      propertyPath: m_SortingOrder
-      value: -1
       objectReference: {fileID: 0}
     - target: {fileID: 7134213637929387750, guid: 3b2548b084eb1424b956495bddd8447c, type: 3}
       propertyPath: m_LocalPosition.x
