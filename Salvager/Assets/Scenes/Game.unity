@@ -2939,6 +2939,71 @@ MonoBehaviour:
   maxRoomsWithEnemies: 3
   minEnemiesPerSpawn: 1
   maxEnemiesPerSpawn: 3
+--- !u!1001 &1459535537
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 503469596566451099, guid: 563d592071d818f48b62878b52a471e0, type: 3}
+      propertyPath: looping
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 503469596566451099, guid: 563d592071d818f48b62878b52a471e0, type: 3}
+      propertyPath: EmissionModule.rateOverTime.scalar
+      value: 12.23
+      objectReference: {fileID: 0}
+    - target: {fileID: 2794897311544135850, guid: 563d592071d818f48b62878b52a471e0, type: 3}
+      propertyPath: m_Name
+      value: Explosion
+      objectReference: {fileID: 0}
+    - target: {fileID: 5018296526961281254, guid: 563d592071d818f48b62878b52a471e0, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5018296526961281254, guid: 563d592071d818f48b62878b52a471e0, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5018296526961281254, guid: 563d592071d818f48b62878b52a471e0, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5018296526961281254, guid: 563d592071d818f48b62878b52a471e0, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5018296526961281254, guid: 563d592071d818f48b62878b52a471e0, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5018296526961281254, guid: 563d592071d818f48b62878b52a471e0, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5018296526961281254, guid: 563d592071d818f48b62878b52a471e0, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5018296526961281254, guid: 563d592071d818f48b62878b52a471e0, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5018296526961281254, guid: 563d592071d818f48b62878b52a471e0, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5018296526961281254, guid: 563d592071d818f48b62878b52a471e0, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 563d592071d818f48b62878b52a471e0, type: 3}
 --- !u!1 &1613153530
 GameObject:
   m_ObjectHideFlags: 0
@@ -4539,7 +4604,7 @@ Camera:
   far clip plane: 1000
   field of view: 34
   orthographic: 1
-  orthographic size: 11.25
+  orthographic size: 6.75
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -5144,3 +5209,4 @@ SceneRoots:
   - {fileID: 986219370}
   - {fileID: 217604552}
   - {fileID: 864766606}
+  - {fileID: 1459535537}
