@@ -44,7 +44,7 @@ namespace Managers.Visual
 
         private void OnCreatureHit(HitContext obj)
         {
-            SpawnBlood(obj.Target.transform.position, obj.Attacker.transform.position - obj.Target.transform.position,
+            SpawnBlood(obj.Target.Health.transform.position, obj.Attacker.transform.position - obj.Target.Health.transform.position,
                 obj.Damage);
         }
 

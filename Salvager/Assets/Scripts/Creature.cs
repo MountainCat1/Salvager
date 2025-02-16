@@ -1,4 +1,5 @@
 ﻿using System;
+using Components;
 using Items;
 using Managers;
 using UI;
@@ -14,7 +15,7 @@ public enum CreatureState
 }
 
 [RequireComponent(typeof(Rigidbody2D))]
-public class Creature : Entity
+public class Creature : Entity, IDamageable
 {
     public static float ColliderSize => 0.5f;
     

@@ -41,4 +41,9 @@ public class RandomContainerObject : InteractableObject
         creature.Inventory.AddItemFromPrefab(_itemBehaviour);
         _floatingTextManager.SpawnFloatingText(transform.position, _itemBehaviour.Name, FloatingTextType.InteractionCompleted);
     }
+    
+    public ItemBehaviour GetRandomItem()
+    {
+        return lootTable.GetRandomItem();
+    }
 }

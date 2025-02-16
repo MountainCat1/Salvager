@@ -28,8 +28,10 @@ public class GameInstaller : MonoInstaller<GameInstaller>
         // Container.Bind<IPopupManager>().To<PopupManager>().FromComponentsInHierarchy().AsSingle();
         Container.Bind<ICreatureManager>().To<CreatureManager>().FromComponentsInHierarchy().AsSingle();
         Container.Bind<ICreatureEventProducer>().To<CreatureEventProducer>().FromNew().AsSingle().NonLazy();
+        Container.Bind<ILootManager>().To<LootManager>().FromComponentsInHierarchy().AsSingle();
         Container.Bind<IRoomDecorator>().To<RoomDecorator>().FromComponentsInHierarchy().AsSingle();
         Container.Bind<IMapGenerator>().To<StepDungeonGenerator>().FromComponentsInHierarchy().AsSingle();
+        Container.Bind<IAstarManager>().To<AstarManager>().FromComponentsInHierarchy().AsSingle();
         Container.Bind<ICameraController>().To<CameraController>().FromComponentsInHierarchy().AsSingle();
         Container.Bind<ICameraShakeService>().To<CameraShakeService>().FromComponentsInHierarchy().AsSingle();
         Container.Bind<IVictoryConditionManager>().To<VictoryConditionManager>().FromComponentsInHierarchy().AsSingle();

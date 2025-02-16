@@ -37,6 +37,12 @@ namespace Managers
         
         public ItemPickup SpawnPickup(ItemBehaviour itemBehaviour, Vector3 position)
         {
+            if (itemBehaviour == null)
+            {
+                Debug.LogError("Cant spawn pickup with null item behaviour");
+                return null;
+            }
+            
             var itemPickup = _spawnerManager.Spawn(itemPickupPrefab, position, transform);
 
             itemPickup.SetItem(itemBehaviour);

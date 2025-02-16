@@ -3,7 +3,12 @@ using Zenject;
 
 namespace Managers
 {
-    public class AstarManager : MonoBehaviour
+    public interface IAstarManager
+    {
+        void Scan();
+    }
+
+    public class AstarManager : MonoBehaviour, IAstarManager
     {
         [SerializeField] private AstarPath astarPath;
 
@@ -16,6 +21,12 @@ namespace Managers
 
         private void OnMapGenerated()
         {
+            astarPath.Scan();
+        }
+        
+        public void Scan()
+        {
+            Debug.Log("Calling astarPath.Scan()");
             astarPath.Scan();
         }
     }

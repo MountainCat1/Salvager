@@ -3,6 +3,11 @@ namespace Components
     using System;
     using UnityEngine;
 
+    public interface IDamageable
+    {
+        HealthComponent Health { get; }
+    }
+    
     public class HealthComponent : MonoBehaviour, IReadonlyRangedValue
     {
         // Events

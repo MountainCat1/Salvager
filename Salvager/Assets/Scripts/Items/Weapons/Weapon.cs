@@ -1,4 +1,5 @@
 using System;
+using Components;
 using Items;
 using Managers;
 using Managers.Visual;
@@ -65,11 +66,11 @@ public abstract class Weapon : ItemBehaviour
     // !!!
     protected abstract void Attack(AttackContext ctx);
 
-    protected virtual void OnHit(Creature target, HitContext hitContext)
+    protected virtual void OnHit(IDamageable damageable, HitContext hitContext)
     {
-        if (target != null)
+        if (damageable != null)
         {
-            target.Damage(hitContext);
+            damageable.Health.Damage(hitContext);
         }
 
         if (HitSound != null)
@@ -122,7 +123,7 @@ public struct AttackContext
 
 public struct HitContext
 {
-    public HitContext(Creature attacker, Creature target, float damage, float pushFactor = 1)
+    public HitContext(Creature attacker, IDamageable target, float damage, float pushFactor = 1)
     {
         Attacker = attacker;
         Target = target;
@@ -131,7 +132,7 @@ public struct HitContext
     }
 
     public Creature Attacker { get; set; }
-    public Creature Target { get; set; }
+    public IDamageable Target { get; set; }
     public float Damage { get; set; }
     public float PushFactor { get; set; }
     public Vector2 Push => GetPushForce();
@@ -155,7 +156,7 @@ public struct HitContext
 
     public Vector2 GetPushForce()
     {
-        var direction = (Target.transform.position - Attacker.transform.position).normalized;
+        var direction = (Target.Health.transform.position - Attacker.transform.position).normalized;
         var pushForce = direction * (PushFactor * (Damage / Target.Health.MaxValue));
         return pushForce;
     }

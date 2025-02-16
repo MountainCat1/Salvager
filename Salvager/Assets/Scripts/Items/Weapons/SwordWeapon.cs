@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using Components;
 using UnityEngine;
 
 public class SwordWeapon : Weapon
@@ -36,9 +37,9 @@ public class SwordWeapon : Weapon
         _attackCoroutine = StartCoroutine(AttackRoutine(ctx));
     }
 
-    protected override void OnHit(Creature creature, HitContext hitContext)
+    protected override void OnHit(IDamageable damagable, HitContext hitContext)
     {
-        base.OnHit(creature, hitContext);
+        base.OnHit(damagable, hitContext);
     }
 
     private IEnumerator AttackRoutine(AttackContext ctx)

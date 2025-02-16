@@ -1,4 +1,5 @@
 using System;
+using Components;
 using Items.Weapons;
 using UnityEngine;
 using Zenject;
@@ -9,7 +10,7 @@ namespace Managers
     {
         public event Action<Projectile> ProjectileSpawned;
         public event Action<Projectile, AttackContext, Entity> ProjectileMissed;
-        public event Action<Projectile, AttackContext, Creature> ProjectileHit;
+        public event Action<Projectile, AttackContext, IDamageable> ProjectileHit;
         
         public Projectile SpawnProjectile(Projectile prefab, Vector2 position);
     }
@@ -18,7 +19,7 @@ namespace Managers
     {
         [Inject] ISpawnerManager _spawnerManager;
 
-        public event Action<Projectile, AttackContext, Creature> ProjectileHit;
+        public event Action<Projectile, AttackContext, IDamageable> ProjectileHit;
         public event Action<Projectile> ProjectileSpawned;
         public event Action<Projectile, AttackContext, Entity> ProjectileMissed;
         

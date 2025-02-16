@@ -100,13 +100,20 @@ namespace Items.Weapons
             {
                 var hitCollider = results[i];
 
+                var hitDamageable = hitCollider.GetComponent<DamageableCollider>()?.Damagable;
+                
+                if(hitDamageable == null)
+                    continue;
+                
+                HandleHit(hitDamageable);
+                
                 if (Creature.IsCreature(hitCollider.gameObject))
                 {
-                    var hitCreature = hitCollider.GetComponent<CreatureCollider>()?.Creature;
-                    if (hitCreature != null && hitCreature != _attackContext.Attacker)
+                    
+                    if (hitDamageable != null && hitDamageable != _attackContext.Attacker)
                     {
                         // Apply damage to the creature
-                        HandleCreatureHit(hitCreature);
+                        HandleHit(hitDamageable);
                     }
                 }
             }

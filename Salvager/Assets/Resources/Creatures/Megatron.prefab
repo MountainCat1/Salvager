@@ -245,7 +245,6 @@ GameObject:
   m_Component:
   - component: {fileID: 8257170215639613654}
   - component: {fileID: 905250141002097245}
-  - component: {fileID: 3115733397569104942}
   m_Layer: 8
   m_Name: Movement Collider
   m_TagString: Creature
@@ -303,18 +302,6 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.3
---- !u!114 &3115733397569104942
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1783616715553449390}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 59a080d73d3243da845610e76fb494a8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1981635081794955279
 GameObject:
   m_ObjectHideFlags: 0
@@ -326,6 +313,7 @@ GameObject:
   - component: {fileID: 4452462336923812607}
   - component: {fileID: 6505547065017406592}
   - component: {fileID: 60846135339427478}
+  - component: {fileID: 775383242155731065}
   m_Layer: 7
   m_Name: Hit Collider
   m_TagString: Creature
@@ -393,6 +381,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 59a080d73d3243da845610e76fb494a8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &775383242155731065
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1981635081794955279}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdf34afa78ce4c97b63142ae6267e618, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &2308461943480316530

@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class ContainerObject : InteractableObject
 {
+    public ItemBehaviour ItemBehaviour => itemBehaviour;
+    
     [SerializeField] private ItemBehaviour itemBehaviour = null!;
     
     protected override void OnInteractionComplete(Interaction interaction)

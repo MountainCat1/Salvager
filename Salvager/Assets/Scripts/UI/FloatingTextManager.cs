@@ -89,7 +89,7 @@ namespace UI
 
         private void OnCreatureHit(Creature creature, HitContext hitCtx)
         {
-            SpawnFloatingText(hitCtx.Target.transform.position, StringifyFloat(hitCtx.Damage), FloatingTextType.Damage);
+            SpawnFloatingText(hitCtx.Target.Health.transform.position, StringifyFloat(hitCtx.Damage), FloatingTextType.Damage);
         }
 
         private string StringifyFloat(float damage)

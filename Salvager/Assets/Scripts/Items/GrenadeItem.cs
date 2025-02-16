@@ -1,3 +1,4 @@
+using Components;
 using Items.Weapons;
 using Managers;
 using UnityEngine;
@@ -47,17 +48,17 @@ namespace Items
             Inventory.RemoveItems(GetIdentifier(), 1);
         }
         
-        private void OnProjectileHit(Creature hitCreature, AttackContext attackCtx)
+        private void OnProjectileHit(IDamageable damageable, AttackContext attackCtx)
         {
             var hitCtx = new HitContext()
             {
                 Attacker = attackCtx.Attacker,
                 Damage = Weapon.CalculateDamage(damage, attackCtx),
-                Target = hitCreature,
+                Target = damageable,
                 PushFactor = pushFactor
             };
 
-            hitCreature.Damage(hitCtx);
+            damageable.Health.Damage(hitCtx);
         }
     }
 }

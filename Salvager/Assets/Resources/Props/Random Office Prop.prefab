@@ -118,6 +118,8 @@ GameObject:
   - component: {fileID: 1620334314628338296}
   - component: {fileID: 5788253491434673039}
   - component: {fileID: 2417749354656705784}
+  - component: {fileID: -5371675571565298080}
+  - component: {fileID: 8586701590165426080}
   m_Layer: 11
   m_Name: Random Office Prop
   m_TagString: Untagged
@@ -207,6 +209,31 @@ MonoBehaviour:
   message: Searching...
   requiredItems: []
   lootTable: {fileID: 11400000, guid: 0b197bd77f965364ab91ad811a8e0dfa, type: 2}
+--- !u!114 &-5371675571565298080
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8667083905584706207}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 599e290dfa0b4ae0a0fffee728b20fa2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &8586701590165426080
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8667083905584706207}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9cef0923d2f48aa839a615fe078d63b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 10
 --- !u!1001 &556012255856125039
 PrefabInstance:
   m_ObjectHideFlags: 0

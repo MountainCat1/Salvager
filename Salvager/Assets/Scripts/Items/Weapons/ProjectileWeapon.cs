@@ -1,4 +1,5 @@
-﻿using Managers;
+﻿using Components;
+using Managers;
 using UnityEngine;
 using Zenject;
 
@@ -36,17 +37,17 @@ namespace Items.Weapons
 
         
 
-        private void OnProjectileHit(Creature hitCreature, AttackContext attackCtx)
+        private void OnProjectileHit(IDamageable damageable, AttackContext attackCtx)
         {
             var hitCtx = new HitContext()
             {
                 Attacker = attackCtx.Attacker,
                 Damage = CalculateDamage(BaseDamage, attackCtx),
-                Target = hitCreature,
+                Target = damageable,
                 PushFactor = PushFactor
             };
 
-            OnHit(hitCreature, hitCtx);
+            OnHit(damageable, hitCtx);
         }
     }
 }

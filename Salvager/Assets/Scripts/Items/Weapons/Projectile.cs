@@ -1,4 +1,5 @@
 ﻿using System;
+using Components;
 using Managers;
 using Markers;
 using UnityEngine;
@@ -18,7 +19,7 @@ namespace Items.Weapons
     {
         private const float Lifetime = 16f;
 
-        public event Action<Creature, AttackContext> Hit;
+        public event Action<IDamageable, AttackContext> Hit;
         public event Action<AttackContext, Entity> Missed;
 
         [Inject] protected ISoundPlayer SoundPlayer;
@@ -76,9 +77,21 @@ namespace Items.Weapons
                 return;
             }
 
-            if (Creature.IsCreature(other.gameObject) == false) return;
+            var damageableCollider = other.GetComponent<DamageableCollider>();
+            
+            if (Creature.IsCreature(other.gameObject) == false)
+            {
+                if(damageableCollider.Damagable != null)
+                {
+                    HandleHit(damageableCollider.Damagable);
+                }
 
-            var hitCreature = other.GetComponent<CreatureCollider>()?.Creature;
+                return;
+            };
+            
+            var creatureCollider = other.GetComponent<CreatureCollider>(); 
+            
+            var hitCreature = creatureCollider.Creature;
 
             if (hitCreature == null)
             {
@@ -96,7 +109,7 @@ namespace Items.Weapons
 
             if (TryMiss(_settings.BaseMissChance, hitCreature)) return;
 
-            HandleCreatureHit(hitCreature);
+            HandleHit(hitCreature);
         }
 
         protected virtual void HandleWallCollision()
@@ -113,12 +126,12 @@ namespace Items.Weapons
             Destroy(gameObject);
         }
 
-        protected virtual void HandleCreatureHit(Creature hitCreature)
+        protected virtual void HandleHit(IDamageable damageable)
         {
             try
             {
                 PlayHitSound();
-                Hit?.Invoke(hitCreature, _attackContext);
+                Hit?.Invoke(damageable, _attackContext);
             }
             catch (Exception e)
             {

@@ -1,12 +1,14 @@
 using System;
 using Items;
 using UnityEngine;
+using Zenject;
 
 [RequireComponent(typeof(SpriteRenderer))]
 [RequireComponent(typeof(Rigidbody2D))]
 public class ItemPickup : InteractableObject
 {
     [SerializeField] private ItemBehaviour itemBehaviour;
+    [Inject] private DiContainer diContainer;
 
     public Rigidbody2D Rigidbody2D => _rigidbody2D;
 
@@ -20,6 +22,8 @@ public class ItemPickup : InteractableObject
         _rigidbody2D = GetComponent<Rigidbody2D>();
         
         _inventory = new Inventory(transform);
+        
+        diContainer.Inject(_inventory);
     }
 
     protected override void OnInteractionComplete(Interaction interaction)
@@ -33,14 +37,18 @@ public class ItemPickup : InteractableObject
 
     public void SetItem(ItemBehaviour item)
     {
-        if (item == null)
+        if (item == null || item is null)
             throw new Exception("ItemBehaviour is not set in ItemPickup");
-        
-        if(item.Original == null)
-            throw new Exception("ItemBehaviour.Original is not set in ItemPickup");
 
-        itemBehaviour = item;
-        _inventory.AddInstantiatedItem(item);
+        if (item.Original == null)
+        {
+            itemBehaviour = _inventory.AddItemFromPrefab(item);
+        }
+        else
+        {
+            itemBehaviour = item;
+            _inventory.AddInstantiatedItem(item);
+        }
 
         var spriteRenderer = GetComponent<SpriteRenderer>();
         spriteRenderer.sprite = itemBehaviour.Icon;

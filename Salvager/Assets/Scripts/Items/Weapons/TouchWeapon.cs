@@ -1,4 +1,6 @@
-﻿public class TouchWeapon : Weapon
+﻿using Components;
+
+public class TouchWeapon : Weapon
 {
     protected override void Attack(AttackContext ctx)
     {
@@ -13,8 +15,8 @@
         OnHit(ctx.Target, hitCtx);
     }
 
-    protected override void OnHit(Creature target, HitContext hitContext)
+    protected override void OnHit(IDamageable damageable, HitContext hitContext)
     {
-        base.OnHit(target, hitContext);
+        base.OnHit(damageable, hitContext);
     }
 }
