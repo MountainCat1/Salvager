@@ -104,9 +104,9 @@ public abstract class Weapon : ItemBehaviour
         return BaseAttackSpeed * (1 + dexterityModifier);
     }
 
-    public float CalculateDamage(AttackContext ctx)
+    public static float CalculateDamage(float baseDamage, AttackContext ctx)
     {
-        return BaseDamage + ctx.Attacker.LevelSystem.CharacteristicsLevels[Characteristics.Strength] *
+        return baseDamage + ctx.Attacker.LevelSystem.CharacteristicsLevels[Characteristics.Strength] *
             CharacteristicsConsts.DamageAdditiveMultiplierPerStrength;
     }
 }
@@ -115,6 +115,7 @@ public abstract class Weapon : ItemBehaviour
 public struct AttackContext
 {
     public Vector2 Direction { get; set; }
+    public Vector2 TargetPosition { get; set; }
     public Creature Target { get; set; }
     public Creature Attacker { get; set; }
 }

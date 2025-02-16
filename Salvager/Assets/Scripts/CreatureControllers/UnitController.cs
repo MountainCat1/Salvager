@@ -206,15 +206,17 @@ namespace CreatureControllers
                     }
                 }
 
-                if (!ShouldFollowTarget())
-                {
-                    Creature.SetMovement(Vector2.zero);
-                    return;
-                }
+                
                 
                 // Move towards the target if it is not in line of sight
                 if (!CanSee(_target))
                 {
+                    if (!ShouldFollowTarget())
+                    {
+                        Creature.SetMovement(Vector2.zero);
+                        return;
+                    }
+                    
                     PerformMovementTowardsTarget(_target);
                     return;
                 }
@@ -247,7 +249,8 @@ namespace CreatureControllers
             {
                 Direction = (_target.transform.position - Creature.transform.position).normalized,
                 Target = _target,
-                Attacker = Creature
+                Attacker = Creature,
+                TargetPosition = _target.transform.position
             };
         }
 

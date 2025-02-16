@@ -5,7 +5,7 @@
         var hitCtx = new HitContext()
         {
             Attacker = ctx.Attacker,
-            Damage = CalculateDamage(ctx),
+            Damage = CalculateDamage(BaseDamage, ctx),
             Target = ctx.Target,
             PushFactor = PushFactor
         }; 

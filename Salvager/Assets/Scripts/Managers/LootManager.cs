@@ -30,7 +30,7 @@ namespace Managers
 
             foreach (var item in items.ToArray())
             {
-                creature.Inventory.RemoveItem(item);
+                creature.Inventory.DeleteItem(item);
                 SpawnPickup(item, creature.transform.position);
             }
         }

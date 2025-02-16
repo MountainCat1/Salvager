@@ -26,7 +26,8 @@ namespace CreatureControllers
             {
                 Direction = (_target.transform.position - Creature.transform.position).normalized,
                 Target = _target,
-                Attacker = Creature
+                Attacker = Creature,
+                TargetPosition = _target.transform.position
             };
 
 

@@ -15,6 +15,9 @@ namespace Managers
         void ClearSelection();
         void AddToSelection(Creature creature);
         void RemoveFromSelection(Creature creature);
+
+        void PreventSelection(object source);
+        void AllowSelection(object source);
     }
 
     public class SelectionManager : MonoBehaviour, ISelectionManager
@@ -32,9 +35,10 @@ namespace Managers
         [SerializeField] private SelectionMarker selectionMarkerPrefab;
         [SerializeField] private Teams playerTeam;
 
-        private Vector2 _startMousePosition;
+        private Vector2? _startMousePosition;
         private Camera _camera;
         private IPoolAccess<SelectionMarker> _selectionCirclesPool;
+        private List<object> _selectionPreventers = new();
 
         private const float DragThreshold = 5f; // Threshold in pixels to differentiate between click and drag
 
@@ -55,24 +59,33 @@ namespace Managers
 
         private void HandleSelectionInput()
         {
+            if (_selectionPreventers.Count > 0)
+            {
+                _startMousePosition = null;
+                return;
+            }
+            
             // Start drag selection
             if (Input.GetMouseButtonDown(0))
             {
                 _startMousePosition = Input.mousePosition;
-                
+
                 if (PointerUtilities.IsPointerOverInteractiveUI(selectionBox.gameObject))
                     return;
-                
+
                 if (selectionBox != null)
                 {
                     selectionBox.gameObject.SetActive(true);
                 }
             }
+            
+            if(_startMousePosition == null)
+                return;
 
             // While dragging
             if (Input.GetMouseButton(0) && selectionBox != null)
             {
-                if (Vector2.Distance(_startMousePosition, Input.mousePosition) > DragThreshold)
+                if (Vector2.Distance(_startMousePosition.Value, Input.mousePosition) > DragThreshold)
                 {
                     UpdateSelectionBox(Input.mousePosition);
                 }
@@ -87,7 +100,7 @@ namespace Managers
                     selectionBox.sizeDelta = Vector2.zero;
                 }
 
-                if (Vector2.Distance(_startMousePosition, Input.mousePosition) <= DragThreshold)
+                if (Vector2.Distance(_startMousePosition.Value, Input.mousePosition) <= DragThreshold)
                 {
                     if (PointerUtilities.IsPointerOverInteractiveUI(selectionBox.gameObject))
                         return;
@@ -98,7 +111,7 @@ namespace Managers
                 {
                     if (PointerUtilities.IsPointerOverInteractiveUI(selectionBox.gameObject))
                         return;
-                    
+
                     SelectUnitsWithinBox();
                 }
             }
@@ -122,9 +135,8 @@ namespace Managers
         {
             var rect = canvas.GetComponent<RectTransform>().rect;
 
-            Vector2 boxStart = _startMousePosition - rect.size / 2;
+            Vector2 boxStart = _startMousePosition!.Value - rect.size / 2;
             Vector2 boxEnd = currentMousePosition - rect.size / 2;
-
 
             Vector2 boxSize = boxEnd - boxStart;
             selectionBox.anchoredPosition = boxStart + boxSize / 2;
@@ -134,7 +146,7 @@ namespace Managers
 
         private void SelectUnitsWithinBox()
         {
-            Vector2 min = _startMousePosition;
+            Vector2 min = _startMousePosition!.Value;
             Vector2 max = Input.mousePosition;
 
             Vector2 bottomLeft = Vector2.Min(min, max);
@@ -143,7 +155,7 @@ namespace Managers
             List<Creature> selectedCreatures = FindObjectsOfType<Creature>()
                 .Where(creature => IsWithinSelectionBounds(creature, bottomLeft, topRight))
                 .ToList();
-            
+
             if (!Input.GetKey(KeyCode.LeftShift)) // Replace current selection unless Shift is held
             {
                 ClearSelection();
@@ -153,8 +165,8 @@ namespace Managers
             {
                 AddToSelection(creature);
             }
-            
-            
+
+
             OnSelectionChanged?.Invoke();
         }
 
@@ -168,20 +180,20 @@ namespace Managers
                 {
                     ClearSelection(); // Deselect all and select the clicked creature
                     AddToSelection(creature);
-                    
+
                     OnSelectionChanged?.Invoke();
                 }
                 else
                 {
                     ClearSelection(); // Deselect all if no creature is clicked
-                    
+
                     OnSelectionChanged?.Invoke();
                 }
             }
             else
             {
                 ClearSelection(); // Deselect all if click hits nothing
-                
+
                 OnSelectionChanged?.Invoke();
             }
         }
@@ -225,8 +237,9 @@ namespace Managers
             if (!_selectedCreatures.Contains(creature))
             {
                 _selectedCreatures.Add(creature);
-                
-                var selectionMarker = _selectionCirclesPool.SpawnObject(selectionMarkerPrefab, creature.transform.position);
+
+                var selectionMarker =
+                    _selectionCirclesPool.SpawnObject(selectionMarkerPrefab, creature.transform.position);
                 selectionMarker.ParentConstraint.AddSource(new ConstraintSource()
                 {
                     sourceTransform = creature.transform,
@@ -241,14 +254,24 @@ namespace Managers
             if (_selectedCreatures.Contains(creature))
             {
                 _selectedCreatures.Remove(creature);
-                
+
                 var selectionMarker = _selectionCirclesPool.GetInUseObjects()
                     .FirstOrDefault(marker => marker.Creature == creature);
-                
+
                 _selectionCirclesPool.DespawnObject(selectionMarker);
             }
 
             OnSelectionChanged?.Invoke();
+        }
+
+        public void PreventSelection(object source)
+        {
+            _selectionPreventers.Add(source);
+        }
+
+        public void AllowSelection(object source)
+        {
+            _selectionPreventers.Remove(source);
         }
 
         private IEnumerable<Creature> GetSelectedCreatures()
@@ -257,8 +280,5 @@ namespace Managers
 
             return _selectedCreatures;
         }
-        
-        
-
     }
 }

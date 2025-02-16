@@ -13,34 +13,36 @@ namespace Items.Weapons
         public float MissChanceForObstacle = 0.5f;
         public float MissChanceForFriendly = 0.5f;
     }
-    
-    public class Projectile : MonoBehaviour
+
+    public abstract class Projectile : MonoBehaviour
     {
         private const float Lifetime = 16f;
-        
+
         public event Action<Creature, AttackContext> Hit;
         public event Action<AttackContext, Entity> Missed;
 
-        [Inject] private ISoundPlayer _soundPlayer;
+        [Inject] protected ISoundPlayer SoundPlayer;
 
-        [SerializeField] private ColliderEventProducer colliderEventProducer;
         [SerializeField] private AudioClip hitSound;
 
-        public float Speed { get; private set; }
-        public float Damage { get; private set; }
+        public float Speed { get; protected set; }
+        public float Damage { get; protected set; }
 
+        protected bool _isLaunched = false;
+        protected bool _initialized = false;
+        protected AttackContext _attackContext;
+        protected ProjectileSettings _settings = new ProjectileSettings();
 
-        private bool _isLaunched = false;
-        private bool _initialized = false;
-        private AttackContext _attackContext;
-        private ProjectileSettings _settings = new ProjectileSettings();
+        protected virtual void Awake()
+        {
+        }
 
-        private void Start()
+        protected virtual void Start()
         {
             Destroy(gameObject, Lifetime);
         }
 
-        public void Initialize(float speed, float damage)
+        public virtual void Initialize(float speed, float damage)
         {
             Speed = speed;
             Damage = damage;
@@ -48,46 +50,33 @@ namespace Items.Weapons
             _initialized = true;
         }
 
-
-        public void Launch(AttackContext ctx)
+        public virtual void Launch(AttackContext ctx)
         {
-            if (!_initialized)
-                throw new Exception("Projectile not initialized");
+            if (!_initialized) throw new Exception("Projectile not initialized");
 
             _attackContext = ctx;
-
-            colliderEventProducer.TriggerEnter += OnProjectileCollision;
 
             _isLaunched = true;
         }
 
-        private void OnProjectileCollision(Collider2D other)
+        protected virtual void OnProjectileCollision(Collider2D other)
         {
-            if(CollisionUtility.IsWall(other.gameObject))
+            if (CollisionUtility.IsWall(other.gameObject))
             {
-                if (hitSound)
-                    _soundPlayer.PlaySound(hitSound, transform.position, SoundType.Sfx);
-                
-                Hit?.Invoke(null, _attackContext);
-                Destroy(gameObject);
-                return;
-            }
-            
-            if (CollisionUtility.IsObstacle(other.gameObject))
-            {
-                if(TryMiss(_settings.MissChanceForObstacle, other.GetComponent<Entity>()))
-                    return;
-                
-                if (hitSound)
-                    _soundPlayer.PlaySound(hitSound, transform.position, SoundType.Sfx);
-                
-                Hit?.Invoke(null, _attackContext);
-                Destroy(gameObject);
+                HandleWallCollision();
                 return;
             }
 
-            if (Creature.IsCreature(other.gameObject) == false)
+            if (CollisionUtility.IsObstacle(other.gameObject))
+            {
+                if (TryMiss(_settings.MissChanceForObstacle, other.GetComponent<Entity>()))
+                    return;
+
+                HandleHit();
                 return;
+            }
+
+            if (Creature.IsCreature(other.gameObject) == false) return;
 
             var hitCreature = other.GetComponent<CreatureCollider>()?.Creature;
 
@@ -97,23 +86,38 @@ namespace Items.Weapons
                 return;
             }
 
-            if (hitCreature == _attackContext.Attacker)
-                return;
+            if (hitCreature == _attackContext.Attacker) return;
 
-            if (hitCreature.GetAttitudeTowards(_attackContext.Attacker) == Attitude.Friendly)
+            if (hitCreature.GetAttitudeTowards(_attackContext.Attacker) ==
+                Attitude.Friendly)
             {
-                if(TryMiss(_settings.MissChanceForFriendly, hitCreature))
-                    return;
+                if (TryMiss(_settings.MissChanceForFriendly, hitCreature)) return;
             }
-            
+
+            if (TryMiss(_settings.BaseMissChance, hitCreature)) return;
+
+            HandleCreatureHit(hitCreature);
+        }
+
+        protected virtual void HandleWallCollision()
+        {
+            PlayHitSound();
+            Hit?.Invoke(null, _attackContext);
+            Destroy(gameObject);
+        }
+
+        protected virtual void HandleHit()
+        {
+            PlayHitSound();
+            Hit?.Invoke(null, _attackContext);
+            Destroy(gameObject);
+        }
+
+        protected virtual void HandleCreatureHit(Creature hitCreature)
+        {
             try
             {
-                if(TryMiss(_settings.BaseMissChance, hitCreature))
-                    return;
-                
-                if (hitSound)
-                    _soundPlayer.PlaySound(hitSound, transform.position, SoundType.Sfx);
-                
+                PlayHitSound();
                 Hit?.Invoke(hitCreature, _attackContext);
             }
             catch (Exception e)
@@ -124,15 +128,16 @@ namespace Items.Weapons
             Destroy(gameObject);
         }
 
-        private void Update()
+        protected virtual void PlayHitSound()
         {
-            if (!_isLaunched)
-                return;
-
-            transform.position += (Vector3)(_attackContext.Direction * (Speed * Time.deltaTime));
+            if (hitSound) SoundPlayer.PlaySound(hitSound, transform.position, SoundType.Sfx);
         }
 
-        private bool TryMiss(float baseChance, Entity entity)
+        protected virtual void Update()
+        {
+        }
+
+        protected bool TryMiss(float baseChance, Entity entity)
         {
             if (UnityEngine.Random.value < baseChance)
             {

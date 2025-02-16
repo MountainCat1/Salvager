@@ -48,7 +48,7 @@ public class Inventory
 
         if (from._items.Contains(item))
         {
-            from.RemoveItem(item);
+            from.DeleteItem(item);
             AddInstantiatedItem(item);
         }
     }
@@ -121,7 +121,7 @@ public class Inventory
     /// Remove an item from the inventory, THIS DOESNT DESTROY THE GAMEOBJECT
     /// </summary>
     /// <param name="item"></param>
-    public void RemoveItem(ItemBehaviour item)
+    public void DeleteItem(ItemBehaviour item)
     {
         _items.Remove(item);
 
@@ -130,6 +130,31 @@ public class Inventory
         item.Inventory = null;
 
         Changed?.Invoke();
+    }
+    
+    public void RemoveItems(string identifier, int count)
+    {
+        var item = GetItem(identifier);
+        if (item == null)
+            return;
+
+        if (item.Stackable)
+        {
+            item.Count -= count;
+            if (item.Count <= 0)
+                DeleteItem(item);
+        }
+        else
+        {
+            for (var i = 0; i < count; i++)
+            {
+                var itemToRemove = GetItem(identifier);
+                if (itemToRemove == null)
+                    return;
+
+                DeleteItem(itemToRemove);
+            }
+        }
     }
 
     public ItemBehaviour GetItem(string identifier)

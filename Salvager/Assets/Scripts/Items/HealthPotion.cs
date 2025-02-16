@@ -12,7 +12,7 @@ namespace Items
 
             ctx.Creature.Heal(healAmount);
 
-            ctx.Creature.Inventory.RemoveItem(this);
+            ctx.Creature.Inventory.DeleteItem(this);
         }
     }
 }
