@@ -1,4 +1,5 @@
 using System.Linq;
+using UnityEditor.Rendering;
 using UnityEngine;
 
 namespace CreatureControllers
@@ -12,9 +13,18 @@ namespace CreatureControllers
 
         private const bool MoveOnAttackCooldown = false; // TODO: This should be a configurable property of the weapon
 
+        // It does seem that for player creatures it is more intuitive for units to not follow the targets
+        [SerializeField] private bool followTarget = true;
+        [SerializeField] private bool clearMemoryOnMoveCommand = true;
+        
         // Public Methods
         public void SetMoveTarget(Vector2 target)
         {
+            if (clearMemoryOnMoveCommand)
+            {
+                ClearMemory();
+            }
+            
             _moveCommandTarget = target;
             _target = null;
             _interactionTarget = null;
@@ -195,6 +205,12 @@ namespace CreatureControllers
                         return;
                     }
                 }
+
+                if (!ShouldFollowTarget())
+                {
+                    Creature.SetMovement(Vector2.zero);
+                    return;
+                }
                 
                 // Move towards the target if it is not in line of sight
                 if (!CanSee(_target))
@@ -210,8 +226,19 @@ namespace CreatureControllers
                 PerformAttack(attackContext);
                 return;
             }
+            
+            if (!ShouldFollowTarget())
+            {
+                Creature.SetMovement(Vector2.zero);
+                return;
+            }
 
             PerformMovementTowardsTarget(_target);
+        }
+
+        private bool ShouldFollowTarget()
+        {
+            return followTarget;
         }
 
         private AttackContext CreateAttackContext()
@@ -227,6 +254,11 @@ namespace CreatureControllers
         private void PerformAttack(AttackContext context)
         {
             Creature.Weapon.ContinuousAttack(context);
+        }
+
+        public void Halt()
+        {
+            ClearMemory();
         }
     }
 }

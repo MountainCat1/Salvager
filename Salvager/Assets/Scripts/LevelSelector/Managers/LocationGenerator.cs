@@ -26,7 +26,8 @@ namespace LevelSelector.Managers
             {
                 Id = System.Guid.NewGuid(),
                 MapSettings = GenerateMapSettingsData.FromSettings(GenerateMapSettings.GenerateRandom()),
-                Name = Constants.Names.SpaceStations.RandomElement()
+                Name = Constants.Names.SpaceStations.RandomElement(),
+                EnemySpawnManaPerSecond = Random.Range(0.5f, 3f),
             };
 
             return location;

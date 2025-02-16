@@ -32,7 +32,7 @@ public class PlayerController : MonoBehaviour
             var controller = creature.Controller as UnitController;
             if (controller)
             {
-                controller.SetMoveTarget(creature.transform.position); // TODO: This is a hack, should be a stop command
+                controller.Halt();
             }
         }
     }

@@ -584,7 +584,7 @@ MonoBehaviour:
   inventoryRoot: {fileID: 0}
   weapon: {fileID: 838743690902828222}
   <SightRange>k__BackingField: 11
-  <XpAmount>k__BackingField: 0
+  <XpAmount>k__BackingField: 5
   <Team>k__BackingField: 2
   <InteractionRange>k__BackingField: 1.5
 --- !u!114 &7748546943704470895
@@ -612,6 +612,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1de455758c064ee391acb5d80f3cf35e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  followTarget: 1
+  clearMemoryOnMoveCommand: 1
 --- !u!114 &1648490807555792431
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -958,7 +960,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4323791413848058127, guid: 3b2548b084eb1424b956495bddd8447c, type: 3}
       propertyPath: m_Size.x
-      value: 0.72
+      value: 0.8054336
       objectReference: {fileID: 0}
     - target: {fileID: 4323791413848058127, guid: 3b2548b084eb1424b956495bddd8447c, type: 3}
       propertyPath: m_Size.y
@@ -966,11 +968,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7134213637929387750, guid: 3b2548b084eb1424b956495bddd8447c, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 0.0423
       objectReference: {fileID: 0}
     - target: {fileID: 7134213637929387750, guid: 3b2548b084eb1424b956495bddd8447c, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1.1800001
+      value: -1.217
       objectReference: {fileID: 0}
     - target: {fileID: 7134213637929387750, guid: 3b2548b084eb1424b956495bddd8447c, type: 3}
       propertyPath: m_LocalPosition.z

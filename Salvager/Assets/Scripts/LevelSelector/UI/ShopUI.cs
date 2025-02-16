@@ -1,6 +1,7 @@
 using Data;
 using Managers;
 using Managers.LevelSelector;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
@@ -18,9 +19,12 @@ namespace UI
 
         [SerializeField] private Transform shopInventoryContainer;
         [SerializeField] private Transform crewInventoryContainer;
-        
+
         [SerializeField] private AudioClip buySound;
         [SerializeField] private AudioClip sellSound;
+
+        [SerializeField] private TextMeshProUGUI fuelPrice;
+        [SerializeField] private Button buyFuelButton;
 
         private UISlide _uiSlide;
         private ShopData _shopData;
@@ -30,6 +34,8 @@ namespace UI
             _crewManager.Changed += UpdateUI;
             _crewManager.SelectedCreature += _ => _uiSlide.HidePanel();
             _uiSlide = GetComponent<UISlide>();
+
+            UpdateUI();
         }
 
         private void UpdateUI()
@@ -45,9 +51,12 @@ namespace UI
             }
 
             _shopData = _regionManager.Region.GetLocation(_crewManager.CurrentLocationId)?.ShopData;
-            
-            if(_shopData == null)
+
+            if (_shopData == null)
                 return;
+
+            fuelPrice.text = $"{_shopData.GetFuelPrice()}$";
+            buyFuelButton.interactable = _crewManager.Resources.Money >= _shopData.GetFuelPrice();
 
             foreach (var item in _shopData.inventory.Items)
             {
@@ -58,7 +67,7 @@ namespace UI
 
                 var button = itemEntryGo.GetComponent<Button>();
                 button.interactable = _crewManager.Resources.Money >= _shopData.GetBuyPrice(item);
-                
+
                 itemEntryGo.GetComponent<ButtonSoundUI>().audioClip = buySound;
             }
 
@@ -68,16 +77,17 @@ namespace UI
                 var itemEntry = itemEntryGo.GetComponent<ItemShopEntryUI>();
                 itemEntry.Set(item, SellItem);
                 itemEntry.SetShopData(_shopData);
-                
+
                 itemEntry.GetComponent<ButtonSoundUI>().audioClip = sellSound;
             }
         }
 
         private void SellItem(ItemData item)
         {
-            _crewManager.Inventory.TransferItem(item, _shopData.inventory);
+            var transferItemCount =
+                _crewManager.Inventory.TransferItem(item, _shopData.inventory, GetTransferItemCount());
 
-            _crewManager.Resources.AddMoney(_shopData.GetSellPrice(item));
+            _crewManager.Resources.AddMoney(_shopData.GetSellPrice(item) * transferItemCount);
 
             UpdateUI();
 
@@ -86,13 +96,32 @@ namespace UI
 
         private void BuyItem(ItemData item)
         {
-            _shopData.inventory.TransferItem(item, _crewManager.Inventory);
+            var transferItemCount =
+                _shopData.inventory.TransferItem(item, _crewManager.Inventory, GetTransferItemCount());
 
-            _crewManager.Resources.AddMoney(-1 * _shopData.GetBuyPrice(item));
+            _crewManager.Resources.AddMoney(-1 * _shopData.GetBuyPrice(item) * transferItemCount);
 
             UpdateUI();
 
             _dataManager.SaveData();
+        }
+
+        public void BuyFuel()
+        {
+            var price = _shopData.GetFuelPrice();
+            if (_crewManager.Resources.Money < price)
+            {
+                Debug.LogError("Trying to buy fuel without enough money");
+                return;
+            }
+
+            _crewManager.Resources.AddMoney(-1 * price);
+            _crewManager.Resources.AddFuel(1);
+        }
+
+        private int GetTransferItemCount()
+        {
+            return Input.GetKey(KeyCode.LeftShift) ? 5 : 1;
         }
     }
 }

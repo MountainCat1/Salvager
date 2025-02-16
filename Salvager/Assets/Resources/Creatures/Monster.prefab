@@ -584,7 +584,7 @@ MonoBehaviour:
   inventoryRoot: {fileID: 0}
   weapon: {fileID: 838743690902828222}
   <SightRange>k__BackingField: 13
-  <XpAmount>k__BackingField: 0
+  <XpAmount>k__BackingField: 25
   <Team>k__BackingField: 3
   <InteractionRange>k__BackingField: 1.5
 --- !u!114 &7748546943704470895
@@ -612,6 +612,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1de455758c064ee391acb5d80f3cf35e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  followTarget: 1
+  clearMemoryOnMoveCommand: 1
 --- !u!114 &1648490807555792431
 MonoBehaviour:
   m_ObjectHideFlags: 0

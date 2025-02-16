@@ -9,6 +9,7 @@ namespace UI
     {
         [SerializeField] private TextMeshProUGUI levelNameText;
         [SerializeField] private GameObject presenceMarker;
+        [SerializeField] private GameObject shopMarker;
 
         public LocationData Location => _location;
 
@@ -36,7 +37,7 @@ namespace UI
                 levelNameText.fontStyle = FontStyles.Bold | FontStyles.Underline | FontStyles.UpperCase;
                 presenceMarker.SetActive(true);
             }
-            else if(distanceToCurrent == 1)
+            else if (distanceToCurrent == 1)
             {
                 levelNameText.fontStyle = FontStyles.Bold;
                 presenceMarker.SetActive(false);
@@ -47,7 +48,10 @@ namespace UI
                 GetComponentInChildren<Button>().targetGraphic.color = new Color(1f, 1f, 1f, 0.5f);
                 presenceMarker.SetActive(false);
             }
-            
+
+            shopMarker.SetActive(location.ShopData != null);
+
+
             levelNameText.text = location.Name + $" ({distanceToCurrent})";
         }
 

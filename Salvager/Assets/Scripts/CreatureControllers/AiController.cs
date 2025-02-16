@@ -296,5 +296,10 @@ namespace CreatureControllers
         {
             PathChanged?.Invoke(path.Select(x => (Vector3)x));
         }
+        
+        protected void ClearMemory()
+        {
+            _memorizedCreatures.Clear();
+        }
     }
 }

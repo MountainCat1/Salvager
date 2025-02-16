@@ -168,6 +168,7 @@ public class CreatureData
     public string Name;
     public float SightRange;
     public InventoryData Inventory;
+    public int ManaCost = 1;
 
     public static CreatureData FromCreature(Creature creature)
     {
@@ -180,7 +181,8 @@ public class CreatureData
             CreatureID = creature.GetIdentifier(),
             Name = creature.name,
             SightRange = creature.SightRange,
-            Inventory = InventoryData.FromInventory(inventory)
+            Inventory = InventoryData.FromInventory(inventory),
+            ManaCost = creature.XpAmount
         };
     }
 }

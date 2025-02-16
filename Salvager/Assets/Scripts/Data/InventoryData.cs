@@ -11,6 +11,8 @@ using UnityEngine;
 public class InventoryData
 {
     public List<ItemData> Items = new();
+    public event Action Changed;
+
     public bool ContainsItem(ItemData itemData)
     {
         return Items.Contains(itemData);
@@ -44,38 +46,47 @@ public class InventoryData
         {
             item.Count += itemData.Count;
         }
+
+        Changed?.Invoke();
     }
-    
-    public void TransferItem(ItemData itemData, InventoryData targetInventory)
+
+    public int TransferItem(ItemData itemData, InventoryData targetInventory, int amount = 1)
     {
-        if(ContainsItem(itemData) == false)
+        if (ContainsItem(itemData) == false)
         {
             Debug.LogError("Tried to transfer item not found in inventory");
-            return;
+            return 1;
         }
-        
-        if(itemData.Stackable == false)
+
+        if (itemData.Stackable == false)
         {
             RemoveItem(itemData);
             targetInventory.AddItem(itemData);
-            return;
+            Changed?.Invoke();
+            return 1;
         }
-        
-        if(itemData.Count == 1)
+
+        if (itemData.Count <= amount)
         {
             RemoveItem(itemData);
             targetInventory.AddItem(itemData);
-            return;
+            Changed?.Invoke();
+            return itemData.Count;
         }
-     
-        itemData.Count--;
+
+        itemData.Count -= amount;
+        
         var newItemData = DataCloner.Clone(itemData);
-        newItemData.Count = 1;
+        newItemData.Count = amount;
         targetInventory.AddItem(newItemData);
+        Changed?.Invoke();
+
+        return amount;
     }
 
     public void RemoveItem(ItemData itemData)
     {
         Items.Remove(itemData);
+        Changed?.Invoke();
     }
 }

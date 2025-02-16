@@ -58,8 +58,10 @@ namespace Managers
             Guid currentLocationId
         )
         {
-            Crew = creature;
+            Crew = creature; 
+            
             Inventory = inventory;
+            Inventory.Changed += () => Changed?.Invoke();
 
             Resources = resources;
             Resources.Changed += OnResourcesChanged;

@@ -18,4 +18,9 @@ public class ShopData
         decimal price = itemData.Value * (decimal)priceMultiplier * 0.5m;
         return Math.Floor(price);
     }
+
+    public decimal GetFuelPrice()
+    {
+        return Math.Ceiling(10 * (decimal)priceMultiplier);
+    }
 }

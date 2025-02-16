@@ -22,15 +22,12 @@ namespace Managers
         [SerializeField] private float minDistance = 20f;
 
         [SerializeField] private int minEnemiesPerRoom = 3; // TODO: Make this configurable
-
         [SerializeField] private int maxEnemiesPerRoom = 9; // TODO: Make this configurable
-
+        
         [SerializeField] private int minRoomsWithEnemies = 3; // TODO: Make this configurable
-
         [SerializeField] private int maxRoomsWithEnemies = 3; // TODO: Make this configurable
 
         [SerializeField] private int minEnemiesPerSpawn = 1; // TODO: Make this configurable
-
         [SerializeField] private int maxEnemiesPerSpawn = 3; // TODO: Make this configurable
 
         [Inject] private ISpawnerManager spawnerManager;
@@ -74,9 +71,9 @@ namespace Managers
                     .Where(room => room.Enemies?.Any() == true)
             )
             {
-                if(room.Occupied)
+                if (room.Occupied)
                     continue;
-                
+
                 room.Occupied = true;
                 foreach (var enemy in room.Enemies)
                 {
@@ -138,10 +135,20 @@ namespace Managers
             var rooms = mapData.GetAllRooms();
             var positions = rooms.SelectMany(x => x.Positions).ToList();
 
+            float gatheredMana = 0f;
+            
             while (true)
             {
                 var enemy = enemies.RandomElement();
 
+                while (enemy.ManaCost > gatheredMana)
+                {
+                    yield return new WaitForFixedUpdate();
+                    gatheredMana += locationData.EnemySpawnManaPerSecond * Time.fixedDeltaTime;
+                }
+                
+                gatheredMana -= enemy.ManaCost;
+                
                 // Look for position far away from player
                 var playerCreatures = creatureManager
                     .GetCreaturesAliveActive()

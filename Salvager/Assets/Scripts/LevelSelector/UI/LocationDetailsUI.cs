@@ -90,6 +90,8 @@ namespace UI
                 string hexColor = ColorUtility.ToHtmlStringRGBA(shopDescriptionColor); 
                 description += $"* <color=#{hexColor}>There is a trade ship orbiting this station</color>\n";
             }
+            
+            description += $"* Detected movement: {selectedLocation.EnemySpawnManaPerSecond:F2}";
 
             return description;
         }

@@ -5,6 +5,7 @@ using Constants;
 using Data;
 using Items;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using Utilities;
 using Zenject;
 
@@ -25,9 +26,14 @@ namespace Managers.LevelSelector
         [SerializeField] private float startingFuel = 5;
         [SerializeField] private float startingJuice = 200;
 
+        [SerializeField] private SceneReference mainMenuScene;
+        
+        [Inject] private IInputManager _inputManager;
         
         private void Start()
         {
+            _inputManager.GoBackToMenu += GoBackToMenu;
+            
             var data = _dataManager.LoadData();
 
             if (skipLoad || data?.Region == null)
@@ -67,6 +73,12 @@ namespace Managers.LevelSelector
             }
 
             LoadData();
+        }
+
+        private void GoBackToMenu()
+        {
+            _dataManager.SaveData();
+            SceneManager.LoadScene(mainMenuScene);
         }
 
         private void LoadData()
