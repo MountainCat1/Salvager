@@ -76,12 +76,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Active: 1
   shader: {fileID: 4800000, guid: 6f2fcdc189458914eb8a323f19e3a27b, type: 3}
-  preset: 1
+  preset: 6
   pixelResolutionX: 380
   pixelResolutionY: 180
-  screenBend: 0.51
+  screenBend: 0
   screenOverscan: 0
-  blur: 0.5
+  blur: 0
   bleed: 0
   smidge: 0
   scanlinesStrength: 1
@@ -102,6 +102,6 @@ MonoBehaviour:
   green: 1
   blue: 1
   chromaticAberration: 0
-  redOffset: {x: 0.1, y: 0.1}
-  blueOffset: {x: 0, y: -0.14}
-  greenOffset: {x: -0.1, y: 0.1}
+  redOffset: {x: 0, y: 0}
+  blueOffset: {x: 0, y: 0}
+  greenOffset: {x: 0, y: 0}
