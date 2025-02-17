@@ -5,17 +5,14 @@ using UnityEngine;
 using Utilities;
 using Zenject;
 
-public class MoveCommandContext
-{
-    public Vector2 To { get; set; }
-}
-
 public interface IInputMapper
 {
     public event Action<Vector2> OnWorldPressed1;
     public event Action<Vector2> OnWorldPressed2;
     ICollection<Entity> GetEntitiesUnderMouse();
     Entity GetEntityUnderMouse();
+    public void WaitForFollowUpClick(Action<Vector2> callback, Texture2D cursor = null);
+    public void CancelFollowUpClick();
 }
 
 public class InputMapper : MonoBehaviour, IInputMapper
@@ -23,8 +20,19 @@ public class InputMapper : MonoBehaviour, IInputMapper
     public event Action<Vector2> OnWorldPressed1;
     public event Action<Vector2> OnWorldPressed2;
 
-    [Inject] private IInputManager _inputManager;
+    [Inject]
+    private IInputManager _inputManager;
     private Camera _camera;
+
+    private bool _awaitingFollowUpClick;
+    private Action<Vector2> _followUpClickCallback;
+    
+    [SerializeField] private Texture2D defaultCursor;
+
+    private void Start()
+    {
+        SetDefaultCursor();
+    }
 
     private void OnEnable()
     {
@@ -40,24 +48,60 @@ public class InputMapper : MonoBehaviour, IInputMapper
         _inputManager.Pointer1Pressed -= OnPointer1Pressed;
     }
 
-    private void OnPointer1Pressed(Vector2 obj)
+    public void WaitForFollowUpClick(Action<Vector2> callback, Texture2D cursor = null)
     {
-        if(IsPointerOverUI())
+        if (_awaitingFollowUpClick)
+        {
+            Debug.LogWarning("Already waiting for a follow-up click!");
             return;
-        
-        var worldPosition = _camera.ScreenToWorldPoint(obj);
+        }
+
+        SetTargetingCursor(cursor ?? defaultCursor);
+        _awaitingFollowUpClick = true;
+        _followUpClickCallback = callback;
+    }
+
+    public void CancelFollowUpClick()
+    {
+        _awaitingFollowUpClick = false;
+        _followUpClickCallback = null;
+    }
+
+    private void OnPointer1Pressed(Vector2 position)
+    {
+        if (IsPointerOverUI())
+            return;
+
+        if (_awaitingFollowUpClick)
+        {
+            _awaitingFollowUpClick = false;
+            SetDefaultCursor();
+            
+            // Check for UI click *before* invoking the callback
+            if (IsPointerOverUI())
+            {
+                _followUpClickCallback = null; // Clear the callback
+                return; // Don't invoke the callback if it's a UI click
+            }
+
+            _followUpClickCallback?.Invoke(position);
+            _followUpClickCallback = null; // Clear the callback
+            return;
+        }
+
+        var worldPosition = _camera.ScreenToWorldPoint(position);
         OnWorldPressed1?.Invoke(worldPosition);
     }
 
     private void OnPointer2Pressed(Vector2 position)
     {
-        if(IsPointerOverUI())
+        if (IsPointerOverUI())
             return;
-        
+
         var worldPosition = _camera.ScreenToWorldPoint(position);
         OnWorldPressed2?.Invoke(worldPosition);
     }
-    
+
     public ICollection<Entity> GetEntitiesUnderMouse()
     {
         var entities = new List<Entity>();
@@ -73,7 +117,7 @@ public class InputMapper : MonoBehaviour, IInputMapper
 
         return entities;
     }
-    
+
     [CanBeNull]
     public Entity GetEntityUnderMouse()
     {
@@ -91,10 +135,19 @@ public class InputMapper : MonoBehaviour, IInputMapper
 
         return null;
     }
-    
-    
+
     private bool IsPointerOverUI()
     {
         return PointerUtilities.IsPointerOverInteractiveUI();
+    }
+    
+    private void SetTargetingCursor(Texture2D targetingCursor)
+    {
+        Cursor.SetCursor(targetingCursor, Vector2.zero, CursorMode.Auto);
+    }
+
+    private void SetDefaultCursor()
+    {
+        Cursor.SetCursor(defaultCursor, Vector2.zero, CursorMode.Auto);
     }
 }

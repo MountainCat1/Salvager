@@ -9,49 +9,61 @@ namespace UI
 {
     public class ActiveAbilitiesUI : MonoBehaviour
     {
-        [Inject] private ISelectionManager _selectionManager;
-        [Inject] private DiContainer _diContainer;
+        [Inject]
+        private ISelectionManager _selectionManager;
 
-        [SerializeField] private AbilityButtonUI abilityButtonUIPrefab;
-        [SerializeField] private Transform buttonContainer;
-        [SerializeField] private LayerMask groundLayer; // Assignable in inspector
-        [SerializeField] private Texture2D targetingCursor; // Assignable in inspector
-        [SerializeField] private Texture2D defaultCursor; // Assignable in inspector
+        [Inject]
+        private DiContainer _diContainer;
 
-        private Ability _abilityWaitingForTarget;
+        [Inject]
+        private IInputManager _inputManager;
+
+        [Inject]
+        private IInputMapper _inputMapper;
+
+        [SerializeField]
+        private AbilityButtonUI abilityButtonUIPrefab;
+
+        [SerializeField]
+        private Transform buttonContainer;
+
+        [SerializeField]
+        private LayerMask groundLayer;
+
+        [SerializeField]
+        private Texture2D targetingCursor;
+
+        [SerializeField]
+        private Texture2D defaultCursor;
+
+        // Removed: private Ability _abilityWaitingForTarget;
 
         void Start()
         {
             _selectionManager.OnSelectionChanged += UpdateUI;
         }
 
+        private void OnEnable()
+        {
+            _inputManager.OnCancel += CancelAbilityTargeting;
+        }
+
+        private void OnDisable()
+        {
+            _inputManager.OnCancel -= CancelAbilityTargeting;
+            _inputMapper.CancelFollowUpClick(); // Ensure cancellation on disable
+        }
+
         private void OnDestroy()
         {
             _selectionManager.OnSelectionChanged -= UpdateUI;
-            Cursor.SetCursor(defaultCursor, Vector2.zero, CursorMode.Auto);
         }
 
-        private void Update()
+        private void CancelAbilityTargeting()
         {
-            if (_abilityWaitingForTarget != null && Input.GetMouseButtonDown(0))
-            {
-                // Handle click to determine world position
-                Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                RaycastHit2D hit = Physics2D.Raycast(mousePosition, Vector2.zero, Mathf.Infinity, groundLayer);
-
-                UseAbilityAtLocation(_abilityWaitingForTarget, mousePosition);
-                _abilityWaitingForTarget = null; // Clear waiting ability
-                _selectionManager.AllowSelection(this);
-                SetDefaultCursor();
-            }
-            else if (_abilityWaitingForTarget != null && Input.GetKeyDown(KeyCode.Escape))
-            {
-                // Cancel ability use
-                _abilityWaitingForTarget = null;
-                _selectionManager.AllowSelection(this);
-                Debug.Log("Ability use cancelled.");
-                SetDefaultCursor();
-            }
+            _inputMapper.CancelFollowUpClick();
+            Debug.Log("Ability use cancelled.");
+            _selectionManager.AllowSelection(this);
         }
 
         private void UpdateUI()
@@ -72,27 +84,39 @@ namespace UI
                 var button = _diContainer
                     .InstantiatePrefab(abilityButtonUIPrefab, buttonContainer)
                     .GetComponent<AbilityButtonUI>();
-                button.Initialize(activeItem.GetAbility(), activeItem.Icon,
-                    (ability) => StartAbilityTargeting(ability)); // Modified callback
+                button.Initialize(
+                    activeItem.GetAbility(),
+                    activeItem.Icon,
+                    (ability) => StartAbilityTargeting(ability)
+                ); // Modified callback
             }
         }
 
         private void StartAbilityTargeting(Ability ability)
         {
             // Set the ability we're waiting for a target for
-            _abilityWaitingForTarget = ability;
+            // _abilityWaitingForTarget = ability; // Removed
             _selectionManager.PreventSelection(this);
             Debug.Log($"Waiting for target location for ability: {ability.Identifier}");
-            SetTargetingCursor();
+
+            _inputMapper.WaitForFollowUpClick((worldPosition) =>
+            {
+                UseAbilityAtLocation(ability, worldPosition);
+                _selectionManager.AllowSelection(this);
+            }, targetingCursor);
         }
 
         private void UseAbilityAtLocation(Ability ability, Vector3 targetLocation)
         {
             // Find first selected creature with the ability
-            var creature = _selectionManager.SelectedCreatures.FirstOrDefault(x =>
-                x.Inventory.Items.Any(i =>
-                    i is ActiveItemBehaviour activeItem &&
-                    activeItem.GetAbility().Identifier == ability.Identifier));
+            var creature = _selectionManager.SelectedCreatures.FirstOrDefault(
+                x =>
+                    x.Inventory.Items.Any(
+                        i =>
+                            i is ActiveItemBehaviour activeItem
+                            && activeItem.GetAbility().Identifier == ability.Identifier
+                    )
+            );
 
             if (creature == null)
             {
@@ -100,31 +124,23 @@ namespace UI
                 return;
             }
 
-            var item = creature.Inventory.Items.First(i =>
-                    i is ActiveItemBehaviour activeItem &&
-                    activeItem.GetAbility().Identifier == ability.Identifier) as
-                ActiveItemBehaviour;
+            var item = creature.Inventory.Items.First(
+                    i =>
+                        i is ActiveItemBehaviour activeItem
+                        && activeItem.GetAbility().Identifier == ability.Identifier
+                ) as ActiveItemBehaviour;
 
             if (item == null)
             {
                 Debug.LogError(
-                    $"No item with ability {ability.Identifier} found in creature's inventory.");
+                    $"No item with ability {ability.Identifier} found in creature's inventory."
+                );
                 return;
             }
 
             item.UseActiveAbility(new AbilityUseContext(creature, null, targetLocation));
-            
+
             UpdateUI();
-        }
-
-        private void SetTargetingCursor()
-        {
-            Cursor.SetCursor(targetingCursor, Vector2.zero, CursorMode.Auto);
-        }
-
-        private void SetDefaultCursor()
-        {
-            Cursor.SetCursor(defaultCursor, Vector2.zero, CursorMode.Auto);
         }
     }
 }
