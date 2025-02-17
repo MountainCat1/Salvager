@@ -125,7 +125,6 @@ namespace UI
                     var connectionUIComponent = Array.Find(levelUIComponents, x => x.Location == connectionLevel);
 
                     var lineRendererInstance = Instantiate(prefab, lineParent);
-                    lineRendererInstance.transform.position = Vector3.zero;
 
                     lineRendererInstance.Points = new[]
                     {
@@ -135,6 +134,9 @@ namespace UI
 
 
                     createdConnections.Add((level, connectionLevel));
+                    
+                    lineRendererInstance.transform.position = Vector3.zero;
+                    lineRendererInstance.rectTransform.position = Vector3.zero;
                 }
             }
         }
