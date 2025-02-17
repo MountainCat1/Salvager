@@ -9,17 +9,10 @@ namespace UI
 {
     public class ActiveAbilitiesUI : MonoBehaviour
     {
-        [Inject]
-        private ISelectionManager _selectionManager;
-
-        [Inject]
-        private DiContainer _diContainer;
-
-        [Inject]
-        private IInputManager _inputManager;
-
-        [Inject]
-        private IInputMapper _inputMapper;
+        [Inject] private ISelectionManager _selectionManager;
+        [Inject] private DiContainer _diContainer;
+        [Inject] private IInputManager _inputManager;
+        [Inject] private IInputMapper _inputMapper;
 
         [SerializeField]
         private AbilityButtonUI abilityButtonUIPrefab;

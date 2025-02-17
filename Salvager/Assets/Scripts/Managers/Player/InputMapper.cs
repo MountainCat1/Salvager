@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using JetBrains.Annotations;
+using Managers;
 using UnityEngine;
 using Utilities;
 using Zenject;
@@ -20,19 +21,15 @@ public class InputMapper : MonoBehaviour, IInputMapper
     public event Action<Vector2> OnWorldPressed1;
     public event Action<Vector2> OnWorldPressed2;
 
-    [Inject]
-    private IInputManager _inputManager;
+    [Inject] private IInputManager _inputManager;
+    [Inject] private ICursorManager _cursorManager;
+    
     private Camera _camera;
 
     private bool _awaitingFollowUpClick;
     private Action<Vector2> _followUpClickCallback;
     
     [SerializeField] private Texture2D defaultCursor;
-
-    private void Start()
-    {
-        SetDefaultCursor();
-    }
 
     private void OnEnable()
     {
@@ -56,13 +53,14 @@ public class InputMapper : MonoBehaviour, IInputMapper
             return;
         }
 
-        SetTargetingCursor(cursor ?? defaultCursor);
+        _cursorManager.SetCursor(this, cursor, CursorPriority.Targeting);
         _awaitingFollowUpClick = true;
         _followUpClickCallback = callback;
     }
 
     public void CancelFollowUpClick()
     {
+        _cursorManager.RemoveCursor(this);
         _awaitingFollowUpClick = false;
         _followUpClickCallback = null;
     }
@@ -75,7 +73,7 @@ public class InputMapper : MonoBehaviour, IInputMapper
         if (_awaitingFollowUpClick)
         {
             _awaitingFollowUpClick = false;
-            SetDefaultCursor();
+            _cursorManager.RemoveCursor(this);
             
             // Check for UI click *before* invoking the callback
             if (IsPointerOverUI())
@@ -139,15 +137,5 @@ public class InputMapper : MonoBehaviour, IInputMapper
     private bool IsPointerOverUI()
     {
         return PointerUtilities.IsPointerOverInteractiveUI();
-    }
-    
-    private void SetTargetingCursor(Texture2D targetingCursor)
-    {
-        Cursor.SetCursor(targetingCursor, Vector2.zero, CursorMode.Auto);
-    }
-
-    private void SetDefaultCursor()
-    {
-        Cursor.SetCursor(defaultCursor, Vector2.zero, CursorMode.Auto);
     }
 }

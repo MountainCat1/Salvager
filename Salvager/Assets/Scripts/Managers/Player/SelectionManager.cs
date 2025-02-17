@@ -24,8 +24,10 @@ namespace Managers
     {
         public event Action OnSelectionChanged;
 
-        [Inject] ITeamManager _teamManager;
-        [Inject] IPoolingManager _poolingManager;
+        [Inject] private ITeamManager _teamManager;
+        [Inject] private IPoolingManager _poolingManager;
+        [Inject] private IInputMapper _inputMapper;
+        [Inject] private IInputManager _inputManager;
 
         public IEnumerable<Creature> SelectedCreatures => GetSelectedCreatures();
 
@@ -40,7 +42,8 @@ namespace Managers
         private IPoolAccess<SelectionMarker> _selectionCirclesPool;
         private List<object> _selectionPreventers = new();
 
-        private const float DragThreshold = 5f; // Threshold in pixels to differentiate between click and drag
+        private bool _isDragging = false;
+        private const float DragThreshold = 5f; // Threshold in pixels
 
         private void Awake()
         {
@@ -52,83 +55,82 @@ namespace Managers
             _selectionCirclesPool = _poolingManager.GetPoolAccess<SelectionMarker>();
         }
 
-        private void Update()
+        private void OnEnable()
         {
-            HandleSelectionInput();
+            _inputManager.Pointer1Pressed += OnPointer1Pressed;
+            _inputManager.Pointer1Hold += OnPointer1Hold;
+            _inputManager.Pointer1Released += OnPointer1Released; // Use pressed event for release
         }
 
-        private void HandleSelectionInput()
+        private void OnDisable()
+        {
+            _inputManager.Pointer1Pressed -= OnPointer1Pressed;
+            _inputManager.Pointer1Hold -= OnPointer1Hold;
+            _inputManager.Pointer1Released-= OnPointer1Released;
+        }
+
+        private void OnPointer1Pressed(Vector2 screenPosition)
         {
             if (_selectionPreventers.Count > 0)
             {
                 _startMousePosition = null;
                 return;
             }
-            
-            // Start drag selection
-            if (Input.GetMouseButtonDown(0))
-            {
-                _startMousePosition = Input.mousePosition;
 
-                if (PointerUtilities.IsPointerOverInteractiveUI(selectionBox.gameObject))
-                    return;
-
-                if (selectionBox != null)
-                {
-                    selectionBox.gameObject.SetActive(true);
-                }
-            }
-            
-            if(_startMousePosition == null)
+            if (PointerUtilities.IsPointerOverInteractiveUI(selectionBox.gameObject))
                 return;
 
-            // While dragging
-            if (Input.GetMouseButton(0) && selectionBox != null)
+            _startMousePosition = screenPosition;
+            _isDragging = false;
+
+            if (selectionBox != null)
             {
-                if (Vector2.Distance(_startMousePosition.Value, Input.mousePosition) > DragThreshold)
-                {
-                    UpdateSelectionBox(Input.mousePosition);
-                }
+                selectionBox.gameObject.SetActive(true);
+                selectionBox.sizeDelta = Vector2.zero;
+            }
+        }
+
+        private void OnPointer1Hold(Vector2 currentMousePosition)
+        {
+            if (_startMousePosition == null || selectionBox == null)
+                return;
+
+            if (Vector2.Distance(_startMousePosition.Value, currentMousePosition) >
+                DragThreshold)
+            {
+                _isDragging = true;
+                UpdateSelectionBox(currentMousePosition);
+            }
+        }
+
+        private void OnPointer1Released(Vector2 screenPosition)
+        {
+            if (_startMousePosition == null)
+                return;
+
+            if (selectionBox != null)
+            {
+                selectionBox.gameObject.SetActive(false);
+                selectionBox.sizeDelta = Vector2.zero;
             }
 
-            // Release drag selection or detect click
-            if (Input.GetMouseButtonUp(0))
+            if (PointerUtilities.IsPointerOverInteractiveUI(selectionBox.gameObject))
             {
-                if (selectionBox != null)
-                {
-                    selectionBox.gameObject.SetActive(false);
-                    selectionBox.sizeDelta = Vector2.zero;
-                }
-
-                if (Vector2.Distance(_startMousePosition.Value, Input.mousePosition) <= DragThreshold)
-                {
-                    if (PointerUtilities.IsPointerOverInteractiveUI(selectionBox.gameObject))
-                        return;
-
-                    HandleSingleClick();
-                }
-                else
-                {
-                    if (PointerUtilities.IsPointerOverInteractiveUI(selectionBox.gameObject))
-                        return;
-
-                    SelectUnitsWithinBox();
-                }
+                _startMousePosition = null;
+                return;
             }
 
-            // Shift + Click to add/remove single unit
-            if (Input.GetKey(KeyCode.LeftShift) && Input.GetMouseButtonDown(0))
+            if (!_isDragging)
             {
-                Ray ray = _camera.ScreenPointToRay(Input.mousePosition);
-                if (Physics.Raycast(ray, out RaycastHit hit))
-                {
-                    Creature creature = hit.collider.GetComponent<Creature>();
-                    if (creature != null)
-                    {
-                        ToggleSelection(creature);
-                    }
-                }
+                HandleSingleClick(screenPosition);
             }
+            else
+            {
+                SelectUnitsWithinBox(_startMousePosition.Value, screenPosition);
+            }
+
+            _startMousePosition = null;
+            _isDragging = false;
         }
 
         private void UpdateSelectionBox(Vector2 currentMousePosition)
@@ -143,20 +145,17 @@ namespace Managers
             selectionBox.sizeDelta = new Vector2(Mathf.Abs(boxSize.x), Mathf.Abs(boxSize.y));
         }
 
-
-        private void SelectUnitsWithinBox()
+        private void SelectUnitsWithinBox(Vector2 startPosition, Vector2 endPosition)
         {
-            Vector2 min = _startMousePosition!.Value;
-            Vector2 max = Input.mousePosition;
-
-            Vector2 bottomLeft = Vector2.Min(min, max);
-            Vector2 topRight = Vector2.Max(min, max);
+            Vector2 min = Vector2.Min(startPosition, endPosition);
+            Vector2 max = Vector2.Max(startPosition, endPosition);
 
             List<Creature> selectedCreatures = FindObjectsOfType<Creature>()
-                .Where(creature => IsWithinSelectionBounds(creature, bottomLeft, topRight))
+                .Where(creature => IsWithinSelectionBounds(creature, min, max))
                 .ToList();
 
-            if (!Input.GetKey(KeyCode.LeftShift)) // Replace current selection unless Shift is held
+            // Shift + Click to add/remove single unit
+            if (!_inputManager.IsShiftPressed)
             {
                 ClearSelection();
             }
@@ -166,39 +165,45 @@ namespace Managers
                 AddToSelection(creature);
             }
 
-
             OnSelectionChanged?.Invoke();
         }
 
-        private void HandleSingleClick()
+        private void HandleSingleClick(Vector2 screenPosition)
         {
-            Ray ray = _camera.ScreenPointToRay(Input.mousePosition);
+            Ray ray = _camera.ScreenPointToRay(screenPosition);
             if (Physics.Raycast(ray, out RaycastHit hit))
             {
                 Creature creature = hit.collider.GetComponent<Creature>();
                 if (creature != null)
                 {
-                    ClearSelection(); // Deselect all and select the clicked creature
-                    AddToSelection(creature);
+                    // Shift + Click to add/remove single unit
+                    if (_inputManager.IsShiftPressed)
+                    {
+                        ToggleSelection(creature);
+                    }
+                    else
+                    {
+                        ClearSelection(); // Deselect all and select the clicked creature
+                        AddToSelection(creature);
+                    }
 
                     OnSelectionChanged?.Invoke();
                 }
                 else
                 {
                     ClearSelection(); // Deselect all if no creature is clicked
-
                     OnSelectionChanged?.Invoke();
                 }
             }
             else
             {
                 ClearSelection(); // Deselect all if click hits nothing
-
                 OnSelectionChanged?.Invoke();
             }
         }
 
-        private bool IsWithinSelectionBounds(Creature creature, Vector2 bottomLeft, Vector2 topRight)
+        private bool IsWithinSelectionBounds(Creature creature, Vector2 bottomLeft,
+            Vector2 topRight)
         {
             Vector3 screenPos = _camera.WorldToScreenPoint(creature.transform.position);
 
@@ -221,7 +226,8 @@ namespace Managers
         // Public Methods
         public void ClearSelection()
         {
-            foreach (var selectionCircle in _selectionCirclesPool.GetInUseObjects().ToList())
+            foreach (var selectionCircle in _selectionCirclesPool.GetInUseObjects()
+                         .ToList())
             {
                 _selectionCirclesPool.DespawnObject(selectionCircle);
             }
@@ -239,7 +245,8 @@ namespace Managers
                 _selectedCreatures.Add(creature);
 
                 var selectionMarker =
-                    _selectionCirclesPool.SpawnObject(selectionMarkerPrefab, creature.transform.position);
+                    _selectionCirclesPool.SpawnObject(selectionMarkerPrefab,
+                        creature.transform.position);
                 selectionMarker.ParentConstraint.AddSource(new ConstraintSource()
                 {
                     sourceTransform = creature.transform,

@@ -6,6 +6,7 @@ public interface IInputManager
 {
     event Action<Vector2> CameraMovement;
     event Action<Vector2> Pointer1Pressed;
+    event Action<Vector2> Pointer1Released;
     event Action<Vector2> Pointer2Pressed;
     event Action Halt;
     public event Action<Vector2> Pointer1Hold;
@@ -19,7 +20,7 @@ public interface IInputManager
     event Action Pause;
     event Action GoBackToMenu;
     IUIEvents UI { get; }
-
+    bool IsShiftPressed { get; }
 }
 
 public interface IUIEvents
@@ -41,6 +42,7 @@ public class InputManager : MonoBehaviour, IInputManager
 {
     public event Action<Vector2> CameraMovement;
     public event Action<Vector2> Pointer1Pressed;
+    public event Action<Vector2> Pointer1Released;
     public event Action<Vector2> Pointer2Pressed;
     public event Action Halt;
     public event Action<Vector2> Pointer1Hold;
@@ -53,6 +55,7 @@ public class InputManager : MonoBehaviour, IInputManager
     public event Action Pause;
     public event Action GoBackToMenu;
     public IUIEvents UI { get; private set; }
+    public bool IsShiftPressed => Keyboard.current.shiftKey.isPressed;
 
     private InputActions _inputActions;
 
@@ -65,6 +68,7 @@ public class InputManager : MonoBehaviour, IInputManager
             ctx => CameraMovement?.Invoke(ctx.ReadValue<Vector2>());
 
         _inputActions.CharacterControl.Pointer1.performed += Pointer1OnPerformed;
+        _inputActions.CharacterControl.Pointer1.canceled += Pointer1Canceled;
         _inputActions.CharacterControl.Pointer2.performed += Pointer2OnPerformed;
         _inputActions.CharacterControl.Halt.performed += _ => Halt?.Invoke();
 
@@ -80,6 +84,11 @@ public class InputManager : MonoBehaviour, IInputManager
         _inputActions.UI.Cancel.performed += _ => OnCancel?.Invoke();
         
         UI = new UIEvents(_inputActions);
+    }
+
+    private void Pointer1Canceled(InputAction.CallbackContext obj)
+    {
+        Pointer1Released?.Invoke(Mouse.current.position.ReadValue());
     }
 
     private void Update()

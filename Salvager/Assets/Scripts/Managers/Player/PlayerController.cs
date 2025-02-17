@@ -51,15 +51,17 @@ public class PlayerController : MonoBehaviour
             return;
         }
 
-        var creature = GetSelectedCreatures().FirstOrDefault();
-        if (creature == null)
-            return;
-        
-        var unitController = creature.Controller as UnitController;
-        if (unitController == null)
-            return;
-        
-        unitController.SetTarget(entityUnderMouse);
+        foreach (var creature in GetSelectedCreatures())
+        {
+            var unitController = creature.Controller as UnitController;
+            if (unitController == null)
+            {
+                Debug.LogError("Selected creature is not a unit.");
+                continue;
+            }
+
+            unitController.SetTarget(entityUnderMouse);
+        }
     }
 
     private void MoveCommand(Vector2 position)
@@ -67,7 +69,7 @@ public class PlayerController : MonoBehaviour
         var selectedCreatures = GetSelectedCreatures().ToList();
         if (!selectedCreatures.Any())
             return;
-        
+
         if (selectedCreatures.Count == 1)
         {
             var creature = selectedCreatures.First();
@@ -80,24 +82,29 @@ public class PlayerController : MonoBehaviour
             return;
         }
 
-        var spreadPositions = PathfindingUtilities.GetSpreadPosition(position, selectedCreatures.Count, LayerMask.GetMask("Walls"), 1f);
+        var spreadPositions =
+            PathfindingUtilities.GetSpreadPosition(position, selectedCreatures.Count, LayerMask.GetMask("Walls"), 1f);
         if (!spreadPositions.Any())
         {
             Debug.LogWarning("No valid spread positions found. Using rounded position instead.");
             var roundedPosition = (position - Vector2.one).RoundToNearest(0.5f);
-            spreadPositions = PathfindingUtilities.GetSpreadPosition(roundedPosition, selectedCreatures.Count, LayerMask.GetMask("Walls"), 1f);
+            spreadPositions = PathfindingUtilities.GetSpreadPosition(roundedPosition, selectedCreatures.Count,
+                LayerMask.GetMask("Walls"), 1f);
         }
+
         if (!spreadPositions.Any())
         {
             Debug.LogWarning("No valid spread positions found. Using smaller radius.");
-            spreadPositions = PathfindingUtilities.GetSpreadPosition(position, selectedCreatures.Count, LayerMask.GetMask("Walls"), 0.75f);
+            spreadPositions = PathfindingUtilities.GetSpreadPosition(position, selectedCreatures.Count,
+                LayerMask.GetMask("Walls"), 0.75f);
         }
+
         if (!spreadPositions.Any())
         {
             Debug.LogWarning("No valid spread positions found.");
             return;
         }
-        
+
 
         // Pair each unit with the closest available target position
         var assignments = AssignPositionsToUnits(selectedCreatures, spreadPositions);
@@ -110,7 +117,8 @@ public class PlayerController : MonoBehaviour
             var controller = creature.Controller as UnitController;
             if (controller)
             {
-                controller.SetMoveTarget(targetPosition + new Vector2(Random.Range(-0.1f, 0.1f), Random.Range(-0.1f, 0.1f)));
+                controller.SetMoveTarget(targetPosition +
+                                         new Vector2(Random.Range(-0.1f, 0.1f), Random.Range(-0.1f, 0.1f)));
             }
         }
 
@@ -168,7 +176,7 @@ public class PlayerController : MonoBehaviour
     {
         if (length == 1) return list.Select(t => new T[] { t });
 
-        return list.SelectMany((t, i) => 
+        return list.SelectMany((t, i) =>
             GetPermutations(list.Where((_, index) => index != i), length - 1)
                 .Select(tail => (new T[] { t }).Concat(tail)));
     }
