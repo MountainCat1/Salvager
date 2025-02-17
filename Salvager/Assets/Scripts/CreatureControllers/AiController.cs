@@ -45,6 +45,14 @@ namespace CreatureControllers
             }
 
             _navigationCache = new NavigationCache(Seeker);
+            
+            PathChanged += path =>
+            {
+                if (!path.Any())
+                {
+                    UpdateMemory();
+                }
+            };
         }
 
         protected virtual void Start()
