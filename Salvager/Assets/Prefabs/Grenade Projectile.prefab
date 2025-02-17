@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2101502943236693782}
   - component: {fileID: 1071153589785495171}
   - component: {fileID: 1019400596803054220}
-  m_Layer: 9
+  m_Layer: 12
   m_Name: Grenade Projectile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -28,7 +28,7 @@ Transform:
   m_GameObject: {fileID: 7800684957800314686}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.68917084, y: -1.6448702, z: -0.093528226}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -128,7 +128,7 @@ GameObject:
   m_Component:
   - component: {fileID: 9150627433904773746}
   - component: {fileID: 5111296985853978350}
-  m_Layer: 9
+  m_Layer: 12
   m_Name: Circle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -144,7 +144,7 @@ Transform:
   m_GameObject: {fileID: 8862847258767426013}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0.093528226}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

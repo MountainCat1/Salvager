@@ -84,7 +84,7 @@ public class InputMapper : MonoBehaviour, IInputMapper
                 return; // Don't invoke the callback if it's a UI click
             }
 
-            _followUpClickCallback?.Invoke(position);
+            _followUpClickCallback?.Invoke(_camera.ScreenToWorldPoint(position));
             _followUpClickCallback = null; // Clear the callback
             return;
         }
