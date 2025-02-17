@@ -42,11 +42,11 @@ namespace UI
         {
             {
                 FloatingTextType.Damage,
-                new FloatingTextSettings { Color = Color.red, Size = 0.5f, FontStyle = FontStyles.Normal }
+                new FloatingTextSettings { Color = Color.red, Size = 0.7f, FontStyle = FontStyles.Normal }
             },
             {
                 FloatingTextType.Heal,
-                new FloatingTextSettings { Color = Color.white, Size = 0.5f, FontStyle = FontStyles.Normal }
+                new FloatingTextSettings { Color = Color.white, Size = 0.7f, FontStyle = FontStyles.Normal }
             },
             {
                 FloatingTextType.Interaction,
