@@ -195,7 +195,7 @@ namespace CreatureControllers
                 // when creatures get closer when in a line and the enemy gets pushed so even though they wont attack they come closer
                 // and break the formation
                 
-                if (!Creature.Weapon.ShootThroughAllies)
+                if (!Creature.Weapon.ShootThroughAllies && Vector2.Distance(Creature.transform.position, _target.transform.position) < DistanceToIgnoreFriendlyFire)
                 {
                     // Stay still if there are friendly creatures in the line of sight
                     var creaturesInLineOfFire = GetCreatureInLine(_target.transform.position, Creature.Weapon.Range);
@@ -206,8 +206,6 @@ namespace CreatureControllers
                     }
                 }
 
-                
-                
                 // Move towards the target if it is not in line of sight
                 if (!CanSee(_target))
                 {
@@ -237,6 +235,8 @@ namespace CreatureControllers
 
             PerformMovementTowardsTarget(_target);
         }
+
+        public float DistanceToIgnoreFriendlyFire => 1f;
 
         private bool ShouldFollowTarget()
         {
