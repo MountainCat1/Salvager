@@ -161,6 +161,7 @@ MonoBehaviour:
   useOnce: 0
   message: Entering...
   requiredItems: []
+  cursor: {fileID: 2800000, guid: de75fe3a328ce4a49b9e4dc95ff4710f, type: 3}
 --- !u!1001 &556012255856125039
 PrefabInstance:
   m_ObjectHideFlags: 0

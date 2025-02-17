@@ -49,7 +49,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hitSound: {fileID: 8300000, guid: 8c96ac97b9e3c9a4ca94d1c7a7823530, type: 3}
   fuseTime: 2
-  radius: 3
+  radius: 2.5
   maxDistanceSpeedCorrection: 5
   correctionAmount: 7
   explosionPrefab: {fileID: 2794897311544135850, guid: 563d592071d818f48b62878b52a471e0, type: 3}
@@ -68,8 +68,8 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
+  m_LinearDrag: 0.4
+  m_AngularDrag: 0.1
   m_GravityScale: 1
   m_Material: {fileID: 0}
   m_IncludeLayers:

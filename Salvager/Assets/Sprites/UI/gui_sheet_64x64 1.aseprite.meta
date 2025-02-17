@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: cc4bc55be23638a4f94f99538bd0a965
+guid: dd6f581cf059bed4e8059f7fe0953e75
 ScriptedImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -1209,10 +1209,10 @@ ScriptedImporter:
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 55
-      y: 99
-      width: 8
-      height: 5
+      x: 54
+      y: 84
+      width: 9
+      height: 25
     spriteID: 550c36d665678934981343c1d3fa291f
     spriteBone: []
     spriteOutline: []
@@ -4590,7 +4590,7 @@ ScriptedImporter:
     layerType: 0
     blendMode: 0
     cells:
-    - name: gui_sheet_64x64
+    - name: gui_sheet_64x64 1
       frameIndex: 0
       additiveSortOrder: 0
       cellRect:

@@ -139,6 +139,24 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ZoomIn"",
+                    ""type"": ""Value"",
+                    ""id"": ""93901283-7ff6-46ff-be0f-8ccaaa5267a4"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""ZoomOut"",
+                    ""type"": ""Value"",
+                    ""id"": ""a386417c-875d-4b13-a6af-a7c27c56aded"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -227,6 +245,28 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""ShowInventory"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""43c4bd83-daac-4405-ada1-a2bf849119a6"",
+                    ""path"": ""<Mouse>/scroll/up"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ZoomIn"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""cb71a7b9-c273-4860-831d-92b6421ce616"",
+                    ""path"": ""<Mouse>/scroll/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ZoomOut"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -419,6 +459,8 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         m_UI_SpeedUpDialog = m_UI.FindAction("SpeedUpDialog", throwIfNotFound: true);
         m_UI_Cancel = m_UI.FindAction("Cancel", throwIfNotFound: true);
         m_UI_ShowInventory = m_UI.FindAction("ShowInventory", throwIfNotFound: true);
+        m_UI_ZoomIn = m_UI.FindAction("ZoomIn", throwIfNotFound: true);
+        m_UI_ZoomOut = m_UI.FindAction("ZoomOut", throwIfNotFound: true);
         // CameraControl
         m_CameraControl = asset.FindActionMap("CameraControl", throwIfNotFound: true);
         m_CameraControl_Movement = m_CameraControl.FindAction("Movement", throwIfNotFound: true);
@@ -564,6 +606,8 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_UI_SpeedUpDialog;
     private readonly InputAction m_UI_Cancel;
     private readonly InputAction m_UI_ShowInventory;
+    private readonly InputAction m_UI_ZoomIn;
+    private readonly InputAction m_UI_ZoomOut;
     public struct UIActions
     {
         private @InputActions m_Wrapper;
@@ -573,6 +617,8 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         public InputAction @SpeedUpDialog => m_Wrapper.m_UI_SpeedUpDialog;
         public InputAction @Cancel => m_Wrapper.m_UI_Cancel;
         public InputAction @ShowInventory => m_Wrapper.m_UI_ShowInventory;
+        public InputAction @ZoomIn => m_Wrapper.m_UI_ZoomIn;
+        public InputAction @ZoomOut => m_Wrapper.m_UI_ZoomOut;
         public InputActionMap Get() { return m_Wrapper.m_UI; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -597,6 +643,12 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @ShowInventory.started += instance.OnShowInventory;
             @ShowInventory.performed += instance.OnShowInventory;
             @ShowInventory.canceled += instance.OnShowInventory;
+            @ZoomIn.started += instance.OnZoomIn;
+            @ZoomIn.performed += instance.OnZoomIn;
+            @ZoomIn.canceled += instance.OnZoomIn;
+            @ZoomOut.started += instance.OnZoomOut;
+            @ZoomOut.performed += instance.OnZoomOut;
+            @ZoomOut.canceled += instance.OnZoomOut;
         }
 
         private void UnregisterCallbacks(IUIActions instance)
@@ -616,6 +668,12 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @ShowInventory.started -= instance.OnShowInventory;
             @ShowInventory.performed -= instance.OnShowInventory;
             @ShowInventory.canceled -= instance.OnShowInventory;
+            @ZoomIn.started -= instance.OnZoomIn;
+            @ZoomIn.performed -= instance.OnZoomIn;
+            @ZoomIn.canceled -= instance.OnZoomIn;
+            @ZoomOut.started -= instance.OnZoomOut;
+            @ZoomOut.performed -= instance.OnZoomOut;
+            @ZoomOut.canceled -= instance.OnZoomOut;
         }
 
         public void RemoveCallbacks(IUIActions instance)
@@ -771,6 +829,8 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         void OnSpeedUpDialog(InputAction.CallbackContext context);
         void OnCancel(InputAction.CallbackContext context);
         void OnShowInventory(InputAction.CallbackContext context);
+        void OnZoomIn(InputAction.CallbackContext context);
+        void OnZoomOut(InputAction.CallbackContext context);
     }
     public interface ICameraControlActions
     {

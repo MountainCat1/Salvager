@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Cinemachine;
 using CreatureControllers;
 using Data;
 using DefaultNamespace.Pathfinding;
@@ -17,12 +18,20 @@ public class PlayerController : MonoBehaviour
     [Inject] ISelectionManager _selectionManager;
     [Inject] IPathfinding _pathfinding;
     [Inject] IDataManager _dataManager;
+    [Inject] ICursorManager _cursorManager;
 
-
+    [SerializeField] private Texture2D interactCursor;
+    
     private void Start()
     {
         _inputMapper.OnWorldPressed2 += OnMoveCommand;
         _inputManager.Halt += OnHalt;
+    }
+
+    private void OnDestroy()
+    {
+        _inputMapper.OnWorldPressed2 -= OnMoveCommand;
+        _inputManager.Halt -= OnHalt;
     }
 
     private void OnHalt()
@@ -35,11 +44,6 @@ public class PlayerController : MonoBehaviour
                 controller.Halt();
             }
         }
-    }
-
-    private void OnDestroy()
-    {
-        _inputMapper.OnWorldPressed2 -= OnMoveCommand;
     }
 
     private void OnMoveCommand(Vector2 position)
@@ -132,7 +136,6 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-
     /// <summary>
     /// Assigns positions to units in a way that minimizes the total distance between units and their assigned positions.
     /// </summary>
@@ -180,7 +183,6 @@ public class PlayerController : MonoBehaviour
             GetPermutations(list.Where((_, index) => index != i), length - 1)
                 .Select(tail => (new T[] { t }).Concat(tail)));
     }
-
 
     private IEnumerable<Creature> GetSelectedCreatures()
     {

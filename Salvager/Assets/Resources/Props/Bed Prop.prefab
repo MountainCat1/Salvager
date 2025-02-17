@@ -121,6 +121,7 @@ GameObject:
   - component: {fileID: 2417749354656705784}
   - component: {fileID: 4656425525426324777}
   - component: {fileID: 994883171086511361}
+  - component: {fileID: 6652406886336191645}
   m_Layer: 11
   m_Name: Bed Prop
   m_TagString: Untagged
@@ -209,6 +210,7 @@ MonoBehaviour:
   useOnce: 1
   message: Searching...
   requiredItems: []
+  cursor: {fileID: 2800000, guid: 5b876f07626d6a74a83b5767d1670c5d, type: 3}
   lootTable: {fileID: 11400000, guid: 0b197bd77f965364ab91ad811a8e0dfa, type: 2}
 --- !u!114 &4656425525426324777
 MonoBehaviour:
@@ -235,6 +237,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 10
+--- !u!114 &6652406886336191645
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8667083905584706207}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59a080d73d3243da845610e76fb494a8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &556012255856125039
 PrefabInstance:
   m_ObjectHideFlags: 0

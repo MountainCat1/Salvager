@@ -14,6 +14,7 @@ public interface IInputManager
     event Action OnSpeedUpDialog;
     event Action OnSkip;
     event Action OnCancel;
+    event Action<float> Zoom;
 
     event Action SpeedUp;
     event Action SpeedDown;
@@ -50,6 +51,7 @@ public class InputManager : MonoBehaviour, IInputManager
     public event Action OnSpeedUpDialog;
     public event Action OnSkip;
     public event Action OnCancel;
+    public event Action<float> Zoom;
     public event Action SpeedUp;
     public event Action SpeedDown;
     public event Action Pause;
@@ -82,6 +84,9 @@ public class InputManager : MonoBehaviour, IInputManager
         _inputActions.UI.SpeedUpDialog.performed += _ => OnSpeedUpDialog?.Invoke();
         
         _inputActions.UI.Cancel.performed += _ => OnCancel?.Invoke();
+        
+        _inputActions.UI.ZoomIn.performed += ctx => Zoom?.Invoke(ctx.ReadValue<float>());
+        _inputActions.UI.ZoomOut.performed += ctx => Zoom?.Invoke(-ctx.ReadValue<float>());
         
         UI = new UIEvents(_inputActions);
     }

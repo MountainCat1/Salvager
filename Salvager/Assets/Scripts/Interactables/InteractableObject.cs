@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Items;
 using JetBrains.Annotations;
@@ -8,6 +9,7 @@ using Zenject;
 public class InteractableObject : Entity, IInteractable
 {
     [Inject] private ISoundPlayer _soundPlayer = null!;
+    [Inject] private ICursorManager _cursorManager = null!;
 
     [CanBeNull] private Interaction _interaction;
 
@@ -16,6 +18,7 @@ public class InteractableObject : Entity, IInteractable
     [SerializeField] private bool useOnce = true;
     [SerializeField] private string message = "Interacting...";
     [SerializeField] public List<ItemBehaviour> requiredItems;
+    [SerializeField] public Texture2D cursor;
     
     // Accessors
     public bool IsInteractable => GetIsInteractable();
@@ -26,6 +29,23 @@ public class InteractableObject : Entity, IInteractable
     protected bool Used = false;
 
     // Methods
+
+    private void OnMouseEnter()
+    {
+        if(cursor && IsInteractable && (!Used || !useOnce))
+        {
+            _cursorManager.SetCursor(this, cursor, CursorPriority.Interactable);   
+        }
+        {
+            _cursorManager.SetCursor(this, cursor, CursorPriority.Interactable);   
+        }
+    }
+    
+    private void OnMouseExit()
+    {
+        _cursorManager.RemoveCursor(this);
+    }
+
 
     private bool GetIsInteractable()
     {
@@ -49,7 +69,7 @@ public class InteractableObject : Entity, IInteractable
             }
         }
         
-        if(Occupied && _interaction!.Creature != creature)
+        if(Occupied && _interaction!.Creature != creature && useOnce)
             return false;
         
         return true;
@@ -105,5 +125,7 @@ public class InteractableObject : Entity, IInteractable
 
     protected virtual void OnInteractionComplete(Interaction interaction)
     {
+        if(useOnce)
+            _cursorManager.RemoveCursor(this);
     }
 }

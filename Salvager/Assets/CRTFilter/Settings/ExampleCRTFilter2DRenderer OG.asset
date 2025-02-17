@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 11145981673336645838492a2d98e247, type: 3}
-  m_Name: ExampleCRTFilter2DRenderer
+  m_Name: ExampleCRTFilter2DRenderer OG
   m_EditorClassIdentifier: 
   debugShaders:
     debugReplacementPS: {fileID: 4800000, guid: cf852408f2e174538bcd9b7fda1c5ae7, type: 3}
@@ -77,31 +77,31 @@ MonoBehaviour:
   m_Active: 1
   shader: {fileID: 4800000, guid: 6f2fcdc189458914eb8a323f19e3a27b, type: 3}
   preset: 6
-  pixelResolutionX: 380
+  pixelResolutionX: 340
   pixelResolutionY: 180
-  screenBend: 7.12
+  screenBend: 0
   screenOverscan: 0
   blur: 0
-  bleed: 0.01
+  bleed: 0
   smidge: 0
-  scanlinesStrength: 1.46
-  apertureStrength: 1.31
+  scanlinesStrength: 1
+  apertureStrength: 0.1
   shadowlines: 0
   shadowlinesSpeed: 0
   shadowlinesAlpha: 0
-  noiseSize: 0
-  noiseSpeed: 0
-  noiseAlpha: 0
-  vignetteSize: 5.7
+  noiseSize: 9.9
+  noiseSpeed: 2.15
+  noiseAlpha: 0.021
+  vignetteSize: 5.65
   vignetteSmooth: 2
-  vignetteRound: 13
-  brightness: 0.03
-  contrast: 1.25
+  vignetteRound: 37
+  brightness: -0.04
+  contrast: 1
   gamma: 1
   red: 1
   green: 1
   blue: 1
   chromaticAberration: 0
-  redOffset: {x: 0, y: 0}
-  blueOffset: {x: 0, y: 0}
-  greenOffset: {x: 0, y: 0}
+  redOffset: {x: 0.02, y: 0.02}
+  blueOffset: {x: 0, y: -0.028}
+  greenOffset: {x: -0.02, y: 0.02}
