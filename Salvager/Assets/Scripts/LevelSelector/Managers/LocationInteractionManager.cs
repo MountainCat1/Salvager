@@ -59,7 +59,7 @@ namespace LevelSelector.Managers
             {
                 Message = "Land",
                 IsDisplayed = location => _crewManager.CurrentLocationId == location.Id,
-                IsEnabled = location => !location.Visited,
+                IsEnabled = location => !location.Visited && _crewManager.Crew.Any(x => x.Selected),
                 OnClick = LoadLevel
             });
             

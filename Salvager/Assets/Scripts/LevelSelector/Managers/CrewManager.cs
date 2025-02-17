@@ -29,6 +29,7 @@ namespace Managers
         public Guid CurrentLocationId { get; }
         void ChangeCurrentLocation(LocationData toLocation);
         bool CanTravel();
+        void ToggleCreature(CreatureData creature, bool value);
     }
 
     public class CrewManager : MonoBehaviour, ICrewManager
@@ -115,6 +116,12 @@ namespace Managers
         public bool CanTravel()
         {
             return Resources.Fuel > 0;
+        }
+
+        public void ToggleCreature(CreatureData creature, bool value)
+        {
+            creature.Selected = value;
+            Changed?.Invoke();
         }
     }
 }

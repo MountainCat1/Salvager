@@ -36,9 +36,15 @@ public class CrewManagerUI : MonoBehaviour
         foreach (var crewMember in crew)
         {
             var crewMemberUI = _diContainer.InstantiatePrefab(crewEntryUI, crewListParent).GetComponent<CrewEntryUI>();
-            crewMemberUI.Initialize(crewMember, OnSelect);
+            crewMemberUI.Initialize(crewMember, OnSelect, OnToggle);
         }
     }
+
+    private void OnToggle(CreatureData creature, bool value)
+    {
+        _crewManager.ToggleCreature(creature, value);
+    }
+    
 
     private void OnSelect(CreatureData creature)
     {

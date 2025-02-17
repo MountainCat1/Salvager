@@ -169,6 +169,7 @@ public class CreatureData
     public float SightRange;
     public InventoryData Inventory;
     public int ManaCost = 1;
+    public bool Selected = false;
 
     public static CreatureData FromCreature(Creature creature)
     {

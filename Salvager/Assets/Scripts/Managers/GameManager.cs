@@ -104,6 +104,9 @@ namespace Managers
                     var creature = _creatureManager.SpawnCreature(playerPrefab, (Vector2)startingRoom.Positions.RandomElement() * _map.TileSize);
                 
                     creature.Initialize(creatureData);
+                    
+                    if(!creatureData.Selected)
+                        creature.gameObject.SetActive(false);
 
                     foreach (var item in creature.Inventory.Items)
                     {
