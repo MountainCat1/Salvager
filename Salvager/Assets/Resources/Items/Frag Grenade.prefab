@@ -51,6 +51,6 @@ MonoBehaviour:
     radius.
   <BaseCost>k__BackingField: 15
   grenadePrefab: {fileID: 2101502943236693782, guid: 21d799cc3fc2d264e9a2d801222a9915, type: 3}
-  speed: 10
+  speed: 15
   damage: 10
   pushFactor: 100

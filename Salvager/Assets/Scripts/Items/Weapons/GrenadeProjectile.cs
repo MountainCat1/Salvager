@@ -41,7 +41,9 @@ namespace Items.Weapons
             _timeUntilExplosion = fuseTime;
 
             // Calculate initial velocity based on angle and speed
-            Vector2 initialVelocity = _attackContext.Direction * Speed;
+            var distance = Vector2.Distance(transform.position, _attackContext.TargetPosition);
+            var speed = Mathf.Min(CalculateInitialVelocity(distance, _rb.drag), Speed);
+            Vector2 initialVelocity = _attackContext.Direction.normalized * speed;
 
             // Apply the initial velocity to the Rigidbody2D
             _rb.velocity = initialVelocity;
@@ -72,6 +74,15 @@ namespace Items.Weapons
                 _rb.velocity = Mathf.Lerp(_rb.velocity.magnitude, 0f, distance - maxDistanceSpeedCorrection) * _rb.velocity.normalized;
             }
         }
+        
+        float CalculateInitialVelocity(float distance, float linearDrag)
+        {
+            if (linearDrag <= 0)
+                return distance; // If no drag, velocity equals distance
+
+            return distance * linearDrag;
+        }
+
 
         private void Explode()
         {

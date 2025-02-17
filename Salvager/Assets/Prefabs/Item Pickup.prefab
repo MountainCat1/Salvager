@@ -48,8 +48,8 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
-  m_LinearDrag: 0.5
-  m_AngularDrag: 0.3
+  m_LinearDrag: 1.5
+  m_AngularDrag: 0.5
   m_GravityScale: 0
   m_Material: {fileID: 0}
   m_IncludeLayers:
@@ -131,6 +131,7 @@ MonoBehaviour:
   useOnce: 1
   message: Picking up...
   requiredItems: []
+  cursor: {fileID: 0}
   itemBehaviour: {fileID: 0}
 --- !u!58 &4297397565104737102
 CircleCollider2D:
