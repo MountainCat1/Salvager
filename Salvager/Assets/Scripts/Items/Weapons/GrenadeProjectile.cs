@@ -11,14 +11,13 @@ namespace Items.Weapons
     { 
         [Inject] ICameraShakeService _cameraShakeService;
         
-        [SerializeField] private float _initialAngle = 45f; // Launch angle in degrees
-        [SerializeField] private float _fuseTime = 2.0f; // Time before explosion
+        [SerializeField] private float fuseTime = 2.0f; // Time before explosion
         [SerializeField] private float radius = 3f; // Radius of the explosion
         [SerializeField] private float maxDistanceSpeedCorrection = 2f; // distance where the speed correction starts
         [SerializeField] private float correctionAmount = 5f; // distance where the speed correction starts
 
-        [SerializeField] private GameObject _explosionPrefab; // Prefab for the explosion effect
-        [SerializeField] private AudioClip _explosionSound; // Sound to play when the grenade explodes
+        [SerializeField] private GameObject explosionPrefab; // Prefab for the explosion effect
+        [SerializeField] private AudioClip explosionSound; // Sound to play when the grenade explodes
         [SerializeField] private float cameraShakeFactor = 1; // Sound to play when the grenade explodes
         
         private Rigidbody2D _rb;
@@ -39,7 +38,7 @@ namespace Items.Weapons
         {
             base.Launch(ctx); // Call the base class's Launch method
 
-            _timeUntilExplosion = _fuseTime;
+            _timeUntilExplosion = fuseTime;
 
             // Calculate initial velocity based on angle and speed
             Vector2 initialVelocity = _attackContext.Direction * Speed;
@@ -77,15 +76,15 @@ namespace Items.Weapons
         private void Explode()
         {
             // Instantiate explosion prefab
-            if (_explosionPrefab != null)
+            if (explosionPrefab != null)
             {
-                Instantiate(_explosionPrefab, transform.position, Quaternion.identity);
+                Instantiate(explosionPrefab, transform.position, Quaternion.identity);
             }
             
             // Play explosion sound
-            if (_explosionSound != null)
+            if (explosionSound != null)
             {
-                SoundPlayer.PlaySound(_explosionSound, transform.position);
+                SoundPlayer.PlaySound(explosionSound, transform.position);
             }
             
             _cameraShakeService.ShakeCamera(transform.position, Damage * cameraShakeFactor);
