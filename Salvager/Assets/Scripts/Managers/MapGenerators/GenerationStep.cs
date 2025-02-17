@@ -22,7 +22,7 @@ namespace Services.MapGenerators
                 roomCount = UnityEngine.Random.Range(10, 20),
                 roomMaxSize = new Vector2Int(UnityEngine.Random.Range(5, 10), UnityEngine.Random.Range(5, 10)),
                 roomMinSize = new Vector2Int(UnityEngine.Random.Range(3, 4), UnityEngine.Random.Range(3, 4)),
-                gridSize = new Vector2Int(UnityEngine.Random.Range(50, 100), UnityEngine.Random.Range(50, 100)),
+                gridSize = new Vector2Int(50, 50),
                 seed = UnityEngine.Random.Range(0, 1000000),
                 tileSize = 1f
             };
