@@ -48,10 +48,10 @@ MonoBehaviour:
   <Name>k__BackingField: SMG
   <Weight>k__BackingField: 1
   <Description>k__BackingField: 
-  <BaseCost>k__BackingField: 25
+  <BaseCost>k__BackingField: 15
   <Range>k__BackingField: 3.5
   <BaseAttackSpeed>k__BackingField: 5
-  <BaseDamage>k__BackingField: 0.2
+  <BaseDamage>k__BackingField: 0.3
   <PushFactor>k__BackingField: 50
   <ShakeFactor>k__BackingField: 1
   <HitSound>k__BackingField: {fileID: 8300000, guid: 038a66a344c308446b06ec0324bc02d2, type: 3}
