@@ -42,10 +42,10 @@ namespace Managers.Visual
             creature.Health.Hit += OnCreatureHit;
         }
 
-        private void OnCreatureHit(HitContext obj)
+        private void OnCreatureHit(HitContext ctx)
         {
-            SpawnBlood(obj.Target.Health.transform.position, obj.Attacker.transform.position - obj.Target.Health.transform.position,
-                obj.Damage);
+            SpawnBlood(ctx.Target.Health.transform.position, ctx.Direction,
+                ctx.Damage);
         }
 
         public void SpawnBlood(Vector3 position, Vector3 direction, float amount)

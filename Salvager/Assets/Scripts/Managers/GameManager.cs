@@ -33,6 +33,7 @@ namespace Managers
         [Inject] private IVictoryConditionManager _victoryConditionManager;
         [Inject] private IInputManager _inputManager;
         [Inject] private IEnemySpawner _enemySpawner;
+        [Inject] private IJuiceManager _juiceManager;
 
         [SerializeField] private Creature playerPrefab;
         [SerializeField] private Creature enemyPrefab;
@@ -43,9 +44,12 @@ namespace Managers
         [SerializeField] private SceneReference levelSelectorScene;
         
         private MapData _map;
-        
+        private GameData _data;
+
         private void Start()
         {
+            _data = loadDataFromSave ? _dataManager.LoadData() : null;
+            
             StartCoroutine(WaitToCreateGrid());
             
             _inputManager.GoBackToMenu += GoBackToLevelSelector;
@@ -86,6 +90,8 @@ namespace Managers
             yield return new WaitForSeconds(0.5f);
 
             SpawnUnits(mapData: _map);
+            
+            _juiceManager.Initialize(FindObjectsOfType<Creature>().Where(x => x.Team == Teams.Player).ToArray(), _data.Resources.Juice);
             
             yield return new WaitForSeconds(0.5f);
         }
@@ -181,6 +187,8 @@ namespace Managers
                 .Where(x => x.Team == Teams.Player)
                 .Select(CreatureData.FromCreature)
                 .ToList();
+            
+            currentGameData.Resources.Juice = _juiceManager.Juice;
         
             _dataManager.SaveData();
         }

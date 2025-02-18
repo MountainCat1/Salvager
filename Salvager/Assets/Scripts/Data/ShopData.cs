@@ -23,4 +23,9 @@ public class ShopData
     {
         return Math.Ceiling(10 * (decimal)priceMultiplier);
     }
+
+    public decimal GetJuicePrice()
+    {
+        return Math.Ceiling(5 * (decimal)priceMultiplier);
+    }
 }

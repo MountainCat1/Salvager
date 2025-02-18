@@ -25,6 +25,8 @@ namespace UI
 
         [SerializeField] private TextMeshProUGUI fuelPrice;
         [SerializeField] private Button buyFuelButton;
+        [SerializeField] private TextMeshProUGUI juicePrice;
+        [SerializeField] private Button buyJuiceButton;
 
         private UISlide _uiSlide;
         private ShopData _shopData;
@@ -57,6 +59,9 @@ namespace UI
 
             fuelPrice.text = $"{_shopData.GetFuelPrice()}$";
             buyFuelButton.interactable = _crewManager.Resources.Money >= _shopData.GetFuelPrice();
+            
+            juicePrice.text = $"{_shopData.GetJuicePrice()}$";
+            buyJuiceButton.interactable = _crewManager.Resources.Money >= _shopData.GetJuicePrice();
 
             foreach (var item in _shopData.inventory.Items)
             {
@@ -117,6 +122,19 @@ namespace UI
 
             _crewManager.Resources.AddMoney(-1 * price);
             _crewManager.Resources.AddFuel(1);
+        }
+        
+        public void BuyJuice()
+        {
+            var price = _shopData.GetJuicePrice();
+            if (_crewManager.Resources.Money < price)
+            {
+                Debug.LogError("Trying to buy juice without enough money");
+                return;
+            }
+
+            _crewManager.Resources.AddMoney(-1 * price);
+            _crewManager.Resources.AddJuice(10);
         }
 
         private int GetTransferItemCount()

@@ -37,6 +37,7 @@ public class GameInstaller : MonoInstaller<GameInstaller>
         Container.Bind<ICameraShakeService>().To<CameraShakeService>().FromComponentsInHierarchy().AsSingle();
         Container.Bind<IVictoryConditionManager>().To<VictoryConditionManager>().FromComponentsInHierarchy().AsSingle();
         Container.Bind<IEnemySpawner>().To<EnemySpawner>().FromComponentsInHierarchy().AsSingle();
+        Container.Bind<IJuiceManager>().To<JuiceManager>().FromComponentsInHierarchy().AsSingle();
 
         Container.Bind<IFloatingTextManager>().To<FloatingTextManager>()
             .FromInstance(FindObjectOfType<FloatingTextManager>());

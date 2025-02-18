@@ -36,9 +36,6 @@ public class InteractableObject : Entity, IInteractable
         {
             _cursorManager.SetCursor(this, cursor, CursorPriority.Interactable);   
         }
-        {
-            _cursorManager.SetCursor(this, cursor, CursorPriority.Interactable);   
-        }
     }
     
     private void OnMouseExit()

@@ -9,7 +9,7 @@ using Zenject;
 public abstract class Weapon : ItemBehaviour
 {
     public event Action<AttackContext> Attacked;
-    
+
     [Inject] private ISoundPlayer _soundPlayer;
     [Inject] private ICameraShakeService _cameraShakeService;
 
@@ -31,7 +31,7 @@ public abstract class Weapon : ItemBehaviour
     public bool IsOnCooldown => GetOnCooldown(new AttackContext());
 
     private float _lastAttackTime = -1;
-    
+
     protected const float RandomPitch = 0.3f;
 
     public bool GetOnCooldown(AttackContext ctx)
@@ -45,10 +45,10 @@ public abstract class Weapon : ItemBehaviour
         _lastAttackTime = Time.time;
 
         _cameraShakeService.ShakeCamera(ctx.Attacker.transform.position, ShakeFactor);
-        
-        if(AttackSound != null)
+
+        if (AttackSound != null)
             _soundPlayer.PlaySound(AttackSound, transform.position);
-        
+
         Attacked?.Invoke(ctx);
         Attack(ctx);
     }
@@ -137,6 +137,10 @@ public struct HitContext
     public float PushFactor { get; set; }
     public Vector2 Push => GetPushForce();
 
+    public Vector3 Direction => Target is null || Attacker is null
+            ? Vector3.zero
+            : (Target.Health.transform.position - Attacker.transform.position).normalized;
+
     public void ValidateAndLog()
     {
         // If the attacker is dead then the attacker is null, so we can't check for null
@@ -149,9 +153,6 @@ public struct HitContext
 
         if (Damage <= 0)
             Debug.LogError("Damage is less than or equal to 0");
-
-        if (Push == Vector2.zero)
-            Debug.LogError("PushForce is zero");
     }
 
     public Vector2 GetPushForce()

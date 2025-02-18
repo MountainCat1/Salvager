@@ -45,7 +45,7 @@ namespace CreatureControllers
             }
 
             _navigationCache = new NavigationCache(Seeker);
-            
+
             PathChanged += path =>
             {
                 if (!path.Any())
@@ -172,7 +172,7 @@ namespace CreatureControllers
                     return;
                 }
             }
-            
+
             PathChanged?.Invoke(new Vector3[] { transform.position, targetPosition });
 
             Creature.SetMovement(direction);
@@ -216,7 +216,7 @@ namespace CreatureControllers
                     Memorize(creature);
                 }
             }
-            
+
             MemoryUpdated?.Invoke();
         }
 
@@ -237,7 +237,8 @@ namespace CreatureControllers
         // Event Handlers
         private void OnHit(HitContext ctx)
         {
-            Memorize(ctx.Attacker);
+            if (ctx.Attacker is not null)
+                Memorize(ctx.Attacker);
         }
 
         // Helper Methods
@@ -304,7 +305,7 @@ namespace CreatureControllers
         {
             PathChanged?.Invoke(path.Select(x => (Vector3)x));
         }
-        
+
         protected void ClearMemory()
         {
             _memorizedCreatures.Clear();

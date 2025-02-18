@@ -117,7 +117,7 @@ public class Creature : Entity, IDamageable
 
     private void OnHit(HitContext ctx)
     {
-        if (ctx.Push.magnitude > 0)
+        if (ctx.Attacker is not null && ctx.Push.magnitude > 0)
             Push(ctx.Push);
     }
 

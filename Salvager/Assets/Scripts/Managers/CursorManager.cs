@@ -71,8 +71,6 @@ namespace Managers
             var cursor = _cursors.OrderByDescending(x => x.Priority).First();
             var hotspot = cursor.Position switch
             {
-
-
                 CursorPosition.Center => new Vector2(        // ReSharper disable once PossibleLossOfFraction
                     cursor.Cursor.width / 2,                 // ReSharper disable once PossibleLossOfFraction
                     cursor.Cursor.height / 2
