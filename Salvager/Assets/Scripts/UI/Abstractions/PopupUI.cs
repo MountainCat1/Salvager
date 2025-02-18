@@ -41,6 +41,8 @@ namespace UI.Abstractions
             // Move the panel based on drag delta
             Vector2 moveDelta = eventData.delta / _canvas.scaleFactor;
             _rectTransform.anchoredPosition += moveDelta;
+
+            Debug.Log("xD");
         }
 
         private void OnDestroy()

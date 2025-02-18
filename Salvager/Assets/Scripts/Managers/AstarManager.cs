@@ -27,7 +27,7 @@ namespace Managers
         public void Scan()
         {
             Debug.Log("Calling astarPath.Scan()");
-            astarPath.Scan();
+            AstarPath.active.Scan();
         }
     }
 }

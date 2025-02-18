@@ -521,6 +521,26 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 124915143162652490, guid: 5770e2ae23e9feb4aa70807102524715, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -2875630835190338842, guid: 5ba9a3205a5befd4cb15d9d883d7ea7d, type: 3}
+    - target: {fileID: 124915143162652490, guid: 5770e2ae23e9feb4aa70807102524715, type: 3}
+      propertyPath: m_Color.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 124915143162652490, guid: 5770e2ae23e9feb4aa70807102524715, type: 3}
+      propertyPath: m_Color.b
+      value: 0.7735849
+      objectReference: {fileID: 0}
+    - target: {fileID: 124915143162652490, guid: 5770e2ae23e9feb4aa70807102524715, type: 3}
+      propertyPath: m_Color.g
+      value: 0.7735849
+      objectReference: {fileID: 0}
+    - target: {fileID: 124915143162652490, guid: 5770e2ae23e9feb4aa70807102524715, type: 3}
+      propertyPath: m_Color.r
+      value: 0.7735849
+      objectReference: {fileID: 0}
     - target: {fileID: 655820084337354169, guid: 5770e2ae23e9feb4aa70807102524715, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -721,7 +741,7 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_NormalColor: {r: 0.3509434, g: 0.3509434, b: 0.3509434, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}

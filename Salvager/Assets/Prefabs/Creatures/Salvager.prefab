@@ -453,6 +453,7 @@ GameObject:
   - component: {fileID: 4597506153351235003}
   - component: {fileID: 968350163950715172}
   - component: {fileID: 8402638437246704036}
+  - component: {fileID: 8899291994917679236}
   m_Layer: 0
   m_Name: Sprite Renderer
   m_TagString: Untagged
@@ -555,7 +556,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6590304817971658830}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1b846d101494476a9da9a5dde32ecc54, type: 3}
   m_Name: 
@@ -564,6 +565,31 @@ MonoBehaviour:
   idle: {fileID: -3100369314251171874, guid: bb52cef64024bfb4185e4e495c8716ce, type: 3}
   walk: {fileID: 2667949614841947897, guid: bb52cef64024bfb4185e4e495c8716ce, type: 3}
   attack: {fileID: 6720303635017113406, guid: bb52cef64024bfb4185e4e495c8716ce, type: 3}
+--- !u!114 &8899291994917679236
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6590304817971658830}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d4ed466632a346e7b20c112b806f766b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Creature>k__BackingField: {fileID: 6919997015472372386}
+  noWeapons:
+    idle: {fileID: -3100369314251171874, guid: 6f422e8345c896442a76bf34178d147c, type: 3}
+    walk: {fileID: 2667949614841947897, guid: 6f422e8345c896442a76bf34178d147c, type: 3}
+    attack: {fileID: 6720303635017113406, guid: 6f422e8345c896442a76bf34178d147c, type: 3}
+  withWeapon:
+    idle: {fileID: -3100369314251171874, guid: bb52cef64024bfb4185e4e495c8716ce, type: 3}
+    walk: {fileID: 2667949614841947897, guid: bb52cef64024bfb4185e4e495c8716ce, type: 3}
+    attack: {fileID: 6720303635017113406, guid: bb52cef64024bfb4185e4e495c8716ce, type: 3}
+  smgWeapon:
+    idle: {fileID: -3100369314251171874, guid: 161bcf538dd67474bbbf2b09e5f22b2b, type: 3}
+    walk: {fileID: 2667949614841947897, guid: 161bcf538dd67474bbbf2b09e5f22b2b, type: 3}
+    attack: {fileID: 6720303635017113406, guid: 161bcf538dd67474bbbf2b09e5f22b2b, type: 3}
 --- !u!1 &7178152661795299375
 GameObject:
   m_ObjectHideFlags: 0
