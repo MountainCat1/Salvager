@@ -72,8 +72,6 @@ namespace Managers
             CurrentLocation = _regionManager.Region.Locations.First(l => l.Id == CurrentLocationId);
 
             Changed?.Invoke();
-            
-            SelectCreature(Crew.First());
         }
 
         private void OnResourcesChanged()

@@ -40,8 +40,10 @@ namespace Managers
 
         [SerializeField] private List<ItemBehaviour> startingItems;
         [SerializeField] private bool loadDataFromSave = true;
-        
+
         [SerializeField] private SceneReference levelSelectorScene;
+            
+        [SerializeField] private float delayToGoBackToLevelSelector = 4f;
         
         private MapData _map;
         private GameData _data;
@@ -173,7 +175,7 @@ namespace Managers
         
         IEnumerator WaitToGoBackToLevelSelector()
         {
-            yield return new WaitForSeconds(2);
+            yield return new WaitForSeconds(delayToGoBackToLevelSelector);
             SaveCurrentData();
             SceneManager.LoadScene(levelSelectorScene);
         }

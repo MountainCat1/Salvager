@@ -58,6 +58,8 @@ namespace UnityEngine.UI.Extensions
         internal bool lineCaps;
         [SerializeField, Tooltip("Resolution of the Bezier curve, different to line Resolution")]
         internal int bezierSegmentsPerCurve = 10;
+        [SerializeField, Tooltip("Should warning about position not being 0,0 be displayed")]
+        private bool displayNonZeroPositionWarning;
 
         public float LineThickness
         {
@@ -99,7 +101,8 @@ namespace UnityEngine.UI.Extensions
         public bool drivenExternally = false;
 
 
-		/// <summary>
+
+        /// <summary>
 		/// Points to be drawn in the line.
 		/// </summary>
         public Vector2[] Points
@@ -499,7 +502,7 @@ namespace UnityEngine.UI.Extensions
             {
 				m_points = new Vector2[1];
             }
-			if (transform.GetComponent<RectTransform>().position != Vector3.zero)
+			if (transform.GetComponent<RectTransform>().position != Vector3.zero && displayNonZeroPositionWarning)
 			{
 				Debug.LogWarning("A Line Renderer component should be on a RectTransform positioned at (0,0,0), do not use in child Objects.\nFor best results, create separate RectTransforms as children of the canvas positioned at (0,0) for a UILineRenderer and do not move.");
 			}

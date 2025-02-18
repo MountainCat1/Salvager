@@ -20,7 +20,7 @@ namespace Managers
         public event Action JuiceChanged;
         public decimal Juice { get; private set; }
 
-        public float ConsumptionRate => consumerConsumptionRate * _creatures?.Count(x => x.enabled) ?? 0;
+        public float ConsumptionRate => consumerConsumptionRate * _creatures?.Count(x => x.gameObject.activeInHierarchy) ?? 0;
 
         [Inject] private ICreatureManager _creatureManager;
 
