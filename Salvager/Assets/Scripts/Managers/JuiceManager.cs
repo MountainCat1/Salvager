@@ -76,7 +76,7 @@ namespace Managers
 
         private void Update()
         {
-            Juice -= (decimal)(consumerConsumptionRate * Time.deltaTime);
+            Juice -= (decimal)(ConsumptionRate * Time.deltaTime);
             JuiceChanged?.Invoke();
         }
     }

@@ -87,8 +87,6 @@ namespace UI
                 itemEntry.GetComponent<ItemEntryUI>().Set(item, TransferItem);
             }
 
-            _selectedCreature ??= _crewManager.Crew.FirstOrDefault();
-
             if (_selectedCreature != null)
             {
                 foreach (var item in _selectedCreature.Inventory.Items)

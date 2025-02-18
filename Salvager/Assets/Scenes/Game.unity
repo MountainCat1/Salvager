@@ -542,7 +542,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -1234029631412528369, guid: cc4bc55be23638a4f94f99538bd0a965, type: 3}
+  m_Sprite: {fileID: -2875630835190338842, guid: 5ba9a3205a5befd4cb15d9d883d7ea7d, type: 3}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1603,6 +1603,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   consumerConsumptionRate: 0.1
+  damageRate: 0.25
 --- !u!1 &769271791
 GameObject:
   m_ObjectHideFlags: 0
@@ -2253,6 +2254,10 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: -17
       objectReference: {fileID: 0}
+    - target: {fileID: 1167603346682716295, guid: 05fa735e2df1f004da2b84fedf932087, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -2875630835190338842, guid: 5ba9a3205a5befd4cb15d9d883d7ea7d, type: 3}
     - target: {fileID: 1644347837435618850, guid: 05fa735e2df1f004da2b84fedf932087, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -3080,7 +3085,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
