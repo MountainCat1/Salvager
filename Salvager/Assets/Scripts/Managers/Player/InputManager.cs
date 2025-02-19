@@ -27,15 +27,18 @@ public interface IInputManager
 public interface IUIEvents
 {
     public event Action ShowInventory;
+    public event Action GoBack;
 }
 
 public class UIEvents : IUIEvents
 {
     public event Action ShowInventory;
+    public event Action GoBack;
 
     public UIEvents(InputActions inputActions)
     {
         inputActions.UI.ShowInventory.performed += _ => ShowInventory?.Invoke();
+        inputActions.UI.GoBack.performed += _ => GoBack?.Invoke();
     }
 }
 
@@ -82,7 +85,7 @@ public class InputManager : MonoBehaviour, IInputManager
         _inputActions.UI.Confirm.performed += _ => OnConfirm?.Invoke();
         _inputActions.UI.SkipDialog.performed += _ => OnSkip?.Invoke();
         _inputActions.UI.SpeedUpDialog.performed += _ => OnSpeedUpDialog?.Invoke();
-        
+
         _inputActions.UI.Cancel.performed += _ => OnCancel?.Invoke();
         
         _inputActions.UI.ZoomIn.performed += ctx => Zoom?.Invoke(ctx.ReadValue<float>());

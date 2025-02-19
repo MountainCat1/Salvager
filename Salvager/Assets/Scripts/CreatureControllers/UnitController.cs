@@ -83,7 +83,7 @@ namespace CreatureControllers
                 _target = null;
             }
             
-            if (_target == null)
+            if (_target == null || !CreatureManager.IsAliveAndActive(_target) == false)
             {
                 _target = GetNewTarget();
             }

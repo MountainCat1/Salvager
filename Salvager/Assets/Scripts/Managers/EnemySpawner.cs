@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using CreatureControllers;
 using Data;
+using Interactables;
 using Services.MapGenerators;
 using UnityEngine;
 using Utilities;
@@ -18,22 +19,16 @@ namespace Managers
     public class EnemySpawner : MonoBehaviour, IEnemySpawner
     {
         [SerializeField] private float spawnRate = 0.05f;
-
         [SerializeField] private float minDistance = 20f;
+        [SerializeField] private float enemyManaPerRoomAwake = 50f;
 
-        [SerializeField] private int minEnemiesPerRoom = 3; // TODO: Make this configurable
-        [SerializeField] private int maxEnemiesPerRoom = 9; // TODO: Make this configurable
-        
-        [SerializeField] private int minRoomsWithEnemies = 3; // TODO: Make this configurable
-        [SerializeField] private int maxRoomsWithEnemies = 3; // TODO: Make this configurable
+        [SerializeField] private float minEnemiesPerSpawn = 1;
+        [SerializeField] private float maxEnemiesPerSpawn = 2;
 
-        [SerializeField] private int minEnemiesPerSpawn = 1; // TODO: Make this configurable
-        [SerializeField] private int maxEnemiesPerSpawn = 3; // TODO: Make this configurable
+        [SerializeField] private float minDistanceFromExitProp = 15f;
 
         [Inject] private ISpawnerManager spawnerManager;
-
         [Inject] private ICreatureManager creatureManager;
-
         [Inject] private IDataResolver dataResolver;
 
         private LocationData locationData;
@@ -95,9 +90,12 @@ namespace Managers
                     .OrderBy(_ => Random.value)
             )
             {
+                if(room.IsEntrance)
+                    continue; // Do not spawn enemies in entrance room
+                
                 if (featuresQueue.Count == 0)
                     break;
-
+                
                 LocationFeatureData feature = featuresQueue.Dequeue();
                 room.Occupied = true;
 
@@ -107,18 +105,23 @@ namespace Managers
                     continue;
                 }
 
-                int enemiesInRoom = Random.Range(minEnemiesPerRoom, maxEnemiesPerRoom);
+                var manaUsed = 1f;
 
-                var enemy = feature.Enemies.RandomElement().CreatureData;
-                var enemyPrefab = dataResolver.ResolveCreaturePrefab(enemy);
-
-                for (int i = 0; i < enemiesInRoom; i++)
+                while (manaUsed < enemyManaPerRoomAwake)
                 {
+                    var enemy = feature.Enemies.RandomElement().CreatureData;
+                    var enemyPrefab = dataResolver.ResolveCreaturePrefab(enemy);
                     var position = GetRandomFloorPosition(room);
-                    if (position != null)
+
+                    var entranceProp = FindObjectOfType<ExitObject>();
+                    
+                    // Do not spawn enemies near the exit prop or if somehow position was not found
+                    if (position != null && Vector2.Distance(position.Value, entranceProp.transform.position) > minDistanceFromExitProp)
                     {
                         creatureManager.SpawnCreature(enemyPrefab, position.Value);
                     }
+
+                    manaUsed += enemy.ManaCost < 1f ? 1f : enemy.ManaCost;
                 }
             }
         }
@@ -136,7 +139,7 @@ namespace Managers
             var positions = rooms.SelectMany(x => x.Positions).ToList();
 
             float gatheredMana = 0f;
-            
+
             while (true)
             {
                 var enemy = enemies.RandomElement();
@@ -146,9 +149,9 @@ namespace Managers
                     yield return new WaitForFixedUpdate();
                     gatheredMana += locationData.EnemySpawnManaPerSecond * Time.fixedDeltaTime;
                 }
-                
+
                 gatheredMana -= enemy.ManaCost;
-                
+
                 // Look for position far away from player
                 var playerCreatures = creatureManager
                     .GetCreaturesAliveActive()
@@ -165,7 +168,7 @@ namespace Managers
 
                 if (position != null)
                 {
-                    SpawnEnemiesAtPosition(enemy, position.Value, playerCreatures);
+                    SpawnEnemiesAtPosition(enemy, position.Value);
                 }
                 else
                 {
@@ -188,9 +191,8 @@ namespace Managers
             {
                 position = positions.RandomElement();
                 if (
-                    playerCreatures.All(
-                        x => Vector2.Distance(x.transform.position, position.Value) > minDistance
-                    )
+                    playerCreatures
+                    .All(x => Vector2.Distance(x.transform.position, position.Value) > minDistance)
                 )
                 {
                     break;
@@ -204,8 +206,7 @@ namespace Managers
 
         private void SpawnEnemiesAtPosition(
             CreatureData enemy,
-            Vector2Int position,
-            Creature[] playerCreatures
+            Vector2Int position
         )
         {
             var enemiesToSpawn = Random.Range(minEnemiesPerSpawn, maxEnemiesPerSpawn);
@@ -223,7 +224,20 @@ namespace Managers
                     break;
                 }
 
-                controller.Memorize(playerCreatures.RandomElement());
+                var hostileCreaturesToSpawnedCreature = creatureManager
+                    .GetCreaturesAliveActive()
+                    .Where(x => x.Team == Teams.Player)
+                    .ToArray();
+
+                if (hostileCreaturesToSpawnedCreature.Length == 0)
+                {
+                    Debug.LogWarning("No player creatures found to memorize");
+                    break;
+                }
+
+                var target = hostileCreaturesToSpawnedCreature.RandomElement();
+
+                controller.Memorize(target);
             }
         }
 

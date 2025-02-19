@@ -8,11 +8,11 @@ namespace Managers
     public interface ICreatureManager
     {
         event Action<Creature> CreatureSpawned;
+        bool IsAliveAndActive(Creature creature);
         ICollection<Creature> GetCreatures();
         IEnumerable<Creature> GetCreaturesAliveActive();
         IEnumerable<Creature> GetAliveCreatures();
         public Creature SpawnCreature(Creature creaturePrefab, Vector3 position, Transform parent = null);
-
         public Creature SpawnCreature(Creature creaturePrefab, Vector2Int position, Transform parent = null)
             => SpawnCreature(creaturePrefab, (Vector2)position, parent);
     }
@@ -66,6 +66,11 @@ namespace Managers
             _creatures.Add(creature);
 
             creature.Health.Death += (DeathContext ctx) => { _creatures.Remove(creature); };
+        }
+
+        public bool IsAliveAndActive(Creature creature)
+        {
+            return creature.Health.Alive && creature.gameObject.activeInHierarchy;
         }
 
         public ICollection<Creature> GetCreatures()

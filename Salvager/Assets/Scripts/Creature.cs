@@ -63,7 +63,9 @@ public class Creature : Entity, IDamageable
                 weapon.Attacked -= OnWeaponAttack;
             
             weapon = value;
-            weapon.Attacked += OnWeaponAttack;
+            
+            if(value != null)
+                weapon.Attacked += OnWeaponAttack;
             
             WeaponChanged?.Invoke();
         }
@@ -114,13 +116,7 @@ public class Creature : Entity, IDamageable
 
         Health.Hit += OnHit;
     }
-
-    private void OnHit(HitContext ctx)
-    {
-        if (ctx.Attacker is not null && ctx.Push.magnitude > 0)
-            Push(ctx.Push);
-    }
-
+    
     protected override void Update()
     {
         base.Update();
@@ -133,6 +129,10 @@ public class Creature : Entity, IDamageable
             State = CreatureState.Idle;
     }
 
+    private void OnDestroy()
+    {
+        StartUsingWeapon(null);
+    }
 
     // Public Methods
     public Attitude GetAttitudeTowards(Creature other)
@@ -195,6 +195,12 @@ public class Creature : Entity, IDamageable
     private void OnWeaponAttack(AttackContext ctx)
     {
        Attacked?.Invoke(ctx);
+    }
+    
+    private void OnHit(HitContext ctx)
+    {
+        if (ctx.Attacker is not null && ctx.Push.magnitude > 0)
+            Push(ctx.Push);
     }
 }
 

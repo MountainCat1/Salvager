@@ -188,6 +188,16 @@ public class CreatureData
     }
 }
 
+public enum ItemType
+{
+    Default,
+    Weapon,
+    Consumable,
+    Armor,
+    Quest,
+    Junk
+}
+
 [Serializable]
 public class ItemData
 {
@@ -197,6 +207,7 @@ public class ItemData
     public string Icon;
     public bool Stackable;
     public decimal Value;
+    public ItemType Type;
 
     public static ItemData FromItem(ItemBehaviour item)
     {
@@ -207,7 +218,8 @@ public class ItemData
             Icon = item.Icon.name,
             Name = item.Name,
             Stackable = item.Stackable,
-            Value = (decimal)item.BaseCost
+            Value = (decimal)item.BaseCost,
+            Type = item is Weapon ? ItemType.Weapon : ItemType.Default
         };
     }
 }

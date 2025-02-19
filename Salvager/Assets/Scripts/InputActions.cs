@@ -157,6 +157,15 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""GoBack"",
+                    ""type"": ""Button"",
+                    ""id"": ""a501a8ca-7278-483a-9419-0858e4e68a89"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -267,6 +276,17 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""ZoomOut"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""389447ad-3487-4514-8266-c6b4a80a3b85"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""GoBack"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -461,6 +481,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         m_UI_ShowInventory = m_UI.FindAction("ShowInventory", throwIfNotFound: true);
         m_UI_ZoomIn = m_UI.FindAction("ZoomIn", throwIfNotFound: true);
         m_UI_ZoomOut = m_UI.FindAction("ZoomOut", throwIfNotFound: true);
+        m_UI_GoBack = m_UI.FindAction("GoBack", throwIfNotFound: true);
         // CameraControl
         m_CameraControl = asset.FindActionMap("CameraControl", throwIfNotFound: true);
         m_CameraControl_Movement = m_CameraControl.FindAction("Movement", throwIfNotFound: true);
@@ -608,6 +629,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_UI_ShowInventory;
     private readonly InputAction m_UI_ZoomIn;
     private readonly InputAction m_UI_ZoomOut;
+    private readonly InputAction m_UI_GoBack;
     public struct UIActions
     {
         private @InputActions m_Wrapper;
@@ -619,6 +641,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         public InputAction @ShowInventory => m_Wrapper.m_UI_ShowInventory;
         public InputAction @ZoomIn => m_Wrapper.m_UI_ZoomIn;
         public InputAction @ZoomOut => m_Wrapper.m_UI_ZoomOut;
+        public InputAction @GoBack => m_Wrapper.m_UI_GoBack;
         public InputActionMap Get() { return m_Wrapper.m_UI; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -649,6 +672,9 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @ZoomOut.started += instance.OnZoomOut;
             @ZoomOut.performed += instance.OnZoomOut;
             @ZoomOut.canceled += instance.OnZoomOut;
+            @GoBack.started += instance.OnGoBack;
+            @GoBack.performed += instance.OnGoBack;
+            @GoBack.canceled += instance.OnGoBack;
         }
 
         private void UnregisterCallbacks(IUIActions instance)
@@ -674,6 +700,9 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @ZoomOut.started -= instance.OnZoomOut;
             @ZoomOut.performed -= instance.OnZoomOut;
             @ZoomOut.canceled -= instance.OnZoomOut;
+            @GoBack.started -= instance.OnGoBack;
+            @GoBack.performed -= instance.OnGoBack;
+            @GoBack.canceled -= instance.OnGoBack;
         }
 
         public void RemoveCallbacks(IUIActions instance)
@@ -831,6 +860,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         void OnShowInventory(InputAction.CallbackContext context);
         void OnZoomIn(InputAction.CallbackContext context);
         void OnZoomOut(InputAction.CallbackContext context);
+        void OnGoBack(InputAction.CallbackContext context);
     }
     public interface ICameraControlActions
     {

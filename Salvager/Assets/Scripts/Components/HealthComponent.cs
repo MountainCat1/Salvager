@@ -7,7 +7,7 @@ namespace Components
     {
         HealthComponent Health { get; }
     }
-    
+
     public class HealthComponent : MonoBehaviour, IReadonlyRangedValue
     {
         // Events
@@ -18,12 +18,14 @@ namespace Components
         // Settings
         [Header("Health Settings")] [SerializeField]
         private float maxHealth = 10;
-        
+
         // Accessors
         public float CurrentValue => _rangeValue.CurrentValue;
         public float MinValue => _rangeValue.MinValue;
         public float MaxValue => _rangeValue.MaxValue;
+
         public bool Alive => _rangeValue.CurrentValue > _rangeValue.MinValue;
+
         // Fields
         private RangedValue _rangeValue;
 
@@ -34,8 +36,13 @@ namespace Components
 
         public void Damage(HitContext ctx)
         {
-            ctx.ValidateAndLog();
+            if (!gameObject.activeInHierarchy)
+            {
+                Debug.LogError("Trying to damage a disabled object");
+                return;
+            }
 
+            ctx.ValidateAndLog();
 
             _rangeValue.CurrentValue -= ctx.Damage;
             ValueChanged?.Invoke();
@@ -50,6 +57,12 @@ namespace Components
 
         public void Heal(float healAmount)
         {
+            if (!gameObject.activeInHierarchy)
+            {
+                Debug.LogError("Trying to heal a disabled object");
+                return;
+            }
+            
             _rangeValue.CurrentValue += healAmount;
             ValueChanged?.Invoke();
         }

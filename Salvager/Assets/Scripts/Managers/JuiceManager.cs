@@ -54,7 +54,7 @@ namespace Managers
                     continue;
                 }
 
-                foreach (var creature in _creatures.Where(x => x.enabled))
+                foreach (var creature in _creatures.Where(x => x.enabled).ToArray())
                 {
                     creature.Health.Damage(new HitContext()
                     {
@@ -77,6 +77,8 @@ namespace Managers
         private void Update()
         {
             Juice -= (decimal)(ConsumptionRate * Time.deltaTime);
+            if(Juice < 0)
+                Juice = 0;
             JuiceChanged?.Invoke();
         }
     }
