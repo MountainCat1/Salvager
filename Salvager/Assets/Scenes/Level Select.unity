@@ -1227,6 +1227,7 @@ MonoBehaviour:
   normalUpgradeChance: 2
   modifierMaxValue: 0.5
   modifierMinValue: 0.1
+  scrapItemPrefab: {fileID: 6945220326266969423, guid: dbe43bd481165264bbe8bbef6f56baf6, type: 3}
 --- !u!1 &189119156
 GameObject:
   m_ObjectHideFlags: 0
@@ -1718,7 +1719,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 23.999908, y: 0}
   m_SizeDelta: {x: 45, y: 45}
   m_Pivot: {x: 1, y: 0.5}
 --- !u!114 &431014744
@@ -2659,7 +2660,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 24, y: 0}
   m_SizeDelta: {x: 45, y: 45}
   m_Pivot: {x: 1, y: 0.5}
 --- !u!114 &655031609
@@ -3363,7 +3364,7 @@ GameObject:
   - component: {fileID: 806419238}
   - component: {fileID: 806419237}
   m_Layer: 5
-  m_Name: Ship Inventory Text (3)
+  m_Name: Uprade Cost Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3386,7 +3387,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 254.74, y: -2.625}
+  m_AnchoredPosition: {x: 236, y: -2.625}
   m_SizeDelta: {x: -270.94, y: 55.38}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &806419237
@@ -3443,7 +3444,7 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 1
+  m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
@@ -6729,7 +6730,7 @@ GameObject:
   - component: {fileID: 1628116640}
   - component: {fileID: 1628116639}
   m_Layer: 5
-  m_Name: Ship Inventory Text (4)
+  m_Name: Scrap Cost Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6752,7 +6753,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 254.74, y: -4.625}
+  m_AnchoredPosition: {x: 236.00015, y: -4.625}
   m_SizeDelta: {x: -270.94, y: 55.38}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &1628116639
@@ -6809,7 +6810,7 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 1
+  m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
@@ -7662,6 +7663,8 @@ MonoBehaviour:
   upgradeButton: {fileID: 1894976948}
   reforgeButton: {fileID: 956782623}
   scrapButton: {fileID: 1366404336}
+  scrapValueText: {fileID: 1628116639}
+  upgradeCostText: {fileID: 806419237}
 --- !u!1 &1884435576
 GameObject:
   m_ObjectHideFlags: 0

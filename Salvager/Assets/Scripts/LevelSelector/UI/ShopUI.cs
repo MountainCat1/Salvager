@@ -12,6 +12,7 @@ namespace UI
     {
         [Inject] private ICrewManager _crewManager;
         [Inject] private IDataManager _dataManager;
+        [Inject] private IItemManager _itemManager;
         [Inject] private IRegionManager _regionManager;
         [Inject] private DiContainer _diContainer;
 
@@ -71,7 +72,7 @@ namespace UI
                 itemEntry.SetShopData(_shopData);
 
                 var button = itemEntryGo.GetComponent<Button>();
-                button.interactable = _crewManager.Resources.Money >= _shopData.GetBuyPrice(item);
+                button.interactable = _crewManager.Resources.Money >= _shopData.GetBuyPrice(_itemManager.GetValue(item));
 
                 itemEntryGo.GetComponent<ButtonSoundUI>().audioClip = buySound;
             }
@@ -92,7 +93,7 @@ namespace UI
             var transferItemCount =
                 _crewManager.Inventory.TransferItem(item, _shopData.inventory, GetTransferItemCount());
 
-            _crewManager.Resources.AddMoney(_shopData.GetSellPrice(item) * transferItemCount);
+            _crewManager.Resources.AddMoney(_shopData.GetSellPrice(_itemManager.GetValue(item)) * transferItemCount);
 
             UpdateUI();
 
@@ -104,7 +105,7 @@ namespace UI
             var transferItemCount =
                 _shopData.inventory.TransferItem(item, _crewManager.Inventory, GetTransferItemCount());
 
-            _crewManager.Resources.AddMoney(-1 * _shopData.GetBuyPrice(item) * transferItemCount);
+            _crewManager.Resources.AddMoney(-1 * (_itemManager.GetValue(item) * transferItemCount));
 
             UpdateUI();
 

@@ -1,3 +1,4 @@
+using System;
 using DG.Tweening;
 using UnityEngine;
 
@@ -5,6 +6,8 @@ namespace UI
 {
     public class UISlide : MonoBehaviour
     {
+        public event Action Showed;
+        
         public RectTransform panel;
         public float slideDuration = 0.5f;
 
@@ -42,6 +45,7 @@ namespace UI
         {
             _shown = true;
             panel.DOAnchorPos(_visiblePos, slideDuration).SetEase(showEase);
+            Showed?.Invoke();
         }
 
         public void HidePanel()

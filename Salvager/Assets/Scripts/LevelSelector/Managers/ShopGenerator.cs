@@ -51,8 +51,11 @@ namespace LevelSelector.Managers
 
             foreach (var itemData in shopData.inventory.Items)
             {
+                if(itemData.Type != ItemType.Weapon)
+                    continue;
                 if (Random.value > ChanceForUpgrades)
                     continue;
+                
                 
                 _upgradeManager.UpgradeItem(itemData);
             }

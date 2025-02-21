@@ -36,7 +36,7 @@ namespace Managers
             return $"Damage: {weapon.BaseDamage} {damageModifierString}\n" +
                    $"Range: {weapon.Range} {rangeModifierString}\n" +
                    $"Attack Speed: {weapon.BaseAttackSpeed} {attackSpeedModifierString}\n" +
-                   $"Value {weapon.BaseCost}$";
+                   $"Value {_itemManager.GetValue(data):F2}$";
         }
 
         private string GetWeaponModifierString(ItemData data, WeaponPropertyModifiers weaponPropertyModifier, float baseValue)

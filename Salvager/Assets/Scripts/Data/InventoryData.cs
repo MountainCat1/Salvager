@@ -86,7 +86,31 @@ public class InventoryData
 
     public void RemoveItem(ItemData itemData)
     {
-        Items.Remove(itemData);
+        if(itemData.Stackable == false)
+            Items.Remove(itemData);
+        else
+        {
+            var item = Items.FirstOrDefault(x => x.Identifier == itemData.Identifier);
+            if (item == null)
+            {
+                Debug.LogError("Tried to remove item not found in inventory");
+                return;
+            }
+            
+            if(item.Count == itemData.Count)
+            {
+                Items.Remove(item);
+            }
+            else
+            {
+                item.Count -= itemData.Count;
+            }
+        }
         Changed?.Invoke();
+    }
+
+    public ItemData GetItem(string identifier)
+    {
+        return Items.FirstOrDefault(x => x.Identifier == identifier);
     }
 }

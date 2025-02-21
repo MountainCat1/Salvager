@@ -7,15 +7,15 @@ public class ShopData
     public InventoryData inventory;
     public float priceMultiplier;
 
-    public decimal GetBuyPrice(ItemData itemData)
+    public decimal GetBuyPrice(decimal baseCost)
     {
-        decimal price = (decimal)(itemData.Prefab.BaseCost * priceMultiplier);
+        decimal price = baseCost * (decimal)priceMultiplier;
         return Math.Ceiling(price);
     }
 
-    public decimal GetSellPrice(ItemData itemData)
+    public decimal GetSellPrice(decimal baseCost)
     {
-        decimal price = (decimal)(itemData.Prefab.BaseCost * priceMultiplier) * 0.5m;
+        decimal price = baseCost * (decimal)priceMultiplier * 0.5m;
         return Math.Floor(price);
     }
 

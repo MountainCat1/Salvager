@@ -16,6 +16,8 @@ namespace Managers
 
         [Obsolete("Use InstantiateItem instead")]
         ItemBehaviour GetItemPrefab(string dataIdentifier);
+        
+        public decimal GetValue(ItemData itemData);
     }
 
     public class ItemManager : MonoBehaviour, IItemManager
@@ -35,6 +37,17 @@ namespace Managers
         public ItemBehaviour GetItemPrefab(string itemDataIdentifier)
         {
             return _items.FirstOrDefault(i => i.GetIdentifier() == itemDataIdentifier);
+        }
+
+        public decimal GetValue(ItemData itemData)
+        {
+            var baseCost = itemData.Prefab.BaseCost;
+            
+            var modifierSum = itemData.Modifiers
+                .OfType<WeaponValueModifier>()
+                .Sum(m => m.Value);
+
+            return (decimal)(baseCost + (baseCost * modifierSum));
         }
 
         public ItemBehaviour InstantiateItem(ItemData itemData, Transform parent = null)

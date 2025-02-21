@@ -9,6 +9,7 @@ using Zenject;
 
 namespace UI
 {
+    [RequireComponent(typeof(UISlide))]
     public class UpgradeMenuUI : MonoBehaviour
     {
         [Inject] private IItemManager _itemManager;
@@ -27,8 +28,13 @@ namespace UI
         [SerializeField] private Button upgradeButton;
         [SerializeField] private Button reforgeButton;
         [SerializeField] private Button scrapButton;
+        
+        [SerializeField] private TextMeshProUGUI scrapValueText;
+        [SerializeField] private TextMeshProUGUI upgradeCostText;
 
         private ItemData _selectedItem;
+
+        private UISlide _uiSlide;
 
         private void Start()
         {
@@ -39,26 +45,38 @@ namespace UI
             upgradeButton.onClick.AddListener(UpgradeItem);
             reforgeButton.onClick.AddListener(ReforgeItem);
             scrapButton.onClick.AddListener(ScrapItem);
+
+            _uiSlide = GetComponent<UISlide>();
+            _uiSlide.Showed += UpdateUI;
         }
 
         private void ScrapItem()
         {
-            throw new NotImplementedException();
+            _upgradeManager.ScrapItem(_selectedItem);
+
+            UpdateUI();
         }
 
         private void ReforgeItem()
         {
-            throw new NotImplementedException();
+            // TODO: Implement
+
+            UpdateUI();
         }
 
         private void UpgradeItem()
         {
-            _upgradeManager.UpgradeItem(_selectedItem);
+            _upgradeManager.PlayerBuyUpgrade(_selectedItem);
+
+            UpdateUI();
         }
 
         private void UpdateUI()
         {
-            SelectItem(null);
+            if (_crewManager.Inventory.ContainsItem(_selectedItem) == false)
+                SelectItem(null);
+            else
+                SelectItem(_selectedItem);
 
             foreach (Transform child in playerInventoryContainer)
             {
@@ -83,14 +101,28 @@ namespace UI
                 selectedItemDescription.text = string.Empty;
                 selectedItemIcon.sprite = null;
                 _selectedItem = null;
+                
+                upgradeCostText.text = "0";
+                scrapValueText.text = "0";
+                
+                reforgeButton.interactable = false;
+                upgradeButton.interactable = false;
+                scrapButton.interactable = false;
+                
                 return;
             }
 
             selectedItemName.text = itemData.Prefab.Name;
             selectedItemDescription.text = _itemDescriptionManager.GetDescription(itemData);
             selectedItemIcon.sprite = itemData.Prefab.Icon;
-
             _selectedItem = itemData;
+            
+            upgradeCostText.text = $"{_upgradeManager.GetUpgradeCost(_selectedItem)}";
+            scrapValueText.text = $"{_upgradeManager.GetScrapValue(_selectedItem)}";
+            
+            reforgeButton.interactable = false;
+            upgradeButton.interactable = _upgradeManager.CanUpgrade(_selectedItem);
+            scrapButton.interactable = _upgradeManager.CanScrap(_selectedItem);
         }
     }
 }

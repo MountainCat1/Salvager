@@ -17,8 +17,8 @@ namespace UI
         public void SetShopData(ShopData shopData)
         {
             var price = shopData.inventory.ContainsItem(ItemData) // we check if the item is in the shop inventory
-                ? shopData.GetBuyPrice(ItemData) // if it is, we get the sell price
-                : shopData.GetSellPrice(ItemData); // if it is not, we get the buy price
+                ? shopData.GetBuyPrice(_itemManager.GetValue(ItemData)) // if it is, we get the sell price
+                : shopData.GetSellPrice(_itemManager.GetValue(ItemData)); // if it is not, we get the buy price
             
             priceDisplay.text = $"{price}$";
         }
