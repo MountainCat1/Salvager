@@ -13,6 +13,7 @@ public class GameInstaller : MonoInstaller<GameInstaller>
         
         Container.Bind<ICursorManager>().To<CursorManager>().FromComponentsInHierarchy().AsSingle();
         Container.Bind<IItemManager>().To<ItemManager>().FromComponentsInHierarchy().AsSingle();
+        Container.Bind<IItemDescriptionManager>().To<ItemDescriptionManager>().FromNew().AsSingle();
         Container.Bind<ISignalManager>().To<SignalManager>().FromNew().AsSingle().NonLazy();
         Container.Bind<ISpawnerManager>().To<SpawnerManager>().FromComponentsInHierarchy().AsSingle();
         Container.Bind<IPoolingManager>().To<PoolingManager>().FromComponentsInHierarchy().AsSingle();

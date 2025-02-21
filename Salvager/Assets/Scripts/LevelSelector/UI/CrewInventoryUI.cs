@@ -62,6 +62,12 @@ namespace UI
 
         public void SetSelectedCreature(CreatureData creature)
         {
+            if (creature == _selectedCreature)
+            {
+                _uiSlide.TogglePanel();
+                return;
+            }
+            
             _selectedCreature = creature;
 
             _uiSlide.ShowPanel();

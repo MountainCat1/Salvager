@@ -34,6 +34,7 @@ namespace LevelSelector.Managers
         
         [SerializeField] private UISlide inventorySlide;
         [SerializeField] private UISlide shopSlide;
+        [SerializeField] private UISlide upgradeSlide;
         
         [SerializeField] private SceneReference levelScene;
         
@@ -79,9 +80,25 @@ namespace LevelSelector.Managers
                 OnClick = _ =>
                 {
                     shopSlide.HidePanel();
+                    upgradeSlide.HidePanel();
+                    
                     inventorySlide.TogglePanel();
                 }
             });   
+            
+            _interactions.Add(new LocationInteraction
+            {
+                Message = "Upgrade",
+                IsDisplayed = _ => true,
+                IsEnabled = _ => true,
+                OnClick = location =>
+                {
+                    inventorySlide.HidePanel();
+                    shopSlide.HidePanel();
+                    
+                    upgradeSlide.TogglePanel();
+                }
+            });
             
             _interactions.Add(new LocationInteraction
             {
@@ -91,6 +108,8 @@ namespace LevelSelector.Managers
                 OnClick = _ =>
                 {
                     inventorySlide.HidePanel();
+                    upgradeSlide.HidePanel();
+                    
                     shopSlide.TogglePanel();
                 }
             }); 
