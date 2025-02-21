@@ -9,13 +9,13 @@ public class ShopData
 
     public decimal GetBuyPrice(ItemData itemData)
     {
-        decimal price = itemData.Value * (decimal)priceMultiplier;
+        decimal price = (decimal)(itemData.Prefab.BaseCost * priceMultiplier);
         return Math.Ceiling(price);
     }
 
     public decimal GetSellPrice(ItemData itemData)
     {
-        decimal price = itemData.Value * (decimal)priceMultiplier * 0.5m;
+        decimal price = (decimal)(itemData.Prefab.BaseCost * priceMultiplier) * 0.5m;
         return Math.Floor(price);
     }
 

@@ -1,7 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+using Newtonsoft.Json.Serialization;
 using UnityEngine;
 
 namespace Data
@@ -58,6 +61,18 @@ namespace Data
         private static readonly string SaveFilePath = Path.Combine(Application.persistentDataPath, "saveData.json");
         private GameData _gameData;
 
+        private JsonSerializerSettings _serializerSettings = new JsonSerializerSettings
+        {
+            TypeNameHandling = TypeNameHandling.Auto,
+            SerializationBinder = new CustomSerializationBinder(),
+            Converters = new List<JsonConverter>
+            {
+                new Vector2Converter(),
+                new Vector2IntConverter(), 
+                new StringEnumConverter()
+            } 
+        };
+        
         public void SaveData()
         {
             Debug.Log("Saving data...");
@@ -69,11 +84,7 @@ namespace Data
             try
             {
                 // Serialize with Type Handling and Vector2 support
-                string json = JsonConvert.SerializeObject(gameData, Formatting.Indented, new JsonSerializerSettings
-                {
-                    TypeNameHandling = TypeNameHandling.Auto,
-                    Converters = new List<JsonConverter> { new Vector2Converter(), new Vector2IntConverter() } // Add Vector2 support
-                });
+                string json = JsonConvert.SerializeObject(gameData, Formatting.Indented, _serializerSettings);
 
                 Debug.Log($"Saving game data to: {SaveFilePath}\n{json}");
 
@@ -108,11 +119,7 @@ namespace Data
 
                 try
                 {
-                    gameData = JsonConvert.DeserializeObject<GameData>(json, new JsonSerializerSettings
-                    {
-                        TypeNameHandling = TypeNameHandling.Auto,
-                        Converters = new List<JsonConverter> { new Vector2Converter() } // Add Vector2 support
-                    });
+                    gameData = JsonConvert.DeserializeObject<GameData>(json, _serializerSettings);
                 }
                 catch (Exception e)
                 {
@@ -159,4 +166,34 @@ namespace Data
             }
         }
     }
+
+    public class CustomSerializationBinder : DefaultSerializationBinder
+    {
+        private static readonly HashSet<Type> TypesToShorten = new()
+        {
+            typeof(WeaponValueModifier),
+            typeof(WeaponSpecialModifier),
+        };
+
+        public override Type BindToType(string? assemblyName, string typeName)
+        {
+            // If the JSON only contains a class name, find the matching type
+            Type? matchedType = TypesToShorten.FirstOrDefault(t => t.Name == typeName);
+            return matchedType ?? base.BindToType(assemblyName, typeName);
+        }
+
+        public override void BindToName(Type serializedType, out string? assemblyName, out string? typeName)
+        {
+            if (TypesToShorten.Contains(serializedType))
+            {
+                assemblyName = null; // No assembly needed
+                typeName = serializedType.Name; // Use only the class name
+            }
+            else
+            {
+                base.BindToName(serializedType, out assemblyName, out typeName);
+            }
+        }
+    }
+   
 }

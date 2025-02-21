@@ -32,14 +32,14 @@ namespace UI
             _uiSlide = GetComponent<UISlide>();
         }
 
-        public void Set(ICollection<CreatureData> crew, InventoryData inventory)
-        {
-            foreach (var item in inventory.Items)
-            {
-                var itemEntry = Instantiate(itemEntryUIPrefab, crewInventoryContainer);
-                itemEntry.Set(item, TransferItem);
-            }
-        }
+        // public void Set(ICollection<CreatureData> crew, InventoryData inventory)
+        // {
+        //     foreach (var item in inventory.Items)
+        //     {
+        //         var itemEntry = Instantiate(itemEntryUIPrefab, crewInventoryContainer);
+        //         itemEntry.Set(item, TransferItem);
+        //     }
+        // }
 
         private void TransferItem(ItemData item)
         {

@@ -12,14 +12,33 @@ namespace Items
         [field: SerializeField] public float Weight { get; set; } = 1f;
         [field: SerializeField] public string Description { get; set; }
         [field: SerializeField] public float BaseCost { get; set; }
+
+        protected ItemData ItemData;
         
         public virtual bool Stackable => true;
+        public bool IsOriginal => Original is null;
         
         public ItemBehaviour Original { get; set; }
-        public int Count { get; set; } = 1;
+
+        public int Count
+        {
+            get => ItemData.Count;
+            set => ItemData.Count = value;
+        }
 
         public Inventory Inventory { get; set; } = null;
 
+        private void Awake()
+        {
+            var dummyItemData = new ItemData
+            {
+                Identifier = "dummy item data DO NOT EVER FUCKING USE",
+                Count = 1,
+                Stackable = Stackable
+            };
+            
+            SetData(dummyItemData); // uses it :3c
+        }
 
         public string GetIdentifier()
         {
@@ -52,10 +71,14 @@ namespace Items
             Debug.Log($"{creature} picked up item " + Name);
         }
 
-        public void SetData(ItemData itemData)
+        public virtual void SetData(ItemData itemData)
         {
-            Name = itemData.Name;
-            Count = itemData.Count;
+            ItemData = itemData;
+        }
+        
+        public virtual ItemData GetData()
+        {
+            return ItemData;
         }
     }
 }

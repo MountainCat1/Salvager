@@ -28,6 +28,8 @@ public abstract class Weapon : ItemBehaviour
     public virtual bool ShootThroughAllies => false;
     public override bool Stackable => false;
 
+    protected ItemData WeaponItemData;
+    
     public bool IsOnCooldown => GetOnCooldown(new AttackContext());
 
     private float _lastAttackTime = -1;
@@ -95,20 +97,29 @@ public abstract class Weapon : ItemBehaviour
 
     private float CalculateAttackSpeed(AttackContext ctx)
     {
+        var attackSpeed = WeaponItemData.GetApplied(WeaponPropertyModifiers.AttackSpeed, BaseAttackSpeed);
+        
         if (ctx.Attacker == null)
-            return BaseAttackSpeed;
+            return attackSpeed;
 
 
         var dexterityModifier = ctx.Attacker.LevelSystem.CharacteristicsLevels[Characteristics.Dexterity] *
                                 CharacteristicsConsts.AttackSpeedAdditiveMultiplierPerDexterity;
 
-        return BaseAttackSpeed * (1 + dexterityModifier);
+        return attackSpeed * (1 + dexterityModifier);
     }
 
     public static float CalculateDamage(float baseDamage, AttackContext ctx)
     {
         return baseDamage + ctx.Attacker.LevelSystem.CharacteristicsLevels[Characteristics.Strength] *
             CharacteristicsConsts.DamageAdditiveMultiplierPerStrength;
+    }
+
+    public override void SetData(ItemData itemData)
+    {
+        base.SetData(itemData);
+        
+        WeaponItemData = itemData;
     }
 }
 
@@ -161,4 +172,5 @@ public struct HitContext
         var pushForce = direction * (PushFactor * (Damage / Target.Health.MaxValue));
         return pushForce;
     }
+    
 }

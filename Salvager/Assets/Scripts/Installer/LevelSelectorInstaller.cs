@@ -14,6 +14,7 @@ namespace Installer
             Container.Bind<IDataResolver>().To<DataResolver>().FromComponentsInHierarchy().AsSingle().NonLazy();
             Container.Bind<ISoundPlayer>().To<SoundPlayer>().FromNew().AsSingle();
             Container.Bind<IItemManager>().To<ItemManager>().FromComponentsInHierarchy().AsSingle();
+            Container.Bind<IUpgradeManager>().To<UpgradeManager>().FromComponentsInHierarchy().AsSingle().NonLazy();
             Container.Bind<ICrewManager>().To<CrewManager>().FromComponentsInHierarchy().AsSingle().NonLazy();
             Container.Bind<IShopGenerator>().To<ShopGenerator>().FromComponentsInHierarchy().AsSingle().NonLazy();
             Container.Bind<ILocationGenerator>().To<LocationGenerator>().FromComponentsInHierarchy().AsSingle().NonLazy();

@@ -25,9 +25,11 @@ namespace Items.Weapons
             float angle = Mathf.Atan2(normalizedDirection.y, normalizedDirection.x) * Mathf.Rad2Deg;
             projectile.transform.rotation = Quaternion.Euler(0, 0, angle);
 
+            var damage = WeaponItemData.GetApplied(WeaponPropertyModifiers.Damage, BaseDamage);
+
             projectile.Initialize(
                 speed: projectileSpeed,
-                damage: CalculateDamage(BaseDamage, ctx)
+                damage: CalculateDamage(damage, ctx)
             );
 
             projectile.Hit += OnProjectileHit;
@@ -39,10 +41,12 @@ namespace Items.Weapons
 
         private void OnProjectileHit(IDamageable damageable, AttackContext attackCtx)
         {
+            var damage = WeaponItemData.GetApplied(WeaponPropertyModifiers.Damage, BaseDamage);
+            
             var hitCtx = new HitContext()
             {
                 Attacker = attackCtx.Attacker,
-                Damage = CalculateDamage(BaseDamage, attackCtx),
+                Damage = CalculateDamage(damage, attackCtx),
                 Target = damageable,
                 PushFactor = PushFactor
             };

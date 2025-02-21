@@ -17,6 +17,7 @@ namespace Managers.LevelSelector
         [Inject] private IRegionManager _regionManager;
         [Inject] private IDataManager _dataManager;
         [Inject] private ICrewManager _crewManager;
+        [Inject] private IItemManager _itemManager;
 
         [SerializeField] private bool skipLoad = false;
 
@@ -45,7 +46,7 @@ namespace Managers.LevelSelector
                 
                 var startingInventory = new InventoryData()
                 {
-                    Items = startingItems.Select(ItemData.FromItem).ToList(),
+                    Items = startingItems.Select(ItemData.FromPrefabItem).ToList(),
                 };
                 var startingCreatures = new List<CreatureData>();
                 for (int i = 0; i < startingCrewSize; i++)
@@ -86,7 +87,27 @@ namespace Managers.LevelSelector
             var data = _dataManager.LoadData();
 
             _regionManager.SetRegion(RegionData.ToRegion(data.Region), Guid.Parse(data.CurrentLocationId));
+            
+            var crewItems = data.Creatures.SelectMany(x => x.Inventory.Items).ToList();
+            var inventoryItems = data.Inventory.Items;
+            var shopItems = data.Region.Locations.Select(x => x.ShopData).Where(x => x is not null).SelectMany(x => x.inventory.Items);
 
+            foreach (var item in crewItems)
+            {
+                item.Prefab = _itemManager.GetItemPrefab(item.Identifier);
+            }
+            
+            foreach (var item in inventoryItems)
+            {
+                item.Prefab = _itemManager.GetItemPrefab(item.Identifier);
+            }
+
+            foreach (var item in shopItems)
+            {
+                item.Prefab = _itemManager.GetItemPrefab(item.Identifier);
+            }
+            
+            
             _crewManager.SetCrew(data.Creatures, data.Inventory, data.Resources, Guid.Parse(data.CurrentLocationId));
         }
         

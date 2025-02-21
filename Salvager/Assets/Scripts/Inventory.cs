@@ -195,7 +195,7 @@ public class Inventory
         {
             var itemPrefab = _itemManager.InstantiateItem(itemData);
             var item = AddItemFromPrefab(itemPrefab);
-            item.Count = itemData.Count;
+            item.SetData(itemData);
         }
     }
 

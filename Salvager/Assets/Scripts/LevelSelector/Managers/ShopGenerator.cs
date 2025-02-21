@@ -16,11 +16,14 @@ namespace LevelSelector.Managers
     public class ShopGenerator : MonoBehaviour, IShopGenerator
     {
         [Inject] private IItemManager _itemManager;
+        [Inject] private IUpgradeManager _upgradeManager;
         
         [SerializeField] private LootTable lootTable;
 
         private const int MinItems = 3;
         private const int MaxItems = 6;
+
+        private const float ChanceForUpgrades = 0.5f;
         
         private const float MinPriceMultiplier = 0.7f;
         private const float MaxPriceMultiplier = 1.3f;
@@ -42,9 +45,17 @@ namespace LevelSelector.Managers
 
             shopData.inventory = new InventoryData()
             {
-                Items = items.Select(ItemData.FromItem).ToList()
+                Items = items.Select(ItemData.FromPrefabItem).ToList()
             };
             shopData.priceMultiplier = Random.Range(MinPriceMultiplier, MaxPriceMultiplier);
+
+            foreach (var itemData in shopData.inventory.Items)
+            {
+                if (Random.value > ChanceForUpgrades)
+                    continue;
+                
+                _upgradeManager.UpgradeItem(itemData);
+            }
 
             return shopData;
         }
