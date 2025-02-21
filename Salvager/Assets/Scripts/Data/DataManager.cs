@@ -72,7 +72,11 @@ namespace Data
                 string json = JsonConvert.SerializeObject(gameData, Formatting.Indented, new JsonSerializerSettings
                 {
                     TypeNameHandling = TypeNameHandling.Auto,
-                    Converters = new List<JsonConverter> { new Vector2Converter(), new Vector2IntConverter() } // Add Vector2 support
+                    Converters = new List<JsonConverter>
+                    {
+                        new Vector2Converter(), 
+                        new Vector2IntConverter()
+                    } // Add Vector2 support
                 });
 
                 Debug.Log($"Saving game data to: {SaveFilePath}\n{json}");

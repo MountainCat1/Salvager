@@ -27,7 +27,7 @@ namespace Items.Weapons
 
             projectile.Initialize(
                 speed: projectileSpeed,
-                damage: CalculateDamage(BaseDamage, ctx)
+                damage: CalculateDamage(Damage, ctx)
             );
 
             projectile.Hit += OnProjectileHit;
@@ -42,7 +42,7 @@ namespace Items.Weapons
             var hitCtx = new HitContext()
             {
                 Attacker = attackCtx.Attacker,
-                Damage = CalculateDamage(BaseDamage, attackCtx),
+                Damage = CalculateDamage(Damage, attackCtx),
                 Target = damageable,
                 PushFactor = PushFactor
             };

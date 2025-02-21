@@ -45,11 +45,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Icon>k__BackingField: {fileID: 1191538639606879489, guid: 8f817dad87e29304d8e1861257d4baf0, type: 3}
-  <Name>k__BackingField: Frag Grenade
-  <Weight>k__BackingField: 1
   <Description>k__BackingField: A timed explosive that deals high damage in a wide
     radius.
   <BaseCost>k__BackingField: 15
+  <ItemData>k__BackingField:
+    Identifier: Frag Grenade
+    Name: Frag Grenade
+    Count: 1
+    Stackable: 1
+    Type: 0
   grenadePrefab: {fileID: 2101502943236693782, guid: 21d799cc3fc2d264e9a2d801222a9915, type: 3}
   speed: 15
   damage: 10

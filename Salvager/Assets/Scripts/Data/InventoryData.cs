@@ -23,7 +23,7 @@ public class InventoryData
         var data = new InventoryData { Items = new List<ItemData>() };
         foreach (var item in inventory.Items)
         {
-            data.Items.Add(ItemData.FromItem(item));
+            data.Items.Add(ItemData.FromItemPrefab(item));
         }
 
         return data;

@@ -45,13 +45,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Icon>k__BackingField: {fileID: -1410467445408099080, guid: 8f817dad87e29304d8e1861257d4baf0, type: 3}
-  <Name>k__BackingField: SMG
-  <Weight>k__BackingField: 1
   <Description>k__BackingField: 
   <BaseCost>k__BackingField: 15
-  <Range>k__BackingField: 3.5
-  <BaseAttackSpeed>k__BackingField: 5
-  <BaseDamage>k__BackingField: 0.3
+  weaponData:
+    Identifier: SMG
+    Name: SMG
+    Count: 1
+    Stackable: 0
+    Type: 1
+    BaseDamage: 0.2
+    BaseAttackSpeed: 2
+    Range: 5
   <PushFactor>k__BackingField: 50
   <ShakeFactor>k__BackingField: 1
   <HitSound>k__BackingField: {fileID: 8300000, guid: 038a66a344c308446b06ec0324bc02d2, type: 3}

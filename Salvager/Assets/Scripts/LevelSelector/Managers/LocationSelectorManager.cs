@@ -45,7 +45,7 @@ namespace Managers.LevelSelector
                 
                 var startingInventory = new InventoryData()
                 {
-                    Items = startingItems.Select(ItemData.FromItem).ToList(),
+                    Items = startingItems.Select(ItemData.FromItemPrefab).ToList(),
                 };
                 var startingCreatures = new List<CreatureData>();
                 for (int i = 0; i < startingCrewSize; i++)

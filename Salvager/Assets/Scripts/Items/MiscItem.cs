@@ -3,10 +3,8 @@ using UnityEngine;
 
 namespace Items
 {
-    public class StackableItem : ItemBehaviour
+    public class MiscItem : ItemBehaviour
     {
-        public override bool Stackable => true;
-        
         [field: SerializeField] public override ItemData ItemData { get; protected set; }
     }
 }

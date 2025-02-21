@@ -1,4 +1,5 @@
 using System;
+using Data;
 using UnityEngine;
 
 namespace Items
@@ -29,6 +30,8 @@ namespace Items
     
     public class ActiveItemBehaviour : ItemBehaviour
     {
+        [field: SerializeField] public override ItemData ItemData { get; protected set; }
+        
         public Ability GetAbility()
         {
             return new Ability($"{GetIdentifier()}_ability");
@@ -38,5 +41,7 @@ namespace Items
         {
             Debug.Log($"Using ability {GetAbility().Identifier} on {context.Target?.name ?? "position " + context.TargetPosition}");
         }
+
+
     }
 }

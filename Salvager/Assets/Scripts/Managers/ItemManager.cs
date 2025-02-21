@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Data;
 using Items;
 using UnityEngine;
 using Zenject;
@@ -14,7 +15,6 @@ namespace Managers
         
         public ICollection<ItemBehaviour> GetItems();
 
-        [Obsolete("Use InstantiateItem instead")]
         ItemBehaviour GetItemPrefab(string dataIdentifier);
     }
 
@@ -34,7 +34,8 @@ namespace Managers
 
         public ItemBehaviour GetItemPrefab(string itemDataIdentifier)
         {
-            return _items.FirstOrDefault(i => i.GetIdentifier() == itemDataIdentifier);
+            return _items.FirstOrDefault(i => i.GetIdentifier() == itemDataIdentifier)
+                ?? throw new NullReferenceException($"Item with identifier \"{itemDataIdentifier}\" not found");
         }
 
         public ItemBehaviour InstantiateItem(ItemData itemData, Transform parent = null)

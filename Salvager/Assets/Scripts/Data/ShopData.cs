@@ -1,4 +1,5 @@
 using System;
+using Data;
 
 [Serializable]
 public class ShopData

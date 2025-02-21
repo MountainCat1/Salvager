@@ -1,5 +1,8 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using Components;
+using Data;
 using Items;
 using Managers;
 using Managers.Visual;
@@ -13,24 +16,36 @@ public abstract class Weapon : ItemBehaviour
     [Inject] private ISoundPlayer _soundPlayer;
     [Inject] private ICameraShakeService _cameraShakeService;
 
-    [field: SerializeField] public float Range { get; set; }
+    // [field: SerializeField] public float Range { get; set; }
+    // [field: SerializeField] public float BaseAttackSpeed { get; set; }
+    // [field: SerializeField] public float BaseDamage { get; set; }
 
-    [field: SerializeField] public float BaseAttackSpeed { get; set; }
+    [SerializeField] private WeaponData weaponData;
 
-    [field: SerializeField] public float BaseDamage { get; set; }
+    public override ItemData ItemData
+    {
+        get => weaponData;
+        protected set => weaponData = value as WeaponData ?? throw new ArgumentException($"{value.GetType().FullName} is not WeaponData");
+    }
+    
     [field: SerializeField] public float PushFactor { get; set; }
     [field: SerializeField] public float ShakeFactor { get; set; }
     [field: SerializeField] public AudioClip HitSound { get; set; }
     [field: SerializeField] public AudioClip AttackSound { get; set; }
 
+    public float AttackSpeed => weaponData.BaseAttackSpeed;
+    public float Damage => weaponData.GetDamage();
+    public float Range => weaponData.Range;
+    
     public virtual bool AllowToMoveOnCooldown => false;
     public virtual bool NeedsLineOfSight => false;
     public virtual bool ShootThroughAllies => false;
     public override bool Stackable => false;
 
     public bool IsOnCooldown => GetOnCooldown(new AttackContext());
-
+    
     private float _lastAttackTime = -1;
+    private List<WeaponValueModifier> _modifiers = new();
 
     protected const float RandomPitch = 0.3f;
 
@@ -80,7 +95,7 @@ public abstract class Weapon : ItemBehaviour
     protected Vector2 CalculatePushForce(Creature target)
     {
         var direction = (target.transform.position - transform.position).normalized;
-        // var pushForce = direction * (PushFactor * (BaseDamage / target.Health.MaxValue));
+        // var pushForce = direction * (PushFactor * (_baseDamage / target.Health.MaxValue));
         // return pushForce;
 
         return direction;
@@ -96,19 +111,42 @@ public abstract class Weapon : ItemBehaviour
     private float CalculateAttackSpeed(AttackContext ctx)
     {
         if (ctx.Attacker == null)
-            return BaseAttackSpeed;
+            return weaponData.BaseAttackSpeed;
 
 
         var dexterityModifier = ctx.Attacker.LevelSystem.CharacteristicsLevels[Characteristics.Dexterity] *
                                 CharacteristicsConsts.AttackSpeedAdditiveMultiplierPerDexterity;
 
-        return BaseAttackSpeed * (1 + dexterityModifier);
+        return AttackSpeed * (1 + dexterityModifier);
+    }
+    
+    private float GetDamage()
+    {
+        return CalculateDamage(Damage, _modifiers);
     }
 
-    public static float CalculateDamage(float baseDamage, AttackContext ctx)
+    public static float CalculateDamage(float damage, AttackContext ctx)
     {
-        return baseDamage + ctx.Attacker.LevelSystem.CharacteristicsLevels[Characteristics.Strength] *
+        return damage + ctx.Attacker.LevelSystem.CharacteristicsLevels[Characteristics.Strength] *
             CharacteristicsConsts.DamageAdditiveMultiplierPerStrength;
+    }
+    
+    public static float CalculateDamage(float baseDamage, List<WeaponValueModifier> modifiers)
+    {
+        var damage = baseDamage + modifiers
+            .Where(x => x.Name == WeaponPropertyModifiers.Damage)
+            .Sum(x => x.Value);
+
+        return damage;
+    }
+
+    public override void SetData(ItemData itemData)
+    {
+        base.SetData(itemData);
+
+        _modifiers = itemData.Modifiers.OfType<WeaponValueModifier>().ToList();
+        
+        weaponData = itemData as WeaponData ?? throw new ArgumentException($"{itemData.GetType().FullName} is not WeaponData");
     }
 }
 

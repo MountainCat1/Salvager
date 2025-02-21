@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using Data;
 using Items;
 using Managers;
 using ScriptableObjects;
@@ -37,14 +38,27 @@ namespace LevelSelector.Managers
             for (int i = 0; i < itemCount; i++)
             {
                 var item = lootTable.GetRandomItem();
+                
                 items.Add(item);
             }
 
             shopData.inventory = new InventoryData()
             {
-                Items = items.Select(ItemData.FromItem).ToList()
+                Items = items.Select(ItemData.FromItemPrefab).ToList()
             };
             shopData.priceMultiplier = Random.Range(MinPriceMultiplier, MaxPriceMultiplier);
+
+            foreach (var item in shopData.inventory.Items)
+            {
+                item.Modifiers = new List<ItemModifier>()
+                {
+                    new WeaponValueModifier()
+                    {
+                        Value = Random.Range(-1.3f, 1.3f),
+                        Name = WeaponPropertyModifiers.Damage
+                    }
+                };
+            }
 
             return shopData;
         }

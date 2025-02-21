@@ -45,13 +45,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Icon>k__BackingField: {fileID: 21300000, guid: 5152efec88954df3a61fb62f8204412a, type: 3}
-  <Name>k__BackingField: Claw
-  <Weight>k__BackingField: 1
   <Description>k__BackingField: 
   <BaseCost>k__BackingField: 3
-  <Range>k__BackingField: 1
-  <BaseAttackSpeed>k__BackingField: 1
-  <BaseDamage>k__BackingField: 1
+  weaponData:
+    Identifier: 
+    Name: Claws
+    Count: 1
+    Stackable: 0
+    Type: 1
+    BaseDamage: 0
+    BaseAttackSpeed: 0
+    Range: 0
   <PushFactor>k__BackingField: 120
   <ShakeFactor>k__BackingField: 0
   <HitSound>k__BackingField: {fileID: 0}

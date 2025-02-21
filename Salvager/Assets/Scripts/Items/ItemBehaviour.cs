@@ -1,15 +1,17 @@
 ﻿using System;
+using System.Collections.Generic;
+using Data;
 using UnityEngine;
 
 namespace Items
 {
-    public class ItemBehaviour : MonoBehaviour
+    public abstract class ItemBehaviour : MonoBehaviour
     {
         public event Action<ItemBehaviour> Used;
         
         [field: SerializeField] public Sprite Icon { get; set; }
-        [field: SerializeField] public string Name { get; set; }
-        [field: SerializeField] public float Weight { get; set; } = 1f;
+        [field: SerializeField] public string Name => ItemData.Name;
+        [field: SerializeField] public float Weight => 696969f; // TODO: Implement weight
         [field: SerializeField] public string Description { get; set; }
         [field: SerializeField] public float BaseCost { get; set; }
         
@@ -19,7 +21,9 @@ namespace Items
         public int Count { get; set; } = 1;
 
         public Inventory Inventory { get; set; } = null;
+        public bool IsPrefab => Original is null;
 
+        public abstract ItemData ItemData { get; protected set; }
 
         public string GetIdentifier()
         {
@@ -52,10 +56,11 @@ namespace Items
             Debug.Log($"{creature} picked up item " + Name);
         }
 
-        public void SetData(ItemData itemData)
+        public virtual void SetData(ItemData itemData)
         {
-            Name = itemData.Name;
             Count = itemData.Count;
+            
+            ItemData = itemData;
         }
     }
 }
