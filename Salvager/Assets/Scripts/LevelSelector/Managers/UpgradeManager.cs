@@ -48,6 +48,7 @@ namespace LevelSelector.Managers
             {
                 BadUpgrade(item);
             }
+            else
             {
                 NormalUpgrade(item);
             }
