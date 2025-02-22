@@ -2831,7 +2831,7 @@ MonoBehaviour:
     m_Top: 30
     m_Bottom: 30
   m_ChildAlignment: 0
-  m_Spacing: 30
+  m_Spacing: 10
   m_ChildForceExpandWidth: 1
   m_ChildForceExpandHeight: 1
   m_ChildControlWidth: 1
@@ -4138,7 +4138,19 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1571030880285243591, guid: eb810b525b5695a4ca5d6a2fe8bb308a, type: 3}
       propertyPath: m_text
-      value: reforge
+      value: Reforge
+      objectReference: {fileID: 0}
+    - target: {fileID: 1571030880285243591, guid: eb810b525b5695a4ca5d6a2fe8bb308a, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: fd8b0c3ec45bfe3468d3c84666afea1f, type: 2}
+    - target: {fileID: 1571030880285243591, guid: eb810b525b5695a4ca5d6a2fe8bb308a, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 948324112190245683, guid: fd8b0c3ec45bfe3468d3c84666afea1f, type: 2}
+    - target: {fileID: 1571030880285243591, guid: eb810b525b5695a4ca5d6a2fe8bb308a, type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4123322486497649620, guid: eb810b525b5695a4ca5d6a2fe8bb308a, type: 3}
       propertyPath: m_Pivot.x
@@ -5703,7 +5715,19 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1571030880285243591, guid: eb810b525b5695a4ca5d6a2fe8bb308a, type: 3}
       propertyPath: m_text
-      value: scrap
+      value: Scrap
+      objectReference: {fileID: 0}
+    - target: {fileID: 1571030880285243591, guid: eb810b525b5695a4ca5d6a2fe8bb308a, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: fd8b0c3ec45bfe3468d3c84666afea1f, type: 2}
+    - target: {fileID: 1571030880285243591, guid: eb810b525b5695a4ca5d6a2fe8bb308a, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 948324112190245683, guid: fd8b0c3ec45bfe3468d3c84666afea1f, type: 2}
+    - target: {fileID: 1571030880285243591, guid: eb810b525b5695a4ca5d6a2fe8bb308a, type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4123322486497649620, guid: eb810b525b5695a4ca5d6a2fe8bb308a, type: 3}
       propertyPath: m_Pivot.x
@@ -5799,7 +5823,10 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 4123322486497649620, guid: eb810b525b5695a4ca5d6a2fe8bb308a, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1628116638}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8321839015586816812, guid: eb810b525b5695a4ca5d6a2fe8bb308a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2052153180}
   m_SourcePrefab: {fileID: 100100000, guid: eb810b525b5695a4ca5d6a2fe8bb308a, type: 3}
 --- !u!224 &1366404335 stripped
 RectTransform:
@@ -5811,7 +5838,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 9120946971514809520, guid: eb810b525b5695a4ca5d6a2fe8bb308a, type: 3}
   m_PrefabInstance: {fileID: 1366404334}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 2052153177}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
@@ -5952,8 +5979,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -389.99994, y: -70.85034}
-  m_SizeDelta: {x: -820, y: 80.0697}
+  m_AnchoredPosition: {x: -346, y: -70.85034}
+  m_SizeDelta: {x: -732, y: 80.07}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &1419664507
 MonoBehaviour:
@@ -8243,10 +8270,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1870413384}
     m_Modifications:
-    - target: {fileID: 1571030880285243591, guid: eb810b525b5695a4ca5d6a2fe8bb308a, type: 3}
-      propertyPath: m_text
-      value: upgrade
-      objectReference: {fileID: 0}
     - target: {fileID: 4123322486497649620, guid: eb810b525b5695a4ca5d6a2fe8bb308a, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -8769,6 +8792,26 @@ MonoBehaviour:
   m_FlexibleWidth: 1
   m_FlexibleHeight: -1
   m_LayoutPriority: 1
+--- !u!1 &2052153177 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8321839015586816812, guid: eb810b525b5695a4ca5d6a2fe8bb308a, type: 3}
+  m_PrefabInstance: {fileID: 1366404334}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2052153180
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2052153177}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: abe02588cca16964c8571b21eefea5d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  text: Scrap selected weapon
+  tooltipPositioningType: 1
+  offset: {x: 0, y: 0, z: 0}
 --- !u!1 &2074486098
 GameObject:
   m_ObjectHideFlags: 0

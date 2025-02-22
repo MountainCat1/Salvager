@@ -65,10 +65,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Start Game
+  m_text: Upgrade
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 1736c29aea2a1a943a456310ede6570c, type: 2}
-  m_sharedMaterial: {fileID: 948324112190245683, guid: 1736c29aea2a1a943a456310ede6570c, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: fd8b0c3ec45bfe3468d3c84666afea1f, type: 2}
+  m_sharedMaterial: {fileID: 948324112190245683, guid: fd8b0c3ec45bfe3468d3c84666afea1f, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []

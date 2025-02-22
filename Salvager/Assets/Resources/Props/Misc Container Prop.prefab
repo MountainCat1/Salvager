@@ -75,7 +75,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 4016457325390738586, guid: 159c5cd67d94c8843ad98e048fe98f95, type: 3}
+  m_Sprite: {fileID: -7803298647667860534, guid: 159c5cd67d94c8843ad98e048fe98f95, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -99,15 +99,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sprites:
-  - {fileID: -7803298647667860534, guid: 159c5cd67d94c8843ad98e048fe98f95, type: 3}
-  - {fileID: 5514185152407867754, guid: 159c5cd67d94c8843ad98e048fe98f95, type: 3}
-  - {fileID: -2411639516138889637, guid: 159c5cd67d94c8843ad98e048fe98f95, type: 3}
-  - {fileID: 4016457325390738586, guid: 159c5cd67d94c8843ad98e048fe98f95, type: 3}
-  - {fileID: -1083204244482060168, guid: 159c5cd67d94c8843ad98e048fe98f95, type: 3}
-  - {fileID: -8025685368683222782, guid: 159c5cd67d94c8843ad98e048fe98f95, type: 3}
-  - {fileID: 4468554480710105295, guid: 159c5cd67d94c8843ad98e048fe98f95, type: 3}
-  - {fileID: 4910452588211182325, guid: 159c5cd67d94c8843ad98e048fe98f95, type: 3}
-  - {fileID: 8346310616802577428, guid: 159c5cd67d94c8843ad98e048fe98f95, type: 3}
+  - {fileID: 300008973595331220, guid: 159c5cd67d94c8843ad98e048fe98f95, type: 3}
+  - {fileID: 7081912243806064112, guid: 159c5cd67d94c8843ad98e048fe98f95, type: 3}
+  - {fileID: 4211980020660111709, guid: 159c5cd67d94c8843ad98e048fe98f95, type: 3}
+  - {fileID: 7442633176104406557, guid: 159c5cd67d94c8843ad98e048fe98f95, type: 3}
+  - {fileID: -7089720647792233277, guid: 159c5cd67d94c8843ad98e048fe98f95, type: 3}
+  - {fileID: 7805955946982822873, guid: 159c5cd67d94c8843ad98e048fe98f95, type: 3}
+  - {fileID: 3114623597567356604, guid: 159c5cd67d94c8843ad98e048fe98f95, type: 3}
+  - {fileID: -5804786444609398202, guid: 159c5cd67d94c8843ad98e048fe98f95, type: 3}
+  - {fileID: 2499379763998159695, guid: 159c5cd67d94c8843ad98e048fe98f95, type: 3}
 --- !u!1 &8667083905584706207
 GameObject:
   m_ObjectHideFlags: 0
@@ -119,11 +119,12 @@ GameObject:
   - component: {fileID: 7749415076972555007}
   - component: {fileID: 1620334314628338296}
   - component: {fileID: 5788253491434673039}
+  - component: {fileID: 2417749354656705784}
   - component: {fileID: -2143244881860655937}
   - component: {fileID: -6788886794588646327}
   - component: {fileID: 6652406886336191645}
   m_Layer: 11
-  m_Name: Random Misc Prop
+  m_Name: Misc Container Prop
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -193,6 +194,25 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.5
+--- !u!114 &2417749354656705784
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8667083905584706207}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c780ab88161f460ca308e75c0a1a0c85, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  interactionTime: 1
+  interactionSound: {fileID: 8300000, guid: f55c4d302f66c1f4ba3a397272742d15, type: 3}
+  useOnce: 1
+  message: Searching...
+  requiredItems: []
+  cursor: {fileID: 2800000, guid: 5b876f07626d6a74a83b5767d1670c5d, type: 3}
+  lootTable: {fileID: 11400000, guid: 0b197bd77f965364ab91ad811a8e0dfa, type: 2}
 --- !u!114 &-2143244881860655937
 MonoBehaviour:
   m_ObjectHideFlags: 0
