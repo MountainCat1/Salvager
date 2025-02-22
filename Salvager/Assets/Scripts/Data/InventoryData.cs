@@ -77,6 +77,7 @@ public class InventoryData
         itemData.Count -= amount;
         
         var newItemData = DataCloner.Clone(itemData);
+        newItemData.Prefab = itemData.Prefab; // We need to keep the prefab reference
         newItemData.Count = amount;
         targetInventory.AddItem(newItemData);
         Changed?.Invoke();

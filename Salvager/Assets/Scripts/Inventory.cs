@@ -75,6 +75,27 @@ public class Inventory
 
         AddItemToInventory(item);
     }
+    
+    public void AddItem(ItemData itemData)
+    {
+        if (itemData.Prefab.Stackable == false)
+        {
+            var itemBehaviour = AddItemFromPrefab(itemData.Prefab);
+            itemBehaviour.SetData(itemData);
+            return;
+        }
+        
+        var item = GetItem(itemData.Identifier);
+        if (item is null)
+        {
+            var itemBehaviour = AddItemFromPrefab(itemData.Prefab);
+            itemBehaviour.SetData(itemData);
+        }
+        else
+            item.Count += itemData.Count;
+        
+        
+    }
 
     private ItemBehaviour AddItemToInventory(ItemBehaviour item)
     {

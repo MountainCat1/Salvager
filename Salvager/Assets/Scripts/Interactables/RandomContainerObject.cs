@@ -1,4 +1,5 @@
 using Items;
+using Managers;
 using ScriptableObjects;
 using UI;
 using UnityEngine;
@@ -7,10 +8,11 @@ using Zenject;
 public class RandomContainerObject : InteractableObject
 {
     [Inject] private IFloatingTextManager _floatingTextManager;
+    [Inject] private IItemManager _itemManager;
     
     [SerializeField] private LootTable lootTable = null!;
     
-    private ItemBehaviour _itemBehaviour;
+    private LootTableEntry _loot;
 
     protected override void Awake()
     {
@@ -22,7 +24,7 @@ public class RandomContainerObject : InteractableObject
             return;
         }
         
-        _itemBehaviour = lootTable.GetRandomItem();
+        _loot = lootTable.GetRandomItem();
     }
 
 
@@ -32,18 +34,31 @@ public class RandomContainerObject : InteractableObject
         
         var creature = interaction.Creature;
         
-        if(_itemBehaviour == null)
+        if(_loot.item is null)
         {
             _floatingTextManager.SpawnFloatingText(transform.position, "Empty", FloatingTextType.Miss);
             return;
         }
         
-        creature.Inventory.AddItemFromPrefab(_itemBehaviour);
-        _floatingTextManager.SpawnFloatingText(transform.position, _itemBehaviour.Name, FloatingTextType.InteractionCompleted);
+        var itemData = ItemData.FromPrefabItem(_loot.item);
+        itemData.Count = Random.Range(_loot.minCount, _loot.maxCount);
+        creature.Inventory.AddItem(itemData);
+        
+        
+        var floatingText = itemData.Count == 1 
+            ? itemData.Prefab.Name 
+            : $"{itemData.Prefab.Name} x{itemData.Count}";
+        
+        _floatingTextManager.SpawnFloatingText(transform.position, floatingText, FloatingTextType.InteractionCompleted);
     }
     
     public ItemBehaviour GetRandomItem()
     {
-        return lootTable.GetRandomItem();
+        var itemData = ItemData.FromPrefabItem(_loot.item);
+        itemData.Count = Random.Range(_loot.minCount, _loot.maxCount);
+        
+        var instantiatedItem = _itemManager.InstantiateItem(itemData);
+        
+        return instantiatedItem;
     }
 }

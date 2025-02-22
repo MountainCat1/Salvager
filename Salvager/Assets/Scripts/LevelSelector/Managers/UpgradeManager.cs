@@ -87,12 +87,12 @@ namespace LevelSelector.Managers
 
         public int GetScrapValue(ItemData itemData)
         {
-            return (int)(itemData.Prefab.BaseCost / 10) + 1;
+            return (int)(_itemManager.GetValue(itemData) / 10) + 1;
         }
 
         public int GetUpgradeCost(ItemData selectedItem)
         {
-            return 1;
+            return 1 + selectedItem.Modifiers.Count;
         }
 
         public bool CanUpgrade(ItemData selectedItem)
