@@ -27,7 +27,7 @@ public class ItemData
         return new ItemData
         {
             Identifier = item.GetIdentifier(),
-            Count = item.Count,
+            Count = 1,
             Stackable = item.Stackable,
             Type = item is Weapon ? ItemType.Weapon : ItemType.Default,
             Prefab = item.IsOriginal ? item : throw new NotImplementedException($"Item {item} is not original")
