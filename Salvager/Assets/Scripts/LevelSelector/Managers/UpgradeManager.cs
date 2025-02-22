@@ -58,14 +58,14 @@ namespace LevelSelector.Managers
             if (!CanUpgrade(item))
                 return;
 
-            UpgradeItem(item);
-            
             // Remove scrap cost
             var scrapCost = GetUpgradeCost(item);
             var scrapCostData = ItemData.FromPrefabItem(scrapItemPrefab);
             scrapCostData.Count = scrapCost;
-            
+                        
             _crewManager.Inventory.RemoveItem(scrapCostData);
+            
+            UpgradeItem(item);
         }
 
         public void ScrapItem(ItemData itemData)
