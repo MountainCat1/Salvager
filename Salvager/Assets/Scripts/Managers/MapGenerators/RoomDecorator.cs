@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Data;
@@ -127,12 +128,12 @@ public partial class RoomDecorator : MonoBehaviour, IRoomDecorator
 
         foreach (var roomEnemy in blueprint.Enemies)
         {
-            for (int i = 0; i < Random.Range(roomEnemy.minAmount, roomEnemy.maxAmount); i++)
+            for (int i = 0; i < UnityEngine.Random.Range(roomEnemy.minAmount, roomEnemy.maxAmount); i++)
             {
                 enemies.Add(roomEnemy.enemy);
             }
         }
-        
+
         roomData.Enemies = enemies.ToArray();
         roomData.IsEntrance = blueprint.StartingRoom;
     }
@@ -161,11 +162,31 @@ public partial class RoomDecorator : MonoBehaviour, IRoomDecorator
         {
             for (int i = 0; i < prop.count; i++)
             {
-                var randomPosition = GetRandomAvailablePosition(roomData);
+                Vector2Int? randomPosition = null;
+
+                switch (prop.position)
+                {
+                    case PropPosition.Anywhere:
+                        randomPosition = GetRandomAvailablePosition(roomData);
+                        break;
+                    case PropPosition.Center:
+                        randomPosition = GetCenterPosition(roomData);
+                        break;
+                    case PropPosition.Corner:
+                        randomPosition = GetCornerPosition(roomData);
+                        break;
+                    case PropPosition.NotEdge:
+                        randomPosition = GetNotEdgePosition(roomData);
+                        break;
+                    case PropPosition.Edge:
+                        randomPosition = GetEdgePosition(roomData);
+                        break;
+                }
+
                 if (randomPosition != null)
                 {
                     var spawnPosition = (Vector2)randomPosition * tileSize +
-                                        new Vector2(tileSize, tileSize) / 2;
+                                        new Vector2(tileSize, tileSize) / 2 + prop.offset;
                     InstantiatePrefab(prop.prefab, spawnPosition);
                     _occupiedPositions.Add(randomPosition.Value);
                 }
@@ -177,6 +198,67 @@ public partial class RoomDecorator : MonoBehaviour, IRoomDecorator
     {
         var availablePositions = roomData.Positions.Where(ValidatePosition).ToList();
         return availablePositions.Any() ? availablePositions.RandomElement() : null;
+    }
+
+    private Vector2Int? GetCenterPosition(RoomData roomData)
+    {
+        var minX = roomData.Positions.Min(p => p.x);
+        var maxX = roomData.Positions.Max(p => p.x);
+        var minY = roomData.Positions.Min(p => p.y);
+        var maxY = roomData.Positions.Max(p => p.y);
+
+        var centerPositions = roomData.Positions.Where(p =>
+            p.x > minX && p.x < maxX && p.y > minY && p.y < maxY && ValidatePosition(p)
+        ).ToList();
+
+        return centerPositions.Any() ? centerPositions.RandomElement() : null;
+    }
+
+
+    private Vector2Int? GetCornerPosition(RoomData roomData)
+    {
+        var minX = roomData.Positions.Min(p => p.x);
+        var maxX = roomData.Positions.Max(p => p.x);
+        var minY = roomData.Positions.Min(p => p.y);
+        var maxY = roomData.Positions.Max(p => p.y);
+
+        var cornerPositions = new List<Vector2Int>
+        {
+            new(minX, minY),
+            new(minX, maxY),
+            new(maxX, minY),
+            new(maxX, maxY)
+        }.Where(ValidatePosition).ToList();
+
+        return cornerPositions.Any() ? cornerPositions.RandomElement() : null;
+    }
+
+    private Vector2Int? GetEdgePosition(RoomData roomData)
+    {
+        var minX = roomData.Positions.Min(p => p.x);
+        var maxX = roomData.Positions.Max(p => p.x);
+        var minY = roomData.Positions.Min(p => p.y);
+        var maxY = roomData.Positions.Max(p => p.y);
+
+        var edgePositions = roomData.Positions.Where(p =>
+            (p.x == minX || p.x == maxX || p.y == minY || p.y == maxY) && ValidatePosition(p)
+        ).ToList();
+
+        return edgePositions.Any() ? edgePositions.RandomElement() : null;
+    }
+
+    private Vector2Int? GetNotEdgePosition(RoomData roomData)
+    {
+        var minX = roomData.Positions.Min(p => p.x);
+        var maxX = roomData.Positions.Max(p => p.x);
+        var minY = roomData.Positions.Min(p => p.y);
+        var maxY = roomData.Positions.Max(p => p.y);
+        
+        var notEdgePositions = roomData.Positions.Where(p =>
+            (p.x != minX && p.x != maxX && p.y != minY && p.y != maxY) && ValidatePosition(p)
+        ).ToList();
+        
+        return notEdgePositions.Any() ? notEdgePositions.RandomElement() : null;
     }
 
     private bool ValidatePosition(Vector2Int position)

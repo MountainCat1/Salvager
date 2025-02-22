@@ -7,7 +7,8 @@ public enum PropPosition
     Anywhere,
     Center,
     Corner,
-    Edge
+    Edge,
+    NotEdge
 }
 
 [System.Serializable]

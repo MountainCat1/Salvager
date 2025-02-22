@@ -13,6 +13,7 @@ namespace Managers
     public interface ICrewManager
     {
         event Action Changed;
+        event Action ChangedLocation;
         event Action<CreatureData> SelectedCreature;
         void ReRollCrew();
         public ICollection<CreatureData> Crew { get; }
@@ -36,6 +37,7 @@ namespace Managers
     {
         public event Action Changed;
         public event Action<CreatureData> SelectedCreature;
+        public event Action ChangedLocation;
 
         [Inject] private IDataManager _dataManager;
         [Inject] private IRegionManager _regionManager;
@@ -110,6 +112,7 @@ namespace Managers
             CurrentLocation = selectedLocation;
             CurrentLocationId = selectedLocation.Id;
 
+            ChangedLocation?.Invoke();
             Changed?.Invoke();
         }
 

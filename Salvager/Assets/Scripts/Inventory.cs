@@ -113,6 +113,7 @@ public class Inventory
         ).GetComponent<ItemBehaviour>();
         
         item.Original = itemPrefab.Original ?? itemPrefab;
+        item.SetData(ItemData.FromPrefabItem(itemPrefab));
 
         return item;
     }

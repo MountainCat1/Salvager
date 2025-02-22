@@ -15,7 +15,7 @@ MonoBehaviour:
   <Name>k__BackingField: Misc Room
   <Props>k__BackingField:
   - prefab: {fileID: 8667083905584706207, guid: 63111e478a9f1fb4db996dd4ad9dd66a, type: 3}
-    position: 2
+    position: 3
     offset: {x: 0, y: 0}
     count: 3
   <StartingRoom>k__BackingField: 0
