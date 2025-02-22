@@ -4742,12 +4742,12 @@ MonoBehaviour:
   text: {fileID: 1352333292}
   slide: {fileID: 1598499615}
   chatLines:
-  - Why are you here? Human..
   - Move!
+  - Why are you here? Human...
   - What brings you here?
-  - Life is hard, especially here...
-  - Scrap scrap, is worth all the scrap
-  - Zombies are easy, those dog creatures though...
+  - Life is hard around here...
+  - Scrap scrap worth all the scrap
+  - Zombies are easy, those beasts though...
   typingSpeed: 20
 --- !u!1 &1186613147
 GameObject:
