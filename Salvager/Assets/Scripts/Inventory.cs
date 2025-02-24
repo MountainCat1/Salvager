@@ -78,6 +78,12 @@ public class Inventory
     
     public void AddItem(ItemData itemData)
     {
+        if (itemData == null)
+            throw new ArgumentNullException(nameof(itemData));
+
+        if (itemData.Prefab == null)
+            throw new ArgumentNullException(nameof(itemData.Prefab));
+
         if (itemData.Prefab.Stackable == false)
         {
             var itemBehaviour = AddItemFromPrefab(itemData.Prefab);
@@ -92,9 +98,10 @@ public class Inventory
             itemBehaviour.SetData(itemData);
         }
         else
+        {
             item.Count += itemData.Count;
-        
-        
+            Changed?.Invoke();
+        }
     }
 
     private ItemBehaviour AddItemToInventory(ItemBehaviour item)
