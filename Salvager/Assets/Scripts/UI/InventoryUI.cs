@@ -1,6 +1,7 @@
 using TMPro;
 using UI.Abstractions;
 using UnityEngine;
+using Zenject;
 
 namespace UI
 {
@@ -9,6 +10,8 @@ namespace UI
         [SerializeField] private InventoryEntryUI inventoryEntryUIPrefab;
         [SerializeField] private Transform entriesParent;
         [SerializeField] private TextMeshProUGUI creatureNameText;
+
+        [Inject] private DiContainer _diContainer;
         
         private Creature _creature;
         public Creature Creature => _creature;
@@ -33,8 +36,8 @@ namespace UI
             
             foreach (var item in _creature.Inventory.Items)
             {
-                var inventoryEntryUI = Instantiate(inventoryEntryUIPrefab, entriesParent);
-                inventoryEntryUI.SetItem(item, _creature);
+                var inventoryEntryUI = _diContainer.InstantiatePrefab(inventoryEntryUIPrefab, entriesParent);
+                inventoryEntryUI.GetComponent<InventoryEntryUI>().SetItem(item, _creature);
             }
         }
     }

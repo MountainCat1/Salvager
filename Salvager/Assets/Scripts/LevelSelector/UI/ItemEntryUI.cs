@@ -36,7 +36,7 @@ namespace UI
 
         public void Set(ItemData item, Action<ItemData> transferCallback)
         {
-            nameDisplay.text = item.Prefab.Name;
+            nameDisplay.text = _itemDescriptionManager.GetInfoName(item);
             amountDisplay.text = item.Count == 1 ? string.Empty : $"x{item.Count}";
             iconDisplay.sprite = item.Prefab.Icon;
             // descriptionDisplay.text = item.Description;

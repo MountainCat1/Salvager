@@ -15,6 +15,7 @@ public class InteractableObject : Entity, IInteractable
 
     [SerializeField] private float interactionTime = 1f;
     [SerializeField] private AudioClip interactionSound;
+    [SerializeField] private AudioClip startInteractionSound;
     [SerializeField] private bool useOnce = true;
     [SerializeField] private string message = "Interacting...";
     [SerializeField] public List<ItemBehaviour> requiredItems;
@@ -117,6 +118,9 @@ public class InteractableObject : Entity, IInteractable
         };
         _interaction!.Canceled += () => { _interaction = null; };
 
+        if (startInteractionSound)
+            _soundPlayer.PlaySound(startInteractionSound, Position);
+        
         return _interaction;
     }
 

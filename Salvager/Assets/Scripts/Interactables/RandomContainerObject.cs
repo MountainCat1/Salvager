@@ -4,6 +4,9 @@ using ScriptableObjects;
 using UI;
 using UnityEngine;
 using Zenject;
+#if UNITY_EDITOR
+using UnityEditor; // Required for marking dirty in the editor
+#endif
 
 public class RandomContainerObject : InteractableObject
 {
@@ -11,6 +14,10 @@ public class RandomContainerObject : InteractableObject
     [Inject] private IItemManager _itemManager;
     
     [SerializeField] private LootTable lootTable = null!;
+    [SerializeField] private SpriteRenderer spriteRenderer;
+    
+    [SerializeField] private Sprite closeSprite;
+    [SerializeField] private Sprite openSprite;
     
     private LootTableEntry _loot;
 
@@ -37,6 +44,7 @@ public class RandomContainerObject : InteractableObject
         if(_loot.item is null)
         {
             _floatingTextManager.SpawnFloatingText(transform.position, "Empty", FloatingTextType.Miss);
+            spriteRenderer.sprite = openSprite;
             return;
         }
         
@@ -50,6 +58,8 @@ public class RandomContainerObject : InteractableObject
             : $"{itemData.Prefab.Name} x{itemData.Count}";
         
         _floatingTextManager.SpawnFloatingText(transform.position, floatingText, FloatingTextType.InteractionCompleted);
+        
+        spriteRenderer.sprite = openSprite;
     }
     
     public ItemBehaviour GetRandomItem()
@@ -61,4 +71,15 @@ public class RandomContainerObject : InteractableObject
         
         return instantiatedItem;
     }
+    
+#if UNITY_EDITOR
+    private void OnValidate()
+    {
+        if (spriteRenderer != null && openSprite != null)
+        {
+            spriteRenderer.sprite = closeSprite;
+            EditorUtility.SetDirty(spriteRenderer);
+        }
+    }
+#endif
 }
