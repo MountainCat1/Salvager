@@ -52,7 +52,7 @@ public class Inventory
             AddInstantiatedItem(item);
         }
     }
-    
+
     public ItemBehaviour AddItemFromPrefab(ItemBehaviour itemPrefab)
     {
         if (itemPrefab == null)
@@ -68,7 +68,7 @@ public class Inventory
     {
         if (item == null)
             throw new NullReferenceException("Tried to add a null item to inventory");
-        
+
         item.transform.SetParent(_transform);
         item.transform.localPosition = Vector3.zero;
         item.transform.localRotation = Quaternion.identity;
@@ -76,12 +76,48 @@ public class Inventory
         AddItemToInventory(item);
     }
 
+    /// <summary>
+    /// Adds an item to the inventory based on the provided item data.
+    /// For stackable items, increases the count of existing items.
+    /// For non-stackable items, creates a new instance.
+    /// </summary>
+    /// <param name="itemData">The data of the item to add.</param>
+    /// <exception cref="ArgumentNullException">Thrown when itemData or itemData.Prefab is null.</exception>
+    public void AddItem(ItemData itemData)
+    {
+        if (itemData == null)
+            throw new ArgumentNullException(nameof(itemData));
+
+        if (itemData.Prefab == null)
+            throw new ArgumentNullException(nameof(itemData.Prefab));
+
+        if (itemData.Prefab.Stackable == false)
+        {
+            var itemBehaviour = AddItemFromPrefab(itemData.Prefab);
+            itemBehaviour.SetData(itemData);
+            return;
+        }
+
+        var item = GetItem(itemData.Identifier);
+        if (item is null)
+        {
+            var itemBehaviour = AddItemFromPrefab(itemData.Prefab);
+            itemBehaviour.SetData(itemData);
+        }
+        else
+        {
+            item.Count += itemData.Count;
+        }
+
+        Changed?.Invoke();
+    }
+
     private ItemBehaviour AddItemToInventory(ItemBehaviour item)
     {
-        if(item.Inventory != null)
+        if (item.Inventory != null)
             throw new Exception("Item already belongs to an inventory");
-        
-        
+
+
         if (item.Stackable)
         {
             var existing = GetItem(item.GetIdentifier());
@@ -111,7 +147,7 @@ public class Inventory
             Quaternion.identity,
             _transform
         ).GetComponent<ItemBehaviour>();
-        
+
         item.Original = itemPrefab.Original ?? itemPrefab;
         item.SetData(ItemData.FromPrefabItem(itemPrefab));
 
@@ -127,12 +163,12 @@ public class Inventory
         _items.Remove(item);
 
         UnregisterItem(item);
-        
+
         item.Inventory = null;
 
         Changed?.Invoke();
     }
-    
+
     public void RemoveItems(string identifier, int count)
     {
         var item = GetItem(identifier);
@@ -162,7 +198,7 @@ public class Inventory
     {
         return _items.Find(x => x.GetIdentifier().Equals(identifier));
     }
-    
+
     public int GetItemCount(string identifier)
     {
         var item = GetItem(identifier);
@@ -170,9 +206,9 @@ public class Inventory
             return 0;
 
         if (item.Stackable)
-            return 1;
+            return item.Count;
 
-        return item.Count;
+        return 1;
     }
 
     private void RegisterItem(ItemBehaviour item)

@@ -18,6 +18,7 @@ namespace Managers
         ItemBehaviour GetItemPrefab(string dataIdentifier);
         
         public decimal GetValue(ItemData itemData);
+        public int GetModifierValue(ItemData itemData);
     }
 
     public class ItemManager : MonoBehaviour, IItemManager
@@ -48,6 +49,12 @@ namespace Managers
                 .Sum(m => m.Value);
 
             return (decimal)(baseCost + (baseCost * modifierSum));
+        }
+        public int GetModifierValue(ItemData itemData)
+        {
+            var modifiers = itemData.Modifiers.OfType<WeaponValueModifier>().ToArray();
+            var modifierValue = modifiers.Count(x => x.Value > 0) - modifiers.Count(x => x.Value < 0);
+            return modifierValue;
         }
 
         public ItemBehaviour InstantiateItem(ItemData itemData, Transform parent = null)

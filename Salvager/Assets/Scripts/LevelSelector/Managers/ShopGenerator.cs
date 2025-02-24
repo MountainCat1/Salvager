@@ -36,16 +36,22 @@ namespace LevelSelector.Managers
             
             shopData.itemCount = itemCount;
 
-            var items = new List<ItemBehaviour>();
+            var items = new List<ItemData>();
             for (int i = 0; i < itemCount; i++)
             {
-                var item = lootTable.GetRandomItem();
-                items.Add(item);
+                var lootEntry = lootTable.GetRandomItem();
+                
+                var itemData = ItemData.FromPrefabItem(lootEntry.item);
+                
+                var count = Random.Range(lootEntry.minCount, lootEntry.maxCount);
+                itemData.Count = count;
+                
+                items.Add(itemData);
             }
 
             shopData.inventory = new InventoryData()
             {
-                Items = items.Select(ItemData.FromPrefabItem).ToList()
+                Items = items
             };
             shopData.priceMultiplier = Random.Range(MinPriceMultiplier, MaxPriceMultiplier);
 

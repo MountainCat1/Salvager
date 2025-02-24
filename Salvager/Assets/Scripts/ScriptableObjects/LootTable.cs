@@ -10,7 +10,7 @@ namespace ScriptableObjects
     {
         [SerializeField] private LootTableEntry[] entries;
 
-        public ItemBehaviour GetRandomItem()
+        public LootTableEntry GetRandomItem()
         {
             float totalWeight = 0;
             foreach (var entry in entries)
@@ -24,7 +24,7 @@ namespace ScriptableObjects
                 randomWeight -= entry.weight;
                 if (randomWeight <= 0)
                 {
-                    return entry.item;
+                    return entry;
                 }
             }
 
@@ -33,9 +33,19 @@ namespace ScriptableObjects
     }
     
     [Serializable]
-    public struct LootTableEntry
+    public class LootTableEntry
     {
         [SerializeField] public ItemBehaviour item;
         [SerializeField] public float weight;
+        [SerializeField] public int maxCount;
+        [SerializeField] public int minCount;
+
+        public LootTableEntry()
+        {
+            minCount = 1;
+            maxCount = 1;
+            item = null;
+            weight = 1;
+        }
     }
 }

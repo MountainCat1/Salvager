@@ -28,13 +28,13 @@ namespace Managers.LevelSelector
         [SerializeField] private float startingJuice = 200;
 
         [SerializeField] private SceneReference mainMenuScene;
-        
+
         [Inject] private IInputManager _inputManager;
-        
+
         private void Start()
         {
             _inputManager.GoBackToMenu += GoBackToMenu;
-            
+
             var data = _dataManager.LoadData();
 
             if (skipLoad || data?.Region == null)
@@ -43,7 +43,7 @@ namespace Managers.LevelSelector
                 var currentNodeId = region.Locations.First(x => x.Type == LocationType.StartNode).Id;
                 _regionManager.SetRegion(region, currentNodeId);
 
-                
+
                 var startingInventory = new InventoryData()
                 {
                     Items = startingItems.Select(ItemData.FromPrefabItem).ToList(),
@@ -53,13 +53,14 @@ namespace Managers.LevelSelector
                 {
                     startingCreatures.Add(GenerateCrew());
                 }
+
                 var startingResources = new InGameResources()
                 {
                     Money = (decimal)startingMoney,
                     Fuel = (decimal)startingFuel,
                     Juice = (decimal)startingJuice,
                 };
-                
+
                 _crewManager.SetCrew(startingCreatures, startingInventory, startingResources, currentNodeId);
 
                 var gameData = _dataManager.GetData();
@@ -87,30 +88,12 @@ namespace Managers.LevelSelector
             var data = _dataManager.LoadData();
 
             _regionManager.SetRegion(RegionData.ToRegion(data.Region), Guid.Parse(data.CurrentLocationId));
-            
-            var crewItems = data.Creatures.SelectMany(x => x.Inventory.Items).ToList();
-            var inventoryItems = data.Inventory.Items;
-            var shopItems = data.Region.Locations.Select(x => x.ShopData).Where(x => x is not null).SelectMany(x => x.inventory.Items);
 
-            foreach (var item in crewItems)
-            {
-                item.Prefab = _itemManager.GetItemPrefab(item.Identifier);
-            }
-            
-            foreach (var item in inventoryItems)
-            {
-                item.Prefab = _itemManager.GetItemPrefab(item.Identifier);
-            }
+            _dataManager.SetPrefabs(data);
 
-            foreach (var item in shopItems)
-            {
-                item.Prefab = _itemManager.GetItemPrefab(item.Identifier);
-            }
-            
-            
             _crewManager.SetCrew(data.Creatures, data.Inventory, data.Resources, Guid.Parse(data.CurrentLocationId));
         }
-        
+
         private CreatureData GenerateCrew()
         {
             return new CreatureData()

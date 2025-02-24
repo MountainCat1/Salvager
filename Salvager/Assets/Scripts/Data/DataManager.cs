@@ -2,10 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Managers;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
 using UnityEngine;
+using Zenject;
 
 namespace Data
 {
@@ -15,6 +17,7 @@ namespace Data
         GameData LoadData();
         GameData GetData();
         void DeleteData();
+        void SetPrefabs(GameData data);
     }
 
     public class Vector2Converter : JsonConverter<Vector2>
@@ -58,6 +61,8 @@ namespace Data
 
     public class DataManager : IDataManager
     {
+        [Inject] private IItemManager _itemManager;
+         
         private static readonly string SaveFilePath = Path.Combine(Application.persistentDataPath, "saveData.json");
         private GameData _gameData;
 
@@ -153,6 +158,29 @@ namespace Data
             return _gameData;
         }
 
+        // TODO: This should be in a separate manager
+        public void SetPrefabs(GameData data)
+        {
+            var crewItems = data.Creatures.SelectMany(x => x.Inventory.Items).ToList();
+            var inventoryItems = data.Inventory.Items;
+            var shopItems = data.Region.Locations.Select(x => x.ShopData).Where(x => x is not null).SelectMany(x => x.inventory.Items);
+
+            foreach (var item in crewItems)
+            {
+                item.Prefab = _itemManager.GetItemPrefab(item.Identifier);
+            }
+            
+            foreach (var item in inventoryItems)
+            {
+                item.Prefab = _itemManager.GetItemPrefab(item.Identifier);
+            }
+
+            foreach (var item in shopItems)
+            {
+                item.Prefab = _itemManager.GetItemPrefab(item.Identifier);
+            }
+        }
+        
         public void DeleteData()
         {
             if (File.Exists(SaveFilePath))

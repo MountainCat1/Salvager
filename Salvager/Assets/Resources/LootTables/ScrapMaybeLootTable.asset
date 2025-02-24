@@ -15,5 +15,9 @@ MonoBehaviour:
   entries:
   - item: {fileID: 6945220326266969423, guid: dbe43bd481165264bbe8bbef6f56baf6, type: 3}
     weight: 75
+    maxCount: 5
+    minCount: 1
   - item: {fileID: 0}
     weight: 25
+    maxCount: 1
+    minCount: 1

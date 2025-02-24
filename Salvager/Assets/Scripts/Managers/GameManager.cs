@@ -104,6 +104,8 @@ namespace Managers
 
             var data = loadDataFromSave ? _dataManager.LoadData() : null;
             var playerUnits = new List<Creature>();
+
+            _dataManager.SetPrefabs(data);
             
             if (data is not null)
             {

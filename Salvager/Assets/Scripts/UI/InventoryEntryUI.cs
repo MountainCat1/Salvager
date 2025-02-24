@@ -1,12 +1,16 @@
 using Items;
+using Managers;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using Zenject;
 
 namespace UI
 {
     public class InventoryEntryUI : MonoBehaviour
     {
+        [Inject] private IItemDescriptionManager _itemDescriptionManager;
+        
         [SerializeField] private TextMeshProUGUI itemNameText;
         [SerializeField] private TextMeshProUGUI itemCountText;
         [SerializeField] private Image itemImage;
@@ -16,7 +20,7 @@ namespace UI
          
         public void SetItem(ItemBehaviour item, Creature creature)
         {
-            itemNameText.text = item.Name;
+            itemNameText.text = _itemDescriptionManager.GetInfoName(item.GetData());
             itemImage.sprite = item.Icon;
             
             _item = item;
