@@ -55,7 +55,7 @@ public class PlayerController : MonoBehaviour
             return;
         }
 
-        if (entityUnderMouse is IInteractable)
+        if (entityUnderMouse is IInteractable interactable)
         {
             // order selected creatures to first get ones which are not busy,
             // and then the busy ones and then all by distance
@@ -63,7 +63,7 @@ public class PlayerController : MonoBehaviour
             var selectedCreatures = GetSelectedCreatures()
                 .Select(x => x.Controller)
                 .OfType<UnitController>()
-                .OrderBy(x => x.InteractionTarget == null)
+                .OrderBy(x => x.InteractionTarget != null)
                 .ThenBy(x => Vector2.Distance(x.transform.position, entityUnderMouse.transform.position));
             
             selectedCreatures.First().SetTarget(entityUnderMouse);
