@@ -45,7 +45,7 @@ namespace Managers
         private string GetWeaponDescription(ItemData data, Weapon weapon)
         {
             var damageModifierString = GetWeaponModifierString(data, WeaponPropertyModifiers.Damage, weapon.BaseDamage);
-            var rangeModifierString = GetWeaponModifierString(data, WeaponPropertyModifiers.Range, weapon.Range);
+            var rangeModifierString = GetWeaponModifierString(data, WeaponPropertyModifiers.Range, weapon.BaseRange);
             var attackSpeedModifierString = GetWeaponModifierString(data, WeaponPropertyModifiers.AttackSpeed, weapon.BaseAttackSpeed);
             
             var modifierValue = _itemManager.GetModifierValue(data);
@@ -57,7 +57,7 @@ namespace Managers
             };
             
             return $"Damage: {weapon.BaseDamage} {damageModifierString}\n" +
-                   $"Range: {weapon.Range} {rangeModifierString}\n" +
+                   $"Range: {weapon.BaseRange} {rangeModifierString}\n" +
                    $"Attack Speed: {weapon.BaseAttackSpeed} {attackSpeedModifierString}\n" +
                    "\n" +
                    $"Value: {_itemManager.GetValue(data):F2}$\n" +

@@ -23,7 +23,6 @@ public abstract class Weapon : ItemBehaviour
     [field: SerializeField] public AudioClip AttackSound { get; set; }
 
     
-    public float Range => WeaponItemData.GetApplied(WeaponPropertyModifiers.Range, BaseRange);
     public virtual bool AllowToMoveOnCooldown => false;
     public virtual bool NeedsLineOfSight => false;
     public virtual bool ShootThroughAllies => false;
@@ -32,6 +31,7 @@ public abstract class Weapon : ItemBehaviour
     protected ItemData WeaponItemData;
     
     public bool IsOnCooldown => GetOnCooldown(new AttackContext());
+    public float Range => WeaponItemData.GetApplied(WeaponPropertyModifiers.Range, BaseRange);
 
     private float _lastAttackTime = -1;
 
