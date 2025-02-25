@@ -239,22 +239,27 @@ namespace Managers
         {
             if (creature.Team != playerTeam)
                 return;
+            if (_selectedCreatures.Contains(creature)) 
+                return;
+            
+            _selectedCreatures.Add(creature);
 
-            if (!_selectedCreatures.Contains(creature))
-            {
-                _selectedCreatures.Add(creature);
-
-                var selectionMarker =
-                    _selectionCirclesPool.SpawnObject(selectionMarkerPrefab,
-                        creature.transform.position);
-                selectionMarker.ParentConstraint.AddSource(new ConstraintSource()
-                {
-                    sourceTransform = creature.transform,
-                    weight = 1
-                });
-                selectionMarker.Creature = creature;
-            }
+            PlaceSelectedMarker(creature);
+            
+            creature.Health.Death += OnSelectedCreatureDeath;
+            creature.Inventory.Changed += OnSelectedCreatureInventoryChanged;
         }
+
+        private void OnSelectedCreatureInventoryChanged()
+        {
+            OnSelectionChanged?.Invoke();
+        }
+
+        private void OnSelectedCreatureDeath(DeathContext ctx)
+        {
+            RemoveFromSelection(ctx.KilledEntity as Creature);
+        }
+        
 
         public void RemoveFromSelection(Creature creature)
         {
@@ -266,6 +271,9 @@ namespace Managers
                     .FirstOrDefault(marker => marker.Creature == creature);
 
                 _selectionCirclesPool.DespawnObject(selectionMarker);
+                
+                creature.Health.Death -= OnSelectedCreatureDeath;
+                creature.Inventory.Changed -= OnSelectedCreatureInventoryChanged;
             }
 
             OnSelectionChanged?.Invoke();
@@ -286,6 +294,19 @@ namespace Managers
             _selectedCreatures.RemoveAll(creature => creature == null);
 
             return _selectedCreatures;
+        }
+        
+        private void PlaceSelectedMarker(Creature creature)
+        {
+            var selectionMarker =
+                _selectionCirclesPool.SpawnObject(selectionMarkerPrefab,
+                    creature.transform.position);
+            selectionMarker.ParentConstraint.AddSource(new ConstraintSource()
+            {
+                sourceTransform = creature.transform,
+                weight = 1
+            });
+            selectionMarker.Creature = creature;
         }
     }
 }
