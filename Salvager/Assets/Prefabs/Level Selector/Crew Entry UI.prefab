@@ -383,8 +383,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Crew
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: afca9b4acf1ecfb4a94b22a46a7497b6, type: 2}
-  m_sharedMaterial: {fileID: 6064686191877940622, guid: afca9b4acf1ecfb4a94b22a46a7497b6, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 1ad52307be1c848478a6a0844726c09e, type: 2}
+  m_sharedMaterial: {fileID: 8204960440326854985, guid: 1ad52307be1c848478a6a0844726c09e, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -484,8 +484,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 61.300003, y: -37.4971}
-  m_SizeDelta: {x: -234.9868, y: -107.5129}
+  m_AnchoredPosition: {x: 52.632, y: -39.3}
+  m_SizeDelta: {x: -234.9868, y: -98.6724}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3725095869954798642
 CanvasRenderer:
@@ -517,8 +517,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: NO WEAPON
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 5aa799797ed8afc4e9e354a00568c408, type: 2}
-  m_sharedMaterial: {fileID: -1415575817314189568, guid: 5aa799797ed8afc4e9e354a00568c408, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 1ad52307be1c848478a6a0844726c09e, type: 2}
+  m_sharedMaterial: {fileID: 8204960440326854985, guid: 1ad52307be1c848478a6a0844726c09e, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -542,7 +542,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 29.2
+  m_fontSize: 24.75
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1

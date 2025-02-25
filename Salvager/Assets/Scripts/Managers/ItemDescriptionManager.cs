@@ -68,7 +68,7 @@ namespace Managers
         {
             var modifier = data.GetChange(weaponPropertyModifier, baseValue);
 
-            var modifierString = MathF.Abs(modifier) > 0.05f ? $" ({WrapInColor(modifier)})" : string.Empty;
+            var modifierString = MathF.Abs(modifier) > 0.05f ? $"({WrapInColor(modifier)})" : string.Empty;
             return modifierString;
         }
 

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f327af661d9bc94abe3f843bc3401fe, type: 3}
   m_Name: Storage Room
   m_EditorClassIdentifier: 
-  <Name>k__BackingField: Misc Room
+  <Name>k__BackingField: Storage Room
   <Props>k__BackingField:
   - prefab: {fileID: 7375656772705244172, guid: 4d1da47dd6767eb4d80c7de2d4fb49ee, type: 3}
     position: 4
