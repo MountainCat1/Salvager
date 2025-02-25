@@ -14,11 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Name>k__BackingField: Misc Room
   <Props>k__BackingField:
-  - prefab: {fileID: 6726001209165507579, guid: d0e96bb2e958eec4ba48cf4b26a9c78d, type: 3}
+  - prefab: {fileID: 7375656772705244172, guid: 4d1da47dd6767eb4d80c7de2d4fb49ee, type: 3}
     position: 4
     offset: {x: 0, y: 0}
     count: 7
-  - prefab: {fileID: 6726001209165507579, guid: 9183148f1390d4840b670d603b11b399, type: 3}
+  - prefab: {fileID: 7172594059294702680, guid: bf1f186d29feeba4699aba7c929c718e, type: 3}
     position: 1
     offset: {x: 0, y: 0}
     count: 3

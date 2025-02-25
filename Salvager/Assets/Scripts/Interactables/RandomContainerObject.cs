@@ -27,7 +27,7 @@ public class RandomContainerObject : InteractableObject
         
         if (lootTable == null)
         {
-            Debug.LogError("Loot table is not set");
+            Debug.LogError($"Loot table is not in {name}");
             return;
         }
         
