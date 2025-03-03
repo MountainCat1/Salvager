@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Items;
+using Pathfinding;
 using Pathfinding.Collections;
 
 public enum ItemType
@@ -21,7 +22,7 @@ public class ItemData
     public int Count = 1;
     public bool Stackable;
     public ItemType Type;
-
+    
     public static ItemData FromPrefabItem(ItemBehaviour item)
     {
         return new ItemData

@@ -12,12 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f327af661d9bc94abe3f843bc3401fe, type: 3}
   m_Name: Dormroom
   m_EditorClassIdentifier: 
-  <Name>k__BackingField: Misc Room
+  <Name>k__BackingField: Dromroom
   <Props>k__BackingField:
   - prefab: {fileID: 8667083905584706207, guid: ed1b0509ba49a84478bb36bb3f6d633d, type: 3}
     position: 0
     offset: {x: 0, y: 0}
     count: 4
   <StartingRoom>k__BackingField: 0
-  <Count>k__BackingField: 5
   <Enemies>k__BackingField: []

@@ -289,7 +289,8 @@ namespace CreatureControllers
         protected Creature GetNewTarget()
         {
             var targets = GetMemorizedCreatures()
-                .Where(x => Creature.GetAttitudeTowards(x) == Attitude.Hostile);
+                .Where(x => Creature.GetAttitudeTowards(x) == Attitude.Hostile)
+                .Where(x => CreatureManager.IsAliveAndActive(x));
 
             return targets
                 .OrderBy(x => Vector2.Distance(Creature.transform.position, x.transform.position))

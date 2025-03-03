@@ -12,9 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f327af661d9bc94abe3f843bc3401fe, type: 3}
   m_Name: Megatron Room
   m_EditorClassIdentifier: 
-  <Name>k__BackingField: Misc Room
+  <Name>k__BackingField: Megatron Room
   <Props>k__BackingField:
-  - prefab: {fileID: 8667083905584706207, guid: 63111e478a9f1fb4db996dd4ad9dd66a, type: 3}
+  - prefab: {fileID: 7375656772705244172, guid: 4d1da47dd6767eb4d80c7de2d4fb49ee, type: 3}
+    position: 3
+    offset: {x: 0, y: 0}
+    count: 3
+  - prefab: {fileID: 8667083905584706207, guid: 2a293cb8d2f2d1c468358523f8653425, type: 3}
     position: 3
     offset: {x: 0, y: 0}
     count: 3

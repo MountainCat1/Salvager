@@ -228,8 +228,8 @@ MonoBehaviour:
   <Weight>k__BackingField: 1
   <Description>k__BackingField: 
   <BaseCost>k__BackingField: 0
-  <Range>k__BackingField: 1
   <BaseAttackSpeed>k__BackingField: 1
+  <BaseRange>k__BackingField: 1
   <BaseDamage>k__BackingField: 1
   <PushFactor>k__BackingField: 1
   <ShakeFactor>k__BackingField: 0

@@ -48,6 +48,7 @@ namespace LevelSelector.Managers
             {
                 BadUpgrade(item);
             }
+            else
             {
                 NormalUpgrade(item);
             }
@@ -58,14 +59,14 @@ namespace LevelSelector.Managers
             if (!CanUpgrade(item))
                 return;
 
-            UpgradeItem(item);
-            
             // Remove scrap cost
             var scrapCost = GetUpgradeCost(item);
             var scrapCostData = ItemData.FromPrefabItem(scrapItemPrefab);
             scrapCostData.Count = scrapCost;
-            
+                        
             _crewManager.Inventory.RemoveItem(scrapCostData);
+            
+            UpgradeItem(item);
         }
 
         public void ScrapItem(ItemData itemData)
@@ -87,12 +88,12 @@ namespace LevelSelector.Managers
 
         public int GetScrapValue(ItemData itemData)
         {
-            return (int)(itemData.Prefab.BaseCost / 10) + 1;
+            return (int)(_itemManager.GetValue(itemData) / 10) + 1;
         }
 
         public int GetUpgradeCost(ItemData selectedItem)
         {
-            return 1;
+            return 1 + selectedItem.Modifiers.Count;
         }
 
         public bool CanUpgrade(ItemData selectedItem)

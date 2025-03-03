@@ -6,6 +6,8 @@ namespace CreatureControllers
 {
     public class UnitController : AiController
     {
+        public IInteractable InteractionTarget => _interactionTarget;
+        
         private Vector2? _moveCommandTarget;
         private Creature _target;
         private IInteractable _interactionTarget;
@@ -144,6 +146,8 @@ namespace CreatureControllers
                     interaction.Completed += () => { _interactionTarget = null; };
 
                     interaction.Canceled += () => { _interactionTarget = null; };
+                    
+                    _interaction = interaction;
                 }
 
                 Creature.SetMovement(Vector2.zero);

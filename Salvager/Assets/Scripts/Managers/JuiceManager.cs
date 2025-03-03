@@ -23,11 +23,28 @@ namespace Managers
         public float ConsumptionRate => consumerConsumptionRate * _creatures?.Count(x => x.gameObject.activeInHierarchy) ?? 0;
 
         [Inject] private ICreatureManager _creatureManager;
+        [Inject] private IInputManager _inputManager;
 
         [SerializeField] private float consumerConsumptionRate = 1;
         [SerializeField] private float damageRate = 0.25f;
+        [SerializeField] private float timeScaleOnOverdrive = 0.5f;
+        [SerializeField] private float juiceConsumptionOnOverdrive = 0.5f;
 
         private List<Creature> _creatures;
+
+        private bool _slowedDown = false;
+        
+        
+        private void Start()
+        {
+            _inputManager.Pause += OnPause;
+        }
+
+        private void OnPause()
+        {
+            _slowedDown = !_slowedDown;
+            Time.timeScale = _slowedDown ? timeScaleOnOverdrive : 1;
+        }
 
         public void Initialize(IList<Creature> creatures, decimal juice)
         {
@@ -76,7 +93,11 @@ namespace Managers
 
         private void Update()
         {
-            Juice -= (decimal)(ConsumptionRate * Time.deltaTime);
+            var consumption = (decimal)(ConsumptionRate * Time.deltaTime);
+            if(_slowedDown)
+                consumption *= (decimal)juiceConsumptionOnOverdrive;
+            
+            Juice -= consumption;
             if(Juice < 0)
                 Juice = 0;
             JuiceChanged?.Invoke();

@@ -12,17 +12,17 @@ public abstract class Weapon : ItemBehaviour
 
     [Inject] private ISoundPlayer _soundPlayer;
     [Inject] private ICameraShakeService _cameraShakeService;
-
-    [field: SerializeField] public float Range { get; set; }
+    
 
     [field: SerializeField] public float BaseAttackSpeed { get; set; }
-
+    [field: SerializeField] public float BaseRange { get; set; }
     [field: SerializeField] public float BaseDamage { get; set; }
     [field: SerializeField] public float PushFactor { get; set; }
     [field: SerializeField] public float ShakeFactor { get; set; }
     [field: SerializeField] public AudioClip HitSound { get; set; }
     [field: SerializeField] public AudioClip AttackSound { get; set; }
 
+    
     public virtual bool AllowToMoveOnCooldown => false;
     public virtual bool NeedsLineOfSight => false;
     public virtual bool ShootThroughAllies => false;
@@ -31,6 +31,7 @@ public abstract class Weapon : ItemBehaviour
     protected ItemData WeaponItemData;
     
     public bool IsOnCooldown => GetOnCooldown(new AttackContext());
+    public float Range => WeaponItemData.GetApplied(WeaponPropertyModifiers.Range, BaseRange);
 
     private float _lastAttackTime = -1;
 

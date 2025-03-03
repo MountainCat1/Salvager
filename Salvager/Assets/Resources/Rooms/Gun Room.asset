@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f327af661d9bc94abe3f843bc3401fe, type: 3}
   m_Name: Gun Room
   m_EditorClassIdentifier: 
-  <Name>k__BackingField: Misc Room
+  <Name>k__BackingField: Armory
   <Props>k__BackingField:
   - prefab: {fileID: 8667083905584706207, guid: 64923f5b43707624b9a71836ce417d75, type: 3}
     position: 1
