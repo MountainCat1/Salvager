@@ -1605,7 +1605,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   consumerConsumptionRate: 0.1
   damageRate: 0.25
-  timeScaleOnOverdrive: 0.5
+  timeScaleOnOverdrive: 0.35
   juiceConsumptionOnOverdrive: 2
 --- !u!1 &769271791
 GameObject:
@@ -4998,10 +4998,10 @@ Camera:
   m_LensShift: {x: 0, y: 0}
   m_NormalizedViewPortRect:
     serializedVersion: 2
-    x: 0.0014265336
-    y: 0.0012682308
-    width: 0.99714696
-    height: 0.99682945
+    x: 0
+    y: 0
+    width: 1
+    height: 1
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 34

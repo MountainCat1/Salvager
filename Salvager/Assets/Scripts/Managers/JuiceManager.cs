@@ -27,13 +27,12 @@ namespace Managers
 
         [SerializeField] private float consumerConsumptionRate = 1;
         [SerializeField] private float damageRate = 0.25f;
-        [SerializeField] private float timeScaleOnOverdrive = 0.5f;
+        [SerializeField] private float timeScaleOnOverdrive = 0.35f;
         [SerializeField] private float juiceConsumptionOnOverdrive = 0.5f;
 
         private List<Creature> _creatures;
 
         private bool _slowedDown = false;
-        
         
         private void Start()
         {
