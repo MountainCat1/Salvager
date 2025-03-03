@@ -12,7 +12,7 @@ namespace Items.Weapons
     {
         public float BaseMissChance = 0.05f;
         public float MissChanceForObstacle = 0.6f;
-        public float MissChanceForFriendly = 0.95f;
+        public float MissChanceForFriendly = 0.97f;
     }
 
     public abstract class Projectile : MonoBehaviour
