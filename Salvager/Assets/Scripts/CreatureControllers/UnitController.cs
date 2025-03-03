@@ -271,6 +271,9 @@ namespace CreatureControllers
             _target = null;
             _interactionTarget = null;
             _interaction?.Cancel();
+            
+            Creature.SetMovement(Vector2.zero);
+            InvokePathChanged(Enumerable.Empty<Vector2>());
         }
     }
 }
