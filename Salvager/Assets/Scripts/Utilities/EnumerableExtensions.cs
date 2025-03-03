@@ -31,5 +31,30 @@ namespace Utilities
 
             return selectedElement;
         }
+
+        public static T RandomElement<T>(this IEnumerable<T> enumerable, System.Random random)
+        {
+            if (enumerable == null)
+                throw new ArgumentNullException(nameof(enumerable));
+            
+            var count = 0;
+            T selectedElement = default(T);
+
+            foreach (var element in enumerable)
+            {
+                count++;
+                if (random.Next(0, count) == 0)
+                {
+                    selectedElement = element;
+                }
+            }
+
+            if (count == 0)
+            {
+                throw new InvalidOperationException("Sequence contains no elements");
+            }
+
+            return selectedElement;       
+        }
     }
 }

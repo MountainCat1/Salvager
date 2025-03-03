@@ -6,6 +6,7 @@ using LevelSelector.Managers;
 using Managers.LevelSelector;
 using Services.MapGenerators;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 using UnityEngine.Serialization;
 
 // ReSharper disable InconsistentNaming
@@ -132,6 +133,7 @@ public class GenerateMapSettingsData
     public Vector2Int gridSize;
     public float tileSize;
     public int seed;
+    public GenerateMapSettings.CorridorWidth corridorWidth;
 
     public static GenerateMapSettingsData FromSettings(GenerateMapSettings settings)
     {
@@ -142,7 +144,8 @@ public class GenerateMapSettingsData
             roomMaxSize = settings.roomMaxSize,
             gridSize = settings.gridSize,
             tileSize = settings.tileSize,
-            seed = settings.seed
+            seed = settings.seed,
+            corridorWidth = settings.corridorWidth
         };
     }
 
@@ -155,7 +158,8 @@ public class GenerateMapSettingsData
             roomMaxSize = levelDataMapSettings.roomMaxSize,
             gridSize = levelDataMapSettings.gridSize,
             tileSize = levelDataMapSettings.tileSize,
-            seed = levelDataMapSettings.seed
+            seed = levelDataMapSettings.seed,
+            corridorWidth = levelDataMapSettings.corridorWidth
         };
     }
 }

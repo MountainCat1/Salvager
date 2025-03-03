@@ -2882,6 +2882,7 @@ MonoBehaviour:
     gridSize: {x: 75, y: 75}
     tileSize: 1
     seed: 0
+    corridorWidth: 0
 --- !u!114 &1141345848
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4997,10 +4998,10 @@ Camera:
   m_LensShift: {x: 0, y: 0}
   m_NormalizedViewPortRect:
     serializedVersion: 2
-    x: 0.0014265336
-    y: 0.0012682308
-    width: 0.99714696
-    height: 0.99682945
+    x: 0
+    y: 0
+    width: 1
+    height: 1
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 34

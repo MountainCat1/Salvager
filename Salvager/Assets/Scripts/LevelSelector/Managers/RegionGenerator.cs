@@ -1,9 +1,9 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Constants;
 using LevelSelector.Managers;
 using UnityEngine;
-using UnityEngine.Serialization;
 using Utilities;
 using Zenject;
 
@@ -12,6 +12,7 @@ namespace Managers.LevelSelector
     public interface IRegionGenerator
     {
         Region Generate();
+        void SetSeed(int seed);
     }
 
     public class RegionGenerator : MonoBehaviour, IRegionGenerator
@@ -30,8 +31,23 @@ namespace Managers.LevelSelector
 
         [SerializeField] private int shopCount = 2;
 
+        private System.Random _random;
+
+        public void SetSeed(int seed)
+        {
+            _random = new System.Random(seed);
+        }
+
         public Region Generate()
         {
+            if (_random == null)
+            {
+                Debug.LogWarning("Seed was not provided, getting a random one instead");
+                
+                SetSeed(
+                    Guid.NewGuid().GetHashCode()
+                ); // Generate a seed if one hasn't been set
+            }
             return GenerateLevels(count, minJumps, maxJumpDistance, minDistance);
         }
 
@@ -63,7 +79,7 @@ namespace Managers.LevelSelector
         private void AddEndNodeFeature(List<LocationData> locations)
         {
             var endNode = locations.Single(l => l.Type == LocationType.EndNode);
-            
+
             _locationGenerator.AddEndFeature(endNode);
         }
 
@@ -113,7 +129,7 @@ namespace Managers.LevelSelector
                 if (position == Vector2.negativeInfinity)
                     continue;
 
-                var location = _locationGenerator.GenerateLocation();
+                var location = _locationGenerator.GenerateLocation(_random);
                 location.Position = position;
                 locations.Add(location);
                 positions.Add(position);
@@ -133,7 +149,7 @@ namespace Managers.LevelSelector
 
             do
             {
-                randomPosition = new Vector2(Random.value, Random.value);
+                randomPosition = new Vector2(_random.Value(), _random.Value());
                 attempts++;
             } while (
                 positions.Any(pos => Vector2.Distance(pos, randomPosition) < minDistance)
@@ -145,7 +161,7 @@ namespace Managers.LevelSelector
 
         private void AssignStartAndEnd(List<LocationData> locations)
         {
-            var startLocation = locations[Random.Range(0, locations.Count)];
+            var startLocation = locations[_random.Next(0, locations.Count)];
             var endLocation = locations
                 .OrderByDescending(l => Vector2.Distance(startLocation.Position, l.Position))
                 .First();

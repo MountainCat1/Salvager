@@ -6,7 +6,7 @@ namespace LevelSelector.Managers
 {
     public interface ILocationGenerator
     {
-        LocationData GenerateLocation();
+        LocationData GenerateLocation(System.Random random);
         void AddFeatures(LocationData location);
         void AddEndFeature(LocationData location);
     }
@@ -20,12 +20,12 @@ namespace LevelSelector.Managers
         [SerializeField] private int maxSecondaryFeatures = 3;
         [SerializeField] private int minSecondaryFeatures = 1;
         
-        public LocationData GenerateLocation()
+        public LocationData GenerateLocation(System.Random random)
         {
             var location = new LocationData()
             {
                 Id = System.Guid.NewGuid(),
-                MapSettings = GenerateMapSettingsData.FromSettings(GenerateMapSettings.GenerateRandom()),
+                MapSettings = GenerateMapSettingsData.FromSettings(GenerateMapSettings.GenerateRandom(random)),
                 Name = Constants.Names.SpaceStations.RandomElement(),
                 EnemySpawnManaPerSecond = Random.Range(0.5f, 3f),
             };
