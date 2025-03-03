@@ -56,8 +56,6 @@ namespace UI
             }
 
             UpdateCreatureInventory();
-
-            _dataManager.SaveData();
         }
 
         public void SetSelectedCreature(CreatureData creature)

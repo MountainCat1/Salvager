@@ -96,8 +96,6 @@ namespace UI
             _crewManager.Resources.AddMoney(_shopData.GetSellPrice(_itemManager.GetValue(item)) * transferItemCount);
 
             UpdateUI();
-
-            _dataManager.SaveData();
         }
 
         private void BuyItem(ItemData item)
@@ -108,8 +106,6 @@ namespace UI
             _crewManager.Resources.AddMoney(-1 * (_itemManager.GetValue(item) * transferItemCount));
 
             UpdateUI();
-
-            _dataManager.SaveData();
         }
 
         public void BuyFuel()

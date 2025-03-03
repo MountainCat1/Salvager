@@ -14,18 +14,45 @@ namespace Services.MapGenerators
         [SerializeField] public Vector2Int gridSize = default;
         [SerializeField] public float tileSize = 1f;
         [SerializeField] public int seed;
+        [SerializeField] public CorridorWidth corridorWidth;
+        
+        public enum CorridorWidth
+        {
+            Slim = 1,
+            Medium = 2,
+            Wide = 3
+        }
 
-        public static GenerateMapSettings GenerateRandom()
+        public static GenerateMapSettings GenerateRandom(System.Random random)
         {
             return new GenerateMapSettings
             {
                 roomCount = UnityEngine.Random.Range(10, 20),
-                roomMaxSize = new Vector2Int(UnityEngine.Random.Range(5, 10), UnityEngine.Random.Range(5, 10)),
-                roomMinSize = new Vector2Int(UnityEngine.Random.Range(3, 4), UnityEngine.Random.Range(3, 4)),
+                roomMaxSize = new Vector2Int(random.Next(5, 10), random.Next(5, 10)),
+                roomMinSize = new Vector2Int(random.Next(3, 4), random.Next(3, 4)),
                 gridSize = new Vector2Int(50, 50),
-                seed = UnityEngine.Random.Range(0, 1000000),
-                tileSize = 1f
+                seed = random.Next(0, 1000000),
+                tileSize = 1f,
+                corridorWidth = GetRandomCorridorWidth(random)
             };
+        }
+
+        private static CorridorWidth GetRandomCorridorWidth(System.Random random)
+        {
+            var randomValue = random.NextDouble();
+            
+            if (randomValue < 0.1) // 10% for slim corridors
+            {
+                return CorridorWidth.Slim;
+            }
+            else if (randomValue < 0.90) // 80% for medium corridors
+            {
+                return CorridorWidth.Medium;
+            }
+            else // 10% for wide corridors
+            {
+                return CorridorWidth.Wide;
+            }
         }
     }
     

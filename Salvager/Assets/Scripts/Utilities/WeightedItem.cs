@@ -98,3 +98,8 @@ public class WeightedItem<T>
 public class WeightedLocationFeature : WeightedBag<LocationFeature>
 {
 }
+
+[Serializable]
+public class WeightedInt : WeightedBag<int>
+{
+}
