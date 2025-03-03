@@ -1,4 +1,5 @@
 using System.Linq;
+using Interactables;
 using UnityEditor.Rendering;
 using UnityEngine;
 
@@ -42,19 +43,19 @@ namespace CreatureControllers
                 case null:
                     _target = null;
                     _interactionTarget = null;
-                    break;
+                    return;
                 case Creature creature:
                     _target = creature;
-                    break;
+                    return;
                 case IInteractable interactable:
                     if (interactable.IsInteractable)
                         _interactionTarget = interactable;
-                    break;
+                    return;
                 default:
                     _target = null;
                     _interactionTarget = null;
                     Debug.LogWarning($"Invalid target type {target.GetType()}");
-                    break;
+                    return;
             }
         }
 
@@ -266,6 +267,10 @@ namespace CreatureControllers
         public void Halt()
         {
             ClearMemory();
+            _moveCommandTarget = null;
+            _target = null;
+            _interactionTarget = null;
+            _interaction?.Cancel();
         }
     }
 }

@@ -50,7 +50,7 @@ MonoBehaviour:
   <Description>k__BackingField: 
   <BaseCost>k__BackingField: 50
   <BaseAttackSpeed>k__BackingField: 8
-  <BaseRange>k__BackingField: 0
+  <BaseRange>k__BackingField: 7.5
   <BaseDamage>k__BackingField: 2.5
   <PushFactor>k__BackingField: 50
   <ShakeFactor>k__BackingField: 1

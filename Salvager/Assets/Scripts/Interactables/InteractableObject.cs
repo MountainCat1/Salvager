@@ -1,12 +1,13 @@
 using System;
 using System.Collections.Generic;
+using Interactables;
 using Items;
 using JetBrains.Annotations;
 using Managers;
 using UnityEngine;
 using Zenject;
 
-public class InteractableObject : Entity, IInteractable
+public class InteractableObject : PropEntity, IInteractable
 {
     [Inject] private ISoundPlayer _soundPlayer = null!;
     [Inject] private ICursorManager _cursorManager = null!;
