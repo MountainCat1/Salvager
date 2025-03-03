@@ -584,7 +584,7 @@ MonoBehaviour:
   inventoryRoot: {fileID: 0}
   weapon: {fileID: 838743690902828222}
   <SightRange>k__BackingField: 13
-  <XpAmount>k__BackingField: 35
+  <XpAmount>k__BackingField: 40
   <Team>k__BackingField: 3
   <InteractionRange>k__BackingField: 1.5
 --- !u!114 &7748546943704470895
@@ -599,7 +599,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f9cef0923d2f48aa839a615fe078d63b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 10
+  maxHealth: 6
 --- !u!114 &7147432190938795954
 MonoBehaviour:
   m_ObjectHideFlags: 0

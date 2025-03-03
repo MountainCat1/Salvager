@@ -20,7 +20,7 @@ namespace Managers
     {
         [SerializeField] private float spawnRate = 0.05f;
         [SerializeField] private float minDistance = 20f;
-        [SerializeField] private float enemyManaPerRoomAwake = 50f;
+        [SerializeField] private float enemyManaPerRoomAwake = 25f;
 
         [SerializeField] private float minEnemiesPerSpawn = 1;
         [SerializeField] private float maxEnemiesPerSpawn = 2;
