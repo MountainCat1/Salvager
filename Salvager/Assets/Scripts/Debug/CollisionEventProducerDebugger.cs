@@ -11,7 +11,6 @@ namespace DefaultNamespace
             producer.TriggerEnter += collider => Debug.Log($"TriggerEnter: {collider.gameObject.name}");
             producer.TriggerExit += collider => Debug.Log($"TriggerExit: {collider.gameObject.name}");
             producer.TriggerStay += collider => Debug.Log($"TriggerStay: {collider.gameObject.name}");
-            
         }
     }
 }

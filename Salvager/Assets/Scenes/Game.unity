@@ -1605,7 +1605,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   consumerConsumptionRate: 0.1
   damageRate: 0.25
-  timeScaleOnOverdrive: 0.5
+  timeScaleOnOverdrive: 0.35
   juiceConsumptionOnOverdrive: 2
 --- !u!1 &769271791
 GameObject:
@@ -5120,7 +5120,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_ChannelMask: 1
-  m_Gain: 1
+  m_Gain: 0.65
   m_Use2DDistance: 1
   m_UseLocalSpace: 1
   m_ReactionSettings:
