@@ -2,6 +2,7 @@ using Data;
 using LevelSelector.Managers;
 using Managers;
 using Managers.LevelSelector;
+using UI;
 using Zenject;
 
 namespace Installer
@@ -21,7 +22,12 @@ namespace Installer
             Container.Bind<ILocationGenerator>().To<LocationGenerator>().FromComponentsInHierarchy().AsSingle().NonLazy();
             Container.Bind<IRegionGenerator>().To<RegionGenerator>().FromComponentsInHierarchy().AsSingle().NonLazy();
             Container.Bind<IRegionManager>().To<RegionManager>().FromComponentsInHierarchy().AsSingle().NonLazy();
+            Container.Bind<ITravelManager>().To<TravelManager>().FromComponentsInHierarchy().AsSingle().NonLazy();
             Container.Bind<ILocationInteractionManager>().To<LocationInteractionManager>().FromComponentsInHierarchy().AsSingle().NonLazy();
+            Container.Bind<IGameEventManager>().To<GameEventManager>().FromComponentsInHierarchy().AsSingle().NonLazy();
+            
+            // UI
+            Container.Bind<IPanelManagerUI>().To<PanelManagerUI>().FromComponentsInHierarchy().AsSingle();
         }        
     }
 }

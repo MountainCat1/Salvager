@@ -11,7 +11,8 @@ namespace Managers.LevelSelector
     {
         public event Action RegionChanged;
         public Region Region { get; }
-        public void SetRegion(Region region, Guid currentLocationId);
+        IEnumerable<RegionData> NextRegions { get; }
+        public void SetRegion(Region region, bool invokeEvent = true);
         public int GetDistance(Guid fromGuid, Guid toGuid);
         public int GetDistance(LocationData from, LocationData to);
     }
@@ -25,6 +26,10 @@ namespace Managers.LevelSelector
         [Inject] private IRegionGenerator _regionGenerator;
 
         public Region Region { get; private set; }
+
+        public IEnumerable<RegionData> NextRegions => _nextRegions;
+
+        private List<RegionData> _nextRegions = new();
 
         public int GetDistance(Guid fromGuid, Guid toGuid)
         {
@@ -66,14 +71,24 @@ namespace Managers.LevelSelector
 
             return -1; // No path found
         }
-        
 
 
-        public void SetRegion(Region region, Guid currentLocationId)
+
+
+        public void SetRegion(Region region, bool invokeEvent = true)
         {
             Region = region;
 
-            RegionChanged?.Invoke();
+            _nextRegions = new List<RegionData>()
+            {
+                RegionData.FromRegion(_regionGenerator.Generate()),
+                RegionData.FromRegion(_regionGenerator.Generate()),
+            };
+            
+            if (invokeEvent)
+            {
+                RegionChanged?.Invoke();
+            }
         }
     }
 }

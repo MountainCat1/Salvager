@@ -4,6 +4,7 @@ using System.Linq;
 using Constants;
 using Data;
 using Items;
+using LevelSelector.Managers;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Utilities;
@@ -41,7 +42,7 @@ namespace Managers.LevelSelector
             {
                 var region = _regionGenerator.Generate();
                 var currentNodeId = region.Locations.First(x => x.Type == LocationType.StartNode).Id;
-                _regionManager.SetRegion(region, currentNodeId);
+                _regionManager.SetRegion(region);
 
 
                 var startingInventory = new InventoryData()
@@ -87,7 +88,7 @@ namespace Managers.LevelSelector
         {
             var data = _dataManager.LoadData();
 
-            _regionManager.SetRegion(RegionData.ToRegion(data.Region), Guid.Parse(data.CurrentLocationId));
+            _regionManager.SetRegion(RegionData.ToRegion(data.Region));
 
             _dataManager.SetPrefabs(data);
 
