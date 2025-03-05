@@ -28,6 +28,7 @@ namespace Installer
             
             // UI
             Container.Bind<IPanelManagerUI>().To<PanelManagerUI>().FromComponentsInHierarchy().AsSingle();
+            Container.Bind<IOnCanvasFloatingTextUI>().To<OnCanvasFloatingTextUI>().FromComponentsInHierarchy().AsSingle();
         }        
     }
 }

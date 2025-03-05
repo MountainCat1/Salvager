@@ -58,7 +58,7 @@ namespace Managers
 
         private void UpdateWinConditions()
         {
-            foreach (var condition in _conditionStates.Keys)
+            foreach (var condition in _conditionStates.Keys.ToArray())
             {
                 var conditionState = condition.Check();
                 _conditionStates[condition] = conditionState;

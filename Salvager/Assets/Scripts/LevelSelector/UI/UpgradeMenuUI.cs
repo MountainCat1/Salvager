@@ -17,6 +17,8 @@ namespace UI
         [Inject] private ICrewManager _crewManager;
         [Inject] private IUpgradeManager _upgradeManager;
         [Inject] private DiContainer _diContainer;
+        [Inject] private ISoundPlayer _soundPlayer;
+        [Inject] private IOnCanvasFloatingTextUI _onCanvasFloatingTextUI;
 
         [SerializeField] private TextMeshProUGUI selectedItemName;
         [SerializeField] private TextMeshProUGUI selectedItemDescription;
@@ -31,6 +33,12 @@ namespace UI
         
         [SerializeField] private TextMeshProUGUI scrapValueText;
         [SerializeField] private TextMeshProUGUI upgradeCostText;
+        
+        [SerializeField] private AudioClip badUpgradeSound;
+        [SerializeField] private AudioClip goodUpgradeSound;
+        [SerializeField] private AudioClip normalUpgradeSound;
+        
+        [SerializeField] private Transform floatingTextParent;
 
         private ItemData _selectedItem;
 
@@ -66,8 +74,24 @@ namespace UI
 
         private void UpgradeItem()
         {
-            _upgradeManager.PlayerBuyUpgrade(_selectedItem);
-
+            var upgradeResult = _upgradeManager.PlayerBuyUpgrade(_selectedItem);
+            
+            switch (upgradeResult)
+            {
+                case UpgradeResult.Bad:
+                    _soundPlayer.PlaySoundGlobal(badUpgradeSound, SoundType.UI);
+                    _onCanvasFloatingTextUI.Show("Upgrade failed", floatingTextParent.transform.position, Color.red);;
+                    break;
+                case UpgradeResult.Good:
+                    _soundPlayer.PlaySoundGlobal(goodUpgradeSound, SoundType.UI);
+                    _onCanvasFloatingTextUI.Show("Upgrade successful", floatingTextParent.transform.position, Color.green);
+                    break;
+                case UpgradeResult.Normal:
+                    _soundPlayer.PlaySoundGlobal(normalUpgradeSound, SoundType.UI);
+                    _onCanvasFloatingTextUI.Show("Upgrade successful", floatingTextParent.transform.position, Color.yellow);
+                    break;
+            }
+            
             UpdateUI();
         }
 

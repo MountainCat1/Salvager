@@ -1272,6 +1272,7 @@ Transform:
   - {fileID: 369716997}
   - {fileID: 2040230827}
   - {fileID: 1908259156}
+  - {fileID: 676928708}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &189119158
@@ -3385,6 +3386,52 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 4920142890288952033, guid: 69eafd2297c73fe45b84e8e816a35281, type: 3}
   m_PrefabInstance: {fileID: 671830057}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &676928707
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 676928708}
+  - component: {fileID: 676928709}
+  m_Layer: 0
+  m_Name: OnCanvasFloatingTextUI
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &676928708
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 676928707}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 189119157}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &676928709
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 676928707}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aaff661dea114989b3e31974eeb1b5fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  floatingTextPrefab: {fileID: 4078753960069299248, guid: cf9c44ae0d229954693d64042bba1900, type: 3}
+  canvas: {fileID: 2142539846}
 --- !u!1 &687958470
 GameObject:
   m_ObjectHideFlags: 0
@@ -9293,6 +9340,10 @@ MonoBehaviour:
   scrapButton: {fileID: 1366404336}
   scrapValueText: {fileID: 1628116639}
   upgradeCostText: {fileID: 806419237}
+  badUpgradeSound: {fileID: 8300000, guid: 8c96ac97b9e3c9a4ca94d1c7a7823530, type: 3}
+  goodUpgradeSound: {fileID: 8300000, guid: 402ec0e3f813dbb4fb0baf4f1f22785b, type: 3}
+  normalUpgradeSound: {fileID: 8300000, guid: f55c4d302f66c1f4ba3a397272742d15, type: 3}
+  floatingTextParent: {fileID: 1894976943}
 --- !u!1 &1884435576
 GameObject:
   m_ObjectHideFlags: 0
