@@ -31,10 +31,7 @@ namespace LevelSelector.Managers
         [Inject] IDataManager _dataManager;
         [Inject] IDataResolver _dataResolver;
         [Inject] ICrewManager _crewManager;
-        
-        [SerializeField] private UISlide inventorySlide;
-        [SerializeField] private UISlide shopSlide;
-        [SerializeField] private UISlide upgradeSlide;
+        [Inject] IPanelManagerUI _panelManagerUI;
         
         [SerializeField] private SceneReference levelScene;
         
@@ -79,10 +76,7 @@ namespace LevelSelector.Managers
                 IsEnabled = _ => true,
                 OnClick = _ =>
                 {
-                    shopSlide.HidePanel();
-                    upgradeSlide.HidePanel();
-                    
-                    inventorySlide.TogglePanel();
+                    _panelManagerUI.Toggle(PanelManagerUI.UIPanel.Inventory);
                 }
             });   
             
@@ -93,10 +87,7 @@ namespace LevelSelector.Managers
                 IsEnabled = _ => true,
                 OnClick = location =>
                 {
-                    inventorySlide.HidePanel();
-                    shopSlide.HidePanel();
-                    
-                    upgradeSlide.TogglePanel();
+                    _panelManagerUI.Toggle(PanelManagerUI.UIPanel.Upgrade);
                 }
             });
             
@@ -107,10 +98,18 @@ namespace LevelSelector.Managers
                 IsEnabled = _ => true,
                 OnClick = _ =>
                 {
-                    inventorySlide.HidePanel();
-                    upgradeSlide.HidePanel();
-                    
-                    shopSlide.TogglePanel();
+                    _panelManagerUI.Toggle(PanelManagerUI.UIPanel.Shop);
+                }
+            }); 
+            
+            _interactions.Add(new LocationInteraction
+            {
+                Message = "<b>Jump</b>",
+                IsDisplayed = location => location.Type == LocationType.EndNode,
+                IsEnabled = location => _crewManager.CurrentLocationId == location.Id,
+                OnClick = _ =>
+                {
+                    _panelManagerUI.Show(PanelManagerUI.UIPanel.Travel);
                 }
             }); 
         }

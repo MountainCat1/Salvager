@@ -13,6 +13,7 @@ namespace Managers
         event Action VictoryAchieved;
         public IEnumerable<KeyValuePair<VictoryCondition, bool>>  VictoryConditions { get; }
         void Check();
+        void SetVictoryConditions(VictoryCondition[] defaultVictoryConditions);
     }
 
     public class VictoryConditionManager : MonoBehaviour, IVictoryConditionManager
@@ -26,17 +27,13 @@ namespace Managers
         [Inject] private ISignalManager _signalManager;
         [Inject] private DiContainer _diContainer;
         
-
-        // Serialized Variables
-        [SerializeField] private List<VictoryCondition> victoryConditions;
-        
         // Accessors
         public IEnumerable<KeyValuePair<VictoryCondition, bool>> VictoryConditions => _conditionStates;
         
         // Private Variables
         private readonly Dictionary<VictoryCondition, bool> _conditionStates = new();
-
-        private void Start()
+        
+        public void SetVictoryConditions(VictoryCondition[] victoryConditions)
         {
             foreach (var condition in victoryConditions)
             {
@@ -61,7 +58,7 @@ namespace Managers
 
         private void UpdateWinConditions()
         {
-            foreach (var condition in victoryConditions)
+            foreach (var condition in _conditionStates.Keys)
             {
                 var conditionState = condition.Check();
                 _conditionStates[condition] = conditionState;

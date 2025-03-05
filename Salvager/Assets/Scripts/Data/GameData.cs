@@ -121,7 +121,8 @@ public enum LocationType
 {
     Default,
     EndNode,
-    StartNode
+    StartNode,
+    BossNode
 }
 
 [Serializable]

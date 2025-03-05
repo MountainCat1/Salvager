@@ -18,7 +18,7 @@ namespace Managers.LevelSelector
 
         public LocationData GetLocation(Guid locationId)
         {
-            return _locations.First(l => l.Id == locationId);
+            return _locations.FirstOrDefault(l => l.Id == locationId);
         }
     }
 }

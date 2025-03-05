@@ -48,15 +48,26 @@ namespace UI
             _selectedLocation = levelSelectorUI.SelectedLocation ??
                                 _regionManager.Region.GetLocation(_crewManager.CurrentLocationId);
 
+            if (_selectedLocation == null)
+            {
+                nameText.text = "No location selected";
+                descriptionText.text = "Select a location to view details";
+                return;
+            }
+
             Debug.Log($"Selected level: {_selectedLocation.Name}");
 
             // Update UI
             nameText.text = _selectedLocation.Name;
             descriptionText.text = ConstructDescription(_selectedLocation);
 
-            var locationData = _dataManager
-                .GetData().Region.Locations
-                .First(x => x.Id == _selectedLocation.Id);
+            var locationData = _regionManager.Region.Locations
+                .FirstOrDefault(x => x.Id == _selectedLocation.Id);
+
+            if (locationData == null)
+            {
+                locationData = _regionManager.Region.Locations.First(x => x.Type == LocationType.StartNode);                
+            }
 
             foreach (Transform child in locationInteractionsParent)
             {
