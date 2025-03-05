@@ -18,7 +18,7 @@ namespace UI
         [Inject] private IUpgradeManager _upgradeManager;
         [Inject] private DiContainer _diContainer;
         [Inject] private ISoundPlayer _soundPlayer;
-        [Inject] private IOnCanvasFloatingTextUI _onCanvasFloatingTextUI;
+        [Inject] private IFloatingTextService _floatingTextService;
 
         [SerializeField] private TextMeshProUGUI selectedItemName;
         [SerializeField] private TextMeshProUGUI selectedItemDescription;
@@ -80,15 +80,15 @@ namespace UI
             {
                 case UpgradeResult.Bad:
                     _soundPlayer.PlaySoundGlobal(badUpgradeSound, SoundType.UI);
-                    _onCanvasFloatingTextUI.Show("Upgrade failed", floatingTextParent.transform.position, Color.red);;
+                    _floatingTextService.Show("Upgrade failed", floatingTextParent.transform.position, Color.red, 1.5f);;
                     break;
                 case UpgradeResult.Good:
                     _soundPlayer.PlaySoundGlobal(goodUpgradeSound, SoundType.UI);
-                    _onCanvasFloatingTextUI.Show("Upgrade successful", floatingTextParent.transform.position, Color.green);
+                    _floatingTextService.Show("Upgrade successful", floatingTextParent.transform.position, Color.green, 1.5f);
                     break;
                 case UpgradeResult.Normal:
                     _soundPlayer.PlaySoundGlobal(normalUpgradeSound, SoundType.UI);
-                    _onCanvasFloatingTextUI.Show("Upgrade successful", floatingTextParent.transform.position, Color.yellow);
+                    _floatingTextService.Show("Upgrade successful", floatingTextParent.transform.position, Color.yellow, 1.5f);
                     break;
             }
             
