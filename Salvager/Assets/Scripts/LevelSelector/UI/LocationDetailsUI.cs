@@ -62,7 +62,12 @@ namespace UI
             descriptionText.text = ConstructDescription(_selectedLocation);
 
             var locationData = _regionManager.Region.Locations
-                .First(x => x.Id == _selectedLocation.Id);
+                .FirstOrDefault(x => x.Id == _selectedLocation.Id);
+
+            if (locationData == null)
+            {
+                locationData = _regionManager.Region.Locations.First(x => x.Type == LocationType.StartNode);                
+            }
 
             foreach (Transform child in locationInteractionsParent)
             {

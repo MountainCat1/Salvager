@@ -278,8 +278,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eabac21166094ecda4cadcbf5b9d48c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  victoryConditions:
-  - {fileID: 11400000, guid: 0cc818dd58617d4428f971d715268efe, type: 2}
 --- !u!1 &279398651
 GameObject:
   m_ObjectHideFlags: 0
@@ -1559,6 +1557,11 @@ MonoBehaviour:
     sceneAsset: {fileID: 102900000, guid: 41aa961e06241644d89eaac9d2a4bb7a, type: 3}
     scenePath: Assets/Scenes/Level Select.unity
   delayToGoBackToLevelSelector: 4
+  defaultVictoryConditions:
+  - {fileID: 11400000, guid: 0cc818dd58617d4428f971d715268efe, type: 2}
+  bossVictoryConditions:
+  - {fileID: 11400000, guid: 0cc818dd58617d4428f971d715268efe, type: 2}
+  - {fileID: 0}
 --- !u!1 &725636378
 GameObject:
   m_ObjectHideFlags: 0
@@ -2882,7 +2885,7 @@ MonoBehaviour:
     gridSize: {x: 75, y: 75}
     tileSize: 1
     seed: 0
-    corridorWidth: 0
+    corridorWidth: 2
 --- !u!114 &1141345848
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5000,8 +5003,8 @@ Camera:
     serializedVersion: 2
     x: 0
     y: 0
-    width: 1
-    height: 1
+    width: 0.96
+    height: 0.9571544
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 34

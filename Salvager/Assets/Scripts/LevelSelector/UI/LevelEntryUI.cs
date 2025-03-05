@@ -10,6 +10,7 @@ namespace UI
         [SerializeField] private TextMeshProUGUI levelNameText;
         [SerializeField] private GameObject presenceMarker;
         [SerializeField] private GameObject shopMarker;
+        [SerializeField] private GameObject exitMarker;
 
         public LocationData Location => _location;
 
@@ -23,7 +24,7 @@ namespace UI
             _location = location;
             _selectLevel = selectLevel;
 
-            if (location.Type == LocationType.EndNode)
+            if (location.Type == LocationType.BossNode)
             {
                 levelNameText.color = Color.red;
             }
@@ -50,6 +51,7 @@ namespace UI
             }
 
             shopMarker.SetActive(location.ShopData != null);
+            exitMarker.SetActive(location.Type == LocationType.EndNode);
 
 
             levelNameText.text = location.Name + $" ({distanceToCurrent})";

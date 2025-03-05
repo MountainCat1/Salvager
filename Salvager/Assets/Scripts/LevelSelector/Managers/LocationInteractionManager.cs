@@ -106,7 +106,7 @@ namespace LevelSelector.Managers
             {
                 Message = "<b>Jump</b>",
                 IsDisplayed = location => location.Type == LocationType.EndNode,
-                IsEnabled = location => location.Visited == true,
+                IsEnabled = location => _crewManager.CurrentLocationId == location.Id,
                 OnClick = _ =>
                 {
                     _panelManagerUI.Show(PanelManagerUI.UIPanel.Travel);

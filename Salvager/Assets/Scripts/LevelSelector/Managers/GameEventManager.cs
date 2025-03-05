@@ -59,6 +59,26 @@ namespace LevelSelector.Managers
                 
                 EventTriggered?.Invoke(gameEvent);       
             }
+            
+            // var currentLocation = _regionManager.Region.GetLocation(_crewManager.CurrentLocationId);
+            //
+            // if (currentLocation.Type == LocationType.EndNode && currentLocation.Visited)
+            // {
+            //     var gameEvent = new GameEvent
+            //     {
+            //         Name = $"Defeat at {currentLocation.Name}",
+            //         Description = $"You have been defeated at {currentLocation.Name}. You have failed your mission.",
+            //         Options = new []
+            //         {
+            //             new GameEventOption()
+            //             {
+            //                 Name = "Emptiness...",
+            //             }
+            //         }
+            //     };
+            //     
+            //     EventTriggered?.Invoke(gameEvent);
+            // }
         }
 
         private void OnCrewChanged()
@@ -90,12 +110,12 @@ namespace LevelSelector.Managers
         {
             var location = _regionManager.Region.GetLocation(_crewManager.CurrentLocationId);
             
-            if(location.Type == LocationType.EndNode)
+            if(location.Type == LocationType.BossNode)
             {
                 var gameEvent = new GameEvent
                 {
                     Name = "Danger standing in our way",
-                    Description = $"You have reached the end of the region. If we want to continue our journey, we must face the danger that resides in {location.Name} station.",
+                    Description = $"We encounter readings of some powerful creature on this station. We should be careful.",
                     Options = new []
                     {
                         new GameEventOption()

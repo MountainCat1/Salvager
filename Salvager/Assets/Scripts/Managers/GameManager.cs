@@ -8,6 +8,7 @@ using Services.MapGenerators;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Utilities;
+using VictoryConditions;
 using Zenject;
 
 namespace Managers
@@ -44,6 +45,10 @@ namespace Managers
         [SerializeField] private SceneReference levelSelectorScene;
             
         [SerializeField] private float delayToGoBackToLevelSelector = 4f;
+        
+        [SerializeField] private VictoryCondition[] defaultVictoryConditions;
+        [SerializeField] private VictoryCondition[] bossVictoryConditions;
+        
         
         private MapData _map;
         private GameData _data;
@@ -163,6 +168,9 @@ namespace Managers
             // {
             //     SpawnEnemyInNonStartingRoom();
             // }
+
+            var isBossLocation = GameSettings.Location.Type == LocationType.BossNode;
+            _victoryConditionManager.SetVictoryConditions(isBossLocation ? bossVictoryConditions : defaultVictoryConditions);
 
             _victoryConditionManager.Check();
             

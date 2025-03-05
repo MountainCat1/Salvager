@@ -64,9 +64,9 @@ namespace Managers.LevelSelector
             if (locations.Count == 0)
                 return region;
 
-            AssignStartAndEnd(locations);
+            AssignNodeTypes(locations);
             AddFeatures(locations);
-            AddEndNodeFeature(locations);
+            AddBossNodeFeature(locations);
             GenerateConnections(locations, maxJumpDistance);
             EnsureGraphConnectivity(locations);
             GenerateShops(locations, shopCount);
@@ -76,9 +76,9 @@ namespace Managers.LevelSelector
             return region;
         }
 
-        private void AddEndNodeFeature(List<LocationData> locations)
+        private void AddBossNodeFeature(List<LocationData> locations)
         {
-            var endNode = locations.Single(l => l.Type == LocationType.EndNode);
+            var endNode = locations.Single(l => l.Type == LocationType.BossNode);
 
             _locationGenerator.AddEndFeature(endNode);
         }
@@ -159,14 +159,20 @@ namespace Managers.LevelSelector
             return attempts >= maxAttempts ? Vector2.negativeInfinity : randomPosition;
         }
 
-        private void AssignStartAndEnd(List<LocationData> locations)
+        private void AssignNodeTypes(List<LocationData> locations)
         {
             var startLocation = locations[_random.Next(0, locations.Count)];
             var endLocation = locations
                 .OrderByDescending(l => Vector2.Distance(startLocation.Position, l.Position))
                 .First();
+            var bossLocation = locations
+                .OrderByDescending(l => Vector2.Distance(startLocation.Position, l.Position))
+                .Skip(1)
+                .First();
+            
             startLocation.Type = LocationType.StartNode;
             endLocation.Type = LocationType.EndNode;
+            bossLocation.Type = LocationType.BossNode;
         }
 
         private void GenerateConnections(List<LocationData> locations, float maxJumpDistance)
