@@ -29,13 +29,11 @@ namespace UI
         [SerializeField] private TextMeshProUGUI juicePrice;
         [SerializeField] private Button buyJuiceButton;
 
-        private UISlide _uiSlide;
         private ShopData _shopData;
 
         private void Start()
         {
             _crewManager.Changed += UpdateUI;
-            _uiSlide = GetComponent<UISlide>();
 
             UpdateUI();
         }

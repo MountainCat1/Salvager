@@ -28,7 +28,6 @@ public class CrewEntryUI : MonoBehaviour
 
     public void Initialize(CreatureData crewMember, Action<CreatureData> onClick, Action<CreatureData, bool> onToggle)
     {
-        // crewMemberImage.sprite = crewMember.Sprite;
         crewMemberName.text = crewMember.Name;
         _crewMember = crewMember;
         

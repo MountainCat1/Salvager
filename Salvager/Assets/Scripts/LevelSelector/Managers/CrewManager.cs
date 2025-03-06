@@ -14,7 +14,6 @@ namespace Managers
     {
         event Action Changed;
         event Action ChangedLocation;
-        event Action<CreatureData> SelectedCreature;
         void ReRollCrew();
         public ICollection<CreatureData> Crew { get; }
         InventoryData Inventory { get; }
@@ -35,7 +34,6 @@ namespace Managers
     public class CrewManager : MonoBehaviour, ICrewManager
     {
         public event Action Changed;
-        public event Action<CreatureData> SelectedCreature;
         public event Action ChangedLocation;
 
         [Inject] private IDataManager _dataManager;

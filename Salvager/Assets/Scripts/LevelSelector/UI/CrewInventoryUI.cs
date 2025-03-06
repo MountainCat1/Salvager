@@ -22,14 +22,16 @@ namespace UI
         [SerializeField] private Transform crewInventoryContainer;
 
         [SerializeField] private TextMeshProUGUI crewNameText;
+        
+        [SerializeField] private CrewManagerUI crewManagerUI;
 
         private CreatureData _selectedCreature;
 
         private void Start()
         {
-            _crewManager.SelectedCreature += SetSelectedCreature;
             _crewManager.Changed += UpdateCreatureInventory;
-            GetComponent<UISlide>();
+            
+            crewManagerUI.SelectedACreature += SetSelectedCreature;
         }
 
         // public void Set(ICollection<CreatureData> crew, InventoryData inventory)
