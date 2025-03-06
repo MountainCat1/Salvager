@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Zenject;
 
 namespace UI
 {
@@ -21,6 +22,8 @@ namespace UI
         [SerializeField] private UISlide upgradePanel;
         
         private Dictionary<UIPanel, UISlide> _panels;
+        
+        [Inject] private IInputManager _inputManager;
 
         private void Start()
         {
@@ -34,6 +37,13 @@ namespace UI
             
             if(_panels.Any(x => x.Value == null))
                 Debug.LogWarning($"Some panels are not assigned. {string.Join(", ", _panels.Where(x => x.Value == null).Select(x => x.Key))}");;
+            
+            _inputManager.UI.GoBack += OnGoBack;
+        }
+
+        private void OnGoBack()
+        {
+            ClearPanels();
         }
 
         public enum UIPanel

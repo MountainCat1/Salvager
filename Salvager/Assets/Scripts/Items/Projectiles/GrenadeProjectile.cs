@@ -118,7 +118,7 @@ namespace Items.Weapons
                 if (Creature.IsCreature(hitCollider.gameObject))
                 {
                     
-                    if (hitDamageable != null && hitDamageable != _attackContext.Attacker)
+                    if (!ReferenceEquals(hitDamageable, _attackContext.Attacker))
                     {
                         // Apply damage to the creature
                         HandleHit(hitDamageable);

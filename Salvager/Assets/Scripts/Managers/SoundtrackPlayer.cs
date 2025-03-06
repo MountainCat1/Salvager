@@ -12,18 +12,14 @@ namespace Managers
 
     [RequireComponent(typeof(AudioSource))]
     [RequireComponent(typeof(Animator))]
-    public class SoundManager : MonoBehaviour, ISoundManager
+    public class SoundtrackPlayer : MonoBehaviour, ISoundManager
     {
-        [Inject] private ISoundPlayer _soundPlayer;
-
         [SerializeField] private List<AudioClip> soundtracks;
         
         private AudioClip _lastSoundtrack;
         private AudioSource _soundtrackAudioSource;
         private Animator _soundtrackAnimator;
         
-        private static readonly int PlayerDeath = Animator.StringToHash("PlayerDeath");
-        private static readonly int Phase = Animator.StringToHash("Phase");
 
         private void Awake()
         {
@@ -33,21 +29,17 @@ namespace Managers
 
         private void Start()
         {
-            _soundPlayer.AddAudioSource(_soundtrackAudioSource, SoundType.Music);
-            PlaySoundtrack(soundtracks.First());
+            PlaySoundtrack(soundtracks.RandomElement());
         }
         
-        private void OnDestroy()
-        {
-            if (_soundPlayer != null)
-            {
-                _soundPlayer.RemoveAudioSource(_soundtrackAudioSource, SoundType.Music);
-            }
-        }
-
         private void Update()
         {
-            if (!_soundtrackAudioSource.isPlaying)
+private void Update()
+{
+    // check if the soundtrack ended by comparing the length of the audio clip and the time passed
+    if (_soundtrackAudioSource.clip != null && _soundtrackAudioSource.clip.length - _soundtrackAudioSource.time < 0.1f)
+        PlayNextSoundtrack();
+}
                 PlayNextSoundtrack();
         }
 

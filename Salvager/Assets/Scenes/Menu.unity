@@ -627,18 +627,18 @@ MonoBehaviour:
     Mouse Scroll - zoom
     in/out
 
-    -/+ - speed up/slow down the game
+    TAB - toggle slowing down time for increased juice consumption
 
-    I - open inventory
+    I
+    - open inventory
 
-    RMB
-    - move to/interact with
+    RMB - move to/interact with
 
     LMB - drag to select
 
 
-    <i>Remember to equip
-    your crew with weapons before landing on a station!</i>'
+    <i>Remember
+    to equip your crew with weapons before landing on a station!</i>'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 6cf22d676eb883641ae9df7559df82a3, type: 2}
   m_sharedMaterial: {fileID: -5837937748513333117, guid: 6cf22d676eb883641ae9df7559df82a3, type: 2}

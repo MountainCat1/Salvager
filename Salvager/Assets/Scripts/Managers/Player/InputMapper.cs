@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using JetBrains.Annotations;
 using Managers;
+using Markers;
 using UnityEngine;
 using Utilities;
 using Zenject;
@@ -12,6 +14,7 @@ public interface IInputMapper
     public event Action<Vector2> OnWorldPressed2;
     ICollection<Entity> GetEntitiesUnderMouse();
     Entity GetEntityUnderMouse();
+    Creature GetCreatureUnderMouse();
     public void WaitForFollowUpClick(Action<Vector2> callback, Texture2D cursor = null);
     public void CancelFollowUpClick();
 }
@@ -119,6 +122,7 @@ public class InputMapper : MonoBehaviour, IInputMapper
     [CanBeNull]
     public Entity GetEntityUnderMouse()
     {
+        // This is not very good, it should use entity collider
         var mousePosition = _camera.ScreenToWorldPoint(Input.mousePosition);
         var hit = Physics2D.Raycast(mousePosition, Vector2.zero); // Raycast in 2D
 
@@ -128,6 +132,37 @@ public class InputMapper : MonoBehaviour, IInputMapper
             if (entity != null)
             {
                 return entity;
+            }
+        }
+
+        return null;
+    }
+    
+    [CanBeNull]
+    public Creature GetCreatureUnderMouse()
+    {
+        var mousePosition = _camera.ScreenToWorldPoint(Input.mousePosition);
+        var filter = new ContactFilter2D
+        {
+            useTriggers = true
+        };
+        filter.SetLayerMask(1 << LayerMask.NameToLayer("CreatureHit")); // Correct way
+        filter.useLayerMask = true;
+
+        Collider2D[] results = new Collider2D[1];
+
+        int hitCount = Physics2D.OverlapPoint(mousePosition, filter, results);
+    
+        if (hitCount > 0) // Ensure we got a valid hit
+        {
+            var result = results[0]; // Safe access
+            if (result != null)
+            {
+                var creatureCollider = result.GetComponent<CreatureCollider>();
+                if (creatureCollider != null)
+                {
+                    return creatureCollider.Creature;
+                }
             }
         }
 

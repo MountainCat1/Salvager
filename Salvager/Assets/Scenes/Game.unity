@@ -4399,6 +4399,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   soundtracks:
   - {fileID: 8300000, guid: 994b208a91cc2d6419aa0f26333e38fb, type: 3}
+  - {fileID: 8300000, guid: bc9128bf294eea148af91f08853d56bc, type: 3}
 --- !u!95 &1792608390
 Animator:
   serializedVersion: 5
@@ -5004,8 +5005,8 @@ Camera:
     serializedVersion: 2
     x: 0
     y: 0
-    width: 0.96
-    height: 0.9571544
+    width: 1
+    height: 1
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 34
