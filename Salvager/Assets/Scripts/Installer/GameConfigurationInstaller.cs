@@ -2,7 +2,7 @@
 using UnityEngine;
 using Zenject;
 
-[CreateAssetMenu(fileName = "ConfigurationInstaller", menuName = "Installers/ConfigurationInstaller")]
+[CreateAssetMenu(fileName = "GameConfigurationInstaller", menuName = "Installers/GameConfigurationInstaller")]
 public class GameConfigurationInstaller : ScriptableObjectInstaller<GameConfigurationInstaller>
 {
     [SerializeField] private GameConfiguration gameConfiguration;
