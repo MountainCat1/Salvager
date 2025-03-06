@@ -1,3 +1,4 @@
+using System;
 using Data;
 using Managers;
 using UI;
@@ -6,6 +7,10 @@ using Zenject;
 
 public class CrewManagerUI : MonoBehaviour
 {
+    public event Action<CreatureData> SelectedACreature;
+
+    public CreatureData SelectedCreature => _selectedCreature;
+    
     [Inject] private IDataManager _dataManager;
     [Inject] private DiContainer _diContainer;
     [Inject] private ICrewManager _crewManager;
@@ -13,6 +18,7 @@ public class CrewManagerUI : MonoBehaviour
 
     [SerializeField] private CrewEntryUI crewEntryUI;
     [SerializeField] private Transform crewListParent;
+    [SerializeField] private CrewInventoryUI crewInventoryUI;
 
     private CreatureData _selectedCreature;
     
@@ -52,11 +58,8 @@ public class CrewManagerUI : MonoBehaviour
 
     private void OnSelect(CreatureData creature)
     {
-        if (_selectedCreature == creature)
-            _panelManager.Toggle(PanelManagerUI.UIPanel.Inventory);
-        else
-            _panelManager.Show(PanelManagerUI.UIPanel.Inventory);
-        
         _selectedCreature = creature;
+        
+        SelectedACreature?.Invoke(_selectedCreature);
     }
 }

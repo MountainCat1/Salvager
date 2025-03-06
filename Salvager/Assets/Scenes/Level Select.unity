@@ -2411,6 +2411,7 @@ MonoBehaviour:
   creatureInventoryContainer: {fileID: 1279635158}
   crewInventoryContainer: {fileID: 626127230}
   crewNameText: {fileID: 956361051}
+  crewManagerUI: {fileID: 1144950475}
 --- !u!114 &578140115
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5147,6 +5148,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   crewEntryUI: {fileID: 1480450335021282356, guid: 20adbc15b0af4c047a31a8a670a88d63, type: 3}
   crewListParent: {fileID: 550437887}
+  crewInventoryUI: {fileID: 0}
 --- !u!1 &1172045864
 GameObject:
   m_ObjectHideFlags: 0
