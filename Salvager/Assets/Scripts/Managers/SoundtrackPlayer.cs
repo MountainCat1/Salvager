@@ -34,8 +34,12 @@ namespace Managers
         
         private void Update()
         {
-            // check if the soundtrack ended by comparing the length of the audio clip and the time passed
-            if (_soundtrackAudioSource.clip.length - _soundtrackAudioSource.time < 0.1f)
+private void Update()
+{
+    // check if the soundtrack ended by comparing the length of the audio clip and the time passed
+    if (_soundtrackAudioSource.clip != null && _soundtrackAudioSource.clip.length - _soundtrackAudioSource.time < 0.1f)
+        PlayNextSoundtrack();
+}
                 PlayNextSoundtrack();
         }
 
