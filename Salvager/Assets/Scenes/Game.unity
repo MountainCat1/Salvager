@@ -4399,6 +4399,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   soundtracks:
   - {fileID: 8300000, guid: 994b208a91cc2d6419aa0f26333e38fb, type: 3}
+  - {fileID: 8300000, guid: bc9128bf294eea148af91f08853d56bc, type: 3}
 --- !u!95 &1792608390
 Animator:
   serializedVersion: 5
