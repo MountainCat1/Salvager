@@ -25,7 +25,6 @@ namespace Managers
             InGameResources resources,
             Guid currentLocationId
         );
-        void SelectCreature(CreatureData creature);
         InGameResources Resources { get; }
         public Guid CurrentLocationId { get; }
         void ChangeCurrentLocation(LocationData toLocation);
@@ -86,17 +85,6 @@ namespace Managers
         public void ReRollCrew()
         {
             throw new NotImplementedException();
-        }
-
-        public void SelectCreature(CreatureData creature)
-        {
-            if (!Crew.Contains(creature))
-            {
-                Debug.LogError("Creature not in crew");
-                return;
-            }
-
-            SelectedCreature?.Invoke(creature);
         }
 
         public void ChangeCurrentLocation(LocationData selectedLocation)

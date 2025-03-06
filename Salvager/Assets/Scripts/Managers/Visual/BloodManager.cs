@@ -15,6 +15,8 @@ namespace Managers.Visual
         [Inject] private ICreatureManager _creatureManager;
 
         [SerializeField] private GameObject bloodPrefab;
+        [SerializeField] private GameObject bloodParticlesPrefab;
+        
         [SerializeField] private int bloodPoolSize = 100;
         [SerializeField] private const float PixelsPerUnit = 16;
         private float GridSize => 1 / PixelsPerUnit;
@@ -61,6 +63,8 @@ namespace Managers.Visual
             bloodGo.transform.position = snappedPosition;
             bloodGo.SetActive(true);
             _bloodPool.Enqueue(bloodGo);
+            
+            Instantiate(bloodParticlesPrefab, snappedPosition, Quaternion.identity);
         }
     }
 }

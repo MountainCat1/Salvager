@@ -1,5 +1,6 @@
 using Data;
 using Managers;
+using UI;
 using UnityEngine;
 using Zenject;
 
@@ -8,10 +9,13 @@ public class CrewManagerUI : MonoBehaviour
     [Inject] private IDataManager _dataManager;
     [Inject] private DiContainer _diContainer;
     [Inject] private ICrewManager _crewManager;
+    [Inject] private IPanelManagerUI _panelManager;
 
     [SerializeField] private CrewEntryUI crewEntryUI;
     [SerializeField] private Transform crewListParent;
 
+    private CreatureData _selectedCreature;
+    
     private void Start()
     {
         _crewManager.Changed += RefreshList;
@@ -44,10 +48,15 @@ public class CrewManagerUI : MonoBehaviour
     {
         _crewManager.ToggleCreature(creature, value);
     }
-    
+
 
     private void OnSelect(CreatureData creature)
     {
-        _crewManager.SelectCreature(creature);
+        if (_selectedCreature == creature)
+            _panelManager.Toggle(PanelManagerUI.UIPanel.Inventory);
+        else
+            _panelManager.Show(PanelManagerUI.UIPanel.Inventory);
+        
+        _selectedCreature = creature;
     }
 }

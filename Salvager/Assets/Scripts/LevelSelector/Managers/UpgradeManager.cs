@@ -12,13 +12,20 @@ namespace LevelSelector.Managers
 {
     public interface IUpgradeManager
     {
-        public void PlayerBuyUpgrade(ItemData item);
-        void UpgradeItem(ItemData itemData);
+        UpgradeResult PlayerBuyUpgrade(ItemData item);
+        UpgradeResult UpgradeItem(ItemData itemData);
         void ScrapItem(ItemData itemData);
-        public int GetScrapValue(ItemData itemData);
-        public int GetUpgradeCost(ItemData selectedItem);
+        int GetScrapValue(ItemData itemData);
+        int GetUpgradeCost(ItemData selectedItem);
         bool CanUpgrade(ItemData selectedItem);
         bool CanScrap(ItemData selectedItem);
+    }
+    
+    public enum UpgradeResult
+    {
+        Good,
+        Bad,
+        Normal
     }
 
     public class UpgradeManager : MonoBehaviour, IUpgradeManager
@@ -35,7 +42,7 @@ namespace LevelSelector.Managers
 
         [SerializeField] private ItemBehaviour scrapItemPrefab;
         
-        public void UpgradeItem(ItemData item)
+        public UpgradeResult UpgradeItem(ItemData item)
         {
             float totalChance = goodUpgradeChance + badUpgradeChance + normalUpgradeChance;
             float randomValue = Random.Range(0f, totalChance);
@@ -43,21 +50,24 @@ namespace LevelSelector.Managers
             if (randomValue <= goodUpgradeChance)
             {
                 GoodUpgrade(item);
+                return UpgradeResult.Good;
             }
             else if (randomValue <= goodUpgradeChance + badUpgradeChance)
             {
                 BadUpgrade(item);
+                return UpgradeResult.Bad;
             }
             else
             {
                 NormalUpgrade(item);
+                return UpgradeResult.Normal;
             }
         }
         
-        public void PlayerBuyUpgrade(ItemData item)
+        public UpgradeResult PlayerBuyUpgrade(ItemData item)
         {
             if (!CanUpgrade(item))
-                return;
+                throw new Exception("Cannot upgrade item");
 
             // Remove scrap cost
             var scrapCost = GetUpgradeCost(item);
@@ -66,7 +76,7 @@ namespace LevelSelector.Managers
                         
             _crewManager.Inventory.RemoveItem(scrapCostData);
             
-            UpgradeItem(item);
+            return UpgradeItem(item);
         }
 
         public void ScrapItem(ItemData itemData)

@@ -5,11 +5,11 @@ using UI;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.UI.Extensions;
+using Zenject;
 
 [RequireComponent(typeof(TooltipTrigger))]
 public class CrewEntryUI : MonoBehaviour
 {
-    
     [SerializeField] private Image crewMemberImage;
     [SerializeField] private TextMeshProUGUI crewMemberName;
     [SerializeField] private Toggle selectedToggle;

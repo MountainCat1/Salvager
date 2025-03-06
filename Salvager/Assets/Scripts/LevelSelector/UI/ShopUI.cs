@@ -35,7 +35,6 @@ namespace UI
         private void Start()
         {
             _crewManager.Changed += UpdateUI;
-            _crewManager.SelectedCreature += _ => _uiSlide.HidePanel();
             _uiSlide = GetComponent<UISlide>();
 
             UpdateUI();
