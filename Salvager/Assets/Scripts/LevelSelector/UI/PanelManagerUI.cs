@@ -8,7 +8,7 @@ namespace UI
     public interface IPanelManagerUI
     {
         void Toggle(PanelManagerUI.UIPanel panel);
-        void Show(PanelManagerUI.UIPanel travel);
+        void Show(PanelManagerUI.UIPanel panel);
         void ClearPanels();
     }
     
@@ -28,7 +28,6 @@ namespace UI
             {
                 {UIPanel.Inventory, inventoryPanel},
                 {UIPanel.Shop, shopPanel},
-                {UIPanel.Crew, crewPanel},
                 {UIPanel.Travel, travelPanel},
                 {UIPanel.Upgrade, upgradePanel}
             };
@@ -41,7 +40,6 @@ namespace UI
         {
             Inventory,
             Shop,
-            Crew,
             Travel,
             Upgrade
         }
@@ -61,11 +59,11 @@ namespace UI
             }
         }
 
-        public void Show(UIPanel travel)
+        public void Show(UIPanel panel)
         {
             foreach (var (panelEnum, uiElement) in _panels)
             {
-                if (panelEnum == travel)
+                if (panelEnum == panel)
                 {
                     uiElement.ShowPanel();
                 }

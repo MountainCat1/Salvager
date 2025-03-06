@@ -11,6 +11,7 @@ namespace UI
     [RequireComponent(typeof(UISlide))]
     public class CrewInventoryUI : MonoBehaviour
     {
+        [Inject] private IPanelManagerUI _panelManager;
         [Inject] private ICrewManager _crewManager;
         [Inject] private IDataManager _dataManager;
         [Inject] private DiContainer _diContainer;
@@ -23,13 +24,12 @@ namespace UI
         [SerializeField] private TextMeshProUGUI crewNameText;
 
         private CreatureData _selectedCreature;
-        private UISlide _uiSlide;
 
         private void Start()
         {
             _crewManager.SelectedCreature += SetSelectedCreature;
             _crewManager.Changed += UpdateCreatureInventory;
-            _uiSlide = GetComponent<UISlide>();
+            GetComponent<UISlide>();
         }
 
         // public void Set(ICollection<CreatureData> crew, InventoryData inventory)
@@ -62,13 +62,13 @@ namespace UI
         {
             if (creature == _selectedCreature)
             {
-                _uiSlide.TogglePanel();
+                _panelManager.Toggle(PanelManagerUI.UIPanel.Inventory);
                 return;
             }
             
             _selectedCreature = creature;
 
-            _uiSlide.ShowPanel();
+            _panelManager.Show(PanelManagerUI.UIPanel.Inventory);
 
             UpdateCreatureInventory();
         }

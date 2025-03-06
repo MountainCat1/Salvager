@@ -3432,6 +3432,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   floatingTextPrefab: {fileID: 4078753960069299248, guid: cf9c44ae0d229954693d64042bba1900, type: 3}
   canvas: {fileID: 2142539846}
+  floatSpeed: 3
+  defaultDuration: 1.5
 --- !u!1 &687958470
 GameObject:
   m_ObjectHideFlags: 0
