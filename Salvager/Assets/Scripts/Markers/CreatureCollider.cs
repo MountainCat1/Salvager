@@ -1,16 +1,19 @@
-using Components;
 using UnityEngine;
 
 namespace Markers
 {
     [RequireComponent(typeof(Collider2D))]
-    public class CreatureCollider : MonoBehaviour
+    public class CreatureCollider : EntityCollider
     {
         public Creature Creature { get; private set; }
-        
-        private void Awake()
+
+        protected override void Awake()
         {
-            Creature = GetComponent<Creature>() ?? GetComponentInParent<Creature>();
+            base.Awake();
+
+            Creature = GetComponent<Creature>()
+                       ?? GetComponentInParent<Creature>()
+                       ?? throw new MissingComponentException("Creature component not found");
         }
     }
 }

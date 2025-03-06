@@ -66,7 +66,7 @@ namespace Managers
         {
             _inputManager.Pointer1Pressed -= OnPointer1Pressed;
             _inputManager.Pointer1Hold -= OnPointer1Hold;
-            _inputManager.Pointer1Released-= OnPointer1Released;
+            _inputManager.Pointer1Released -= OnPointer1Released;
         }
 
         private void OnPointer1Pressed(Vector2 screenPosition)
@@ -170,34 +170,25 @@ namespace Managers
 
         private void HandleSingleClick(Vector2 screenPosition)
         {
-            Ray ray = _camera.ScreenPointToRay(screenPosition);
-            if (Physics.Raycast(ray, out RaycastHit hit))
+            var creature = _inputMapper.GetCreatureUnderMouse();
+            if (creature != null && creature.Team == playerTeam)
             {
-                Creature creature = hit.collider.GetComponent<Creature>();
-                if (creature != null)
+                // Shift + Click to add/remove single unit
+                if (_inputManager.IsShiftPressed)
                 {
-                    // Shift + Click to add/remove single unit
-                    if (_inputManager.IsShiftPressed)
-                    {
-                        ToggleSelection(creature);
-                    }
-                    else
-                    {
-                        ClearSelection(); // Deselect all and select the clicked creature
-                        AddToSelection(creature);
-                    }
-
-                    OnSelectionChanged?.Invoke();
+                    ToggleSelection(creature);
                 }
                 else
                 {
-                    ClearSelection(); // Deselect all if no creature is clicked
-                    OnSelectionChanged?.Invoke();
+                    ClearSelection(); // Deselect all and select the clicked creature
+                    AddToSelection(creature);
                 }
+
+                OnSelectionChanged?.Invoke();
             }
             else
             {
-                ClearSelection(); // Deselect all if click hits nothing
+                ClearSelection(); // Deselect all if no creature is clicked
                 OnSelectionChanged?.Invoke();
             }
         }
@@ -239,13 +230,13 @@ namespace Managers
         {
             if (creature.Team != playerTeam)
                 return;
-            if (_selectedCreatures.Contains(creature)) 
+            if (_selectedCreatures.Contains(creature))
                 return;
-            
+
             _selectedCreatures.Add(creature);
 
             PlaceSelectedMarker(creature);
-            
+
             creature.Health.Death += OnSelectedCreatureDeath;
             creature.Inventory.Changed += OnSelectedCreatureInventoryChanged;
         }
@@ -259,7 +250,7 @@ namespace Managers
         {
             RemoveFromSelection(ctx.KilledEntity as Creature);
         }
-        
+
 
         public void RemoveFromSelection(Creature creature)
         {
@@ -271,7 +262,7 @@ namespace Managers
                     .FirstOrDefault(marker => marker.Creature == creature);
 
                 _selectionCirclesPool.DespawnObject(selectionMarker);
-                
+
                 creature.Health.Death -= OnSelectedCreatureDeath;
                 creature.Inventory.Changed -= OnSelectedCreatureInventoryChanged;
             }
@@ -295,7 +286,7 @@ namespace Managers
 
             return _selectedCreatures;
         }
-        
+
         private void PlaceSelectedMarker(Creature creature)
         {
             var selectionMarker =
