@@ -15,11 +15,11 @@ namespace Managers
     public class SoundtrackPlayer : MonoBehaviour, ISoundManager
     {
         [SerializeField] private List<AudioClip> soundtracks;
-        
+
         private AudioClip _lastSoundtrack;
         private AudioSource _soundtrackAudioSource;
         private Animator _soundtrackAnimator;
-        
+
 
         private void Awake()
         {
@@ -31,28 +31,26 @@ namespace Managers
         {
             PlaySoundtrack(soundtracks.RandomElement());
         }
-        
+
         private void Update()
         {
-private void Update()
-{
-    // check if the soundtrack ended by comparing the length of the audio clip and the time passed
-    if (_soundtrackAudioSource.clip != null && _soundtrackAudioSource.clip.length - _soundtrackAudioSource.time < 0.1f)
-        PlayNextSoundtrack();
-}
+            // check if the soundtrack ended by comparing the length of the audio clip and the time passed
+            if (_soundtrackAudioSource.clip != null &&
+                _soundtrackAudioSource.clip.length - _soundtrackAudioSource.time < 0.1f)
                 PlayNextSoundtrack();
         }
 
         private void PlayNextSoundtrack()
         {
-            if(soundtracks.Count == 0)
+            if (soundtracks.Count == 0)
                 return;
             if (soundtracks.Count == 1)
             {
                 PlaySoundtrack(soundtracks.First());
                 return;
             }
-            var nextSoundtrack = soundtracks.Except(new []{_lastSoundtrack}).RandomElement();
+
+            var nextSoundtrack = soundtracks.Except(new[] { _lastSoundtrack }).RandomElement();
             PlaySoundtrack(nextSoundtrack);
         }
 
