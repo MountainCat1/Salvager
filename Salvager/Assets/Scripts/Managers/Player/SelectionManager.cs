@@ -239,16 +239,7 @@ namespace Managers
 
             creature.Health.Death += OnSelectedCreatureDeath;
             creature.Inventory.Changed += OnSelectedCreatureInventoryChanged;
-        }
-
-        private void OnSelectedCreatureInventoryChanged()
-        {
-            OnSelectionChanged?.Invoke();
-        }
-
-        private void OnSelectedCreatureDeath(DeathContext ctx)
-        {
-            RemoveFromSelection(ctx.KilledEntity as Creature);
+            creature.Disabled += OnSelectedCreatureDisabled;
         }
         
         public void RemoveFromSelection(Creature creature)
@@ -268,6 +259,29 @@ namespace Managers
 
             OnSelectionChanged?.Invoke();
         }
+
+        private void OnSelectedCreatureDisabled()
+        {
+            foreach (var creature in selectedCreatures.ToArray())
+            {
+                if (!creature.gameObject.activeInHierarchy)
+                {
+                    RemoveFromSelection(creature);
+                }
+            }
+        }
+
+        private void OnSelectedCreatureInventoryChanged()
+        {
+            OnSelectionChanged?.Invoke();
+        }
+
+        private void OnSelectedCreatureDeath(DeathContext ctx)
+        {
+            RemoveFromSelection(ctx.KilledEntity as Creature);
+        }
+        
+
 
         public void PreventSelection(object source)
         {

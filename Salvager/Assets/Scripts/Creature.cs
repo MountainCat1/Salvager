@@ -84,6 +84,7 @@ public class Creature : Entity, IDamageable
     public CreatureController Controller => _controller;
     public Inventory Inventory => _inventory;
     public ILevelSystem LevelSystem => _levelSystem;
+    public event Action Disabled;
 
     // Private Referenes
 
@@ -132,6 +133,11 @@ public class Creature : Entity, IDamageable
     private void OnDestroy()
     {
         StartUsingWeapon(null);
+    }
+
+    private void OnDisable()
+    {
+        Disabled?.Invoke();
     }
 
     // Public Methods
