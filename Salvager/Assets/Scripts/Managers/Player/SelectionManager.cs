@@ -31,7 +31,7 @@ namespace Managers
 
         public IEnumerable<Creature> SelectedCreatures => GetSelectedCreatures();
 
-        [SerializeField] private List<Creature> _selectedCreatures = new();
+        [SerializeField] private List<Creature> selectedCreatures = new();
         [SerializeField] private RectTransform selectionBox;
         [SerializeField] private Canvas canvas;
         [SerializeField] private SelectionMarker selectionMarkerPrefab;
@@ -40,7 +40,7 @@ namespace Managers
         private Vector2? _startMousePosition;
         private Camera _camera;
         private IPoolAccess<SelectionMarker> _selectionCirclesPool;
-        private List<object> _selectionPreventers = new();
+        private readonly List<object> _selectionPreventers = new();
 
         private bool _isDragging = false;
         private const float DragThreshold = 5f; // Threshold in pixels
@@ -204,7 +204,7 @@ namespace Managers
 
         private void ToggleSelection(Creature creature)
         {
-            if (_selectedCreatures.Contains(creature))
+            if (selectedCreatures.Contains(creature))
             {
                 RemoveFromSelection(creature);
             }
@@ -223,22 +223,53 @@ namespace Managers
                 _selectionCirclesPool.DespawnObject(selectionCircle);
             }
 
-            _selectedCreatures.Clear();
+            selectedCreatures.Clear();
         }
 
         public void AddToSelection(Creature creature)
         {
             if (creature.Team != playerTeam)
                 return;
-            if (_selectedCreatures.Contains(creature))
+            if (selectedCreatures.Contains(creature))
                 return;
 
-            _selectedCreatures.Add(creature);
+            selectedCreatures.Add(creature);
 
             PlaceSelectedMarker(creature);
 
             creature.Health.Death += OnSelectedCreatureDeath;
             creature.Inventory.Changed += OnSelectedCreatureInventoryChanged;
+            creature.Disabled += OnSelectedCreatureDisabled;
+        }
+        
+        public void RemoveFromSelection(Creature creature)
+        {
+            if (selectedCreatures.Contains(creature))
+            {
+                selectedCreatures.Remove(creature);
+
+                var selectionMarker = _selectionCirclesPool.GetInUseObjects()
+                    .FirstOrDefault(marker => marker.Creature == creature);
+
+                _selectionCirclesPool.DespawnObject(selectionMarker);
+
+                creature.Health.Death -= OnSelectedCreatureDeath;
+                creature.Inventory.Changed -= OnSelectedCreatureInventoryChanged;
+                creature.Disabled -= OnSelectedCreatureDisabled;
+            }
+
+            OnSelectionChanged?.Invoke();
+        }
+
+        private void OnSelectedCreatureDisabled()
+        {
+            foreach (var creature in selectedCreatures.ToArray())
+            {
+                if (!creature.gameObject.activeInHierarchy)
+                {
+                    RemoveFromSelection(creature);
+                }
+            }
         }
 
         private void OnSelectedCreatureInventoryChanged()
@@ -250,25 +281,8 @@ namespace Managers
         {
             RemoveFromSelection(ctx.KilledEntity as Creature);
         }
+        
 
-
-        public void RemoveFromSelection(Creature creature)
-        {
-            if (_selectedCreatures.Contains(creature))
-            {
-                _selectedCreatures.Remove(creature);
-
-                var selectionMarker = _selectionCirclesPool.GetInUseObjects()
-                    .FirstOrDefault(marker => marker.Creature == creature);
-
-                _selectionCirclesPool.DespawnObject(selectionMarker);
-
-                creature.Health.Death -= OnSelectedCreatureDeath;
-                creature.Inventory.Changed -= OnSelectedCreatureInventoryChanged;
-            }
-
-            OnSelectionChanged?.Invoke();
-        }
 
         public void PreventSelection(object source)
         {
@@ -282,9 +296,9 @@ namespace Managers
 
         private IEnumerable<Creature> GetSelectedCreatures()
         {
-            _selectedCreatures.RemoveAll(creature => creature == null);
+            selectedCreatures.RemoveAll(creature => creature == null);
 
-            return _selectedCreatures;
+            return selectedCreatures;
         }
 
         private void PlaceSelectedMarker(Creature creature)

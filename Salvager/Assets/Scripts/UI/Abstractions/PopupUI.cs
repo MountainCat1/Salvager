@@ -24,7 +24,6 @@ namespace UI.Abstractions
         {
             _inputManager.OnCancel += OnCancel;
 
-
             OnShow();
         }
 
@@ -80,7 +79,7 @@ namespace UI.Abstractions
 
         private void OnCancel()
         {
-            gameObject.SetActive(false);
+            Hide();
         }
 
         protected virtual void OnHide()

@@ -101,7 +101,7 @@ namespace UI
 
         private void UseAbilityAtLocation(Ability ability, Vector3 targetLocation)
         {
-            // Find first selected creature with the ability
+            // Find the first selected creature with the ability
             var creature = _selectionManager.SelectedCreatures.FirstOrDefault(
                 x =>
                     x.Inventory.Items.Any(

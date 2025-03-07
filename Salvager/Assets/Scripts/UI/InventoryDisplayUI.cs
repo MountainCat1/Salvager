@@ -8,78 +8,47 @@ namespace UI
 {
     public interface IInventoryDisplayUI
     {
-        public InventoryUI ShowInventory(Creature creature);
+        void ShowInventory(Creature creature);
     }
+
 
     public class InventoryDisplayUI : MonoBehaviour, IInventoryDisplayUI
     {
         [Inject] private IInputManager _inputManager;
         [Inject] private ISelectionManager _selectionManager;
-        
+        [Inject] private DiContainer _container;
+
         [SerializeField] private Transform popupParent;
         [SerializeField] private InventoryUI instantiatedInventoryUI;
 
-        [Inject] private DiContainer _container;
-
-        void Start()
+        private void Start()
         {
-            _inputManager.UI.ShowInventory += OnInventoryPressed;
-            _selectionManager.OnSelectionChanged += OnSelectionChanged;
-            
-            instantiatedInventoryUI.Hide();
+            _inputManager.UI.ShowInventory += ToggleInventory;
+            _selectionManager.OnSelectionChanged += UpdateSelectedCreature;
+
+            instantiatedInventoryUI.Toggle(false);
         }
 
         private void OnDestroy()
         {
-            _inputManager.UI.ShowInventory -= OnInventoryPressed;
-            _selectionManager.OnSelectionChanged -= OnSelectionChanged;
-
+            _inputManager.UI.ShowInventory -= ToggleInventory;
+            _selectionManager.OnSelectionChanged -= UpdateSelectedCreature;
         }
 
-        private void OnSelectionChanged()
+        private void UpdateSelectedCreature()
         {
-            if(!instantiatedInventoryUI.IsVisible)
-                return;
-            
-            if(_selectionManager.SelectedCreatures.Contains(instantiatedInventoryUI.Creature))
-                return;
-
-            if (!_selectionManager.SelectedCreatures.Any())
-            {
-                instantiatedInventoryUI.Hide();
-                return;
-            }
-            
-            ShowInventory(_selectionManager.SelectedCreatures.First());
+            instantiatedInventoryUI.SetCreature(_selectionManager.SelectedCreatures.FirstOrDefault());
         }
 
-        private void OnInventoryPressed()
+        private void ToggleInventory()
         {
-            if(instantiatedInventoryUI.IsVisible)
-            {
-                instantiatedInventoryUI.Hide();
-                return;
-            }
-            
-            if(!_selectionManager.SelectedCreatures.Any())
-                return;
-            
-            var creature = _selectionManager.SelectedCreatures.First();
-
-            ShowInventory(creature);
+            instantiatedInventoryUI.Toggle();
         }
 
-        public InventoryUI ShowInventory(Creature creature)
+        public void ShowInventory(Creature creature)
         {
             instantiatedInventoryUI.SetCreature(creature);
-            instantiatedInventoryUI.Show();
-
-            return instantiatedInventoryUI;
-        }
-        
-        private T InstantiatePopup<T>(T prefab) where T : PopupUI
-        {
-            return _container.InstantiatePrefabForComponent<T>(prefab, popupParent);
+            instantiatedInventoryUI.Toggle(true);
         }
     }
 }
