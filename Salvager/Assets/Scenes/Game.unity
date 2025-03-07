@@ -1559,7 +1559,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 0cc818dd58617d4428f971d715268efe, type: 2}
   bossVictoryConditions:
   - {fileID: 11400000, guid: 0cc818dd58617d4428f971d715268efe, type: 2}
-  - {fileID: 0}
 --- !u!1 &725636378
 GameObject:
   m_ObjectHideFlags: 0
@@ -5001,10 +5000,10 @@ Camera:
   m_LensShift: {x: 0, y: 0}
   m_NormalizedViewPortRect:
     serializedVersion: 2
-    x: 0
-    y: 0
-    width: 1
-    height: 1
+    x: 0.00075272867
+    y: 0.0013386881
+    width: 0.9981182
+    height: 0.9959839
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 34

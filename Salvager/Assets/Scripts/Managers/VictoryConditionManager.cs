@@ -25,6 +25,7 @@ namespace Managers
         // Dependencies
         [Inject] private ISpawnerManager _spawnerManager;
         [Inject] private ISignalManager _signalManager;
+        [Inject] private ICreatureManager _creatureManager;
         [Inject] private DiContainer _diContainer;
         
         // Accessors
@@ -42,6 +43,10 @@ namespace Managers
             }
 
             _spawnerManager.Spawned += OnSpawned;
+            foreach (var creature in _creatureManager.GetCreatures())
+            {
+                OnSpawned(creature);
+            }
             _signalManager.Signaled += (_) => UpdateWinConditions();
 
             VictoryConditionsChanged?.Invoke();
