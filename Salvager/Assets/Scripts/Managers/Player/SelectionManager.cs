@@ -255,6 +255,7 @@ namespace Managers
 
                 creature.Health.Death -= OnSelectedCreatureDeath;
                 creature.Inventory.Changed -= OnSelectedCreatureInventoryChanged;
+                creature.Disabled -= OnSelectedCreatureDisabled;
             }
 
             OnSelectionChanged?.Invoke();
