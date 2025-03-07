@@ -17,8 +17,6 @@ public partial class RoomDecorator : MonoBehaviour, IRoomDecorator
 {
     [Inject] private DiContainer _context = null!;
 
-    [Inject] private IDataManager _dataManager = null!;
-
     [SerializeField] private GameObject roomMarker;
 
     [SerializeField] private RoomBlueprint startingRoomBlueprint;

@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using Data;
 using Managers;
 using UI;
@@ -43,7 +44,7 @@ public class CrewManagerUI : MonoBehaviour
 
         var crew = _crewManager.Crew;
 
-        foreach (var crewMember in crew)
+        foreach (var crewMember in crew.OrderBy(x => x.Name))
         {
             var crewMemberUI = _diContainer.InstantiatePrefab(crewEntryUI, crewListParent).GetComponent<CrewEntryUI>();
             crewMemberUI.Initialize(crewMember, OnSelect, OnToggle);

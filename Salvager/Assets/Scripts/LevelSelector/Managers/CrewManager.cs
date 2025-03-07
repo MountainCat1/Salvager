@@ -47,9 +47,6 @@ namespace Managers
         public LocationData CurrentLocation { get; private set; }
 
         [SerializeField] private List<ItemBehaviour> startingItems;
-        [SerializeField] private float startingMoney = 50;
-        [SerializeField] private float startingFuel = 5;
-        [SerializeField] private float startingJuice = 200;
 
         public void SetCrew(
             ICollection<CreatureData> creature,

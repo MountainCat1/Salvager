@@ -14,7 +14,6 @@ namespace Items.Weapons
         [SerializeField] private float fuseTime = 2.0f; // Time before explosion
         [SerializeField] private float radius = 3f; // Radius of the explosion
         [SerializeField] private float maxDistanceSpeedCorrection = 2f; // distance where the speed correction starts
-        [SerializeField] private float correctionAmount = 5f; // distance where the speed correction starts
 
         [SerializeField] private GameObject explosionPrefab; // Prefab for the explosion effect
         [SerializeField] private AudioClip explosionSound; // Sound to play when the grenade explodes
@@ -70,7 +69,6 @@ namespace Items.Weapons
             var distance = Vector2.Distance(transform.position, _attackContext.TargetPosition);
             if (distance < maxDistanceSpeedCorrection)
             {
-                // _rb.velocity -= _rb.velocity.normalized * ((maxDistanceSpeedCorrection - distance) * Time.fixedDeltaTime * correctionAmount);
                 _rb.velocity = Mathf.Lerp(_rb.velocity.magnitude, 0f, distance - maxDistanceSpeedCorrection) * _rb.velocity.normalized;
             }
         }

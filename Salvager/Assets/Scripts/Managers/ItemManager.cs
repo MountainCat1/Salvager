@@ -14,7 +14,6 @@ namespace Managers
         
         public ICollection<ItemBehaviour> GetItems();
 
-        [Obsolete("Use InstantiateItem instead")]
         ItemBehaviour GetItemPrefab(string dataIdentifier);
         
         public decimal GetValue(ItemData itemData);

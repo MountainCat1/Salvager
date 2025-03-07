@@ -18,9 +18,6 @@ public class FloatingTextService : MonoBehaviour, IFloatingTextService
     [Tooltip("The speed at which the text floats upwards.")] [SerializeField]
     private float floatSpeed = 3f;
 
-    [Tooltip("The duration for which the text is visible.")] [SerializeField]
-    private float defaultDuration = 1.5f;
-
     /// <summary>
     ///   Displays floating text on the screen.
     /// </summary>
@@ -30,7 +27,7 @@ public class FloatingTextService : MonoBehaviour, IFloatingTextService
     /// <param name="duration">The duration for which the text is visible.</param>
     public void Show(
         string message,
-        Vector3 screenPosition,
+        Vector3 worldPosition,
         Color textColor,
         float duration = 1.5f)
     {
@@ -47,7 +44,7 @@ public class FloatingTextService : MonoBehaviour, IFloatingTextService
         TextMeshProUGUI floatingText = Instantiate(
             floatingTextPrefab,
             canvas.transform);
-        floatingText.transform.position = screenPosition;
+        floatingText.transform.position = worldPosition;
         floatingText.text = message;
         floatingText.color = textColor;
 
