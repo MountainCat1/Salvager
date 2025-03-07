@@ -11,45 +11,38 @@ namespace UI
         void ShowInventory(Creature creature);
     }
 
+
     public class InventoryDisplayUI : MonoBehaviour, IInventoryDisplayUI
     {
         [Inject] private IInputManager _inputManager;
         [Inject] private ISelectionManager _selectionManager;
-        
+        [Inject] private DiContainer _container;
+
         [SerializeField] private Transform popupParent;
         [SerializeField] private InventoryUI instantiatedInventoryUI;
 
-        [Inject] private DiContainer _container;
-
-        void Start()
+        private void Start()
         {
-            _inputManager.UI.ShowInventory += OnInventoryPressed;
-            _selectionManager.OnSelectionChanged += OnSelectionChanged;
-            
+            _inputManager.UI.ShowInventory += ToggleInventory;
+            _selectionManager.OnSelectionChanged += UpdateSelectedCreature;
+
             instantiatedInventoryUI.Toggle(false);
         }
 
         private void OnDestroy()
         {
-            _inputManager.UI.ShowInventory -= OnInventoryPressed;
-            _selectionManager.OnSelectionChanged -= OnSelectionChanged;
+            _inputManager.UI.ShowInventory -= ToggleInventory;
+            _selectionManager.OnSelectionChanged -= UpdateSelectedCreature;
         }
 
-        private void OnSelectionChanged()
+        private void UpdateSelectedCreature()
         {
             instantiatedInventoryUI.SetCreature(_selectionManager.SelectedCreatures.FirstOrDefault());
         }
 
-        private void OnInventoryPressed()
-        {
-            ToggleInventory();
-        }
-
-        public InventoryUI ToggleInventory()
+        private void ToggleInventory()
         {
             instantiatedInventoryUI.Toggle();
-
-            return instantiatedInventoryUI;
         }
 
         public void ShowInventory(Creature creature)
