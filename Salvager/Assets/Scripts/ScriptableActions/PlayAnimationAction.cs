@@ -17,7 +17,7 @@ namespace ScriptableActions
             }
             else
             {
-                Debug.LogWarning($"Animator or animationStateName not set on {nameof(PlayAnimationAction)} in {animator?.gameObject.name}");
+                Debug.LogWarning($"Animator or animationStateName not set on {nameof(PlayAnimationAction)} in {animator?.gameObject?.name ?? "unknown"}");
             }
         }
     }
