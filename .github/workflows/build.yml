@@ -7,6 +7,7 @@ on:
   pull_request:
     branches:
       - main
+
 jobs:
   buildForAllSupportedPlatforms:
     name: Build for ${{ matrix.targetPlatform }}
@@ -28,22 +29,21 @@ jobs:
           key: Library-${{ matrix.targetPlatform }}
           restore-keys: Library-
 
-      - if: matrix.targetPlatform == 'Android'
-        uses: jlumbroso/free-disk-space@v1.3.1
-
       - uses: game-ci/unity-builder@v4
         env:
           UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
           UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
           UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
         with:
-          projectPath: Salvager  # Set the correct project path
+          projectPath: Salvager  # Ensure this matches your Unity project path
           targetPlatform: ${{ matrix.targetPlatform }}
 
-      - uses: actions/upload-artifact@v4
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
         with:
           name: Build-${{ matrix.targetPlatform }}
-          path: Salvager/build/${{ matrix.targetPlatform }}
+          path: Salvager/Build/${{ matrix.targetPlatform }}  # ✅ This must match Unity's output path
+
   release:
     name: Create GitHub Release
     needs: buildForAllSupportedPlatforms
@@ -58,8 +58,8 @@ jobs:
       - name: Download build artifacts
         uses: actions/download-artifact@v4
         with:
-          name: Build-StandaloneWindows64  # Ensure this matches the uploaded artifact name
-          path: releases/Build-StandaloneWindows64
+          name: Build-StandaloneWindows64  # ✅ Matches uploaded artifact name
+          path: Salvager/Build/StandaloneWindows64  # ✅ Must match upload path
 
       - name: Create GitHub Release
         id: create_release
@@ -70,7 +70,6 @@ jobs:
           body: "Automated build release."
           draft: false
           prerelease: false
-          files: releases/Build-StandaloneWindows64/*
+          files: Salvager/Build/StandaloneWindows64/*  # ✅ Corrected path
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Uses token with correct permissions
-
