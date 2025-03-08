@@ -44,11 +44,12 @@ jobs:
         with:
           name: Build-${{ matrix.targetPlatform }}
           path: Salvager/build/${{ matrix.targetPlatform }}
-
   release:
     name: Create GitHub Release
     needs: buildForAllSupportedPlatforms
     runs-on: ubuntu-latest
+    permissions:
+      contents: write  # ✅ Grant permission to create releases
     steps:
       - uses: actions/checkout@v4
         with:
@@ -57,7 +58,8 @@ jobs:
       - name: Download build artifacts
         uses: actions/download-artifact@v4
         with:
-          path: releases
+          name: Build-StandaloneWindows64  # Ensure this matches the uploaded artifact name
+          path: releases/Build-StandaloneWindows64
 
       - name: Create GitHub Release
         id: create_release
@@ -70,4 +72,5 @@ jobs:
           prerelease: false
           files: releases/Build-StandaloneWindows64/*
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Uses token with correct permissions
+
