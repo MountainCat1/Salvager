@@ -10,17 +10,20 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6f327af661d9bc94abe3f843bc3401fe, type: 3}
-  m_Name: Misc Room
+  m_Name: Medbay
   m_EditorClassIdentifier: 
-  <Name>k__BackingField: Misc Room
+  <Name>k__BackingField: Medbay Room
   <Props>k__BackingField:
+  - prefab: {fileID: 8667083905584706207, guid: ed1b0509ba49a84478bb36bb3f6d633d, type: 3}
+    position: 1
+    offset: {x: 0, y: 0}
+    count: 7
   - prefab: {fileID: 1173714972110200553, guid: dbe90bcc80ccfd74bad072ac58b7ae1b, type: 3}
     position: 3
     offset: {x: 0, y: 0}
-    count: 2
-  - prefab: {fileID: 8986697077323002770, guid: a0a17bc182387b84f8765ad96bb2baf3, type: 3}
-    position: 1
-    offset: {x: 0, y: 0}
-    count: 2
+    count: 4
   <StartingRoom>k__BackingField: 0
-  <Enemies>k__BackingField: []
+  <Enemies>k__BackingField:
+  - enemy: {fileID: 8620425100322646659, guid: d998bd7f561ef9148953be269700cbf9, type: 3}
+    minAmount: 2
+    maxAmount: 8

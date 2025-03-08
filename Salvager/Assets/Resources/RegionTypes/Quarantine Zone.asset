@@ -30,8 +30,14 @@ MonoBehaviour:
   weightedSecondaryLocationFeatures:
     items:
     - item: {fileID: 11400000, guid: b83a3908a9e95474abf3120d09b9b896, type: 2}
-      weight: 1
+      weight: 2
     - item: {fileID: 11400000, guid: 5d38bbf8b38b28d479dc544a35dcc03d, type: 2}
-      weight: 1
+      weight: 0.5
+    - item: {fileID: 11400000, guid: 5a710d4dce8ad7b4a8b17cece9c17f4f, type: 2}
+      weight: 0.6
+    - item: {fileID: 11400000, guid: a0909348ec61c05408cfd0d400597ff5, type: 2}
+      weight: 0.2
+    - item: {fileID: 11400000, guid: 76fe599996a4d0247be0df435178a3f1, type: 2}
+      weight: 0.1
   maxSecondaryFeatures: 3
   minSecondaryFeatures: 1

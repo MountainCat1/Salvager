@@ -10,17 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6f327af661d9bc94abe3f843bc3401fe, type: 3}
-  m_Name: Misc Room
+  m_Name: Turret Room
   m_EditorClassIdentifier: 
-  <Name>k__BackingField: Misc Room
-  <Props>k__BackingField:
-  - prefab: {fileID: 1173714972110200553, guid: dbe90bcc80ccfd74bad072ac58b7ae1b, type: 3}
-    position: 3
-    offset: {x: 0, y: 0}
-    count: 2
-  - prefab: {fileID: 8986697077323002770, guid: a0a17bc182387b84f8765ad96bb2baf3, type: 3}
-    position: 1
-    offset: {x: 0, y: 0}
-    count: 2
+  <Name>k__BackingField: Turret Room
+  <Props>k__BackingField: []
   <StartingRoom>k__BackingField: 0
-  <Enemies>k__BackingField: []
+  <Enemies>k__BackingField:
+  - enemy: {fileID: 3018690924345389235, guid: 3f46f0dccd20d3f488c5e8dc48f5bcd9, type: 3}
+    minAmount: 1
+    maxAmount: 2

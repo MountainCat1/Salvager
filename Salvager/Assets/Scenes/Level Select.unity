@@ -6586,7 +6586,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cae3f1cc19c24c9da87783e8c5fbe7d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  regionType: {fileID: 11400000, guid: ad742993d289c9749b2491901953dce0, type: 2}
 --- !u!1 &1419664505
 GameObject:
   m_ObjectHideFlags: 0
