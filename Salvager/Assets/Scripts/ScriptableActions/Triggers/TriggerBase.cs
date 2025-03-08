@@ -54,15 +54,31 @@ namespace Triggers
             }
         }
 
-        private bool CheckConditions()
-        {
-            foreach (var condition in Conditions)
-            {
-                if (!condition.Evaluate())
-                    return true;
-            }
+// Updated CheckConditions method
+private bool CheckConditions()
+{
+    foreach (var condition in Conditions)
+    {
+        if (!condition.Evaluate())
+            return false; // Return false if any condition fails
+    }
 
-            return false;
+    return true; // Return true if all conditions pass
+}
+
+// Updated RunActions method
+private void RunActions()
+{
+    if(CheckConditions())
+    {
+        // Execute actions when conditions pass
+        HasFired = true;
+        Debug.Log($"Trigger {name} fired");
+        foreach (var action in Actions)
+        {
+            action.Execute();
         }
+    }
+}
     }
 }
