@@ -7,11 +7,6 @@ namespace Triggers
 {
     public class InteractableTrigger : TriggerBase
     {
-    public class InteractableTrigger : TriggerBase
-    {
-        [SerializeField] private InteractableObject interactableObject;
-        // ... rest of the class remains unchanged
-    
         [SerializeField] private InteractableObject interactableObject;
         
         protected override void Start()
