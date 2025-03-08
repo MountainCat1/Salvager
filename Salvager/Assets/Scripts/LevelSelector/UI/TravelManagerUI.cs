@@ -60,7 +60,10 @@ namespace LevelSelector.UI
             string result = "";
 
             result += $"<b>{regionType.typeName}</b>\n";
-            result += $"<b>{regionType.typeDescription}</b>\n";
+            result += $"\n";
+            result += $"{regionType.typeDescription}\n";
+            result += $"\n";
+            result += $"\n";
 
             result += $"Location count: {region.Locations.Count}\n";
             result += $"Shop count: {region.Locations.Count(x => x.ShopData is not null)}\n";

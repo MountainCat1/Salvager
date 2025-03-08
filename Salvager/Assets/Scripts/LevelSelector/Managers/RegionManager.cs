@@ -25,8 +25,6 @@ namespace Managers.LevelSelector
 
         [Inject] private IDataManager _dataManager;
         [Inject] private IRegionGenerator _regionGenerator;
-        
-        [SerializeField] private RegionType regionType;
 
         public RegionData Region { get; private set; }
 
@@ -81,8 +79,8 @@ namespace Managers.LevelSelector
 
             _nextRegions = new List<RegionData>()
             {
-                _regionGenerator.Generate(regionType),
-                _regionGenerator.Generate(regionType),
+                _regionGenerator.Generate(),
+                _regionGenerator.Generate(),
             };
             
             if (invokeEvent)

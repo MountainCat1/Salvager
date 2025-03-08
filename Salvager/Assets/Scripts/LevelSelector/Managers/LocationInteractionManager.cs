@@ -44,7 +44,7 @@ namespace LevelSelector.Managers
             _interactions.Add(new LocationInteraction
             {
                 Message = "Embark",
-                IsDisplayed = location => _regionManager.GetDistance(location.Id, _crewManager.CurrentLocationId) == 1,
+                IsDisplayed = location => _regionManager.GetDistance(_crewManager.CurrentLocationId, location.Id) == 1,
                 IsEnabled = _ => _crewManager.CanTravel(),
                 OnClick = location =>
                 {

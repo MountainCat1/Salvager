@@ -7,7 +7,7 @@ namespace LevelSelector
     public class RegionType : ScriptableObject
     {
         [SerializeField] public string typeName;
-        [SerializeField] public string typeDescription;
+        [SerializeField] [TextArea] public string typeDescription;
         [SerializeField] public WeightedLocationFeature originLocationFeatures;
         [SerializeField] public WeightedLocationFeature endLocationFeatures;
         [SerializeField] public WeightedLocationFeature weightedLocationFeatures;

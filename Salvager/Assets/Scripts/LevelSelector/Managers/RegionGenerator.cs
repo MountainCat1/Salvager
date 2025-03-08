@@ -12,7 +12,7 @@ namespace Managers.LevelSelector
 {
     public interface IRegionGenerator
     {
-        RegionData Generate(RegionType regionType);
+        RegionData Generate(RegionType regionType = null);
         void SetSeed(int seed);
         public RegionType GetRegionType(string typeName);
     }
@@ -48,7 +48,7 @@ namespace Managers.LevelSelector
             return _regionTypes.FirstOrDefault(rt => rt.typeName == typeName);
         }
         
-        public RegionData Generate(RegionType regionType)
+        public RegionData Generate(RegionType regionType = null)
         {
             if (_random == null)
             {
@@ -58,7 +58,23 @@ namespace Managers.LevelSelector
                     Guid.NewGuid().GetHashCode()
                 ); // Generate a seed if one hasn't been set
             }
+
+            if (regionType is null)
+            {
+                regionType = PickRegionType();
+            }
+            else
+            {
+                Debug.LogWarning($"Region type was overridden with {regionType.typeName}");
+            }
+            
+            
             return GenerateLevels(count, minJumps, maxJumpDistance, minDistance, regionType);
+        }
+
+        private RegionType PickRegionType()
+        {
+            return _regionTypes.RandomElement();
         }
 
         private RegionData GenerateLevels(
@@ -207,19 +223,9 @@ namespace Managers.LevelSelector
                     .Take(4)
                     .ToList();
 
-                location.Neighbours = neighbours;
-                location.NeighbourIds = location.Neighbours.Select(l => l.Id).ToArray();
-
-                // Ensure connections are mutual
                 foreach (var neighbour in neighbours)
                 {
-                    if (!neighbour.Neighbours.Contains(location))
-                    {
-                        neighbour.Neighbours.Add(location);
-                        neighbour.NeighbourIds = neighbour.Neighbours
-                            .Select(l => l.Id)
-                            .ToArray();
-                    }
+                    AddMutualConnection(location, neighbour);
                 }
             }
         }
