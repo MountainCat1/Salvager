@@ -87,7 +87,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inventoryRoot: {fileID: 2692115022045672749}
   weapon: {fileID: 0}
-  <SightRange>k__BackingField: 5
+  <SightRange>k__BackingField: 10
   <XpAmount>k__BackingField: 0
   <Team>k__BackingField: 1
   <InteractionRange>k__BackingField: 1.5

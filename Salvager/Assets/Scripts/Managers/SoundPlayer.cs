@@ -77,7 +77,7 @@ namespace Managers
             var audioSource = CreateSound(clip, soundType);
             audioSource.transform.position = position;
 
-            audioSource.pitch = 1 + Random.Range(-pitchRandomness, pitchRandomness);
+            audioSource.pitch = 1 + Random.Range(0, pitchRandomness); // we dont wanna decrease pitch, it can sound bad
             audioSource.spatialBlend = 1;
         }
 

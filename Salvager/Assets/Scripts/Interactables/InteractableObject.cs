@@ -9,6 +9,8 @@ using Zenject;
 
 public class InteractableObject : PropEntity, IInteractable
 {
+    public event Action<Creature> InteractCompleted;
+    
     [Inject] private ISoundPlayer _soundPlayer = null!;
     [Inject] private ICursorManager _cursorManager = null!;
 
@@ -129,5 +131,7 @@ public class InteractableObject : PropEntity, IInteractable
     {
         if(useOnce)
             _cursorManager.RemoveCursor(this);
+        
+        InteractCompleted?.Invoke(interaction.Creature);
     }
 }

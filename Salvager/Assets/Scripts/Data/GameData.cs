@@ -1,13 +1,10 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using Items;
 using LevelSelector.Managers;
-using Managers.LevelSelector;
 using Services.MapGenerators;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
-using UnityEngine.Serialization;
 
 // ReSharper disable InconsistentNaming
 
@@ -49,48 +46,6 @@ public class InGameResources
     }
 }
 
-
-[Serializable]
-public class RegionData
-{
-    public string Name;
-    [FormerlySerializedAs("Levels")] public List<LocationData> Locations;
-
-    public static RegionData FromRegion(Region region)
-    {
-        return new RegionData
-        {
-            Name = region.Name,
-            Locations = region.Locations.ToList(),
-        };
-    }
-
-    public static Region ToRegion(RegionData dataRegion)
-    {
-        var region = new Region()
-        {
-            Name = dataRegion.Name
-        };
-
-        // Load levels
-        foreach (var levelData in dataRegion.Locations)
-        {
-            region.AddLocation(levelData);
-        }
-
-        // Connect levels
-        foreach (var level in region.Locations)
-        {
-            var levelData = dataRegion.Locations.First(x => x.Id == level.Id);
-            levelData.Neighbours = levelData.NeighbourIds
-                .Select(x => region.Locations.First(l => l.Id.ToString() == x))
-                .Select(x => region.Locations.First(l => l.Id == x.Id))
-                .ToList();
-        }
-
-        return region;
-    }
-}
 
 [System.Serializable]
 public class LocationFeatureData

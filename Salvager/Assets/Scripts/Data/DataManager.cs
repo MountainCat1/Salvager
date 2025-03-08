@@ -18,7 +18,7 @@ namespace Data
         GameData LoadData();
         GameData GetData();
         void DeleteData();
-        void SetPrefabs(GameData data);
+        void DoStuffToDataSoItWorks(GameData data);
     }
 
     public class Vector2Converter : JsonConverter<Vector2>
@@ -160,7 +160,7 @@ namespace Data
         }
 
         // TODO: This should be in a separate manager
-        public void SetPrefabs(GameData data)
+        public void DoStuffToDataSoItWorks(GameData data)
         {
             var crewItems = data.Creatures.SelectMany(x => x.Inventory.Items).ToList();
             var inventoryItems = data.Inventory.Items;
@@ -180,6 +180,8 @@ namespace Data
             {
                 item.Prefab = _itemManager.GetItemPrefab(item.Identifier);
             }
+            
+            data.Region.RecalculateNeighbours();
         }
         
         public void DeleteData()

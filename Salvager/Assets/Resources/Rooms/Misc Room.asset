@@ -18,5 +18,9 @@ MonoBehaviour:
     position: 3
     offset: {x: 0, y: 0}
     count: 2
+  - prefab: {fileID: 8986697077323002770, guid: a0a17bc182387b84f8765ad96bb2baf3, type: 3}
+    position: 1
+    offset: {x: 0, y: 0}
+    count: 2
   <StartingRoom>k__BackingField: 0
   <Enemies>k__BackingField: []

@@ -3434,7 +3434,6 @@ MonoBehaviour:
   floatingTextPrefab: {fileID: 4078753960069299248, guid: cf9c44ae0d229954693d64042bba1900, type: 3}
   canvas: {fileID: 2142539846}
   floatSpeed: 3
-  defaultDuration: 1.5
 --- !u!1 &687958470
 GameObject:
   m_ObjectHideFlags: 0
@@ -5388,30 +5387,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c25176733af4ab48437f26f48827922, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  originLocationFeatures:
-    items:
-    - item: {fileID: 11400000, guid: eb9151ffc5af0734db15126de721b1d0, type: 2}
-      weight: 100
-  endLocationFeatures:
-    items:
-    - item: {fileID: 11400000, guid: 9fbde98348bdbfb45923283b48fa4c0a, type: 2}
-      weight: 1
-  weightedLocationFeatures:
-    items:
-    - item: {fileID: 11400000, guid: c97f959e8064ef44982f9252b0b6aa5e, type: 2}
-      weight: 50
-    - item: {fileID: 11400000, guid: 3df27d19bf5e60542923584fcfc4bfa2, type: 2}
-      weight: 50
-  weightedSecondaryLocationFeatures:
-    items:
-    - item: {fileID: 11400000, guid: a0909348ec61c05408cfd0d400597ff5, type: 2}
-      weight: 50
-    - item: {fileID: 11400000, guid: b83a3908a9e95474abf3120d09b9b896, type: 2}
-      weight: 100
-    - item: {fileID: 11400000, guid: 5d38bbf8b38b28d479dc544a35dcc03d, type: 2}
-      weight: 150
-  maxSecondaryFeatures: 3
-  minSecondaryFeatures: 1
 --- !u!1 &1251866031
 GameObject:
   m_ObjectHideFlags: 0
@@ -6563,6 +6538,7 @@ MonoBehaviour:
   startingMoney: 50
   startingFuel: 5
   startingJuice: 100
+  firstRegionType: {fileID: 11400000, guid: ad742993d289c9749b2491901953dce0, type: 2}
   mainMenuScene:
     sceneAsset: {fileID: 102900000, guid: c2a7e0c81e65ada42aa91c26aef6d739, type: 3}
     scenePath: Assets/Scenes/Menu.unity
@@ -7239,9 +7215,6 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 6945220326266969423, guid: dbe43bd481165264bbe8bbef6f56baf6, type: 3}
   - {fileID: 6945220326266969423, guid: dbe43bd481165264bbe8bbef6f56baf6, type: 3}
-  startingMoney: 100
-  startingFuel: 5
-  startingJuice: 100
 --- !u!1 &1512006166
 GameObject:
   m_ObjectHideFlags: 0

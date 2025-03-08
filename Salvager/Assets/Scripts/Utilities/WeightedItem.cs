@@ -81,7 +81,9 @@ public abstract class WeightedBag<T> : WeightedBagBase
 public class WeightedItem<T>
 {
     [SerializeField] private T item;
-    [SerializeField] private float weight;
+    // FUCK YOU ReSharper it works in unit so STFU
+    // ReSharper disable once MemberInitializerValueIgnored
+    [SerializeField] private float weight = 1f;
 
     public T Item => item;
     public float Weight => weight;
@@ -102,4 +104,5 @@ public class WeightedLocationFeature : WeightedBag<LocationFeature>
 [Serializable]
 public class WeightedInt : WeightedBag<int>
 {
+    
 }

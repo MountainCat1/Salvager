@@ -11,7 +11,7 @@ public class LocationData
     public Guid Id;
     public string Name;
     public Vector2 Position;
-    public string[] NeighbourIds;
+    public Guid[] NeighbourIds;
     public float EnemySpawnManaPerSecond;
     
     [NonSerialized] public List<LocationData> Neighbours = new();
