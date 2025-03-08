@@ -7,19 +7,12 @@ namespace LevelSelector.Managers
     public interface ILocationGenerator
     {
         LocationData GenerateLocation(System.Random random);
-        void AddFeatures(LocationData location);
-        void AddEndFeature(LocationData location);
+        void AddFeatures(LocationData location, RegionType regionType);
+        void AddEndFeature(LocationData location, RegionType regionType);
     }
     
     public class LocationGenerator : MonoBehaviour, ILocationGenerator
     {
-        [SerializeField] private WeightedLocationFeature originLocationFeatures;
-        [SerializeField] private WeightedLocationFeature endLocationFeatures;
-        [SerializeField] private WeightedLocationFeature weightedLocationFeatures;
-        [SerializeField] private WeightedLocationFeature weightedSecondaryLocationFeatures;
-        [SerializeField] private int maxSecondaryFeatures = 3;
-        [SerializeField] private int minSecondaryFeatures = 1;
-        
         public LocationData GenerateLocation(System.Random random)
         {
             var location = new LocationData()
@@ -33,16 +26,16 @@ namespace LevelSelector.Managers
             return location;
         }
         
-        public void AddFeatures(LocationData location)
+        public void AddFeatures(LocationData location, RegionType regionType)
         {
-            var originFeature = originLocationFeatures.GetRandomItem().ToData();
+            var originFeature = regionType.originLocationFeatures.GetRandomItem().ToData();
             location.Features.Add(originFeature);
             
-            var mainFeature = weightedLocationFeatures.GetRandomItem().ToData();
+            var mainFeature = regionType.weightedLocationFeatures.GetRandomItem().ToData();
             location.Features.Add(mainFeature);
             
-            var secondaryFeatures = weightedSecondaryLocationFeatures
-                .GetRandomItems(Random.Range(minSecondaryFeatures, maxSecondaryFeatures));
+            var secondaryFeatures = regionType.weightedSecondaryLocationFeatures
+                .GetRandomItems(Random.Range(regionType.minSecondaryFeatures, regionType.maxSecondaryFeatures));
 
             foreach (var secondaryFeature in secondaryFeatures)
             {
@@ -50,9 +43,9 @@ namespace LevelSelector.Managers
             }
         }
         
-        public void AddEndFeature(LocationData location)
+        public void AddEndFeature(LocationData location, RegionType regionType)
         {
-            var endFeature = endLocationFeatures.GetRandomItem().ToData();
+            var endFeature = regionType.endLocationFeatures.GetRandomItem().ToData();
             location.Features.Add(endFeature);
         }
     }

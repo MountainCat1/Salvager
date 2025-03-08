@@ -26,11 +26,11 @@ namespace LevelSelector.Managers
 
         public void TravelToRegion(RegionData region)
         {
-            _regionManager.SetRegion(RegionData.ToRegion(region), false);
+            _regionManager.SetRegion(region, false);
             
             _crewManager.ChangeCurrentLocation(region.Locations.First(x => x.Type == LocationType.StartNode));
             
-            _regionManager.SetRegion(RegionData.ToRegion(region));
+            _regionManager.SetRegion(region);
             
             var data = _dataManager.GetData();
 

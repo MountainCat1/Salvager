@@ -121,7 +121,7 @@ namespace LevelSelector.Managers
             gameData.Inventory = _crewManager.Inventory;
             gameData.Creatures = _crewManager.Crew.ToList();
             gameData.CurrentLocationId = _crewManager.CurrentLocationId.ToString();
-            gameData.Region = RegionData.FromRegion(_regionManager.Region);
+            gameData.Region = _regionManager.Region;
             
             _dataManager.SaveData();
         }

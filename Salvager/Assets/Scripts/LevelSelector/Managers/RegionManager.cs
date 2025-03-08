@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Data;
+using LevelSelector;
 using UnityEngine;
 using Zenject;
 
@@ -10,9 +11,9 @@ namespace Managers.LevelSelector
     public interface IRegionManager
     {
         public event Action RegionChanged;
-        public Region Region { get; }
+        public RegionData Region { get; }
         IEnumerable<RegionData> NextRegions { get; }
-        public void SetRegion(Region region, bool invokeEvent = true);
+        public void SetRegion(RegionData region, bool invokeEvent = true);
         public int GetDistance(Guid fromGuid, Guid toGuid);
         public int GetDistance(LocationData from, LocationData to);
     }
@@ -24,8 +25,10 @@ namespace Managers.LevelSelector
 
         [Inject] private IDataManager _dataManager;
         [Inject] private IRegionGenerator _regionGenerator;
+        
+        [SerializeField] private RegionType regionType;
 
-        public Region Region { get; private set; }
+        public RegionData Region { get; private set; }
 
         public IEnumerable<RegionData> NextRegions => _nextRegions;
 
@@ -72,17 +75,14 @@ namespace Managers.LevelSelector
             return -1; // No path found
         }
 
-
-
-
-        public void SetRegion(Region region, bool invokeEvent = true)
+        public void SetRegion(RegionData region, bool invokeEvent = true)
         {
             Region = region;
 
             _nextRegions = new List<RegionData>()
             {
-                RegionData.FromRegion(_regionGenerator.Generate()),
-                RegionData.FromRegion(_regionGenerator.Generate()),
+                _regionGenerator.Generate(regionType),
+                _regionGenerator.Generate(regionType),
             };
             
             if (invokeEvent)

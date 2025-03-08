@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Constants;
+using LevelSelector;
 using LevelSelector.Managers;
 using UnityEngine;
 using Utilities;
@@ -11,8 +12,9 @@ namespace Managers.LevelSelector
 {
     public interface IRegionGenerator
     {
-        Region Generate();
+        RegionData Generate(RegionType regionType);
         void SetSeed(int seed);
+        public RegionType GetRegionType(string typeName);
     }
 
     public class RegionGenerator : MonoBehaviour, IRegionGenerator
@@ -22,23 +24,31 @@ namespace Managers.LevelSelector
         [Inject] private IShopGenerator _shopGenerator;
 
         [SerializeField] private int count = 10;
-
         [SerializeField] private int minJumps = 3;
-
         [SerializeField] private float maxJumpDistance = 0.4f;
-
         [SerializeField] private float minDistance = 0.2f;
-
         [SerializeField] private int shopCount = 2;
 
         private System.Random _random;
+
+        private RegionType[] _regionTypes;
+
+        private void Awake()
+        {
+            _regionTypes = Resources.LoadAll<RegionType>("RegionTypes");
+        }
 
         public void SetSeed(int seed)
         {
             _random = new System.Random(seed);
         }
 
-        public Region Generate()
+        public RegionType GetRegionType(string typeName)
+        {
+            return _regionTypes.FirstOrDefault(rt => rt.typeName == typeName);
+        }
+        
+        public RegionData Generate(RegionType regionType)
         {
             if (_random == null)
             {
@@ -48,46 +58,53 @@ namespace Managers.LevelSelector
                     Guid.NewGuid().GetHashCode()
                 ); // Generate a seed if one hasn't been set
             }
-            return GenerateLevels(count, minJumps, maxJumpDistance, minDistance);
+            return GenerateLevels(count, minJumps, maxJumpDistance, minDistance, regionType);
         }
 
-        private Region GenerateLevels(
+        private RegionData GenerateLevels(
             int count,
             int minJumps,
             float maxJumpDistance,
-            float minDistance
+            float minDistance,
+            RegionType regionType
         )
         {
-            var region = new Region { Name = Names.Regions.RandomElement() };
+            var region = new RegionData() { Name = Names.Regions.RandomElement() };
             var locations = GenerateLocations(count, minDistance);
 
             if (locations.Count == 0)
                 return region;
 
             AssignNodeTypes(locations);
-            AddFeatures(locations);
-            AddBossNodeFeature(locations);
             GenerateConnections(locations, maxJumpDistance);
             EnsureGraphConnectivity(locations);
+
+            AddFeatures(locations, regionType);
+            AddBossNodeFeature(locations, regionType);
             GenerateShops(locations, shopCount);
             locations.ForEach(region.AddLocation);
-
+            
+            region.Type = regionType.typeName;
+            
             Debug.Log($"Generated {count} levels with minDistance: {minDistance}.");
+            
+            region.RecalculateNeighbours();
+            
             return region;
         }
 
-        private void AddBossNodeFeature(List<LocationData> locations)
+        private void AddBossNodeFeature(List<LocationData> locations, RegionType regionType)
         {
             var endNode = locations.Single(l => l.Type == LocationType.BossNode);
 
-            _locationGenerator.AddEndFeature(endNode);
+            _locationGenerator.AddEndFeature(endNode, regionType);
         }
 
-        private void AddFeatures(List<LocationData> locations)
+        private void AddFeatures(List<LocationData> locations, RegionType regionType)
         {
             foreach (var location in locations)
             {
-                _locationGenerator.AddFeatures(location);
+                _locationGenerator.AddFeatures(location, regionType);
             }
         }
 
@@ -191,7 +208,7 @@ namespace Managers.LevelSelector
                     .ToList();
 
                 location.Neighbours = neighbours;
-                location.NeighbourIds = location.Neighbours.Select(l => l.Id.ToString()).ToArray();
+                location.NeighbourIds = location.Neighbours.Select(l => l.Id).ToArray();
 
                 // Ensure connections are mutual
                 foreach (var neighbour in neighbours)
@@ -200,7 +217,7 @@ namespace Managers.LevelSelector
                     {
                         neighbour.Neighbours.Add(location);
                         neighbour.NeighbourIds = neighbour.Neighbours
-                            .Select(l => l.Id.ToString())
+                            .Select(l => l.Id)
                             .ToArray();
                     }
                 }
@@ -276,13 +293,13 @@ namespace Managers.LevelSelector
             if (!a.Neighbours.Contains(b))
             {
                 a.Neighbours.Add(b);
-                a.NeighbourIds = a.Neighbours.Select(l => l.Id.ToString()).ToArray();
+                a.NeighbourIds = a.Neighbours.Select(l => l.Id).ToArray();
             }
 
             if (!b.Neighbours.Contains(a))
             {
                 b.Neighbours.Add(a);
-                b.NeighbourIds = b.Neighbours.Select(l => l.Id.ToString()).ToArray();
+                b.NeighbourIds = b.Neighbours.Select(l => l.Id).ToArray();
             }
         }
     }

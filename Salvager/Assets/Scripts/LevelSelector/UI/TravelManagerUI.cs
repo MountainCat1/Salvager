@@ -1,6 +1,5 @@
-using System;
-using System.Collections.Generic;
 using System.Linq;
+using LevelSelector.Managers;
 using Managers.LevelSelector;
 using TMPro;
 using UI;
@@ -8,29 +7,26 @@ using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
 
-namespace LevelSelector.Managers
+namespace LevelSelector.UI
 {
     [RequireComponent(typeof(UISlide))]
     public class TravelManagerUI : MonoBehaviour
     {
         [Inject] ITravelManager _travelManager;
         [Inject] IRegionManager _regionManager;
+        [Inject] IRegionGenerator _regionGenerator;
         [Inject] IPanelManagerUI _panelManager;
         [Inject] DiContainer _diContainer;
 
         [SerializeField] private Button travelButton;
         [SerializeField] private Transform travelButtonsContainer;
 
-        private UISlide _uiSlide;
-        
         private void Start()
         {
             if(_regionManager.NextRegions.Count() != 0)
                 UpdateUI();
             
             _regionManager.RegionChanged += UpdateUI;
-            
-            _uiSlide = GetComponent<UISlide>();
             
             _travelManager.Traveled += () => _panelManager.ClearPanels();
         }
@@ -59,8 +55,13 @@ namespace LevelSelector.Managers
 
         private string GetDescription(RegionData region)
         {
-            string result = "";
+            var regionType = _regionGenerator.GetRegionType(region.Type);
             
+            string result = "";
+
+            result += $"<b>{regionType.typeName}</b>\n";
+            result += $"<b>{regionType.typeDescription}</b>\n";
+
             result += $"Location count: {region.Locations.Count}\n";
             result += $"Shop count: {region.Locations.Count(x => x.ShopData is not null)}\n";
             
