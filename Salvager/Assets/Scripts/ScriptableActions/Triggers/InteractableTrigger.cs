@@ -7,7 +7,10 @@ namespace Triggers
 {
     public class InteractableTrigger : TriggerBase
     {
-        [SerializeField] private float range = 1.5f;
+    public class InteractableTrigger : TriggerBase
+    {
+        [SerializeField] private InteractableObject interactableObject;
+        // ... rest of the class remains unchanged
     
         [SerializeField] private InteractableObject interactableObject;
         
