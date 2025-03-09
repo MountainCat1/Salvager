@@ -42,7 +42,7 @@ namespace Triggers
             if (FireOnce && HasFired)
                 return;
          
-            if(CheckConditions())
+            if(!CheckConditions())
                 return;
             
             HasFired = true;
