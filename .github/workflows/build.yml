@@ -71,6 +71,6 @@ jobs:
           body: "Automated build release."
           draft: false
           prerelease: false
-          files: Salvager/Build/StandaloneWindows64/*  # ✅ Corrected path
+          files: Salvager/Build/StandaloneWindows64  # ✅ Corrected path
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Uses token with correct permissions
