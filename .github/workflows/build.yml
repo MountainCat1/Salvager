@@ -52,15 +52,15 @@ jobs:
     permissions:
       contents: write  # ✅ Grant permission to create releases
     steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
+#      - uses: actions/checkout@v4
+#        with:
+#           fetch-depth: 0
 
       - name: Download build artifacts
         uses: actions/download-artifact@v4
         with:
           name: Build-StandaloneWindows64  # ✅ Matches uploaded artifact name
-          path: Salvager/Build/StandaloneWindows64  # ✅ Must match upload path
+          path: Builds/StandaloneWindows64.zip # ✅ Must match upload path
       - name: List files for debugging
         run: ls -R
       - name: Create GitHub Release
@@ -72,6 +72,6 @@ jobs:
           body: "Automated build release."
           draft: false
           prerelease: false
-          files: Salvager/Build/StandaloneWindows64  # ✅ Corrected path
+          files: Builds/*  # ✅ Corrected path
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Uses token with correct permissions
