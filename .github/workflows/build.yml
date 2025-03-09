@@ -16,7 +16,7 @@ jobs:
       fail-fast: false
       matrix:
         targetPlatform:
-          - StandaloneWindows64 # Build a Windows 64-bit standalone.
+          - StandaloneWindows64
     steps:
       - uses: actions/checkout@v4
         with:
@@ -35,34 +35,37 @@ jobs:
           UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
           UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
         with:
-          projectPath: Salvager  # Ensure this matches your Unity project path
+          projectPath: Salvager
           targetPlatform: ${{ matrix.targetPlatform }}
-          buildsPath: Salvager/Build/${{ matrix.targetPlatform }}  # ✅ Explicitly set output path
+          buildsPath: Salvager/Build/${{ matrix.targetPlatform }}
+
+      - name: Create ZIP Archive
+        run: |
+          mkdir -p Salvager/Build
+          zip -r Salvager/Build/StandaloneWindows64.zip Salvager/Build/${{ matrix.targetPlatform }}
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: Build-${{ matrix.targetPlatform }}
-          path: Salvager/Build/${{ matrix.targetPlatform }}  # ✅ This must match Unity's output path
+          name: Build-StandaloneWindows64
+          path: Salvager/Build/StandaloneWindows64.zip
 
   release:
     name: Create GitHub Release
     needs: buildForAllSupportedPlatforms
     runs-on: ubuntu-latest
     permissions:
-      contents: write  # ✅ Grant permission to create releases
+      contents: write
     steps:
-#      - uses: actions/checkout@v4
-#        with:
-#           fetch-depth: 0
-
       - name: Download build artifacts
         uses: actions/download-artifact@v4
         with:
-          name: Build-StandaloneWindows64  # ✅ Matches uploaded artifact name
-          path: Builds/StandaloneWindows64.zip # ✅ Must match upload path
+          name: Build-StandaloneWindows64
+          path: artifacts
+
       - name: List files for debugging
-        run: ls -R
+        run: ls -lh artifacts
+
       - name: Create GitHub Release
         id: create_release
         uses: softprops/action-gh-release@v2
@@ -72,6 +75,6 @@ jobs:
           body: "Automated build release."
           draft: false
           prerelease: false
-          files: Builds/*  # ✅ Corrected path
+          files: artifacts/StandaloneWindows64.zip
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Uses token with correct permissions
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
