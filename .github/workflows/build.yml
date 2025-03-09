@@ -60,7 +60,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: Build-StandaloneWindows64  # ✅ Matches uploaded artifact name
-          path: Builds/StandaloneWindows64.zip # ✅ Must match upload path
+          path: artifacts
       - name: List files for debugging
         run: ls -R
       - name: Create GitHub Release
@@ -72,6 +72,6 @@ jobs:
           body: "Automated build release."
           draft: false
           prerelease: false
-          files: Builds/*  # ✅ Corrected path
+          files: artifacts/*  # ✅ Corrected path
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Uses token with correct permissions
