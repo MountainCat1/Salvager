@@ -39,11 +39,16 @@ jobs:
           targetPlatform: ${{ matrix.targetPlatform }}
           buildsPath: Salvager/Build/${{ matrix.targetPlatform }}
 
-      - name: Upload build artifacts
+      - name: Zip the build artifacts
+        run: |
+          mkdir -p artifacts
+          zip -r artifacts/Build-${{ matrix.targetPlatform }}.zip Salvager/Build/${{ matrix.targetPlatform }}
+
+      - name: Upload zipped build artifacts
         uses: actions/upload-artifact@v4
         with:
           name: Build-${{ matrix.targetPlatform }}
-          path: Salvager/Build/${{ matrix.targetPlatform }}
+          path: artifacts/Build-${{ matrix.targetPlatform }}.zip
 
   release:
     name: Create GitHub Release
@@ -52,11 +57,11 @@ jobs:
     permissions:
       contents: write
     steps:
-      - name: Download build artifacts
+      - name: Download zipped build artifacts
         uses: actions/download-artifact@v4
         with:
           name: Build-StandaloneWindows64
-          path: artifacts/Build-StandaloneWindows64
+          path: artifacts
 
       - name: List files for debugging
         run: ls -R artifacts
@@ -70,6 +75,6 @@ jobs:
           body: "Automated build release."
           draft: false
           prerelease: false
-          files: artifacts/Build-StandaloneWindows64/**/*
+          files: artifacts/Build-StandaloneWindows64.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
