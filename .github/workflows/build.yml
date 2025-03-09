@@ -37,7 +37,7 @@ jobs:
         with:
           projectPath: Salvager  # Ensure this matches your Unity project path
           targetPlatform: ${{ matrix.targetPlatform }}
-          buildPath: Salvager/Build/${{ matrix.targetPlatform }}  # ✅ Explicitly set output path
+          buildsPath: Salvager/Build/${{ matrix.targetPlatform }}  # ✅ Explicitly set output path
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
