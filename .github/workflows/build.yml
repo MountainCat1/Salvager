@@ -39,16 +39,19 @@ jobs:
           targetPlatform: ${{ matrix.targetPlatform }}
           buildsPath: Salvager/Build/${{ matrix.targetPlatform }}
 
+      - name: Fix permissions
+        run: chmod -R 777 Salvager/Build/
+
       - name: Create ZIP Archive
         run: |
-          mkdir -p Salvager/Build
-          zip -r Salvager/Build/StandaloneWindows64.zip Salvager/Build/${{ matrix.targetPlatform }}
+          mkdir -p artifacts
+          zip -r artifacts/StandaloneWindows64.zip Salvager/Build/${{ matrix.targetPlatform }}
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
         with:
           name: Build-StandaloneWindows64
-          path: Salvager/Build/StandaloneWindows64.zip
+          path: artifacts/StandaloneWindows64.zip
 
   release:
     name: Create GitHub Release
