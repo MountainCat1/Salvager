@@ -61,7 +61,8 @@ jobs:
         with:
           name: Build-StandaloneWindows64  # ✅ Matches uploaded artifact name
           path: Salvager/Build/StandaloneWindows64  # ✅ Must match upload path
-
+      - name: List files for debugging
+        run: ls -R
       - name: Create GitHub Release
         id: create_release
         uses: softprops/action-gh-release@v2
